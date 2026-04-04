@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@angycode/core": "^0.1.2"
+  }
+}
