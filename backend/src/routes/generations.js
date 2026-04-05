@@ -4,7 +4,7 @@ import { authMiddleware } from '../auth.js';
 import { checkGenerationLimits, PLANS } from '../plans.js';
 import { MODEL_MAP } from '../models.js';
 import { STYLES, resolveThemeAuto, resolveThemeSynth } from '../prompt-builder.js';
-import { push } from '../queen-client.js';
+import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
 import { PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { requireUUID } from '../validation.js';
@@ -185,9 +185,9 @@ export default async function (app) {
 
       // Push jobs to Queen — if this fails, the transaction is rolled back
       try {
-        await push('designfast-jobs', jobs.map(j => ({
-          data: j,
-        })));
+        await queen
+          .queue('designfast-jobs')
+          .push(jobs.map(j => ({ data: j })));
       } catch (queenErr) {
         await client.query('ROLLBACK');
         req.log.error({ err: queenErr }, 'Failed to push jobs to Queen');

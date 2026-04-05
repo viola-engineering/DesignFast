@@ -5,12 +5,13 @@ import { getPreviewUrl } from '@/api/jobs'
 const props = defineProps<{
   jobId: string
   filename?: string
+  revision?: number
 }>()
 
 const loading = ref(true)
 const error = ref(false)
 
-const src = computed(() => getPreviewUrl(props.jobId, props.filename || 'index.html'))
+const src = computed(() => getPreviewUrl(props.jobId, props.filename || 'index.html', props.revision))
 
 function onLoad() {
   loading.value = false

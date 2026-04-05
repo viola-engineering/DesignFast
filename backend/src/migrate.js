@@ -114,11 +114,40 @@ CREATE INDEX IF NOT EXISTS idx_iterate_messages_session_id ON designfast.iterate
 CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON designfast.api_keys(user_id);
 `;
 
+const MIGRATIONS = `
+-- Add revision tracking to job_files
+DO $$ BEGIN
+  ALTER TABLE designfast.job_files ADD COLUMN revision int NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+-- Replace unique constraint: (job_id, filename) -> (job_id, filename, revision)
+DROP INDEX IF EXISTS designfast.idx_job_files_job_filename;
+DO $$ BEGIN
+  ALTER TABLE designfast.job_files DROP CONSTRAINT IF EXISTS job_files_job_id_filename_key;
+EXCEPTION WHEN undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER TABLE designfast.job_files ADD CONSTRAINT job_files_job_revision_filename_key UNIQUE (job_id, filename, revision);
+EXCEPTION WHEN duplicate_table THEN NULL;
+END $$;
+
+CREATE INDEX IF NOT EXISTS idx_job_files_job_revision ON designfast.job_files(job_id, revision);
+
+-- Add latest_revision counter to jobs
+DO $$ BEGIN
+  ALTER TABLE designfast.jobs ADD COLUMN latest_revision int NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+`;
+
 async function migrate() {
   const client = await pool.connect();
   try {
     await client.query(DDL);
-    console.log('Migration complete — all tables and indexes created.');
+    await client.query(MIGRATIONS);
+    console.log('Migration complete — all tables, indexes, and migrations applied.');
   } finally {
     client.release();
     await pool.end();

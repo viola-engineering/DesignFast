@@ -70,9 +70,10 @@ export default async function (app) {
       return reply.code(400).send({ error: `No API key available for ${modelCfg.providerName}` });
     }
 
-    // Load job files into temp dir
+    // Load job files at latest revision into temp dir
     const { rows: files } = await query(
-      `SELECT filename, content FROM designfast.job_files WHERE job_id = $1`,
+      `SELECT filename, content FROM designfast.job_files
+       WHERE job_id = $1 AND revision = (SELECT latest_revision FROM designfast.jobs WHERE id = $1)`,
       [jobId]
     );
 
@@ -236,15 +237,20 @@ Start by reading all the files now.`;
       [sessionId, live.totalTokensIn, live.totalTokensOut, live.totalCostUsd]
     );
 
-    // Save updated files back to job_files in Postgres
+    // Increment revision counter and save all files as a new snapshot
+    const { rows: [{ latest_revision: newRevision }] } = await query(
+      `UPDATE designfast.jobs SET latest_revision = latest_revision + 1
+       WHERE id = $1 RETURNING latest_revision`,
+      [live.jobId]
+    );
+
     for (const filename of filesAfter) {
       const fileContent = readFileSync(join(live.tempDir, filename), 'utf8');
       const sizeBytes = Buffer.byteLength(fileContent, 'utf8');
       await query(
-        `INSERT INTO designfast.job_files (job_id, filename, content, size_bytes)
-         VALUES ($1, $2, $3, $4)
-         ON CONFLICT (job_id, filename) DO UPDATE SET content = $3, size_bytes = $4`,
-        [live.jobId, filename, fileContent, sizeBytes]
+        `INSERT INTO designfast.job_files (job_id, filename, content, size_bytes, revision)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [live.jobId, filename, fileContent, sizeBytes, newRevision]
       );
     }
 
@@ -252,6 +258,7 @@ Start by reading all the files now.`;
       role: 'assistant',
       content,
       filesChanged,
+      revision: newRevision,
     };
   });
 

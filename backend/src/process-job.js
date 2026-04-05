@@ -11,7 +11,7 @@ import { query } from './db.js';
 import { decrypt } from './encryption.js';
 import { PROVIDER_TO_APIKEY_PROVIDER, MODEL_MAP } from './models.js';
 import { buildPrompt } from './prompt-builder.js';
-import { push } from './queen-client.js';
+import queen from './queen-client.js';
 
 const MAX_TURNS = 50;
 
@@ -53,9 +53,10 @@ async function resolveApiKey(userId, providerName) {
  */
 async function pushEvent(jobId, event) {
   try {
-    await push('designfast-events', [{ jobId, ...event, timestamp: Date.now() }], {
-      partition: jobId,
-    });
+    await queen
+      .queue('designfast-events')
+      .partition(jobId)
+      .push([{ data: { jobId, ...event, timestamp: Date.now() } }]);
   } catch (err) {
     console.error(`[process-job] Failed to push event for ${jobId}:`, err.message);
   }
@@ -178,8 +179,8 @@ export async function processJob(message) {
     for (const filename of generatedFiles) {
       const content = readFileSync(join(tempDir, filename), 'utf8');
       await query(
-        `INSERT INTO designfast.job_files (job_id, filename, content, size_bytes)
-         VALUES ($1, $2, $3, $4)`,
+        `INSERT INTO designfast.job_files (job_id, filename, content, size_bytes, revision)
+         VALUES ($1, $2, $3, $4, 0)`,
         [jobId, filename, content, Buffer.byteLength(content, 'utf8')]
       );
     }

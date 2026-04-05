@@ -12,8 +12,8 @@ import accountRoutes from './routes/account.js';
 import billingRoutes from './routes/billing.js';
 
 import { initQueues } from './queen-setup.js';
-import * as queenClient from './queen-client.js';
 import { startWorker } from './worker.js';
+import { startEventConsumer } from './event-bus.js';
 
 const app = Fastify({ logger: true });
 
@@ -39,9 +39,10 @@ try {
   app.log.warn('Failed to initialize Queen queues (Queen may not be running): %s', err.message);
 }
 
-startWorker(queenClient);
+startWorker();
+startEventConsumer();
 
-const port = parseInt(process.env.PORT || '3000', 10);
+const port = parseInt(process.env.PORT || '5000', 10);
 
 try {
   await app.listen({ port, host: '0.0.0.0' });

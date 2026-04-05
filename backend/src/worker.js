@@ -1,34 +1,29 @@
-import { consume, ack } from './queen-client.js';
+import queen from './queen-client.js';
 import { processJob } from './process-job.js';
-import { db } from './db.js';
 
 /**
  * Start a worker that consumes jobs from the designfast-jobs queue.
- * Uses Promise.allSettled so one failing job doesn't block others.
- *
- * @param {object} queenClient - Queen client module (for pushing events)
- * @returns {{ stop: () => void }} - Call stop() to halt polling
+ * Uses the official queen-mq client with autoAck and proper error handling.
+ * Non-blocking — consume runs in the background.
  */
-export function startWorker(queenClient) {
-  const consumer = consume('designfast-jobs', 'designfast-workers', {
-    batchSize: 5,
-    waitTimeMs: 10000,
-  }, async (messages) => {
-    const results = await Promise.allSettled(
-      messages.map(msg => processJob(msg, queenClient, db))
-    );
-
-    // Ack all messages — failed jobs are already marked in the DB by processJob
-    for (let i = 0; i < messages.length; i++) {
-      const success = results[i].status === 'fulfilled';
-      try {
-        await ack(messages[i], success, { consumerGroup: 'designfast-workers' });
-      } catch (err) {
-        console.error(`[worker] Failed to ack message:`, err.message);
-      }
-    }
-  });
+export async function startWorker() {
+  await queen
+    .queue('designfast-jobs')
+    .group('designfast-workers')
+    .batch(5)
+    .autoAck(false)
+    .renewLease(true, 5000)
+    .each()
+    .consume(async (message) => {
+      await processJob(message);
+    })
+    .onSuccess(async (message) => {
+      await queen.ack(message, true, { group: 'designfast-workers' });
+    })
+    .onError(async (message, error) => {
+      console.error('[worker] Job failed:', error.message);
+      await queen.ack(message, false, { group: 'designfast-workers' });
+    });
 
   console.log('[worker] Consuming from designfast-jobs');
-  return consumer;
 }

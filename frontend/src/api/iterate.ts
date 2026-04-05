@@ -14,6 +14,7 @@ export interface SendMessageResponse {
   role: 'assistant'
   content: string
   filesChanged: string[]
+  revision: number
 }
 
 export interface SessionMessage {

@@ -1,7 +1,7 @@
 import archiver from 'archiver';
 import { query } from '../db.js';
 import { authMiddleware } from '../auth.js';
-import { consume } from '../queen-client.js';
+import bus from '../event-bus.js';
 import { requireUUID } from '../validation.js';
 
 export default async function (app) {
@@ -38,6 +38,7 @@ export default async function (app) {
       createdAt: j.created_at,
       startedAt: j.started_at,
       completedAt: j.completed_at,
+      latestRevision: j.latest_revision || 0,
     };
   });
 
@@ -98,26 +99,21 @@ export default async function (app) {
       return;
     }
 
-    // Consume events from Queen with partition=jobId
-    const consumer = consume('designfast-events', `sse-${jobId}`, {
-      batchSize: 10,
-      waitTimeMs: 5000,
-    }, async (messages) => {
-      for (const msg of messages) {
-        const event = msg.data || msg;
-        reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
+    // Listen to in-memory event bus (fed by the global Queen consumer)
+    const onEvent = (event) => {
+      reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
 
-        // Close stream on terminal events
-        if (event.type === 'done' || event.type === 'error') {
-          consumer.stop();
-          reply.raw.end();
-        }
+      if (event.type === 'done' || event.type === 'error') {
+        bus.off(jobId, onEvent);
+        reply.raw.end();
       }
-    });
+    };
 
-    // Clean up Queen consumer on client disconnect
+    bus.on(jobId, onEvent);
+
+    // Clean up listener on client disconnect
     req.raw.on('close', () => {
-      consumer.stop();
+      bus.off(jobId, onEvent);
     });
 
     // Prevent Fastify from sending a response (we're handling raw)

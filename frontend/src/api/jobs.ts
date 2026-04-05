@@ -18,6 +18,7 @@ export interface JobDetail {
   createdAt: string
   startedAt: string | null
   completedAt: string | null
+  latestRevision: number
 }
 
 export interface JobFile {
@@ -43,6 +44,7 @@ export function getDownloadUrl(id: string): string {
   return `/api/jobs/${id}/download`
 }
 
-export function getPreviewUrl(jobId: string, filename = 'index.html'): string {
-  return `/preview/${jobId}/${filename}`
+export function getPreviewUrl(jobId: string, filename = 'index.html', revision?: number): string {
+  const base = `/preview/${jobId}/${filename}`
+  return revision !== undefined ? `${base}?revision=${revision}` : base
 }

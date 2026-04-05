@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import GeneratorSidebar from '@/components/GeneratorSidebar.vue'
 import GeneratorOutput from '@/components/GeneratorOutput.vue'
@@ -7,6 +7,7 @@ import { useGenerationsStore } from '@/stores/generations'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
 import { startSession, sendMessage } from '@/api/iterate'
+import { getById as getJobById } from '@/api/jobs'
 import type { CreateGenerationRequest, JobStatus } from '@/api/generations'
 
 const route = useRoute()
@@ -26,6 +27,8 @@ const jobStatus = ref<JobStatus | undefined>()
 const statusMessage = ref<string | undefined>()
 const versions = ref(1)
 const files = ref<string[]>([])
+const revision = ref(0)
+const latestRevision = ref(0)
 
 // SSE connection
 let eventSource: EventSource | null = null
@@ -78,6 +81,30 @@ function disconnectSSE() {
   }
 }
 
+// Load a previous job if ?jobId= is in the URL
+onMounted(async () => {
+  const jobId = route.query.jobId as string | undefined
+  if (jobId) {
+    try {
+      const job = await getJobById(jobId)
+      currentJobId.value = job.id
+      jobStatus.value = job.status
+      revision.value = job.latestRevision
+      latestRevision.value = job.latestRevision
+      if (job.status === 'done') {
+        statusMessage.value = 'Loaded from history'
+      } else if (job.status === 'failed') {
+        statusMessage.value = job.errorMessage || 'Job failed'
+      } else if (job.status === 'running' || job.status === 'queued') {
+        isGenerating.value = true
+        connectSSE(job.id)
+      }
+    } catch {
+      toastStore.error('Failed to load previous generation')
+    }
+  }
+})
+
 // Cleanup on unmount
 onUnmounted(() => {
   disconnectSSE()
@@ -128,11 +155,17 @@ async function handleIterate(prompt: string) {
       currentSessionId.value = session.sessionId
     }
 
-    // Send iterate message
-    await sendMessage(currentSessionId.value, prompt)
+    // Send iterate message — this is synchronous (no SSE needed)
+    const result = await sendMessage(currentSessionId.value, prompt)
 
-    // Reconnect SSE for updates
-    connectSSE(currentJobId.value)
+    // Update UI directly — files are already saved to DB
+    isGenerating.value = false
+    const newRevision = result.revision ?? revision.value + 1
+    revision.value = newRevision
+    latestRevision.value = newRevision
+    jobStatus.value = 'done'
+    statusMessage.value = 'Design updated'
+    toastStore.success('Design refined!')
   } catch (err: unknown) {
     isGenerating.value = false
     jobStatus.value = 'done' // Revert to done state
@@ -140,6 +173,10 @@ async function handleIterate(prompt: string) {
     statusMessage.value = message
     toastStore.error(message)
   }
+}
+
+function handleRevisionChange(rev: number) {
+  revision.value = rev
 }
 
 function handleExampleClick(prompt: string) {
@@ -170,8 +207,11 @@ function handleExampleClick(prompt: string) {
           :status-message="statusMessage"
           :versions="versions"
           :files="files"
+          :revision="revision"
+          :latest-revision="latestRevision"
           @iterate="handleIterate"
           @example-click="handleExampleClick"
+          @revision-change="handleRevisionChange"
         />
       </main>
     </div>

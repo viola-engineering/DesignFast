@@ -12,11 +12,14 @@ const props = defineProps<{
   statusMessage?: string
   versions?: number
   files?: string[]
+  revision?: number
+  latestRevision?: number
 }>()
 
 const emit = defineEmits<{
   iterate: [prompt: string]
   exampleClick: [prompt: string]
+  revisionChange: [revision: number]
 }>()
 
 const activeVersion = ref(1)
@@ -27,10 +30,7 @@ const hasJob = computed(() => !!props.jobId)
 const isComplete = computed(() => props.status === 'done')
 const versionCount = computed(() => props.versions || 1)
 
-const currentFile = computed(() => {
-  if (versionCount.value === 1) return 'index.html'
-  return `v${activeVersion.value}/index.html`
-})
+const currentFile = computed(() => 'index.html')
 
 const downloadUrl = computed(() => {
   if (!props.jobId) return ''
@@ -76,6 +76,30 @@ function handleIterate() {
             V{{ v }}
           </button>
         </div>
+      </div>
+
+      <div v-if="(latestRevision || 0) > 0" class="revision-nav">
+        <button
+          class="rev-btn"
+          :disabled="(revision || 0) <= 0"
+          title="Previous revision"
+          @click="emit('revisionChange', (revision || 0) - 1)"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <span class="rev-label">v{{ (revision || 0) + 1 }} / {{ (latestRevision || 0) + 1 }}</span>
+        <button
+          class="rev-btn"
+          :disabled="(revision || 0) >= (latestRevision || 0)"
+          title="Next revision"
+          @click="emit('revisionChange', (revision || 0) + 1)"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 6 15 12 9 18"></polyline>
+          </svg>
+        </button>
       </div>
 
       <div class="toolbar-right">
@@ -136,11 +160,17 @@ function handleIterate() {
         </div>
       </div>
 
-      <!-- Preview frame -->
+      <!-- Preview frame (only when job is done) -->
+      <div v-else-if="status !== 'done' && !showCode" class="preview-loading-state">
+        <div class="preview-spinner"></div>
+        <span>{{ status === 'running' ? 'Generating...' : 'Queued...' }}</span>
+      </div>
       <PreviewFrame
         v-else-if="!showCode"
+        :key="`${jobId}-${revision || 0}`"
         :job-id="jobId!"
         :filename="currentFile"
+        :revision="revision"
       />
 
       <!-- Code view placeholder -->
@@ -195,6 +225,44 @@ function handleIterate() {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.revision-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.rev-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: var(--ink-light);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.rev-btn:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: var(--ink-light);
+}
+
+.rev-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.rev-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  min-width: 3rem;
+  text-align: center;
 }
 
 .toolbar-right {
@@ -325,6 +393,32 @@ function handleIterate() {
 .example-prompt:hover {
   border-color: var(--accent);
   background-color: rgba(99, 102, 241, 0.05);
+}
+
+.preview-loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--ink-light);
+}
+
+.preview-loading-state .preview-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--rule);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .code-view {
