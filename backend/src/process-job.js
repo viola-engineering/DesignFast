@@ -69,7 +69,7 @@ async function pushEvent(jobId, event) {
  */
 export async function processJob(message) {
   const job = message.data || message;
-  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, fromJobId } = job;
+  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, fromJobId, billingMode, creditCost } = job;
 
   let tempDir;
   let agentDb;
@@ -200,6 +200,24 @@ export async function processJob(message) {
        WHERE id = $1`,
       [jobId, totalTokensIn, totalTokensOut, totalCostUsd, durationMs]
     );
+
+    // Deduct credits/generations based on billing mode
+    if (billingMode === 'credits' && creditCost > 0) {
+      await query(
+        `UPDATE designfast.users SET credits_used = credits_used + $2 WHERE id = $1`,
+        [userId, creditCost]
+      );
+    } else if (billingMode === 'byok') {
+      await query(
+        `UPDATE designfast.users SET byok_generations_used = byok_generations_used + 1 WHERE id = $1`,
+        [userId]
+      );
+    } else if (billingMode === 'generation') {
+      await query(
+        `UPDATE designfast.users SET generations_used = generations_used + 1 WHERE id = $1`,
+        [userId]
+      );
+    }
 
     // Push done event with file list
     await pushEvent(jobId, { type: 'done', files: generatedFiles });

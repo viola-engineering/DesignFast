@@ -13,6 +13,7 @@ import { authMiddleware } from '../auth.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { decrypt } from '../encryption.js';
 import { requireUUID } from '../validation.js';
+import { PLANS, CREDIT_COSTS, hasApiKeys } from '../plans.js';
 
 // In-memory store for active iterate sessions.
 // If the server restarts, active sessions are lost. The user can start a new
@@ -62,6 +63,33 @@ export default async function (app) {
     const modelCfg = MODEL_MAP[modelKey];
     if (!modelCfg) {
       return reply.code(400).send({ error: `Invalid model: ${modelKey}` });
+    }
+
+    // Check plan limits for iterate
+    const { rows: [iterUser] } = await query(
+      `SELECT * FROM designfast.users WHERE id = $1`,
+      [req.userId]
+    );
+    const plan = PLANS[iterUser.plan] || PLANS.free;
+
+    // Check model access
+    if (!plan.allowedModels.includes(modelKey)) {
+      return reply.code(403).send({ error: `Upgrade to Pro to use ${modelKey === 'claude' ? 'Claude' : modelKey}` });
+    }
+
+    // Determine BYOK and billing
+    const isByok = await hasApiKeys(req.userId, [modelCfg.providerName]);
+    const creditCost = CREDIT_COSTS[modelCfg.providerName] || 0;
+
+    let iterBillingMode = 'generation';
+    if (isByok && plan.byokEnabled) {
+      iterBillingMode = 'byok';
+    } else if (iterUser.plan === 'pro') {
+      if (iterUser.credits_used + creditCost <= iterUser.credits_limit) {
+        iterBillingMode = 'credits';
+      } else if (modelKey !== 'gemini') {
+        return reply.code(403).send({ error: 'Credits exhausted. You can still refine with Gemini.' });
+      }
     }
 
     // Resolve API key
@@ -143,6 +171,24 @@ Start by reading all the files now.`;
 
     const session = await agent.run(initPrompt);
 
+    // Deduct credits for the initial /start call
+    if (iterBillingMode === 'credits') {
+      await query(
+        `UPDATE designfast.users SET credits_used = credits_used + $2 WHERE id = $1`,
+        [req.userId, creditCost]
+      );
+    } else if (iterBillingMode === 'byok') {
+      await query(
+        `UPDATE designfast.users SET byok_generations_used = byok_generations_used + 1 WHERE id = $1`,
+        [req.userId]
+      );
+    } else {
+      await query(
+        `UPDATE designfast.users SET generations_used = generations_used + 1 WHERE id = $1`,
+        [req.userId]
+      );
+    }
+
     // Store session in memory
     activeSessions.set(sessionId, {
       agent,
@@ -154,6 +200,8 @@ Start by reading all the files now.`;
       totalTokensIn,
       totalTokensOut,
       totalCostUsd,
+      modelKey,
+      billingMode: iterBillingMode,
     });
 
     return reply.code(201).send({
@@ -193,6 +241,18 @@ Start by reading all the files now.`;
       return reply.code(400).send({ error: 'Session is no longer active (server may have restarted)' });
     }
 
+    // Check credits for this /send call
+    if (live.billingMode === 'credits') {
+      const { rows: [sendUser] } = await query(
+        `SELECT credits_used, credits_limit FROM designfast.users WHERE id = $1`,
+        [req.userId]
+      );
+      const sendCost = CREDIT_COSTS[MODEL_MAP[live.modelKey]?.providerName] || 0;
+      if (sendUser.credits_used + sendCost > sendUser.credits_limit) {
+        return reply.code(403).send({ error: 'Credits exhausted. Close this session or switch to Gemini.' });
+      }
+    }
+
     // Snapshot files before the agent runs
     const filesBefore = new Set(readdirSync(live.tempDir).filter(f => /\.(html|css|js)$/.test(f)));
 
@@ -230,6 +290,17 @@ Start by reading all the files now.`;
       `INSERT INTO designfast.iterate_messages (id, session_id, role, content) VALUES ($1, $2, 'assistant', $3)`,
       [randomUUID(), sessionId, content]
     );
+
+    // Deduct credits for this /send call
+    if (live.billingMode === 'credits') {
+      const sendCost = CREDIT_COSTS[MODEL_MAP[live.modelKey]?.providerName] || 0;
+      if (sendCost > 0) {
+        await query(
+          `UPDATE designfast.users SET credits_used = credits_used + $2 WHERE id = $1`,
+          [req.userId, sendCost]
+        );
+      }
+    }
 
     // Update session usage in DB
     await query(

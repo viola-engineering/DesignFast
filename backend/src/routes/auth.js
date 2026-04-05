@@ -1,25 +1,10 @@
 import bcrypt from 'bcrypt';
 import { query } from '../db.js';
 import { signToken, authMiddleware } from '../auth.js';
-import { PLANS } from '../plans.js';
+import { formatUser } from '../format-user.js';
 
 const SALT_ROUNDS = 10;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function formatUser(row) {
-  const plan = PLANS[row.plan] || PLANS.free;
-  return {
-    id: row.id,
-    email: row.email,
-    name: row.name,
-    plan: row.plan,
-    avatarUrl: row.avatar_url || null,
-    generationsUsed: row.generations_used,
-    generationsLimit: plan.generationsPerMonth,
-    billingPeriodStart: row.billing_period_start || null,
-    createdAt: row.created_at,
-  };
-}
 
 export default async function (app) {
   // POST /api/auth/register

@@ -2,7 +2,6 @@
 interface FeatureRow {
   feature: string
   free: string
-  starter: string
   pro: string
   isCategory?: boolean
 }
@@ -19,20 +18,18 @@ defineProps<{
         <tr>
           <th scope="col">Feature</th>
           <th scope="col">Free</th>
-          <th scope="col" class="featured-col">Starter</th>
-          <th scope="col">Pro</th>
+          <th scope="col" class="featured-col">Pro</th>
         </tr>
       </thead>
       <tbody>
         <template v-for="(row, index) in rows" :key="index">
           <tr v-if="row.isCategory" class="cat-row">
-            <td colspan="4">{{ row.feature }}</td>
+            <td colspan="3">{{ row.feature }}</td>
           </tr>
           <tr v-else>
             <td>{{ row.feature }}</td>
             <td>{{ row.free }}</td>
-            <td class="featured-col">{{ row.starter }}</td>
-            <td>{{ row.pro }}</td>
+            <td class="featured-col">{{ row.pro }}</td>
           </tr>
         </template>
       </tbody>

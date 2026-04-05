@@ -15,7 +15,10 @@ CREATE TABLE IF NOT EXISTS designfast.users (
   plan text NOT NULL DEFAULT 'free',
   avatar_url text,
   generations_used int NOT NULL DEFAULT 0,
-  generations_limit int NOT NULL DEFAULT 5,
+  generations_limit int NOT NULL DEFAULT 3,
+  credits_used int NOT NULL DEFAULT 0,
+  credits_limit int NOT NULL DEFAULT 0,
+  byok_generations_used int NOT NULL DEFAULT 0,
   billing_period_start timestamptz,
   stripe_customer_id text,
   stripe_subscription_id text,
@@ -140,6 +143,34 @@ DO $$ BEGIN
   ALTER TABLE designfast.jobs ADD COLUMN latest_revision int NOT NULL DEFAULT 0;
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
+
+-- Credit system: add credits_used, credits_limit, byok_generations_used
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN credits_used int NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN credits_limit int NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN byok_generations_used int NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+-- Update defaults for free plan (3 generations, not 5)
+ALTER TABLE designfast.users ALTER COLUMN generations_limit SET DEFAULT 3;
+
+-- Migrate existing starter users to free
+UPDATE designfast.users SET plan = 'free', generations_limit = 3 WHERE plan = 'starter';
+
+-- Set credits_limit for existing pro users
+UPDATE designfast.users SET credits_limit = 100 WHERE plan = 'pro';
+
+-- Update existing free users to new limit
+UPDATE designfast.users SET generations_limit = 3 WHERE plan = 'free' AND generations_limit = 5;
 `;
 
 async function migrate() {

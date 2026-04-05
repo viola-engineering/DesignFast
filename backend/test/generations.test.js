@@ -23,8 +23,32 @@ after(async () => {
   await closeDb();
 });
 
-describe('POST /api/generations', () => {
-  it('returns 201 with generation and jobs', async () => {
+describe('POST /api/generations', { concurrency: 1 }, () => {
+  it('returns 201 with generation and jobs (free user, gemini)', async () => {
+    const { cookie } = await seedUser(app);
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/generations',
+      headers: { cookie },
+      payload: {
+        prompt: 'A coffee shop landing page',
+        models: ['gemini'],
+      },
+    });
+
+    assert.strictEqual(res.statusCode, 201);
+    const body = res.json();
+    assert.ok(body.id);
+    assert.strictEqual(body.status, 'running');
+    assert.ok(Array.isArray(body.jobs));
+    assert.strictEqual(body.jobs.length, 1);
+    assert.strictEqual(body.jobs[0].status, 'queued');
+    assert.strictEqual(body.jobs[0].model, 'gemini-3-flash-preview');
+    assert.strictEqual(body.jobs[0].styleKey, 'freestyle');
+  });
+
+  it('returns 403 when free user tries to use claude', async () => {
     const { cookie } = await seedUser(app);
 
     const res = await app.inject({
@@ -37,15 +61,8 @@ describe('POST /api/generations', () => {
       },
     });
 
-    assert.strictEqual(res.statusCode, 201);
-    const body = res.json();
-    assert.ok(body.id);
-    assert.strictEqual(body.status, 'running');
-    assert.ok(Array.isArray(body.jobs));
-    assert.strictEqual(body.jobs.length, 1);
-    assert.strictEqual(body.jobs[0].status, 'queued');
-    assert.strictEqual(body.jobs[0].model, 'claude-sonnet-4-6');
-    assert.strictEqual(body.jobs[0].styleKey, 'freestyle');
+    assert.strictEqual(res.statusCode, 403);
+    assert.ok(res.json().error.includes('Upgrade to Pro'));
   });
 
   it('creates multiple jobs for explicit styles', async () => {
@@ -59,7 +76,7 @@ describe('POST /api/generations', () => {
         prompt: 'A portfolio site',
         themeMode: 'explicit',
         styles: ['minimalist'],
-        models: ['claude'],
+        models: ['gemini'],
       },
     });
 
@@ -77,7 +94,7 @@ describe('POST /api/generations', () => {
       method: 'POST',
       url: '/api/generations',
       headers: { cookie },
-      payload: { prompt: '', models: ['claude'] },
+      payload: { prompt: '', models: ['gemini'] },
     });
 
     assert.strictEqual(res.statusCode, 400);
@@ -117,18 +134,58 @@ describe('POST /api/generations', () => {
       method: 'POST',
       url: '/api/generations',
       headers: { cookie },
-      payload: { prompt: 'test', models: ['claude'], themeMode: 'explicit' },
+      payload: { prompt: 'test', models: ['gemini'], themeMode: 'explicit' },
     });
 
     assert.strictEqual(res.statusCode, 400);
   });
 
-  it('returns 403 when generation limit reached', async () => {
+  it('returns 403 when free user generation limit reached', async () => {
     const { user, cookie } = await seedUser(app);
 
-    // Set generations_used to the free plan limit (5)
+    // Set generations_used to the free plan limit (3)
     await query(
-      `UPDATE designfast.users SET generations_used = 5 WHERE id = $1`,
+      `UPDATE designfast.users SET generations_used = 3 WHERE id = $1`,
+      [user.id]
+    );
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/generations',
+      headers: { cookie },
+      payload: { prompt: 'test', models: ['gemini'] },
+    });
+
+    assert.strictEqual(res.statusCode, 403);
+    assert.ok(res.json().error.includes('generation limit reached'));
+  });
+
+  it('allows pro user with credits to use claude', async () => {
+    const { user, cookie } = await seedUser(app);
+
+    // Upgrade to pro
+    await query(
+      `UPDATE designfast.users SET plan = 'pro', credits_limit = 100 WHERE id = $1`,
+      [user.id]
+    );
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/generations',
+      headers: { cookie },
+      payload: { prompt: 'test', models: ['claude'] },
+    });
+
+    assert.strictEqual(res.statusCode, 201);
+    assert.strictEqual(res.json().jobs[0].model, 'claude-sonnet-4-6');
+  });
+
+  it('returns 403 when pro user credits exhausted and tries claude', async () => {
+    const { user, cookie } = await seedUser(app);
+
+    // Upgrade to pro with credits exhausted
+    await query(
+      `UPDATE designfast.users SET plan = 'pro', credits_limit = 100, credits_used = 100 WHERE id = $1`,
       [user.id]
     );
 
@@ -140,21 +197,41 @@ describe('POST /api/generations', () => {
     });
 
     assert.strictEqual(res.statusCode, 403);
-    assert.strictEqual(res.json().error, 'Monthly generation limit reached');
+    assert.ok(res.json().error.includes('Credits exhausted'));
+  });
+
+  it('allows pro user with exhausted credits to fall back to gemini', async () => {
+    const { user, cookie } = await seedUser(app);
+
+    // Upgrade to pro with credits exhausted
+    await query(
+      `UPDATE designfast.users SET plan = 'pro', credits_limit = 100, credits_used = 100 WHERE id = $1`,
+      [user.id]
+    );
+
+    const res = await app.inject({
+      method: 'POST',
+      url: '/api/generations',
+      headers: { cookie },
+      payload: { prompt: 'test', models: ['gemini'] },
+    });
+
+    assert.strictEqual(res.statusCode, 201);
+    assert.strictEqual(res.json().jobs[0].model, 'gemini-3-flash-preview');
   });
 
   it('returns 401 without auth', async () => {
     const res = await app.inject({
       method: 'POST',
       url: '/api/generations',
-      payload: { prompt: 'test', models: ['claude'] },
+      payload: { prompt: 'test', models: ['gemini'] },
     });
 
     assert.strictEqual(res.statusCode, 401);
   });
 });
 
-describe('GET /api/generations', () => {
+describe('GET /api/generations', { concurrency: 1 }, () => {
   it('returns paginated generations', async () => {
     const { cookie } = await seedUser(app);
 
@@ -163,7 +240,7 @@ describe('GET /api/generations', () => {
       method: 'POST',
       url: '/api/generations',
       headers: { cookie },
-      payload: { prompt: 'test site', models: ['claude'] },
+      payload: { prompt: 'test site', models: ['gemini'] },
     });
 
     const res = await app.inject({
@@ -197,7 +274,7 @@ describe('GET /api/generations', () => {
   });
 });
 
-describe('GET /api/generations/:id', () => {
+describe('GET /api/generations/:id', { concurrency: 1 }, () => {
   it('returns generation with jobs', async () => {
     const { cookie } = await seedUser(app);
 
@@ -205,7 +282,7 @@ describe('GET /api/generations/:id', () => {
       method: 'POST',
       url: '/api/generations',
       headers: { cookie },
-      payload: { prompt: 'detail test', models: ['claude'] },
+      payload: { prompt: 'detail test', models: ['gemini'] },
     });
 
     const genId = createRes.json().id;
@@ -237,7 +314,7 @@ describe('GET /api/generations/:id', () => {
   });
 });
 
-describe('DELETE /api/generations/:id', () => {
+describe('DELETE /api/generations/:id', { concurrency: 1 }, () => {
   it('deletes generation and returns ok', async () => {
     const { cookie } = await seedUser(app);
 
@@ -245,7 +322,7 @@ describe('DELETE /api/generations/:id', () => {
       method: 'POST',
       url: '/api/generations',
       headers: { cookie },
-      payload: { prompt: 'to delete', models: ['claude'] },
+      payload: { prompt: 'to delete', models: ['gemini'] },
     });
 
     const genId = createRes.json().id;

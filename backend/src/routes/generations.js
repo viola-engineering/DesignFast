@@ -1,12 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import { query, db } from '../db.js';
 import { authMiddleware } from '../auth.js';
-import { checkGenerationLimits, PLANS } from '../plans.js';
-import { MODEL_MAP } from '../models.js';
+import { checkUsageLimits, hasApiKeys, CREDIT_COSTS } from '../plans.js';
+import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { STYLES, resolveThemeAuto, resolveThemeSynth } from '../prompt-builder.js';
 import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
-import { PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { requireUUID } from '../validation.js';
 
 const VALID_MODES = ['landing', 'webapp'];
@@ -130,8 +129,12 @@ export default async function (app) {
       styles = [{ key: 'freestyle', name: 'Freestyle', prompt: '' }];
     }
 
+    // Determine BYOK status
+    const providerNames = models.map(m => MODEL_MAP[m].providerName);
+    const isByok = await hasApiKeys(req.userId, providerNames);
+
     // Check limits
-    const limitCheck = checkGenerationLimits(user, { versions, styles });
+    const limitCheck = checkUsageLimits(user, { models, versions, styles, isByok }, MODEL_MAP);
     if (!limitCheck.allowed) {
       return reply.code(403).send({ error: limitCheck.error });
     }
@@ -157,6 +160,10 @@ export default async function (app) {
             prompt: prompt.trim(),
             mode,
             fromJobId,
+            billingMode: limitCheck.billingMode,
+            creditCost: limitCheck.billingMode === 'credits'
+              ? (CREDIT_COSTS[modelCfg.providerName] || 0)
+              : 0,
           });
         }
       }
@@ -196,12 +203,6 @@ export default async function (app) {
         req.log.error({ err: queenErr }, 'Failed to push jobs to Queen');
         return reply.code(502).send({ error: 'Job queue unavailable, please try again later' });
       }
-
-      // Increment generations_used
-      await client.query(
-        `UPDATE designfast.users SET generations_used = generations_used + 1 WHERE id = $1`,
-        [req.userId]
-      );
 
       await client.query('COMMIT');
     } catch (err) {

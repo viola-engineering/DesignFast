@@ -17,6 +17,7 @@ const authStore = useAuthStore()
 const toastStore = useToastStore()
 
 // Form state
+const sidebarRef = ref<InstanceType<typeof GeneratorSidebar>>()
 const preselectedStyle = route.query.style as string | undefined
 const isGenerating = ref(false)
 
@@ -258,14 +259,9 @@ function handleStartNew() {
 }
 
 function handleExampleClick(prompt: string) {
-  handleGenerate({
-    prompt,
-    mode: 'landing',
-    themeMode: 'auto',
-    models: ['claude'],
-    versions: 1
-  })
+  sidebarRef.value?.setExamplePrompt(prompt)
 }
+
 </script>
 
 <template>
@@ -273,6 +269,7 @@ function handleExampleClick(prompt: string) {
     <div class="generate-container">
       <aside class="generate-sidebar">
         <GeneratorSidebar
+          ref="sidebarRef"
           :preselected-style="preselectedStyle"
           :disabled="isGenerating"
           @submit="handleGenerate"

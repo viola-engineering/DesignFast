@@ -32,12 +32,14 @@ onMounted(() => {
 
 const planDisplayName = computed(() => {
   if (!user.value) return ''
-  const names: Record<string, string> = {
-    free: 'Free',
-    starter: 'Starter',
-    pro: 'Pro'
-  }
-  return names[user.value.plan] || user.value.plan
+  return user.value.plan === 'pro' ? 'Pro' : 'Free'
+})
+
+const isPro = computed(() => user.value?.plan === 'pro')
+
+const creditsProgress = computed(() => {
+  if (!user.value || !user.value.creditsLimit) return 0
+  return Math.min((user.value.creditsUsed / user.value.creditsLimit) * 100, 100)
 })
 
 const generationsProgress = computed(() => {
@@ -164,20 +166,39 @@ async function handleLogout() {
                 <span class="plan-name">{{ planDisplayName }}</span>
                 <span class="plan-badge">Current Plan</span>
               </div>
-              <button class="btn-upgrade" @click="handleUpgrade">
+              <button v-if="!isPro" class="btn-upgrade" @click="handleUpgrade">
                 Upgrade
               </button>
             </div>
 
-            <div class="usage-section">
-              <div class="usage-header">
-                <span class="usage-label">Generations this month</span>
-                <span class="usage-count">{{ user.generationsUsed }} / {{ user.generationsLimit }}</span>
+            <!-- Pro: credits usage -->
+            <template v-if="isPro">
+              <div class="usage-section">
+                <div class="usage-header">
+                  <span class="usage-label">Credits this month</span>
+                  <span class="usage-count">{{ user.creditsUsed }} / {{ user.creditsLimit }}</span>
+                </div>
+                <div class="usage-bar">
+                  <div class="usage-fill" :style="{ width: `${creditsProgress}%` }"></div>
+                </div>
               </div>
-              <div class="usage-bar">
-                <div class="usage-fill" :style="{ width: `${generationsProgress}%` }"></div>
+              <p class="billing-note" style="margin-top: 0.5rem;">
+                Gemini = 1 credit &middot; Claude = 20 credits
+              </p>
+            </template>
+
+            <!-- Free: generations usage -->
+            <template v-else>
+              <div class="usage-section">
+                <div class="usage-header">
+                  <span class="usage-label">Generations this month</span>
+                  <span class="usage-count">{{ user.generationsUsed }} / {{ user.generationsLimit }}</span>
+                </div>
+                <div class="usage-bar">
+                  <div class="usage-fill" :style="{ width: `${generationsProgress}%` }"></div>
+                </div>
               </div>
-            </div>
+            </template>
 
             <p v-if="user.billingPeriodStart" class="billing-note">
               Billing period started {{ new Date(user.billingPeriodStart).toLocaleDateString() }}

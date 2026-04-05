@@ -1,22 +1,7 @@
 import { query } from '../db.js';
 import { authMiddleware } from '../auth.js';
 import { encrypt } from '../encryption.js';
-import { PLANS } from '../plans.js';
-
-function formatUser(row) {
-  const plan = PLANS[row.plan] || PLANS.free;
-  return {
-    id: row.id,
-    email: row.email,
-    name: row.name,
-    plan: row.plan,
-    avatarUrl: row.avatar_url || null,
-    generationsUsed: row.generations_used,
-    generationsLimit: plan.generationsPerMonth,
-    billingPeriodStart: row.billing_period_start || null,
-    createdAt: row.created_at,
-  };
-}
+import { formatUser } from '../format-user.js';
 
 const VALID_PROVIDERS = ['anthropic', 'google'];
 

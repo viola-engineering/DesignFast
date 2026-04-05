@@ -5,10 +5,14 @@ export interface User {
   id: string
   email: string
   name: string | null
-  plan: 'free' | 'starter' | 'pro'
+  plan: 'free' | 'pro'
   avatarUrl: string | null
   generationsUsed: number
   generationsLimit: number
+  creditsUsed: number
+  creditsLimit: number
+  byokGenerationsUsed: number
+  byokGenerationCap: number
   billingPeriodStart: string | null
   createdAt: string
 }

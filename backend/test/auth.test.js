@@ -33,7 +33,9 @@ describe('POST /api/auth/register', () => {
     assert.strictEqual(body.user.name, 'Alice');
     assert.strictEqual(body.user.plan, 'free');
     assert.strictEqual(body.user.generationsUsed, 0);
-    assert.strictEqual(body.user.generationsLimit, 5);
+    assert.strictEqual(body.user.generationsLimit, 3);
+    assert.strictEqual(body.user.creditsUsed, 0);
+    assert.strictEqual(body.user.creditsLimit, 0);
     // Must not include password_hash
     assert.strictEqual(body.user.password_hash, undefined);
     assert.strictEqual(body.user.passwordHash, undefined);

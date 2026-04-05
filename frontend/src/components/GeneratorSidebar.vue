@@ -29,8 +29,10 @@ const emit = defineEmits<{
 
 const authStore = useAuthStore()
 
+const CREDIT_COSTS: Record<Model, number> = { claude: 20, gemini: 1 }
+
 const prompt = ref('')
-const selectedModel = ref<Model>('claude')
+const selectedModel = ref<Model>('gemini')
 const selectedMode = ref<Mode>('landing')
 const selectedVersions = ref(1)
 const aiPick = ref(false)
@@ -91,12 +93,41 @@ const isValid = computed(() => {
 })
 
 const user = computed(() => authStore.user)
+
+const isPro = computed(() => user.value?.plan === 'pro')
+const isFreePlan = computed(() => !user.value || user.value.plan === 'free')
+
+const maxStyles = computed(() => isPro.value ? 4 : 2)
+const maxVersions = computed(() => 1)
+
+const creditsRemaining = computed(() => {
+  if (!user.value) return 0
+  return Math.max(0, user.value.creditsLimit - user.value.creditsUsed)
+})
+
 const generationsRemaining = computed(() => {
-  if (!user.value) return 5
-  return user.value.generationsLimit - user.value.generationsUsed
+  if (!user.value) return 3
+  return Math.max(0, user.value.generationsLimit - user.value.generationsUsed)
+})
+
+const estimatedCreditCost = computed(() => {
+  const stylesCount = aiPick.value ? 1 : Math.max(selectedStyles.value.size, 1)
+  return CREDIT_COSTS[selectedModel.value] * stylesCount * selectedVersions.value
+})
+
+const usageNote = computed(() => {
+  if (!user.value) return '3 generations remaining this month'
+  if (isPro.value) {
+    if (creditsRemaining.value > 0) {
+      return `${estimatedCreditCost.value} credits — ${creditsRemaining.value} remaining`
+    }
+    return `${generationsRemaining.value} free Gemini generation${generationsRemaining.value !== 1 ? 's' : ''} remaining`
+  }
+  return `${generationsRemaining.value} generation${generationsRemaining.value !== 1 ? 's' : ''} remaining this month`
 })
 
 function selectModel(model: Model) {
+  if (model === 'claude' && isFreePlan.value) return
   selectedModel.value = model
 }
 
@@ -105,6 +136,7 @@ function selectMode(mode: Mode) {
 }
 
 function selectVersions(count: number) {
+  if (count > maxVersions.value) return
   selectedVersions.value = count
 }
 
@@ -121,6 +153,7 @@ function toggleStyle(key: string) {
   if (s.has(key)) {
     s.delete(key)
   } else {
+    if (s.size >= maxStyles.value) return
     s.add(key)
   }
   selectedStyles.value = s
@@ -171,11 +204,13 @@ defineExpose({ setExamplePrompt })
       <div class="model-toggle">
         <button
           class="model-btn"
-          :class="{ active: selectedModel === 'claude' }"
-          :disabled="disabled"
+          :class="{ active: selectedModel === 'claude', locked: isFreePlan }"
+          :disabled="disabled || isFreePlan"
           @click="selectModel('claude')"
         >
           <span class="model-icon">&#10022;</span> Claude
+          <span v-if="isFreePlan" class="model-badge">Pro</span>
+          <span v-else-if="isPro" class="model-credit-hint">{{ CREDIT_COSTS.claude }} cr</span>
         </button>
         <button
           class="model-btn"
@@ -184,6 +219,7 @@ defineExpose({ setExamplePrompt })
           @click="selectModel('gemini')"
         >
           <span class="model-icon">&#9670;</span> Gemini
+          <span v-if="isPro" class="model-credit-hint">{{ CREDIT_COSTS.gemini }} cr</span>
         </button>
       </div>
     </div>
@@ -229,8 +265,8 @@ defineExpose({ setExamplePrompt })
           v-for="n in 4"
           :key="n"
           class="version-btn"
-          :class="{ active: selectedVersions === n }"
-          :disabled="disabled"
+          :class="{ active: selectedVersions === n, locked: n > maxVersions }"
+          :disabled="disabled || n > maxVersions"
           @click="selectVersions(n)"
         >
           {{ n }}
@@ -252,8 +288,8 @@ defineExpose({ setExamplePrompt })
       >
         <span class="ai-icon">&#10022;</span> Let AI pick based on my prompt
       </button>
-      <p v-if="selectedStyles.size > 1" class="gen-hint" style="margin-top: 0; margin-bottom: 0.75rem;">
-        {{ selectedStyles.size }} styles selected — one version per style
+      <p v-if="selectedStyles.size > 0" class="gen-hint" style="margin-top: 0; margin-bottom: 0.75rem;">
+        {{ selectedStyles.size }} / {{ maxStyles }} styles selected
       </p>
       <div class="gen-style-grid">
         <div
@@ -286,7 +322,7 @@ defineExpose({ setExamplePrompt })
         {{ disabled ? 'Generating...' : 'Generate design' }}
       </button>
       <p class="gen-free-note">
-        {{ generationsRemaining }} generation{{ generationsRemaining !== 1 ? 's' : '' }} remaining this month
+        {{ usageNote }}
       </p>
     </div>
   </aside>
@@ -398,6 +434,33 @@ defineExpose({ setExamplePrompt })
   font-size: 1rem;
 }
 
+.model-btn.locked {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.model-badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--accent);
+  color: var(--white);
+  padding: 0.1rem 0.35rem;
+  border-radius: 2px;
+}
+
+.model-credit-hint {
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  opacity: 0.7;
+}
+
+.model-btn.active .model-credit-hint {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 /* Mode Options */
 .mode-options {
   display: flex;
@@ -482,9 +545,14 @@ defineExpose({ setExamplePrompt })
   transition: all 0.2s ease;
 }
 
-.version-btn:hover {
+.version-btn:hover:not(:disabled) {
   border-color: var(--ink);
   color: var(--ink);
+}
+
+.version-btn.locked {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .version-btn.active {

@@ -62,19 +62,14 @@ export async function seedUser(app, overrides = {}) {
 }
 
 /**
- * Truncate all designfast tables. Call in beforeEach.
+ * Clean up test-created data only. Deletes users whose email matches
+ * the test pattern (test-*@example.com) and cascades to their related rows.
+ * Real user data is preserved.
  */
 export async function resetDb() {
   await query(`
-    TRUNCATE
-      designfast.iterate_messages,
-      designfast.iterate_sessions,
-      designfast.job_files,
-      designfast.jobs,
-      designfast.generations,
-      designfast.api_keys,
-      designfast.users
-    CASCADE
+    DELETE FROM designfast.users
+    WHERE email LIKE 'test-%@example.com'
   `);
 }
 

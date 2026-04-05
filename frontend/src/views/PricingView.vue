@@ -7,93 +7,72 @@ import FaqAccordion from '@/components/FaqAccordion.vue'
 const tiers = [
   {
     name: 'Free',
-    price: '$0',
+    price: '\u20AC0',
     period: ' / mo',
-    description: 'For individuals exploring DesignFast or building occasional side projects. No credit card, no commitment.',
+    description: 'Explore DesignFast with Gemini-powered generations. No credit card, no commitment.',
     features: [
-      { text: '5 generations per month', included: true },
-      { text: 'All 30 design styles', included: true },
-      { text: 'Claude & Gemini models', included: true },
-      { text: 'Single-page mode', included: true },
-      { text: '1 version per generation', included: true },
+      { text: '3 generations per month', included: true },
+      { text: 'Gemini model', included: true },
+      { text: 'Up to 2 styles per generation', included: true },
+      { text: 'Single-page & multi-page modes', included: true },
+      { text: 'Iterate & refine', included: true },
       { text: 'Download your output files', included: true },
-      { text: 'Multi-page webapp mode', included: false },
-      { text: 'Multiple versions (2-4)', included: false },
-      { text: 'Iterate & refine', included: false },
-      { text: 'Priority generation queue', included: false }
+      { text: 'Claude model', included: false },
+      { text: 'Credit-based usage', included: false },
+      { text: 'BYOK (own API keys)', included: false },
     ],
     ctaText: 'Get started free',
     ctaLink: '/generate',
     featured: false
   },
   {
-    name: 'Starter',
-    price: '$9',
+    name: 'Pro',
+    price: '\u20AC9',
     period: ' / mo',
-    description: 'For builders shipping regularly. More generations, multiple versions, and iteration to find the right direction.',
+    description: 'Full access to Claude and Gemini with 100 credits per month. Use your own keys for even more.',
     features: [
-      { text: '50 generations per month', included: true },
-      { text: 'All 30 design styles', included: true },
-      { text: 'Claude & Gemini models', included: true },
-      { text: 'Single-page mode', included: true },
-      { text: 'Up to 3 versions per generation', included: true },
-      { text: 'Download your output files', included: true },
-      { text: 'Up to 5 styles per generation', included: true },
+      { text: '100 credits per month', included: true },
+      { text: 'Claude (20 cr) & Gemini (1 cr)', included: true },
+      { text: 'Up to 4 styles per generation', included: true },
+      { text: 'Single-page & multi-page modes', included: true },
       { text: 'Iterate & refine', included: true },
-      { text: 'Generation history (30 days)', included: true },
-      { text: 'Priority generation queue', included: false }
+      { text: 'Download your output files', included: true },
+      { text: 'BYOK — bypass credits', included: true },
+      { text: 'Fallback to Gemini when credits run out', included: true },
     ],
-    ctaText: 'Start Starter - $9/mo',
+    ctaText: 'Start Pro \u2014 \u20AC9/mo',
     ctaLink: '/generate',
     featured: true
-  },
-  {
-    name: 'Pro',
-    price: '$29',
-    period: ' / mo',
-    description: 'For power users and teams. Unlimited generations, multi-page apps, and full access to everything.',
-    features: [
-      { text: '200 generations per month', included: true },
-      { text: 'All 30 design styles', included: true },
-      { text: 'Claude & Gemini models', included: true },
-      { text: 'Multi-page webapp mode', included: true },
-      { text: 'Up to 5 versions per generation', included: true },
-      { text: 'Download your output files', included: true },
-      { text: 'All 30 styles per generation', included: true },
-      { text: 'Iterate & refine (unlimited)', included: true },
-      { text: 'Priority generation queue', included: true },
-      { text: 'Generation history (90 days)', included: true }
-    ],
-    ctaText: 'Start Pro - $29/mo',
-    ctaLink: '/generate',
-    featured: false
   }
 ]
 
 const featureTableRows = [
-  { feature: 'Generation', free: '', starter: '', pro: '', isCategory: true },
-  { feature: 'Generations per month', free: '5', starter: '50', pro: '200' },
-  { feature: 'Versions per generation', free: '1', starter: '1-3', pro: '1-5' },
-  { feature: 'Styles per generation', free: '1', starter: '1-5', pro: '1-30' },
-  { feature: 'Generation speed', free: 'Standard', starter: 'Standard', pro: 'Priority' },
-  { feature: 'Modes', free: '', starter: '', pro: '', isCategory: true },
-  { feature: 'Single-page landing', free: '✓', starter: '✓', pro: '✓' },
-  { feature: 'Multi-page webapp', free: '-', starter: '-', pro: '✓' },
-  { feature: 'Features', free: '', starter: '', pro: '', isCategory: true },
-  { feature: 'Download files', free: '✓', starter: '✓', pro: '✓' },
-  { feature: 'Iterate & refine', free: '-', starter: '✓', pro: '✓' },
-  { feature: 'Generation history', free: '-', starter: '30 days', pro: '90 days' },
-  { feature: 'BYOK (own API keys)', free: '✓', starter: '✓', pro: '✓' }
+  { feature: 'Usage', free: '', pro: '', isCategory: true },
+  { feature: 'Monthly allowance', free: '3 generations', pro: '100 credits' },
+  { feature: 'Gemini cost', free: '1 generation', pro: '1 credit' },
+  { feature: 'Claude cost', free: '-', pro: '20 credits' },
+  { feature: 'Styles per generation', free: 'Up to 2', pro: 'Up to 4' },
+  { feature: 'Models', free: '', pro: '', isCategory: true },
+  { feature: 'Gemini', free: '✓', pro: '✓' },
+  { feature: 'Claude', free: '-', pro: '✓' },
+  { feature: 'Modes', free: '', pro: '', isCategory: true },
+  { feature: 'Single-page landing', free: '✓', pro: '✓' },
+  { feature: 'Multi-page webapp', free: '✓', pro: '✓' },
+  { feature: 'Features', free: '', pro: '', isCategory: true },
+  { feature: 'Download files', free: '✓', pro: '✓' },
+  { feature: 'Iterate & refine', free: '✓', pro: '✓' },
+  { feature: 'BYOK (own API keys)', free: '-', pro: '✓' },
+  { feature: 'Fallback Gemini on credit exhaustion', free: '-', pro: '3 gen/mo' },
 ]
 
 const faqs = [
   {
-    question: 'What happens when I hit my generation limit?',
-    answer: 'You can upgrade to a higher tier at any time, or wait until your billing period resets. We never delete your past generations - you just cannot create new ones until you have available quota.'
+    question: 'How do credits work?',
+    answer: 'Pro users get 100 credits per month. Each generation costs credits based on the model: Gemini costs 1 credit, Claude costs 20 credits. Multiple styles multiply the cost. When your credits run out, you can still use Gemini with up to 3 fallback generations until your billing period resets.'
   },
   {
     question: 'Can I use my own API keys?',
-    answer: 'Yes! All plans support BYOK (Bring Your Own Key) for both Anthropic (Claude) and Google (Gemini). When you add your own keys, generations use your API account directly and do not count against your plan limits.'
+    answer: 'Pro users can add their own Anthropic (Claude) and Google (Gemini) API keys. When using your own keys, generations bypass the credit system entirely and use your API account directly. You still have a hard cap of 200 generations per month to manage server resources.'
   },
   {
     question: 'What is the difference between single-page and multi-page mode?',
@@ -105,7 +84,7 @@ const faqs = [
   },
   {
     question: 'What does Iterate & refine mean?',
-    answer: 'After a generation completes, you can have a conversation with AI to refine the output. "Make the headline bigger", "Add a dark mode toggle", "Change the accent color to blue" - describe changes in plain language and see them applied immediately.'
+    answer: 'After a generation completes, you can have a conversation with AI to refine the output. "Make the headline bigger", "Add a dark mode toggle", "Change the accent color to blue" - describe changes in plain language and see them applied immediately. Each refinement message costs credits based on the model used.'
   },
   {
     question: 'Can I cancel anytime?',
@@ -123,7 +102,7 @@ const faqs = [
         Start for free.<br /><em>Scale when ready.</em>
       </h1>
       <p class="page-hero-sub">
-        No credit card required. Free tier gets you 5 generations per month
+        No credit card required. Free tier gets you 3 Gemini generations per month
         to see if DesignFast works for you. Upgrade when it does.
       </p>
     </section>
@@ -267,7 +246,7 @@ const faqs = [
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   border-top: 1px solid var(--rule);
 }
 
