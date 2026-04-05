@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DesignFast — AI design for engineers who ship</title>
+  <meta name="description" content="Describe what you want. Pick a style. Get production-quality HTML/CSS/JS in seconds. 30 curated design styles for builders who move fast." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Navigation ─────────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-wordmark">Design<em>Fast</em></a>
+
+    <div class="nav-center">
+      <a href="generate.html" class="nav-link">Generate</a>
+      <a href="styles.html" class="nav-link">Styles</a>
+      <a href="pricing.html" class="nav-link">Pricing</a>
+    </div>
+
+    <div class="nav-right">
+      <a href="generate.html" class="btn-nav">Start free</a>
+    </div>
+
+    <!-- Mobile -->
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav-mobile-menu" aria-label="Mobile navigation">
+    <a href="index.html" class="nav-mobile-link">Home</a>
+    <a href="generate.html" class="nav-mobile-link">Generate</a>
+    <a href="styles.html" class="nav-mobile-link">Styles</a>
+    <a href="pricing.html" class="nav-mobile-link">Pricing</a>
+    <a href="generate.html" class="nav-mobile-cta">Start free →</a>
+  </div>
+
+  <!-- ── Hero ───────────────────────────────────────────────── -->
+  <section class="hero page-pad" aria-label="Hero">
+    <div class="hero-top">
+      <p class="hero-label">AI-powered design generation</p>
+      <h1 class="hero-headline font-display tracking-tight leading-none">
+        You know<br />
+        great&nbsp;<em class="accent-word">design</em><br />
+        when you<br />
+        see&nbsp;it.
+      </h1>
+    </div>
+
+    <div class="hero-bottom">
+      <p class="hero-subtext">
+        You just&nbsp;<strong>can't make it from scratch.</strong>
+        DesignFast fixes that — describe what you want,
+        pick a style, and get production-quality HTML, CSS and JS
+        in seconds. For engineers who build fast and care how things look.
+      </p>
+      <div class="hero-cta-group">
+        <a href="generate.html" class="btn-primary">
+          Generate something <span class="arrow">→</span>
+        </a>
+        <a href="styles.html" class="btn-ghost">See 30 styles</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ── Ticker Band ────────────────────────────────────────── -->
+  <div class="ticker-band" aria-label="Features ticker">
+    <div class="ticker-track">
+      <span class="ticker-item">
+        30 curated design styles <span class="ticker-dot"></span>
+        Claude &amp; Gemini support <span class="ticker-dot"></span>
+        Multi-page webapp mode <span class="ticker-dot"></span>
+        Instant generation <span class="ticker-dot"></span>
+        Free tier available <span class="ticker-dot"></span>
+        Download &amp; own your code <span class="ticker-dot"></span>
+        Iterate and refine <span class="ticker-dot"></span>
+        AI theme auto-selection <span class="ticker-dot"></span>
+        Multiple creative versions <span class="ticker-dot"></span>
+        Built for engineers who ship <span class="ticker-dot"></span>
+      </span>
+      <span class="ticker-item" aria-hidden="true">
+        30 curated design styles <span class="ticker-dot"></span>
+        Claude &amp; Gemini support <span class="ticker-dot"></span>
+        Multi-page webapp mode <span class="ticker-dot"></span>
+        Instant generation <span class="ticker-dot"></span>
+        Free tier available <span class="ticker-dot"></span>
+        Download &amp; own your code <span class="ticker-dot"></span>
+        Iterate and refine <span class="ticker-dot"></span>
+        AI theme auto-selection <span class="ticker-dot"></span>
+        Multiple creative versions <span class="ticker-dot"></span>
+        Built for engineers who ship <span class="ticker-dot"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Statement Band ─────────────────────────────────────── -->
+  <section class="statement-band" aria-label="Value proposition">
+    <div class="statement-inner">
+      <p class="statement-eyebrow">The reality</p>
+      <p class="statement-text">
+        You can <span class="struck">hire a designer</span> and wait two weeks,
+        <span class="struck">buy a template</span> and look like everyone else,
+        or describe exactly what you want<br />
+        and get it <span class="hot">right now.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Style Spectrum Preview ─────────────────────────────── -->
+  <section class="spectrum" id="styles" aria-label="Design styles">
+    <div class="spectrum-header reveal">
+      <div>
+        <p class="spectrum-label">Design style library</p>
+        <h2 class="spectrum-title font-display tracking-tight">
+          Every aesthetic.<br />One prompt.
+        </h2>
+      </div>
+      <div class="spectrum-count">
+        30
+        <span>Styles</span>
+      </div>
+    </div>
+
+    <div class="style-grid page-pad">
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-minimalist">Minimalist</span>
+        <p class="style-item-desc">Whitespace as the hero. Nothing without purpose.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-brutalist">BRUTALIST</span>
+        <p class="style-item-desc">Raw, confrontational. Makes you look twice.</p>
+      </div>
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-editorial">Editorial</span>
+        <p class="style-item-desc">Magazine-spread energy. Typography as layout.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-cyberpunk">CYBERPUNK</span>
+        <p class="style-item-desc">Terminal glow. Neon on dark. Earned edge.</p>
+      </div>
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-swiss">Swiss / International</span>
+        <p class="style-item-desc">Grid-strict. Helvetica-honest. Timeless.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-bauhaus">BAUHAUS</span>
+        <p class="style-item-desc">Form follows function. Primary shapes. Bold.</p>
+      </div>
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-organic">Organic</span>
+        <p class="style-item-desc">Flowing, warm, alive. Anti-grid by nature.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-luxe">Luxe</span>
+        <p class="style-item-desc">Quiet confidence. Cream paper. Restraint.</p>
+      </div>
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-neon">Neon Noir</span>
+        <p class="style-item-desc">Deep darkness + electric color. Cinematic.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-newspaper">NEWSPAPER</span>
+        <p class="style-item-desc">Ink on paper. Column grids. Front page gravity.</p>
+      </div>
+
+      <div class="style-item reveal">
+        <span class="style-item-name sn-expressive">Expressive</span>
+        <p class="style-item-desc">Scale, drama, motion. Nothing whispers here.</p>
+      </div>
+
+      <div class="style-item reveal reveal-delay-1">
+        <span class="style-item-name sn-technical">Technical</span>
+        <p class="style-item-desc">Documentation-precise. Engineered beauty.</p>
+      </div>
+
+    </div>
+
+    <div class="page-pad pb-10 pt-6 reveal">
+      <a href="styles.html" class="btn-ghost">View all 30 styles →</a>
+    </div>
+
+  </section>
+
+  <!-- ── How It Works ───────────────────────────────────────── -->
+  <section class="how section-pad" id="how" aria-label="How DesignFast works">
+    <div class="how-inner">
+      <div class="how-header reveal">
+        <h2 class="how-title font-display tracking-tight">
+          How it<br /><em>works.</em>
+        </h2>
+        <p class="how-note text-muted">
+          Three steps. No design experience needed.<br />No subscriptions to wrestle with.
+        </p>
+      </div>
+
+      <div class="how-steps">
+        <div class="step reveal">
+          <div class="step-accent-bar"></div>
+          <p class="step-num font-display">01</p>
+          <h3 class="step-title font-display">Describe it.</h3>
+          <p class="step-body">
+            "A landing page for my CLI tool. Technical but not cold.
+            Dark theme, monospace type, clean layout."
+            Plain English. Specific or vague — DesignFast figures it out.
+          </p>
+        </div>
+
+        <div class="step reveal reveal-delay-2">
+          <div class="step-accent-bar"></div>
+          <p class="step-num font-display">02</p>
+          <h3 class="step-title font-display">Choose a style.</h3>
+          <p class="step-body">
+            Pick from 30 curated styles, or let AI choose based on your description.
+            Minimalist, editorial, brutalist, luxe — there's a vocabulary
+            for what you're building.
+          </p>
+        </div>
+
+        <div class="step reveal reveal-delay-4">
+          <div class="step-accent-bar"></div>
+          <p class="step-num font-display">03</p>
+          <h3 class="step-title font-display">Ship it.</h3>
+          <p class="step-body">
+            Get production-quality HTML, CSS, and JS in seconds. Download it.
+            Iterate on it. Drop it into your project or build on top of it
+            with your own tools.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Accent Banner ──────────────────────────────────────── -->
+  <section class="accent-banner" aria-label="Core value proposition">
+    <div class="accent-banner-inner">
+      <span class="banner-kicker">The alternative to suffering</span>
+      <h2 class="banner-headline font-display">
+        Production code.<br />
+        <span class="ital">Not a mockup.</span>
+      </h2>
+      <p class="banner-sub">
+        Other tools give you pretty screenshots. DesignFast gives you
+        clean, semantic HTML — ready to open in a browser, customize,
+        and deploy. You own every line.
+      </p>
+      <a href="generate.html" class="btn-banner">
+        Try it free <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Features ───────────────────────────────────────────── -->
+  <section class="features section-pad" aria-label="Features">
+    <div class="features-inner">
+      <div class="features-layout">
+        <div class="reveal">
+          <h2 class="features-left-title font-display">
+            Everything<br />
+            you<br />
+            <em>actually need.</em>
+          </h2>
+        </div>
+
+        <ul class="feature-list">
+          <li class="feature-item reveal">
+            <span class="feature-num">01</span>
+            <div>
+              <p class="feature-name font-display">Instant generation</p>
+              <p class="feature-desc">
+                Claude and Gemini models, your choice. Results in seconds,
+                not minutes. Multiple creative versions per prompt so you
+                can pick the direction that fits.
+              </p>
+            </div>
+          </li>
+
+          <li class="feature-item reveal reveal-delay-1">
+            <span class="feature-num">02</span>
+            <div>
+              <p class="feature-name font-display">30 style presets</p>
+              <p class="feature-desc">
+                Hand-curated aesthetics that span the full range — from
+                razor-clean minimalism to opinionated brutalism. Each style
+                has a distinct layout logic, not just a different color scheme.
+              </p>
+            </div>
+          </li>
+
+          <li class="feature-item reveal reveal-delay-2">
+            <span class="feature-num">03</span>
+            <div>
+              <p class="feature-name font-display">AI theme selection</p>
+              <p class="feature-desc">
+                Describe your project and let DesignFast recommend
+                the right style. The AI reads intent — a security tool
+                shouldn't look like a recipe blog.
+              </p>
+            </div>
+          </li>
+
+          <li class="feature-item reveal reveal-delay-1">
+            <span class="feature-num">04</span>
+            <div>
+              <p class="feature-name font-display">Multi-page webapp mode</p>
+              <p class="feature-desc">
+                Generate full webapps with multiple linked pages, consistent
+                navigation, and shared design systems — not just single hero screens.
+              </p>
+            </div>
+          </li>
+
+          <li class="feature-item reveal reveal-delay-2">
+            <span class="feature-num">05</span>
+            <div>
+              <p class="feature-name font-display">Iterate and refine</p>
+              <p class="feature-desc">
+                "Make the headline bigger." "Try a dark version."
+                "Add a pricing section." Describe changes in plain language
+                and get updated code immediately.
+              </p>
+            </div>
+          </li>
+
+          <li class="feature-item reveal reveal-delay-3">
+            <span class="feature-num">06</span>
+            <div>
+              <p class="feature-name font-display">Download and own it</p>
+              <p class="feature-desc">
+                No lock-in. No proprietary editor. Download clean files and
+                build with whatever tools you use — VS Code, your own deploy
+                pipeline, or raw git. It's your code.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Social Proof ───────────────────────────────────────── -->
+  <section class="statement-band" aria-label="Social proof">
+    <div class="statement-inner">
+      <p class="statement-eyebrow">Who uses it</p>
+      <p class="statement-text">
+        Used by indie hackers, startup engineers, and solo builders who
+        need to ship <span class="ital">something real</span> before the funding runs out.
+        Not by designers — by <span class="hot">engineers who ship fast.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ──────────────────────────────────────────── -->
+  <section class="final-cta" id="start" aria-label="Get started">
+    <div class="final-cta-inner">
+      <div class="reveal">
+        <h2 class="final-headline font-display">
+          Stop staring<br />
+          at blank files.
+          <span class="accent-line">Start building.</span>
+        </h2>
+      </div>
+      <div class="final-right reveal reveal-delay-2">
+        <p class="final-body">
+          Free tier available. No credit card required.
+          <strong>Most builders ship their first design in under five minutes.</strong>
+          If you've been blocked on the "how it looks" problem,
+          this is the fix.
+        </p>
+        <div class="final-actions">
+          <a href="generate.html" class="btn-final">
+            Get started free <span>→</span>
+          </a>
+          <a href="pricing.html" class="btn-ghost-light">See pricing</a>
+        </div>
+        <p class="final-note">Free tier · No card required · Own your output</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <span class="footer-wordmark">Design<em>Fast</em></span>
+    <div class="footer-links">
+      <a href="pricing.html">Pricing</a>
+      <a href="styles.html">Styles</a>
+      <a href="#">Docs</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+    <span class="footer-copy">© 2026 DesignFast. Build something worth shipping.</span>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
