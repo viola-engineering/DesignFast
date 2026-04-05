@@ -5,8 +5,9 @@
 #
 set -euo pipefail
 
-PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
-COMPOSE_FILE="$PROJECT_DIR/docker-compose.test.yml"
+BACKEND_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$BACKEND_DIR/.." && pwd)"
+COMPOSE_FILE="$BACKEND_DIR/docker-compose.test.yml"
 COMPOSE_PROJECT="designfast-test"
 TEST_PG_PORT="${TEST_PG_PORT:-5434}"
 DATABASE_URL="postgres://postgres:postgres@localhost:$TEST_PG_PORT/postgres"
@@ -42,7 +43,7 @@ echo "Postgres connectivity OK."
 
 # Step 3: Run migrations
 echo "--- Running migrations ---"
-DATABASE_URL="$DATABASE_URL" node "$PROJECT_DIR/migrate.js"
+DATABASE_URL="$DATABASE_URL" node "$BACKEND_DIR/src/migrate.js"
 echo "Migrations completed."
 
 # Step 4: Verify schema and all tables exist
@@ -71,7 +72,7 @@ echo "All indexes verified."
 
 # Step 6: Verify idempotency — run migrations again
 echo "--- Verifying migration idempotency ---"
-DATABASE_URL="$DATABASE_URL" node "$PROJECT_DIR/migrate.js"
+DATABASE_URL="$DATABASE_URL" node "$BACKEND_DIR/src/migrate.js"
 echo "Second migration run succeeded (idempotent)."
 
 # Step 7: Verify basic INSERT/SELECT on each table

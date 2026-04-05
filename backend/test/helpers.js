@@ -3,14 +3,14 @@ import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 
-import authRoutes from '../routes/auth.js';
-import generationsRoutes from '../routes/generations.js';
-import jobsRoutes from '../routes/jobs.js';
-import previewRoutes from '../routes/preview.js';
-import iterateRoutes from '../routes/iterate.js';
-import accountRoutes from '../routes/account.js';
-import billingRoutes from '../routes/billing.js';
-import { query, db } from '../db.js';
+import authRoutes from '../src/routes/auth.js';
+import generationsRoutes from '../src/routes/generations.js';
+import jobsRoutes from '../src/routes/jobs.js';
+import previewRoutes from '../src/routes/preview.js';
+import iterateRoutes from '../src/routes/iterate.js';
+import accountRoutes from '../src/routes/account.js';
+import billingRoutes from '../src/routes/billing.js';
+import { query, db } from '../src/db.js';
 
 let counter = 0;
 

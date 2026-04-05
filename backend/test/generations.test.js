@@ -1,7 +1,7 @@
 import { describe, it, before, beforeEach, after } from 'node:test';
 import assert from 'node:assert';
 import { createApp, seedUser, resetDb, ensureSchema, startMockQueen, closeDb } from './helpers.js';
-import { query } from '../db.js';
+import { query } from '../src/db.js';
 
 let app;
 let mockQueenServer;
