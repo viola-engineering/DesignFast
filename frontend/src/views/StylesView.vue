@@ -244,7 +244,16 @@ function setFilter(filter: FilterCategory) {
 .styles-full-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
   border-left: 1px solid var(--rule);
+}
+
+.styles-full-grid :deep(.reveal) {
+  height: 100%;
+}
+
+.styles-full-grid :deep(.style-card-full) {
+  height: 100%;
 }
 
 /* CTA Section */

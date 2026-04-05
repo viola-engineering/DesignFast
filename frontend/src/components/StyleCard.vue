@@ -46,6 +46,9 @@ function useStyle() {
   transition: background-color 0.25s ease;
   overflow: hidden;
   cursor: default;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
 }
 
 .style-card-full::before {
@@ -94,6 +97,7 @@ function useStyle() {
   line-height: 1.5;
   max-width: 28ch;
   margin-top: 0.75rem;
+  flex: 1;
 }
 
 .style-card-tags {
