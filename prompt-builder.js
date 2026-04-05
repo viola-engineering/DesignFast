@@ -4,12 +4,10 @@ import {
   createDefaultRegistry,
   DatabaseImpl,
 } from '@angycode/core';
-import { createInterface } from 'node:readline';
-import { readdirSync, existsSync } from 'node:fs';
 
 // ─── Style Presets ──────────────────────────────────────────────────────────
 
-const STYLES = {
+export const STYLES = {
   minimalist: {
     name: 'Minimalist',
     prompt: `Use a MINIMALIST style.
@@ -366,8 +364,8 @@ const STYLES = {
 - Typography: precise and trustworthy. Inter, Söhne, or SF Pro style sans-serif. Tabular numerals for all numbers and financial figures (font-variant-numeric: tabular-nums). Weight 600-700 for headings, 400 for body. Numbers and monetary values: larger, semibold, monospace-like alignment. Headings 2.5-3rem. Body 1rem.
 - Data elements: transaction list rows (icon + merchant name + date + amount, right-aligned). Balance cards with large number + currency + percentage change with up/down arrow. Simple bar/line charts as CSS-drawn elements (colored bars in flex containers). Card mockup: rounded dark rectangle with card number dots, cardholder name, Visa/MC symbol placeholder.
 - Cards: clean white with subtle shadow-sm or 1px border. Rounded-xl (16px). Internal padding 24px. Some cards with dark gradient background for "premium" feel (dark section feature cards).
-- Security/trust: shield icons described as unicode (🔒 or ✓), encryption badge, regulatory compliance labels (described as text in badges: "Bank-level security", "256-bit encrypted", "FDIC insured"). Partner bank logos in grayscale.
-- Decorations: subtle. Thin gradient lines as accents. Small dots or connection lines between feature sections suggesting network/flow. NO playful elements, NO emoji (except 🔒), NO heavy decorations. Clean, precise, trustworthy.
+- Security/trust: shield icons described as unicode, encryption badge, regulatory compliance labels (described as text in badges: "Bank-level security", "256-bit encrypted", "FDIC insured"). Partner bank logos in grayscale.
+- Decorations: subtle. Thin gradient lines as accents. Small dots or connection lines between feature sections suggesting network/flow. NO playful elements, NO emoji (except lock), NO heavy decorations. Clean, precise, trustworthy.
 - Buttons: filled accent, rounded-lg, medium size. "Get Started Free" / "Open Account" pattern. White text on accent. Secondary: ghost or outlined. One strong CTA per section.
 - Vibe: Mercury, Wise, Revolut, Brex, Ramp. Your money is safe here. The design is so clean it feels like your account already has more money in it. Precision, clarity, control. Every pixel says "we take this seriously."`,
   },
@@ -401,10 +399,8 @@ const STYLES = {
 };
 
 // ─── Creative Variation Nudges ──────────────────────────────────────────────
-// When generating multiple versions of the same style, each version gets a
-// different creative direction to push the LLM toward genuinely distinct outputs.
 
-const VARIATION_NUDGES = [
+export const VARIATION_NUDGES = [
   '', // v1: pure style, no nudge
   'Take a MORE EXPERIMENTAL approach to this style. Push boundaries, be bold with unexpected choices while staying within the style family. Surprise the viewer.',
   'Take a MORE CONSERVATIVE, REFINED approach. Classic execution, polished details, nothing risky. The "safe but perfect" version.',
@@ -416,328 +412,39 @@ const VARIATION_NUDGES = [
   'Go for MAXIMAL DETAIL and CRAFT. Micro-interactions, decorative flourishes, every pixel considered. The "artisan" version.',
 ];
 
-// ─── Model Presets ──────────────────────────────────────────────────────────
-
-const MODELS = {
-  claude: {
-    providerName: 'anthropic',
-    apiKeyEnv: 'ANTHROPIC_API_KEY',
-    model: 'claude-sonnet-4-6',
-    label: 'Claude Sonnet',
-  },
-  gemini: {
-    providerName: 'gemini',
-    apiKeyEnv: 'GOOGLE_API_KEY',
-    model: 'gemini-3-flash-preview',
-    label: 'Gemini 3.1 Flash',
-  },
-};
-
-// ─── CLI Arg Parsing ────────────────────────────────────────────────────────
-
-function parseArgs(argv) {
-  const args = argv.slice(2);
-  const opts = {
-    command: 'generate', // 'generate' or 'iterate'
-    prompt: null,
-    styles: [],
-    versions: 1,
-    models: ['claude'],
-    mode: 'landing', // 'landing' or 'webapp'
-    from: null,       // path to reference output dir (--from)
-    iterate: null,    // path to output dir to iterate on (--iterate)
-    themeAuto: false,  // LLM picks best styles from our catalog
-    themeSynth: false, // LLM generates a custom style prompt
-  };
-
-  const positional = [];
-
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
-    if (arg === '--versions' || arg === '-v') {
-      opts.versions = parseInt(args[++i], 10);
-      if (isNaN(opts.versions) || opts.versions < 1) {
-        console.error('--versions must be a positive integer');
-        process.exit(1);
-      }
-    } else if (arg === '--models' || arg === '-m') {
-      opts.models = args[++i].split(',').map(s => s.trim());
-    } else if (arg === '--mode') {
-      opts.mode = args[++i];
-      if (!['landing', 'webapp'].includes(opts.mode)) {
-        console.error('--mode must be "landing" or "webapp"');
-        process.exit(1);
-      }
-    } else if (arg === '--theme-auto') {
-      opts.themeAuto = true;
-    } else if (arg === '--theme-synth') {
-      opts.themeSynth = true;
-    } else if (arg === '--from') {
-      opts.from = args[++i];
-    } else if (arg === '--iterate') {
-      opts.command = 'iterate';
-      opts.iterate = args[++i];
-    } else if (arg === '--help' || arg === '-h') {
-      printUsage();
-      process.exit(0);
-    } else {
-      positional.push(arg);
-    }
-  }
-
-  // --iterate mode: only needs the path, prompt is optional
-  if (opts.command === 'iterate') {
-    if (!opts.iterate) {
-      console.error('--iterate requires a path to an output directory');
-      process.exit(1);
-    }
-    if (!existsSync(opts.iterate)) {
-      console.error(`Directory not found: ${opts.iterate}`);
-      process.exit(1);
-    }
-    // Use first model only for iterate
-    opts.models = [opts.models[0]];
-  } else {
-    // Generate mode: prompt is required
-    if (positional.length < 1) {
-      printUsage();
-      process.exit(0);
-    }
-
-    opts.prompt = positional[0];
-
-    // Styles: optional second positional arg. If omitted → freestyle.
-    if (positional.length >= 2) {
-      if (positional[1] === 'all') {
-        opts.styles = Object.keys(STYLES);
-      } else {
-        opts.styles = positional[1].split(',').map(s => s.trim());
-      }
-    }
-  }
-
-  // Validate theme flags
-  if (opts.themeAuto && opts.themeSynth) {
-    console.error('Cannot use --theme-auto and --theme-synth together. Pick one.');
-    process.exit(1);
-  }
-  if ((opts.themeAuto || opts.themeSynth) && opts.styles.length > 0) {
-    console.error('Cannot use --theme-auto or --theme-synth with explicit styles.');
-    process.exit(1);
-  }
-
-  // Validate --from path
-  if (opts.from) {
-    if (!existsSync(opts.from)) {
-      console.error(`--from directory not found: ${opts.from}`);
-      process.exit(1);
-    }
-    const fromCss = `${opts.from}/style.css`;
-    if (!existsSync(fromCss)) {
-      console.error(`No style.css found in --from directory: ${opts.from}`);
-      process.exit(1);
-    }
-  }
-
-  // Validate styles
-  const invalidStyles = opts.styles.filter(s => !STYLES[s]);
-  if (invalidStyles.length > 0) {
-    console.error(`Unknown styles: ${invalidStyles.join(', ')}`);
-    console.error(`Available: ${Object.keys(STYLES).join(', ')}`);
-    process.exit(1);
-  }
-
-  // Validate models
-  const invalidModels = opts.models.filter(m => !MODELS[m]);
-  if (invalidModels.length > 0) {
-    console.error(`Unknown models: ${invalidModels.join(', ')}`);
-    console.error(`Available: ${Object.keys(MODELS).join(', ')}`);
-    process.exit(1);
-  }
-
-  // Validate API keys
-  for (const modelKey of opts.models) {
-    const { apiKeyEnv, label } = MODELS[modelKey];
-    if (!process.env[apiKeyEnv]) {
-      console.error(`Missing ${apiKeyEnv} environment variable (required for ${label})`);
-      process.exit(1);
-    }
-  }
-
-  return opts;
-}
-
-function printUsage() {
-  console.log(`
-  DesignFast Multi-Style Generator
-
-  Usage:
-    node test-multi.js <prompt> [styles] [options]        Generate sites
-    node test-multi.js --iterate <output-dir> [options]   Iterate on existing output
-
-  Arguments:
-    prompt                  Description of the website/webapp to create (required for generate)
-    styles                  Comma-separated style names, "all", or omit for freestyle
-                            When omitted, the LLM designs freely with no style constraint
-
-  Options:
-    --versions, -v <N>      Generate N versions per style/model combo (default: 1)
-                            Each version gets a creative nudge for genuine variety
-    --models, -m <list>     Comma-separated model names (default: claude)
-                            Available: ${Object.keys(MODELS).join(', ')}
-    --mode <type>           "landing" (single page) or "webapp" (multi-page app)
-                            Default: landing
-    --theme-auto            LLM picks the best 1-3 styles from our catalog for your prompt
-                            (only when no styles are specified)
-    --theme-synth           LLM generates a fully custom style brief tailored to your prompt
-                            (only when no styles are specified)
-    --from <dir>            Use the design style from a previous output directory
-                            Reads style.css + index.html as reference for the new generation
-    --iterate <dir>         Interactive mode: iterate on an existing output directory
-                            Opens a REPL where you can request changes to the generated files
-    --help, -h              Show this help
-
-  Available styles:
-    ${Object.keys(STYLES).join(', ')}
-
-  Examples:
-    # Single style, one version
-    node test-multi.js "A coffee subscription landing page" minimalist
-
-    # Multiple styles
-    node test-multi.js "A photography portfolio" minimalist,brutalist,playful
-
-    # All styles
-    node test-multi.js "A SaaS landing page" all
-
-    # Freestyle — no style, let the LLM decide
-    node test-multi.js "A coffee subscription landing page"
-
-    # 3 creative versions of the same style
-    node test-multi.js "A portfolio site" minimalist --versions 3
-
-    # Compare Claude vs Gemini on the same style
-    node test-multi.js "A portfolio site" brutalist --models claude,gemini
-
-    # Full matrix: 2 styles × 3 versions × 2 models = 12 agents
-    node test-multi.js "A fintech dashboard" corporate,cyberpunk -v 3 -m claude,gemini
-
-    # Multi-page webapp
-    node test-multi.js "A project management app with dashboard, tasks, and settings" --mode webapp
-
-    # Freestyle webapp with multiple versions
-    node test-multi.js "A recipe sharing app" --mode webapp -v 3
-
-    # Auto-select: LLM picks the best styles from our 30-style catalog
-    node test-multi.js "A smart building IoT platform" --theme-auto
-
-    # Synthesize: LLM creates a fully custom style brief for your content
-    node test-multi.js "A luxury pet grooming service" --theme-synth --versions 3
-
-    # Generate a webapp using the style from a previous landing page
-    node test-multi.js "A CRM dashboard app" --mode webapp --from output/2026-04-04/minimalist/
-
-    # Iterate on a generated output interactively
-    node test-multi.js --iterate output/2026-04-04/freestyle-claude-v1/
-    > make the sidebar collapsible
-    > change accent color to teal
-    > add a settings page
-    > done
-`);
-}
-
 // ─── Base Instructions ──────────────────────────────────────────────────────
 
-const LANDING_INSTRUCTIONS = `You are a visual designer, not a web developer. You think in composition, tension, rhythm, and emotion — not in "sections" and "components." Your work gets featured on Awwwards and siteinspire. People screenshot your sites and share them.
+export const LANDING_INSTRUCTIONS = `You are a world-class web designer. Your job is to create a beautiful, complete, single-page website.
 
-DESIGN PRINCIPLES:
-
-1. STRUCTURE IS THE DESIGN
-   The layout IS the style — not something you apply color to. A minimalist site and a brutalist site must have fundamentally different page architectures: different flow, different grid logic, different content hierarchy, different sense of space.
-   - Maximum 5–7 content blocks. Depth beats breadth. One unforgettable block beats five forgettable ones.
-   - Every block must have a different visual density, layout direction, or spatial feel than its neighbors.
-   - The page needs a beginning, a shift, and a resolution — a narrative arc, not a checklist.
-
-2. TYPOGRAPHY IS YOUR PRIMARY TOOL
-   Great design is 90% typography:
-   - Use extreme scale contrast (e.g., 8rem headline next to 0.875rem body text)
-   - Use weight contrast within sections (ultra-light paired with heavy)
-   - Letter-spacing and line-height shape the feel more than color does
-   - One typeface used masterfully beats three used generically
-   - Headlines can be anywhere: mid-section, full-bleed, split across columns, breaking the grid
-
-3. VISUAL RHYTHM
-   If you scroll and two consecutive blocks feel similar, the design has failed:
-   - Alternate density: a packed block followed by vast whitespace
-   - Alternate direction: left-aligned → centered → asymmetric → full-bleed
-   - Alternate tone: light surface → dark band → accent color → typographic hero
-   - Use background shifts, scale changes, and spatial breathing to create rhythm
-
-4. RESTRAINT IS POWER
-   - Fewer elements, more impact. Delete anything that doesn't make the page stronger.
-   - One accent color used precisely beats a rainbow.
-   - Whitespace is a design element, not empty space to fill.
-   - If a section exists only because "landing pages usually have this" — remove it.
-
-5. AUTHENTICITY
-   - NO fake UI elements: no browser chrome, no terminal mockups, no phone frames, no fake app screenshots, no fake dashboards
-   - NO fake social proof: no "trusted by" logo bars, no testimonials with made-up names/companies/avatars, no fake star ratings
-   - Use typography, color, composition, and real copy to create visual impact — not props
-   - Write copy that sounds human and opinionated. Short sentences. Personality. Not marketing-speak.
-
-6. CSS CRAFT
-   - Create texture with CSS: gradients, blend modes, clipping, custom shapes, grid overlap, layering
-   - Purposeful motion: hover states that reveal information, subtle transitions, micro-interactions
-   - Custom properties for a coherent system (spacing scale, color tokens, type scale)
-   - Every interactive state should feel intentional — not just "opacity 0.8"
-
-NEVER DO THESE:
-- The hero-features-testimonials-pricing-CTA-footer template. Invent your own page structure.
-- A centered hero with gradient text + subtitle + two side-by-side buttons
-- Three equal-width cards in a row with icons on top
-- Dark sections with barely-readable low-contrast text
-- Sections that are just "background color + centered heading + grid of cards"
-- More than 2 font families
-- Decorative elements that serve no compositional purpose (random floating orbs, meaningless gradients)
-- Repeating the same layout pattern in more than one block
-- Any element you've seen on 100 other SaaS sites
-
-FILE RULES:
+RULES:
 1. Create exactly TWO files:
-   - style.css — ALL custom CSS: custom properties, animations, keyframes, transitions, hover effects, media queries, decorative styles
-   - index.html — the complete page using Tailwind CSS via CDN AND linking to style.css
+   - style.css — ALL custom CSS goes here: custom properties, animations, keyframes, transitions, hover effects, media queries, decorative styles, any non-Tailwind styles
+   - index.html — the complete HTML page, using Tailwind CSS via CDN AND linking to style.css
 
-2. In index.html include:
-   - <script src="https://cdn.tailwindcss.com"></script>
-   - <link rel="stylesheet" href="style.css">
-   - Google Fonts via <link> in the <head>
+2. In index.html:
+   - Include <script src="https://cdn.tailwindcss.com"></script> for Tailwind
+   - Include <link rel="stylesheet" href="style.css"> for your custom styles
+   - Use Tailwind utility classes for layout, spacing, typography basics
+   - Use style.css classes for animations, custom effects, decorative elements, and anything Tailwind can't do
+   - Include any Google Fonts via <link> in the <head>
 
-3. ZERO inline styles — NEVER use style="..." attributes. ALL styling through Tailwind classes or custom classes in style.css. Output is automatically rejected if any style= attributes are found.
+3. ZERO inline styles:
+   - NEVER use style="..." attributes in HTML. Not even once. Not for "just one property."
+   - ALL styling must go through either Tailwind utility classes OR custom classes defined in style.css.
+   - If you need a one-off visual tweak, create a CSS class for it in style.css.
+   - This is a hard rule — the output will be automatically rejected if any style= attributes are found in the HTML.
 
-4. Self-contained (no external assets except CDN fonts/Tailwind), responsive, realistic copy (never lorem ipsum).
+4. The site must be:
+   - Fully self-contained (no external assets except CDN fonts and Tailwind)
+   - Responsive (mobile-first, works on all screen sizes)
+   - Complete with real-looking content (not lorem ipsum — write realistic copy for the described website)
+   - Visually polished and production-quality
 
 5. Write style.css FIRST, then index.html.
 
 6. DO NOT explain anything. Just create the two files.`;
 
-const FREESTYLE_DIRECTION = `You have total creative freedom. Before writing any code, decide:
-- What is the ONE emotion this site should evoke?
-- What is the ONE bold visual idea that will make it unforgettable?
-
-Build the entire page around that idea. If the idea doesn't scare you a little, it's not bold enough.
-
-Some starting points (pick one or invent your own):
-- All typography, no imagery — the words ARE the design, at massive scale
-- A single dramatic color used on a neutral canvas
-- Asymmetric, off-grid layout where nothing is centered
-- Ultra-dense editorial layout like a magazine spread
-- Full-bleed sections with extreme vertical scale contrast
-- A monochrome palette with one surprise accent moment
-- Horizontal rhythm: content that reads left-to-right across wide sections
-
-Do NOT default to dark mode. Do NOT default to SaaS aesthetics. The style should emerge from the content's personality.`;
-
-const WEBAPP_INSTRUCTIONS = `You are a world-class web designer and frontend developer. Your job is to create a beautiful, complete, multi-page web application prototype.
+export const WEBAPP_INSTRUCTIONS = `You are a world-class web designer and frontend developer. Your job is to create a beautiful, complete, multi-page web application prototype.
 
 RULES:
 1. Create these files:
@@ -777,40 +484,8 @@ RULES:
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 /**
- * List .css, .js, .html files in a directory.
- */
-function listOutputFiles(dirPath) {
-  return readdirSync(dirPath).filter(f => /\.(css|js|html)$/.test(f));
-}
-
-/**
- * Resolve a path to absolute.
- */
-function absPath(p) {
-  return p.startsWith('/') ? p : `${process.cwd()}/${p}`;
-}
-
-/**
- * Build a reference style instruction pointing at a previous output directory.
- * The agent will use its read tool to inspect the files itself.
- */
-function buildFromReference(fromPath) {
-  const files = listOutputFiles(fromPath);
-  const dir = absPath(fromPath);
-
-  return `\n\nREFERENCE DESIGN:
-Before writing any files, you MUST use your read tool to study the design language in these reference files:
-${files.map(f => `  - ${dir}/${f}`).join('\n')}
-
-Read style.css FIRST — it defines the color palette, typography, spacing, shadows, animations, and component styles.
-Then read index.html to understand the structural patterns, Tailwind class usage, and component markup.
-${files.includes('app.js') ? 'Then read app.js to understand interaction patterns.\n' : ''}
-IMPORTANT: Replicate the DESIGN LANGUAGE from these reference files — same colors, font choices, spacing rhythm, border styles, shadow styles, animation patterns, and component styling. You are NOT copying the content or layout — you are extracting the visual system and applying it to the NEW website described below.`;
-}
-
-/**
- * Build the style catalog summary for the auto-selector.
- * Returns a compact string: "key: Name — vibe description" for each style.
+ * Build a compact style catalog summary for the auto-selector.
+ * Returns "key: Name — vibe description" for each style.
  */
 function buildStyleCatalog() {
   const vibeExtractor = /Vibe:\s*(.+?)\.?\s*$/m;
@@ -822,32 +497,84 @@ function buildStyleCatalog() {
 }
 
 /**
+ * Build the full prompt for a generation job.
+ *
+ * @param {object} job - Job data with: prompt, mode, styleKey, stylePrompt, version, fromFiles
+ * @param {string} outputDir - Working directory where the agent will write files
+ * @returns {string} The complete prompt to pass to agent.run()
+ */
+export function buildPrompt(job, outputDir) {
+  const baseInstructions = job.mode === 'webapp'
+    ? WEBAPP_INSTRUCTIONS
+    : LANDING_INSTRUCTIONS;
+
+  let prompt = baseInstructions + '\n\n';
+
+  // Add style directive
+  if (job.stylePrompt) {
+    // Explicit style or synth-generated style
+    prompt += job.stylePrompt + '\n\n';
+  }
+
+  // Add variation nudge
+  if (job.version > 0 && job.version <= VARIATION_NUDGES.length) {
+    const nudge = VARIATION_NUDGES[job.version - 1];
+    if (nudge) {
+      prompt += `CREATIVE DIRECTION: ${nudge}\n\n`;
+    }
+  }
+
+  // Add reference files instruction
+  if (job.fromFiles && job.fromFiles.length > 0) {
+    prompt += `\nREFERENCE DESIGN:
+Before writing any files, you MUST use your read tool to study the design language in these reference files:
+${job.fromFiles.map(f => `  - ${outputDir}/${f.filename}`).join('\n')}
+
+Read style.css FIRST — it defines the color palette, typography, spacing, shadows, animations, and component styles.
+Then read index.html to understand the structural patterns, Tailwind class usage, and component markup.
+
+IMPORTANT: Replicate the DESIGN LANGUAGE from these reference files — same colors, font choices, spacing rhythm, border styles, shadow styles, animation patterns, and component styling. You are NOT copying the content or layout — you are extracting the visual system and applying it to the NEW website described below.\n\n`;
+  }
+
+  // Add the user's prompt
+  prompt += `WEBSITE TO CREATE:\n${job.prompt}`;
+
+  // Tell the agent to write files in the output directory
+  prompt += `\n\nWrite all files to the current working directory: ${outputDir}`;
+
+  return prompt;
+}
+
+/**
  * --theme-auto: Ask the LLM to pick the best 1-3 styles from our catalog.
  * Returns an array of style keys.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {string} model - Model ID (e.g. 'claude-sonnet-4-6')
+ * @param {string} providerName - Provider name ('anthropic' | 'gemini')
+ * @param {string} apiKey - API key for the provider
+ * @returns {Promise<string[]>} Array of style keys
  */
-async function resolveThemeAuto(userPrompt, modelKey) {
-  const modelCfg = MODELS[modelKey];
+export async function resolveThemeAuto(userPrompt, model, providerName, apiKey) {
   const catalog = buildStyleCatalog();
 
-  console.log(`🤖 Auto-selecting styles for: "${userPrompt.slice(0, 60)}..."`);
-
   const provider = createProvider({
-    name: modelCfg.providerName,
-    apiKey: process.env[modelCfg.apiKeyEnv],
-    model: modelCfg.model,
+    name: providerName,
+    apiKey,
   });
 
-  const db = new DatabaseImpl();
+  const agentDb = new DatabaseImpl();
   const tools = createDefaultRegistry();
 
   const agent = new AgentLoop({
     provider,
     tools,
-    db,
+    db: agentDb,
     workingDir: process.cwd(),
     maxTokens: 1024,
     maxTurns: 1,
-    model: modelCfg.model,
+    model,
+    providerName,
     disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
   });
 
@@ -872,8 +599,11 @@ RULES:
     }
   });
 
-  await agent.run(selectorPrompt);
-  db.close();
+  try {
+    await agent.run(selectorPrompt);
+  } finally {
+    agentDb.close();
+  }
 
   // Parse response — extract valid style keys
   const keys = result
@@ -883,41 +613,40 @@ RULES:
     .filter(s => STYLES[s]);
 
   if (keys.length === 0) {
-    console.error(`  Style selector returned no valid styles: "${result.trim()}"`);
-    console.error(`  Falling back to freestyle.`);
     return [];
   }
 
-  console.log(`🎯 Selected: ${keys.map(k => STYLES[k].name).join(', ')}\n`);
   return keys;
 }
 
 /**
  * --theme-synth: Ask the LLM to generate a custom style prompt tailored to the content.
- * Returns a synthesized style prompt string.
+ * Returns a synthesized style prompt string, or null on failure.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {string} model - Model ID
+ * @param {string} providerName - Provider name
+ * @param {string} apiKey - API key
+ * @returns {Promise<string|null>} Synthesized style brief or null
  */
-async function resolveThemeSynth(userPrompt, modelKey) {
-  const modelCfg = MODELS[modelKey];
-
-  console.log(`🧪 Synthesizing custom style for: "${userPrompt.slice(0, 60)}..."`);
-
+export async function resolveThemeSynth(userPrompt, model, providerName, apiKey) {
   const provider = createProvider({
-    name: modelCfg.providerName,
-    apiKey: process.env[modelCfg.apiKeyEnv],
-    model: modelCfg.model,
+    name: providerName,
+    apiKey,
   });
 
-  const db = new DatabaseImpl();
+  const agentDb = new DatabaseImpl();
   const tools = createDefaultRegistry();
 
   const agent = new AgentLoop({
     provider,
     tools,
-    db,
+    db: agentDb,
     workingDir: process.cwd(),
-    maxTokens: 32_768,
+    maxTokens: 2048,
     maxTurns: 1,
-    model: modelCfg.model,
+    model,
+    providerName,
     disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
   });
 
@@ -949,412 +678,16 @@ RULES:
     }
   });
 
-  await agent.run(synthPrompt);
-  db.close();
+  try {
+    await agent.run(synthPrompt);
+  } finally {
+    agentDb.close();
+  }
 
   const brief = result.trim();
   if (brief.length < 100) {
-    console.error(`  Style synthesizer returned too short a response. Falling back to freestyle.`);
     return null;
   }
 
-  console.log(`🎨 Custom style synthesized (${brief.length} chars)\n`);
   return brief;
-}
-
-// ─── Iterate Mode ───────────────────────────────────────────────────────────
-
-async function runIterateMode(opts) {
-  const targetDir = opts.iterate;
-  const modelCfg = MODELS[opts.models[0]];
-  const db = new DatabaseImpl();
-
-  console.log(`\n🔄 DesignFast Interactive Mode`);
-  console.log(`📁 Working on: ${targetDir}/`);
-  console.log(`🤖 Model: ${modelCfg.label}`);
-
-  // List existing files (not read — the agent will read them itself)
-  const fileList = listOutputFiles(targetDir);
-
-  if (fileList.length === 0) {
-    console.error(`No .css/.js/.html files found in ${targetDir}`);
-    db.close();
-    process.exit(1);
-  }
-
-  console.log(`📄 Files: ${fileList.join(', ')}`);
-  console.log(`${'─'.repeat(60)}`);
-  console.log(`Type your changes. "done" or "exit" to quit.\n`);
-
-  const provider = createProvider({
-    name: modelCfg.providerName,
-    apiKey: process.env[modelCfg.apiKeyEnv],
-    model: modelCfg.model,
-  });
-
-  const tools = createDefaultRegistry();
-
-  const agent = new AgentLoop({
-    provider,
-    tools,
-    db,
-    workingDir: process.cwd(),
-    maxTokens: 32_768,
-    maxTurns: 50,
-    model: modelCfg.model,
-  });
-
-  let totalInputTokens = 0;
-  let totalOutputTokens = 0;
-  let totalCost = 0;
-  let sessionId = null;
-
-  agent.on('event', (event) => {
-    switch (event.type) {
-      case 'tool_start':
-        console.log(`  🔧 ${event.name}`);
-        break;
-      case 'tool_output':
-        if (event.is_error) {
-          console.log(`  ❌ ${event.output}`);
-        } else {
-          console.log(`  ✅ Done (${event.duration_ms}ms)`);
-        }
-        break;
-      case 'usage':
-        totalInputTokens += event.input_tokens || 0;
-        totalOutputTokens += event.output_tokens || 0;
-        totalCost += event.cost_usd || 0;
-        break;
-      case 'error':
-        console.error(`  💥 ${event.message}`);
-        break;
-    }
-  });
-
-  // Build initial context: tell the agent where the files are (it will read them itself)
-  const dir = absPath(targetDir);
-
-  const initPrompt = `You are a world-class web designer and developer working on an existing project.
-
-The project files are in "${dir}/". The files are:
-${fileList.map(f => `  - ${dir}/${f}`).join('\n')}
-
-FIRST: Use your read tool to read ALL of these files so you understand the current state of the project. Start with style.css, then the HTML files, then any JS files.
-
-RULES:
-- When the user asks for changes, modify the existing files in "${dir}/" using the edit tool or write tool.
-- Always re-read a file before editing it if you haven't read it recently in this conversation.
-- Maintain visual consistency — same design language, colors, fonts, spacing.
-- If adding new pages, follow the same patterns (same nav, same head, same CSS/JS includes).
-- Keep all file paths relative within the "${dir}/" folder.
-- After making changes, briefly confirm what you changed (one line).
-- Do NOT rewrite entire files unless necessary — prefer targeted edits.
-
-Start by reading all the files now.`;
-
-  // First run to establish session context
-  const session = await agent.run(initPrompt);
-  sessionId = session.id;
-
-  // REPL loop
-  const rl = createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  const askQuestion = () => {
-    return new Promise((resolve) => {
-      rl.question('> ', (answer) => resolve(answer));
-    });
-  };
-
-  while (true) {
-    const input = await askQuestion();
-    const trimmed = input.trim();
-
-    if (!trimmed) continue;
-    if (trimmed === 'done' || trimmed === 'exit' || trimmed === 'quit') break;
-
-    try {
-      console.log('');
-      await agent.continueSession(sessionId, trimmed);
-      console.log('');
-    } catch (error) {
-      console.error(`  💥 Error: ${error.message}\n`);
-    }
-  }
-
-  rl.close();
-
-  console.log(`\n${'─'.repeat(60)}`);
-  console.log(`📊 Session Summary`);
-  console.log(`  Tokens: ${totalInputTokens} in / ${totalOutputTokens} out  |  Total: $${totalCost.toFixed(4)}`);
-  console.log(`📁 Output: ${targetDir}/`);
-  console.log(`🌐 Open: open ${targetDir}/index.html\n`);
-
-  db.close();
-}
-
-// ─── Generate Mode ──────────────────────────────────────────────────────────
-
-async function runGenerateMode(opts) {
-  // ─── Resolve theme mode ─────────────────────────────────────────────────
-
-  // --theme-auto: LLM picks best styles from catalog
-  if (opts.themeAuto && opts.styles.length === 0) {
-    const picked = await resolveThemeAuto(opts.prompt, opts.models[0]);
-    if (picked.length > 0) {
-      opts.styles = picked;
-    }
-  }
-
-  // --theme-synth: LLM generates a custom style prompt
-  let synthStylePrompt = null;
-  if (opts.themeSynth && opts.styles.length === 0) {
-    synthStylePrompt = await resolveThemeSynth(opts.prompt, opts.models[0]);
-  }
-
-  // Build the job matrix: every combination of (style, version, model)
-  const jobs = [];
-
-  let styleEntries;
-  if (opts.styles.length > 0) {
-    // Explicit styles (or auto-selected)
-    styleEntries = opts.styles.map(s => ({ key: s, name: STYLES[s].name, prompt: STYLES[s].prompt }));
-  } else if (synthStylePrompt) {
-    // Synthesized custom style
-    styleEntries = [{ key: 'synth', name: 'Synthesized', prompt: synthStylePrompt }];
-  } else {
-    // Freestyle fallback
-    styleEntries = [{ key: 'freestyle', name: 'Freestyle', prompt: null }];
-  }
-
-  for (const style of styleEntries) {
-    for (let version = 1; version <= opts.versions; version++) {
-      for (const modelKey of opts.models) {
-        jobs.push({ style, version, modelKey });
-      }
-    }
-  }
-
-  const totalJobs = jobs.length;
-  const baseInstructions = opts.mode === 'webapp' ? WEBAPP_INSTRUCTIONS : LANDING_INSTRUCTIONS;
-
-  // Build --from reference block (if provided)
-  const fromReference = opts.from ? buildFromReference(opts.from) : '';
-
-  // Output directory
-  const outputBase = 'output';
-  const timestamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
-  const runDir = `${outputBase}/${timestamp}`;
-
-  // Header
-  console.log(`\n🎨 DesignFast Multi-Style Generator`);
-  console.log(`📝 Prompt: "${opts.prompt}"`);
-  console.log(`📐 Mode: ${opts.mode}`);
-  if (opts.from) {
-    console.log(`🎨 From: ${opts.from} (reference style)`);
-  }
-  if (opts.styles.length > 0) {
-    console.log(`🎭 Styles: ${opts.styles.join(', ')}${opts.themeAuto ? ' (auto-selected)' : ''}`);
-  } else if (synthStylePrompt) {
-    console.log(`🎭 Styles: synthesized (custom style brief)`);
-  } else {
-    console.log(`🎭 Styles: freestyle (designer's choice)`);
-  }
-  console.log(`🔢 Versions: ${opts.versions}`);
-  console.log(`🤖 Models: ${opts.models.join(', ')}`);
-  console.log(`📊 Total jobs: ${totalJobs}`);
-  console.log(`${'─'.repeat(60)}\n`);
-
-  // ─── Agent Runner ─────────────────────────────────────────────────────────
-
-  const db = new DatabaseImpl();
-
-  function buildJobDir(job) {
-    const parts = [job.style.key];
-    if (opts.models.length > 1) parts.push(job.modelKey);
-    if (opts.versions > 1) parts.push(`v${job.version}`);
-    return `${runDir}/${parts.join('-')}`;
-  }
-
-  function buildJobLabel(job) {
-    const parts = [job.style.name];
-    if (opts.models.length > 1) parts.push(MODELS[job.modelKey].label);
-    if (opts.versions > 1) parts.push(`v${job.version}`);
-    return parts.join(' / ');
-  }
-
-  async function runJob(job) {
-    const jobDir = buildJobDir(job);
-    const label = buildJobLabel(job);
-    const modelCfg = MODELS[job.modelKey];
-    const startTime = Date.now();
-
-    const provider = createProvider({
-      name: modelCfg.providerName,
-      apiKey: process.env[modelCfg.apiKeyEnv],
-      model: modelCfg.model,
-    });
-
-    const tools = createDefaultRegistry();
-
-    const maxTurns = opts.mode === 'webapp' ? 80 : 50;
-
-    const agent = new AgentLoop({
-      provider,
-      tools,
-      db,
-      workingDir: process.cwd(),
-      maxTokens: 32_768,
-      maxTurns,
-      model: modelCfg.model,
-    });
-
-    let totalInputTokens = 0;
-    let totalOutputTokens = 0;
-    let totalCost = 0;
-
-    agent.on('event', (event) => {
-      switch (event.type) {
-        case 'tool_start':
-          console.log(`  [${label}] 🔧 ${event.name}`);
-          break;
-        case 'tool_output':
-          if (event.is_error) {
-            console.log(`  [${label}] ❌ ${event.output}`);
-          } else {
-            console.log(`  [${label}] ✅ Done (${event.duration_ms}ms)`);
-          }
-          break;
-        case 'usage':
-          totalInputTokens += event.input_tokens || 0;
-          totalOutputTokens += event.output_tokens || 0;
-          totalCost += event.cost_usd || 0;
-          break;
-        case 'error':
-          console.error(`  [${label}] 💥 ${event.message}`);
-          break;
-      }
-    });
-
-    // Build prompt
-    let prompt = baseInstructions;
-
-    // --from reference (injected before the content prompt so it sets the design context)
-    if (fromReference) {
-      prompt += fromReference;
-    }
-
-    prompt += `\n\nWEBSITE TO CREATE:\n${opts.prompt}`;
-
-    // Style block: --from overrides style presets and freestyle
-    if (fromReference) {
-      // Style already defined by the reference — no additional style block needed
-    } else if (job.style.prompt) {
-      prompt += `\n\nDESIGN STYLE:\n${job.style.prompt}`;
-    } else {
-      prompt += `\n\nDESIGN STYLE:\n${FREESTYLE_DIRECTION}`;
-    }
-
-    // Variation nudge (skip for v1 which gets index 0 = empty string)
-    const nudgeIndex = (job.version - 1) % VARIATION_NUDGES.length;
-    const nudge = VARIATION_NUDGES[nudgeIndex];
-    if (nudge) {
-      prompt += `\n\nCREATIVE DIRECTION:\n${nudge}`;
-    }
-
-    // File output instruction
-    if (opts.mode === 'webapp') {
-      prompt += `\n\nWrite ALL files into the "${jobDir}" folder. Write style.css first, then app.js, then each HTML page starting with index.html.`;
-    } else {
-      prompt += `\n\nWrite both files into the "${jobDir}" folder. Write style.css first, then index.html.`;
-    }
-
-    try {
-      await agent.run(prompt);
-      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-
-      return {
-        label,
-        style: job.style.key,
-        modelKey: job.modelKey,
-        version: job.version,
-        success: true,
-        elapsed,
-        inputTokens: totalInputTokens,
-        outputTokens: totalOutputTokens,
-        cost: totalCost,
-      };
-    } catch (error) {
-      const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-      return {
-        label,
-        style: job.style.key,
-        modelKey: job.modelKey,
-        version: job.version,
-        success: false,
-        elapsed,
-        error: error.message,
-        inputTokens: totalInputTokens,
-        outputTokens: totalOutputTokens,
-        cost: totalCost,
-      };
-    }
-  }
-
-  // ─── Launch All Jobs in Parallel ──────────────────────────────────────────
-
-  for (const job of jobs) {
-    console.log(`🚀 Starting: ${buildJobLabel(job)} → ${buildJobDir(job)}/`);
-  }
-
-  const results = await Promise.allSettled(jobs.map(job => runJob(job)));
-
-  // ─── Summary ──────────────────────────────────────────────────────────────
-
-  console.log(`\n${'─'.repeat(60)}`);
-  console.log(`\n📊 Generation Summary\n`);
-
-  let totalCost = 0;
-  let totalTokensIn = 0;
-  let totalTokensOut = 0;
-  let successCount = 0;
-  let failCount = 0;
-
-  for (const result of results) {
-    const r = result.status === 'fulfilled'
-      ? result.value
-      : { label: '?', success: false, error: result.reason?.message };
-
-    if (r.success) {
-      successCount++;
-      totalCost += r.cost;
-      totalTokensIn += r.inputTokens;
-      totalTokensOut += r.outputTokens;
-      console.log(`  ✅ ${r.label.padEnd(32)} ${r.elapsed}s  |  ${r.inputTokens} in / ${r.outputTokens} out  |  $${r.cost.toFixed(4)}`);
-    } else {
-      failCount++;
-      console.log(`  ❌ ${(r.label).padEnd(32)} FAILED: ${r.error}`);
-    }
-  }
-
-  console.log(`  ${'─'.repeat(56)}`);
-  console.log(`  ${successCount} succeeded, ${failCount} failed`);
-  console.log(`  Tokens: ${totalTokensIn} in / ${totalTokensOut} out  |  Total: $${totalCost.toFixed(4)}`);
-  console.log(`\n📁 Output: ${runDir}/`);
-  console.log(`🌐 Open: open ${runDir}/*/index.html\n`);
-
-  db.close();
-}
-
-// ─── Main ───────────────────────────────────────────────────────────────────
-
-const opts = parseArgs(process.argv);
-
-if (opts.command === 'iterate') {
-  await runIterateMode(opts);
-} else {
-  await runGenerateMode(opts);
 }

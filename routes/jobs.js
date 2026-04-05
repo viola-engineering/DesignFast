@@ -1,0 +1,166 @@
+import archiver from 'archiver';
+import { query } from '../db.js';
+import { authMiddleware } from '../auth.js';
+import { consume } from '../queen-client.js';
+import { requireUUID } from '../validation.js';
+
+export default async function (app) {
+  app.addHook('onRequest', authMiddleware);
+
+  // GET /api/jobs/:id
+  app.get('/api/jobs/:id', async (req, reply) => {
+    if (requireUUID(req.params.id, reply)) return;
+
+    const { rows } = await query(
+      `SELECT * FROM designfast.jobs WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
+    );
+
+    if (rows.length === 0) {
+      return reply.code(404).send({ error: 'Job not found' });
+    }
+
+    const j = rows[0];
+    return {
+      id: j.id,
+      generationId: j.generation_id,
+      styleKey: j.style_key,
+      styleName: j.style_name,
+      model: j.model,
+      provider: j.provider,
+      version: j.version,
+      status: j.status,
+      errorMessage: j.error_message,
+      tokensIn: j.tokens_in,
+      tokensOut: j.tokens_out,
+      costUsd: j.cost_usd ? parseFloat(j.cost_usd).toFixed(4) : null,
+      durationMs: j.duration_ms,
+      createdAt: j.created_at,
+      startedAt: j.started_at,
+      completedAt: j.completed_at,
+    };
+  });
+
+  // GET /api/jobs/:id/files
+  app.get('/api/jobs/:id/files', async (req, reply) => {
+    if (requireUUID(req.params.id, reply)) return;
+
+    // Verify ownership
+    const { rows: jobs } = await query(
+      `SELECT id FROM designfast.jobs WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
+    );
+    if (jobs.length === 0) {
+      return reply.code(404).send({ error: 'Job not found' });
+    }
+
+    const { rows } = await query(
+      `SELECT id, filename, size_bytes, created_at FROM designfast.job_files WHERE job_id = $1 ORDER BY filename`,
+      [req.params.id]
+    );
+
+    return {
+      files: rows.map(f => ({
+        id: f.id,
+        filename: f.filename,
+        sizeBytes: f.size_bytes,
+        createdAt: f.created_at,
+      })),
+    };
+  });
+
+  // GET /api/jobs/:id/events — SSE stream
+  app.get('/api/jobs/:id/events', async (req, reply) => {
+    if (requireUUID(req.params.id, reply)) return;
+
+    // Verify ownership
+    const { rows: jobs } = await query(
+      `SELECT id, status FROM designfast.jobs WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
+    );
+    if (jobs.length === 0) {
+      return reply.code(404).send({ error: 'Job not found' });
+    }
+
+    const jobId = req.params.id;
+
+    // Set SSE headers
+    reply.raw.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    });
+
+    // If job is already done/failed, send final event and close
+    if (jobs[0].status === 'done' || jobs[0].status === 'failed') {
+      reply.raw.write(`data: ${JSON.stringify({ jobId, type: jobs[0].status, timestamp: Date.now() })}\n\n`);
+      reply.raw.end();
+      return;
+    }
+
+    // Consume events from Queen with partition=jobId
+    const consumer = consume('designfast-events', `sse-${jobId}`, {
+      batchSize: 10,
+      waitTimeMs: 5000,
+    }, async (messages) => {
+      for (const msg of messages) {
+        const event = msg.data || msg;
+        reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
+
+        // Close stream on terminal events
+        if (event.type === 'done' || event.type === 'error') {
+          consumer.stop();
+          reply.raw.end();
+        }
+      }
+    });
+
+    // Clean up Queen consumer on client disconnect
+    req.raw.on('close', () => {
+      consumer.stop();
+    });
+
+    // Prevent Fastify from sending a response (we're handling raw)
+    return reply;
+  });
+
+  // GET /api/jobs/:id/download — ZIP all job files
+  app.get('/api/jobs/:id/download', async (req, reply) => {
+    if (requireUUID(req.params.id, reply)) return;
+
+    // Verify ownership
+    const { rows: jobs } = await query(
+      `SELECT id FROM designfast.jobs WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.userId]
+    );
+    if (jobs.length === 0) {
+      return reply.code(404).send({ error: 'Job not found' });
+    }
+
+    const { rows: files } = await query(
+      `SELECT filename, content FROM designfast.job_files WHERE job_id = $1`,
+      [req.params.id]
+    );
+
+    if (files.length === 0) {
+      return reply.code(404).send({ error: 'No files found' });
+    }
+
+    const jobId = req.params.id;
+
+    reply.raw.writeHead(200, {
+      'Content-Type': 'application/zip',
+      'Content-Disposition': `attachment; filename="designfast-${jobId}.zip"`,
+    });
+
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    archive.pipe(reply.raw);
+
+    for (const file of files) {
+      archive.append(file.content, { name: file.filename });
+    }
+
+    await archive.finalize();
+    return reply;
+  });
+}
