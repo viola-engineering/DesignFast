@@ -1,0 +1,139 @@
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+
+export interface User {
+  id: string
+  email: string
+  name: string | null
+  plan: 'free' | 'starter' | 'pro'
+  avatarUrl: string | null
+  generationsUsed: number
+  generationsLimit: number
+  billingPeriodStart: string | null
+  createdAt: string
+}
+
+export const useAuthStore = defineStore('auth', () => {
+  const user = ref<User | null>(null)
+  const loading = ref(false)
+  const initialized = ref(false)
+
+  const isAuthenticated = computed(() => !!user.value)
+
+  async function fetchUser() {
+    try {
+      const response = await fetch('/api/auth/me', {
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        user.value = data.user
+      } else {
+        user.value = null
+      }
+    } catch {
+      user.value = null
+    } finally {
+      initialized.value = true
+    }
+  }
+
+  async function login(email: string, password: string) {
+    loading.value = true
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed')
+      }
+
+      user.value = data.user
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Login failed' }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function register(email: string, password: string, name?: string) {
+    loading.value = true
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password, name })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed')
+      }
+
+      user.value = data.user
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Registration failed' }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function logout() {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      })
+    } finally {
+      user.value = null
+    }
+  }
+
+  async function updateProfile(data: { name?: string }) {
+    loading.value = true
+    try {
+      const response = await fetch('/api/account', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      })
+
+      const result = await response.json()
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Update failed')
+      }
+
+      user.value = result.user
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Update failed' }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    user,
+    loading,
+    initialized,
+    isAuthenticated,
+    fetchUser,
+    login,
+    register,
+    logout,
+    updateProfile
+  }
+})
