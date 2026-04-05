@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import GeneratorSidebar from '@/components/GeneratorSidebar.vue'
 import GeneratorOutput from '@/components/GeneratorOutput.vue'
@@ -20,64 +20,106 @@ const toastStore = useToastStore()
 const preselectedStyle = route.query.style as string | undefined
 const isGenerating = ref(false)
 
-// Current job state
-const currentJobId = ref<string | undefined>()
+// Job tracking — supports multiple jobs per generation
+interface TrackedJob {
+  id: string
+  styleKey: string
+  styleName: string
+  status: JobStatus
+  statusMessage?: string
+}
+
+const jobs = ref<TrackedJob[]>([])
+const activeJobIndex = ref(0)
 const currentSessionId = ref<string | undefined>()
-const jobStatus = ref<JobStatus | undefined>()
-const statusMessage = ref<string | undefined>()
-const versions = ref(1)
-const files = ref<string[]>([])
 const revision = ref(0)
 const latestRevision = ref(0)
 
-// SSE connection
-let eventSource: EventSource | null = null
+const activeJob = computed(() => jobs.value[activeJobIndex.value])
+const currentJobId = computed(() => activeJob.value?.id)
+const jobStatus = computed(() => activeJob.value?.status)
+const statusMessage = computed(() => activeJob.value?.statusMessage)
+
+// SSE connections — one per job
+const eventSources = ref<Map<string, EventSource>>(new Map())
 
 function connectSSE(jobId: string) {
-  disconnectSSE()
+  if (eventSources.value.has(jobId)) return
 
-  eventSource = new EventSource(`/api/jobs/${jobId}/events`)
+  const es = new EventSource(`/api/jobs/${jobId}/events`)
 
-  eventSource.onmessage = (e) => {
+  es.onmessage = (e) => {
     try {
       const event = JSON.parse(e.data)
-      jobStatus.value = event.type === 'progress' ? 'running' : event.type
+      const job = jobs.value.find(j => j.id === jobId)
+      if (!job) return
 
+      if (event.type === 'status' || event.type === 'running') {
+        job.status = 'running'
+      }
       if (event.message) {
-        statusMessage.value = event.message
+        job.statusMessage = event.message
       }
 
       if (event.type === 'done') {
-        isGenerating.value = false
-        toastStore.success('Generation complete!')
-        disconnectSSE()
+        job.status = 'done'
+        job.statusMessage = 'Complete'
+        disconnectSSE(jobId)
+        checkAllDone()
       } else if (event.type === 'error') {
-        isGenerating.value = false
-        jobStatus.value = 'failed'
-        statusMessage.value = event.message || 'Job failed'
-        toastStore.error('Generation failed: ' + (event.message || 'Unknown error'))
-        disconnectSSE()
+        job.status = 'failed'
+        job.statusMessage = event.message || 'Job failed'
+        disconnectSSE(jobId)
+        checkAllDone()
       }
     } catch (err) {
       console.error('Failed to parse SSE event:', err)
     }
   }
 
-  eventSource.onerror = () => {
-    if (eventSource?.readyState === EventSource.CLOSED) {
-      if (jobStatus.value !== 'done' && jobStatus.value !== 'failed') {
-        jobStatus.value = 'failed'
-        statusMessage.value = 'Connection lost'
-        isGenerating.value = false
+  es.onerror = () => {
+    if (es.readyState === EventSource.CLOSED) {
+      const job = jobs.value.find(j => j.id === jobId)
+      if (job && job.status !== 'done' && job.status !== 'failed') {
+        job.status = 'failed'
+        job.statusMessage = 'Connection lost'
       }
+      disconnectSSE(jobId)
+      checkAllDone()
     }
+  }
+
+  eventSources.value.set(jobId, es)
+}
+
+function disconnectSSE(jobId?: string) {
+  if (jobId) {
+    const es = eventSources.value.get(jobId)
+    if (es) {
+      es.close()
+      eventSources.value.delete(jobId)
+    }
+  } else {
+    // Disconnect all
+    for (const es of eventSources.value.values()) {
+      es.close()
+    }
+    eventSources.value.clear()
   }
 }
 
-function disconnectSSE() {
-  if (eventSource) {
-    eventSource.close()
-    eventSource = null
+function checkAllDone() {
+  const allFinished = jobs.value.every(j => j.status === 'done' || j.status === 'failed')
+  if (allFinished) {
+    isGenerating.value = false
+    const doneCount = jobs.value.filter(j => j.status === 'done').length
+    if (doneCount === jobs.value.length) {
+      toastStore.success(`All ${doneCount} generation${doneCount > 1 ? 's' : ''} complete!`)
+    } else if (doneCount > 0) {
+      toastStore.success(`${doneCount} of ${jobs.value.length} generations complete`)
+    } else {
+      toastStore.error('All generations failed')
+    }
   }
 }
 
@@ -87,15 +129,17 @@ onMounted(async () => {
   if (jobId) {
     try {
       const job = await getJobById(jobId)
-      currentJobId.value = job.id
-      jobStatus.value = job.status
+      jobs.value = [{
+        id: job.id,
+        styleKey: '',
+        styleName: '',
+        status: job.status,
+        statusMessage: job.status === 'done' ? 'Loaded from history' : job.errorMessage || undefined,
+      }]
+      activeJobIndex.value = 0
       revision.value = job.latestRevision
       latestRevision.value = job.latestRevision
-      if (job.status === 'done') {
-        statusMessage.value = 'Loaded from history'
-      } else if (job.status === 'failed') {
-        statusMessage.value = job.errorMessage || 'Job failed'
-      } else if (job.status === 'running' || job.status === 'queued') {
+      if (job.status === 'running' || job.status === 'queued') {
         isGenerating.value = true
         connectSSE(job.id)
       }
@@ -119,24 +163,30 @@ async function handleGenerate(formData: CreateGenerationRequest) {
   }
 
   isGenerating.value = true
-  jobStatus.value = 'queued'
-  statusMessage.value = 'Starting generation...'
-  versions.value = formData.versions || 1
   currentSessionId.value = undefined
+  revision.value = 0
+  latestRevision.value = 0
 
   try {
     const response = await generationsStore.create(formData)
 
-    // Use the first job ID for SSE updates
-    if (response.jobs.length > 0) {
-      currentJobId.value = response.jobs[0].id
-      connectSSE(response.jobs[0].id)
+    jobs.value = response.jobs.map(j => ({
+      id: j.id,
+      styleKey: j.styleKey,
+      styleName: j.styleName,
+      status: 'queued' as JobStatus,
+      statusMessage: 'Queued...',
+    }))
+    activeJobIndex.value = 0
+
+    // Connect SSE for each job
+    for (const job of response.jobs) {
+      connectSSE(job.id)
     }
   } catch (err: unknown) {
     isGenerating.value = false
-    jobStatus.value = 'failed'
+    jobs.value = []
     const message = err instanceof Error ? err.message : 'Failed to start generation'
-    statusMessage.value = message
     toastStore.error(message)
   }
 }
@@ -145,8 +195,11 @@ async function handleIterate(prompt: string) {
   if (!currentJobId.value) return
 
   isGenerating.value = true
-  jobStatus.value = 'running'
-  statusMessage.value = 'Refining design...'
+  const job = activeJob.value
+  if (job) {
+    job.status = 'running'
+    job.statusMessage = 'Refining design...'
+  }
 
   try {
     // Start session if not already started
@@ -163,20 +216,45 @@ async function handleIterate(prompt: string) {
     const newRevision = result.revision ?? revision.value + 1
     revision.value = newRevision
     latestRevision.value = newRevision
-    jobStatus.value = 'done'
-    statusMessage.value = 'Design updated'
+    if (job) {
+      job.status = 'done'
+      job.statusMessage = 'Design updated'
+    }
     toastStore.success('Design refined!')
   } catch (err: unknown) {
     isGenerating.value = false
-    jobStatus.value = 'done' // Revert to done state
+    if (job) {
+      job.status = 'done' // Revert to done state
+    }
     const message = err instanceof Error ? err.message : 'Failed to refine design'
-    statusMessage.value = message
     toastStore.error(message)
   }
 }
 
+function handleJobChange(index: number) {
+  activeJobIndex.value = index
+  // Reset session and revision when switching jobs
+  currentSessionId.value = undefined
+  revision.value = 0
+  latestRevision.value = 0
+  // TODO: load latestRevision from the job if needed
+}
+
 function handleRevisionChange(rev: number) {
   revision.value = rev
+}
+
+function handleStartNew() {
+  jobs.value = []
+  activeJobIndex.value = 0
+  currentSessionId.value = undefined
+  revision.value = 0
+  latestRevision.value = 0
+  isGenerating.value = false
+  disconnectSSE()
+  if (route.query.jobId) {
+    router.replace({ query: {} })
+  }
 }
 
 function handleExampleClick(prompt: string) {
@@ -205,13 +283,15 @@ function handleExampleClick(prompt: string) {
           :job-id="currentJobId"
           :status="jobStatus"
           :status-message="statusMessage"
-          :versions="versions"
-          :files="files"
+          :jobs="jobs"
+          :active-job-index="activeJobIndex"
           :revision="revision"
           :latest-revision="latestRevision"
           @iterate="handleIterate"
           @example-click="handleExampleClick"
           @revision-change="handleRevisionChange"
+          @start-new="handleStartNew"
+          @job-change="handleJobChange"
         />
       </main>
     </div>

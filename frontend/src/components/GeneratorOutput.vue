@@ -6,12 +6,20 @@ import { getDownloadUrl } from '@/api/jobs'
 
 type JobStatus = 'queued' | 'running' | 'done' | 'failed'
 
+interface TrackedJob {
+  id: string
+  styleKey: string
+  styleName: string
+  status: JobStatus
+  statusMessage?: string
+}
+
 const props = defineProps<{
   jobId?: string
   status?: JobStatus
   statusMessage?: string
-  versions?: number
-  files?: string[]
+  jobs?: TrackedJob[]
+  activeJobIndex?: number
   revision?: number
   latestRevision?: number
 }>()
@@ -20,17 +28,16 @@ const emit = defineEmits<{
   iterate: [prompt: string]
   exampleClick: [prompt: string]
   revisionChange: [revision: number]
+  startNew: []
+  jobChange: [index: number]
 }>()
 
-const activeVersion = ref(1)
 const showCode = ref(false)
 const iteratePrompt = ref('')
 
 const hasJob = computed(() => !!props.jobId)
 const isComplete = computed(() => props.status === 'done')
-const versionCount = computed(() => props.versions || 1)
-
-const currentFile = computed(() => 'index.html')
+const hasMultipleJobs = computed(() => (props.jobs?.length || 0) > 1)
 
 const downloadUrl = computed(() => {
   if (!props.jobId) return ''
@@ -64,16 +71,27 @@ function handleIterate() {
       <div class="toolbar-left">
         <JobStatusBadge :status="status || 'queued'" :message="statusMessage" />
 
-        <!-- Version tabs -->
-        <div v-if="versionCount > 1" class="version-tabs">
+        <!-- Job tabs (when multiple styles/jobs) -->
+        <div v-if="hasMultipleJobs" class="job-tabs">
           <button
-            v-for="v in versionCount"
-            :key="v"
-            class="version-tab"
-            :class="{ active: activeVersion === v }"
-            @click="activeVersion = v"
+            v-for="(job, i) in jobs"
+            :key="job.id"
+            class="job-tab"
+            :class="{
+              active: activeJobIndex === i,
+              done: job.status === 'done',
+              failed: job.status === 'failed',
+              running: job.status === 'running',
+            }"
+            @click="emit('jobChange', i)"
           >
-            V{{ v }}
+            <span class="job-tab-status">
+              <span v-if="job.status === 'done'" class="dot dot-done"></span>
+              <span v-else-if="job.status === 'failed'" class="dot dot-failed"></span>
+              <span v-else-if="job.status === 'running'" class="dot dot-running"></span>
+              <span v-else class="dot dot-queued"></span>
+            </span>
+            {{ job.styleName || `Job ${i + 1}` }}
           </button>
         </div>
       </div>
@@ -103,6 +121,18 @@ function handleIterate() {
       </div>
 
       <div class="toolbar-right">
+        <button
+          v-if="isComplete"
+          class="toolbar-btn start-new-btn"
+          title="Start new generation"
+          @click="emit('startNew')"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span class="start-new-label">New</span>
+        </button>
         <button class="toolbar-btn" title="Copy code" @click="copyCode">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -169,7 +199,7 @@ function handleIterate() {
         v-else-if="!showCode"
         :key="`${jobId}-${revision || 0}`"
         :job-id="jobId!"
-        :filename="currentFile"
+        :filename="'index.html'"
         :revision="revision"
       />
 
@@ -219,12 +249,72 @@ function handleIterate() {
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--rule);
   background-color: var(--white);
+  gap: 0.75rem;
 }
 
 .toolbar-left {
   display: flex;
   align-items: center;
   gap: 1rem;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Job tabs */
+.job-tabs {
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  min-width: 0;
+}
+
+.job-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-family: var(--ff-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--ink-light);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.job-tab:hover {
+  border-color: var(--ink-light);
+}
+
+.job-tab.active {
+  color: var(--ink);
+  border-color: var(--ink);
+  background-color: rgba(16, 14, 11, 0.03);
+}
+
+.job-tab-status {
+  display: flex;
+  align-items: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-done { background-color: #22c55e; }
+.dot-failed { background-color: #ef4444; }
+.dot-running { background-color: #f59e0b; animation: pulse 1s ease-in-out infinite; }
+.dot-queued { background-color: var(--ink-light); opacity: 0.4; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 .revision-nav {
@@ -269,33 +359,7 @@ function handleIterate() {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.version-tabs {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.version-tab {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--ink-light);
-  background: transparent;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.version-tab:hover {
-  border-color: var(--ink-light);
-}
-
-.version-tab.active {
-  color: var(--white);
-  background-color: var(--accent);
-  border-color: var(--accent);
+  flex-shrink: 0;
 }
 
 .toolbar-btn {
@@ -321,6 +385,17 @@ function handleIterate() {
 .toolbar-btn.active {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.start-new-btn {
+  width: auto;
+  gap: 0.375rem;
+  padding: 0 0.625rem;
+}
+
+.start-new-label {
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .download-btn {

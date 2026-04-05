@@ -36,8 +36,8 @@ export async function api<T>(
     }
   }
 
-  // Add Content-Type for non-GET requests
-  if (!skipContentType && fetchOptions.method && fetchOptions.method !== 'GET') {
+  // Add Content-Type for non-GET requests that have a body
+  if (!skipContentType && fetchOptions.method && fetchOptions.method !== 'GET' && fetchOptions.body) {
     headers['Content-Type'] = 'application/json'
   }
 

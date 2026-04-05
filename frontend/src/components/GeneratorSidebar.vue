@@ -34,12 +34,13 @@ const selectedModel = ref<Model>('claude')
 const selectedMode = ref<Mode>('landing')
 const selectedVersions = ref(1)
 const aiPick = ref(false)
-const selectedStyle = ref<string | null>(props.preselectedStyle || null)
+const selectedStyles = ref<Set<string>>(new Set(props.preselectedStyle ? [props.preselectedStyle] : []))
+const showAllStyles = ref(false)
 
 const maxChars = 600
 const charCount = computed(() => prompt.value.length)
 
-// Style options (subset for quick selection - using correct backend keys)
+// All style options
 const styleOptions: StyleOption[] = [
   { key: 'editorial', name: 'Editorial', preview: 'Edit' },
   { key: 'minimalist', name: 'Minimalist', preview: 'Min' },
@@ -52,19 +53,41 @@ const styleOptions: StyleOption[] = [
   { key: 'neobrutalism', name: 'Neobrutalism', preview: 'NEO' },
   { key: 'retro', name: 'Retro', preview: 'Retro' },
   { key: 'newspaper', name: 'Newspaper', preview: 'NEWS' },
-  { key: 'playful', name: 'Playful', preview: 'Play' }
+  { key: 'playful', name: 'Playful', preview: 'Play' },
+  { key: 'glassmorphism', name: 'Glassmorphism', preview: 'Glass' },
+  { key: 'organic', name: 'Organic', preview: 'Org' },
+  { key: 'artDeco', name: 'Art Deco', preview: 'Deco' },
+  { key: 'neumorphism', name: 'Neumorphism', preview: 'Neu' },
+  { key: 'y2k', name: 'Y2K', preview: 'Y2K' },
+  { key: 'maximalist', name: 'Maximalist', preview: 'MAX' },
+  { key: 'cleanTech', name: 'Clean Tech', preview: 'Tech' },
+  { key: 'warmCorporate', name: 'Warm Corp', preview: 'Warm' },
+  { key: 'startupBold', name: 'Startup Bold', preview: 'Bold' },
+  { key: 'saasMarketing', name: 'SaaS', preview: 'SaaS' },
+  { key: 'dashboardUI', name: 'Dashboard', preview: 'Dash' },
+  { key: 'ecommerce', name: 'E-commerce', preview: 'Shop' },
+  { key: 'portfolio', name: 'Portfolio', preview: 'Folio' },
+  { key: 'documentation', name: 'Docs', preview: 'Docs' },
+  { key: 'healthcare', name: 'Healthcare', preview: 'Health' },
+  { key: 'fintech', name: 'Fintech', preview: 'Fin' },
+  { key: 'media', name: 'Media', preview: 'Media' },
+  { key: 'government', name: 'Government', preview: 'Gov' },
 ]
+
+const visibleStyles = computed(() =>
+  showAllStyles.value ? styleOptions : styleOptions.slice(0, 12)
+)
 
 // Initialize with preselected style
 watch(() => props.preselectedStyle, (newStyle) => {
   if (newStyle) {
-    selectedStyle.value = newStyle
+    selectedStyles.value = new Set([newStyle])
     aiPick.value = false
   }
 }, { immediate: true })
 
 const isValid = computed(() => {
-  return prompt.value.trim().length > 0 && (aiPick.value || selectedStyle.value)
+  return prompt.value.trim().length > 0 && (aiPick.value || selectedStyles.value.size > 0)
 })
 
 const user = computed(() => authStore.user)
@@ -88,13 +111,19 @@ function selectVersions(count: number) {
 function toggleAiPick() {
   aiPick.value = !aiPick.value
   if (aiPick.value) {
-    selectedStyle.value = null
+    selectedStyles.value.clear()
   }
 }
 
-function selectStyle(key: string) {
-  selectedStyle.value = key
+function toggleStyle(key: string) {
   aiPick.value = false
+  const s = new Set(selectedStyles.value)
+  if (s.has(key)) {
+    s.delete(key)
+  } else {
+    s.add(key)
+  }
+  selectedStyles.value = s
 }
 
 function handleSubmit() {
@@ -106,7 +135,7 @@ function handleSubmit() {
     mode: selectedMode.value,
     versions: selectedVersions.value,
     themeMode: aiPick.value ? 'auto' : 'explicit',
-    styles: aiPick.value ? undefined : [selectedStyle.value!]
+    styles: aiPick.value ? undefined : [...selectedStyles.value]
   })
 }
 
@@ -223,20 +252,25 @@ defineExpose({ setExamplePrompt })
       >
         <span class="ai-icon">&#10022;</span> Let AI pick based on my prompt
       </button>
+      <p v-if="selectedStyles.size > 1" class="gen-hint" style="margin-top: 0; margin-bottom: 0.75rem;">
+        {{ selectedStyles.size }} styles selected — one version per style
+      </p>
       <div class="gen-style-grid">
         <div
-          v-for="style in styleOptions"
+          v-for="style in visibleStyles"
           :key="style.key"
           class="gen-style-card"
-          :class="{ selected: selectedStyle === style.key && !aiPick }"
-          @click="selectStyle(style.key)"
+          :class="{ selected: selectedStyles.has(style.key) && !aiPick }"
+          @click="toggleStyle(style.key)"
         >
           <span class="gen-style-name">{{ style.name }}</span>
           <span class="gen-style-preview" :class="`sn-${style.key}`">{{ style.preview }}</span>
         </div>
       </div>
       <div class="style-link">
-        <RouterLink to="/styles" class="btn-ghost">Browse all 30 styles</RouterLink>
+        <button class="btn-ghost" @click="showAllStyles = !showAllStyles">
+          {{ showAllStyles ? 'Show fewer styles' : `Show all ${styleOptions.length} styles` }}
+        </button>
       </div>
     </div>
 
@@ -553,18 +587,40 @@ defineExpose({ setExamplePrompt })
 .sn-retro { font-weight: 900; }
 .sn-newspaper { font-family: var(--ff-display); font-weight: 900; }
 .sn-playful { font-weight: 700; }
+.sn-glassmorphism { font-weight: 300; font-style: italic; }
+.sn-organic { font-weight: 500; font-style: italic; }
+.sn-artDeco { font-family: var(--ff-display); letter-spacing: 0.1em; text-transform: uppercase; }
+.sn-neumorphism { font-weight: 300; }
+.sn-y2k { font-weight: 900; }
+.sn-maximalist { font-weight: 900; text-transform: uppercase; }
+.sn-cleanTech { font-weight: 400; letter-spacing: 0.05em; }
+.sn-warmCorporate { font-weight: 500; }
+.sn-startupBold { font-weight: 800; }
+.sn-saasMarketing { font-weight: 600; }
+.sn-dashboardUI { font-weight: 500; font-family: monospace; }
+.sn-ecommerce { font-weight: 600; }
+.sn-portfolio { font-family: var(--ff-display); font-weight: 400; }
+.sn-documentation { font-family: monospace; font-weight: 500; }
+.sn-healthcare { font-weight: 500; }
+.sn-fintech { font-weight: 600; letter-spacing: 0.05em; }
+.sn-media { font-weight: 700; }
+.sn-government { font-weight: 600; text-transform: uppercase; }
 
 .style-link {
   margin-top: 1rem;
 }
 
 .btn-ghost {
+  font-family: var(--ff-body);
   font-size: 0.8125rem;
   font-weight: 500;
   color: var(--ink-light);
   text-decoration: none;
+  background: none;
+  border: none;
   border-bottom: 1px solid var(--rule);
-  padding-bottom: 2px;
+  padding: 0 0 2px;
+  cursor: pointer;
   transition: color 0.2s ease, border-color 0.2s ease;
 }
 

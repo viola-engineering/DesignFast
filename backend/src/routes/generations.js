@@ -185,9 +185,12 @@ export default async function (app) {
 
       // Push jobs to Queen — if this fails, the transaction is rolled back
       try {
-        await queen
-          .queue('designfast-jobs')
-          .push(jobs.map(j => ({ data: j })));
+        for (const job of jobs) {
+          await queen
+            .queue('designfast-jobs')
+            .partition(job.id)
+            .push([{ data: job }]);
+        }
       } catch (queenErr) {
         await client.query('ROLLBACK');
         req.log.error({ err: queenErr }, 'Failed to push jobs to Queen');

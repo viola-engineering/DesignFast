@@ -14,6 +14,7 @@ export async function startWorker() {
     .autoAck(false)
     .renewLease(true, 5000)
     .each()
+    .concurrency(4)
     .consume(async (message) => {
       await processJob(message);
     })
