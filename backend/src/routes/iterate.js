@@ -387,9 +387,6 @@ Start by reading all the files now.`;
       jobId: s.job_id,
       model: s.model,
       status: s.status,
-      tokensIn: s.tokens_in,
-      tokensOut: s.tokens_out,
-      costUsd: s.cost_usd ? parseFloat(s.cost_usd).toFixed(4) : null,
       createdAt: s.created_at,
       messages: messages.map(m => ({
         id: m.id,

@@ -11,9 +11,6 @@ export interface JobDetail {
   version: number
   status: JobStatus
   errorMessage: string | null
-  tokensIn: number
-  tokensOut: number
-  costUsd: string
   durationMs: number
   createdAt: string
   startedAt: string | null

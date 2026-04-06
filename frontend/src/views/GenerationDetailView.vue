@@ -41,11 +41,6 @@ function formatDuration(ms: number): string {
   return `${(ms / 1000).toFixed(1)}s`
 }
 
-function formatTokens(count: number): string {
-  if (count >= 1000) return `${(count / 1000).toFixed(1)}k`
-  return count.toString()
-}
-
 function getModeLabel(mode: string): string {
   return mode === 'landing' ? 'Single page' : 'Multi-page'
 }
@@ -179,16 +174,8 @@ async function confirmDelete() {
         <!-- Usage stats -->
         <section class="detail-section stats-grid">
           <div class="stat-item">
-            <span class="stat-value">{{ formatTokens(generation.totalTokensIn) }}</span>
-            <span class="stat-label">Tokens In</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">{{ formatTokens(generation.totalTokensOut) }}</span>
-            <span class="stat-label">Tokens Out</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value">${{ generation.totalCostUsd }}</span>
-            <span class="stat-label">Total Cost</span>
+            <span class="stat-value">{{ generation.totalCredits }}</span>
+            <span class="stat-label">Credits Used</span>
           </div>
           <div class="stat-item">
             <span class="stat-value">{{ generation.jobsDone }}/{{ generation.jobCount }}</span>
@@ -212,9 +199,7 @@ async function confirmDelete() {
                   <span class="job-sep">·</span>
                   <span>{{ formatDuration(job.durationMs) }}</span>
                   <span class="job-sep">·</span>
-                  <span>{{ formatTokens(job.tokensIn + job.tokensOut) }} tokens</span>
-                  <span class="job-sep">·</span>
-                  <span>${{ job.costUsd }}</span>
+                  <span>{{ job.creditCost }} credit{{ job.creditCost !== 1 ? 's' : '' }}</span>
                 </div>
               </div>
               <div class="job-actions">

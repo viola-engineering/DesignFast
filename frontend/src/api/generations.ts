@@ -56,9 +56,7 @@ export interface JobDetail {
   provider: string
   version: number
   status: JobStatus
-  tokensIn: number
-  tokensOut: number
-  costUsd: string
+  creditCost: number
   durationMs: number
   createdAt: string
   completedAt: string | null
@@ -75,9 +73,7 @@ export interface GenerationDetail {
   jobCount: number
   jobsDone: number
   jobsFailed: number
-  totalTokensIn: number
-  totalTokensOut: number
-  totalCostUsd: string
+  totalCredits: number
   createdAt: string
   completedAt: string | null
   jobs: JobDetail[]

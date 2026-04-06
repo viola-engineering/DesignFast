@@ -286,9 +286,9 @@ export default async function (app) {
 
     const jobsDone = jobs.filter(j => j.status === 'done').length;
     const jobsFailed = jobs.filter(j => j.status === 'failed').length;
-    const totalTokensIn = jobs.reduce((s, j) => s + (j.tokens_in || 0), 0);
-    const totalTokensOut = jobs.reduce((s, j) => s + (j.tokens_out || 0), 0);
-    const totalCostUsd = jobs.reduce((s, j) => s + parseFloat(j.cost_usd || 0), 0);
+    const totalCredits = jobs
+      .filter(j => j.status === 'done')
+      .reduce((s, j) => s + (CREDIT_COSTS[j.provider] || 0), 0);
 
     return {
       id: gen.id,
@@ -301,9 +301,7 @@ export default async function (app) {
       jobCount: gen.job_count,
       jobsDone,
       jobsFailed,
-      totalTokensIn,
-      totalTokensOut,
-      totalCostUsd: totalCostUsd.toFixed(4),
+      totalCredits,
       createdAt: gen.created_at,
       completedAt: gen.completed_at,
       jobs: jobs.map(j => ({
@@ -314,9 +312,7 @@ export default async function (app) {
         provider: j.provider,
         version: j.version,
         status: j.status,
-        tokensIn: j.tokens_in,
-        tokensOut: j.tokens_out,
-        costUsd: j.cost_usd ? parseFloat(j.cost_usd).toFixed(4) : null,
+        creditCost: CREDIT_COSTS[j.provider] || 0,
         durationMs: j.duration_ms,
         createdAt: j.created_at,
         completedAt: j.completed_at,

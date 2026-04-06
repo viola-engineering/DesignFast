@@ -29,9 +29,6 @@ export interface SessionDetail {
   jobId: string
   model: string
   status: SessionStatus
-  tokensIn: number
-  tokensOut: number
-  costUsd: string
   createdAt: string
   messages: SessionMessage[]
 }

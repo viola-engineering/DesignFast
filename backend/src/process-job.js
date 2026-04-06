@@ -155,12 +155,6 @@ export async function processJob(message) {
           totalTokensIn += event.input_tokens || 0;
           totalTokensOut += event.output_tokens || 0;
           totalCostUsd += event.cost_usd || 0;
-          pushEvent(jobId, {
-            type: 'usage',
-            input_tokens: event.input_tokens,
-            output_tokens: event.output_tokens,
-            cost_usd: event.cost_usd,
-          });
           break;
         case 'error':
           pushEvent(jobId, { type: 'error', message: event.message });
