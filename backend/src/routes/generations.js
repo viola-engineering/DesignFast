@@ -46,6 +46,7 @@ export default async function (app) {
       versions = 1,
       models,
       fromJobId = null,
+      uploadIds = [],
     } = req.body || {};
 
     // Validation
@@ -78,6 +79,20 @@ export default async function (app) {
       const invalidStyles = requestedStyles.filter(s => !STYLES[s]);
       if (invalidStyles.length > 0) {
         return reply.code(400).send({ error: `Invalid styles: ${invalidStyles.join(', ')}` });
+      }
+    }
+
+    // Validate uploadIds
+    if (!Array.isArray(uploadIds)) {
+      return reply.code(400).send({ error: 'uploadIds must be an array' });
+    }
+    if (uploadIds.length > 0) {
+      const { rows: validUploads } = await query(
+        `SELECT id, purpose FROM designfast.uploads WHERE id = ANY($1) AND user_id = $2`,
+        [uploadIds, req.userId]
+      );
+      if (validUploads.length !== uploadIds.length) {
+        return reply.code(400).send({ error: 'One or more uploadIds are invalid' });
       }
     }
 
@@ -167,6 +182,7 @@ export default async function (app) {
             creditCost: limitCheck.billingMode === 'credits'
               ? (CREDIT_COSTS[modelCfg.providerName] || 0)
               : 0,
+            uploadIds,
           });
         }
       }
@@ -191,6 +207,24 @@ export default async function (app) {
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'queued', $9, $10)`,
           [job.id, generationId, req.userId, job.styleKey, job.styleName, job.model, job.provider, job.version, job.prompt, job.mode]
         );
+      }
+
+      // Link uploads to each job
+      if (uploadIds.length > 0) {
+        for (const job of jobs) {
+          for (const uploadId of uploadIds) {
+            // Look up purpose from the uploads table
+            const { rows: [upload] } = await client.query(
+              `SELECT purpose FROM designfast.uploads WHERE id = $1`,
+              [uploadId]
+            );
+            await client.query(
+              `INSERT INTO designfast.job_uploads (job_id, upload_id, purpose)
+               VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`,
+              [job.id, uploadId, upload.purpose]
+            );
+          }
+        }
       }
 
       // Push jobs to Queen — if this fails, the transaction is rolled back

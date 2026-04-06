@@ -44,18 +44,56 @@ async function serveFile(req, reply, jobId, filename, revisionParam) {
     .send(rows[0].content);
 }
 
+/**
+ * Serve an uploaded asset image linked to a job.
+ * Resolves: job → generation → job_uploads → uploads.data
+ */
+async function serveAsset(req, reply, jobId, filename) {
+  if (requireUUID(jobId, reply)) return;
+
+  const { rows } = await query(
+    `SELECT u.data, u.content_type
+     FROM designfast.job_uploads ju
+     JOIN designfast.uploads u ON u.id = ju.upload_id
+     WHERE ju.job_id = $1 AND u.filename = $2 AND ju.purpose = 'asset'
+     LIMIT 1`,
+    [jobId, filename]
+  );
+
+  if (rows.length === 0) {
+    return reply.code(404).send();
+  }
+
+  reply
+    .header('Content-Type', rows[0].content_type)
+    .header('Cache-Control', 'public, max-age=31536000, immutable')
+    .send(rows[0].data);
+}
+
 export default async function (app) {
+  // ── Asset routes (must be registered before the generic :filename routes) ──
+
+  // GET /preview/:jobId/r/:revision/assets/:filename
+  app.get('/preview/:jobId/r/:revision/assets/:filename', async (req, reply) => {
+    const { jobId, filename } = req.params;
+    return serveAsset(req, reply, jobId, filename);
+  });
+
+  // GET /preview/:jobId/assets/:filename
+  app.get('/preview/:jobId/assets/:filename', async (req, reply) => {
+    const { jobId, filename } = req.params;
+    return serveAsset(req, reply, jobId, filename);
+  });
+
+  // ── File routes ────────────────────────────────────────────────────────────
+
   // GET /preview/:jobId/r/:revision/:filename — revision in path
-  // All relative URLs in HTML (style.css, script.js) resolve under the
-  // same /preview/:jobId/r/:revision/ prefix, so every asset gets the
-  // correct revision automatically.
   app.get('/preview/:jobId/r/:revision/:filename', async (req, reply) => {
     const { jobId, revision, filename } = req.params;
     return serveFile(req, reply, jobId, filename, revision);
   });
 
   // GET /preview/:jobId/:filename — no revision (serves latest)
-  // Kept for backwards compat & initial generation preview before any refine.
   app.get('/preview/:jobId/:filename', async (req, reply) => {
     const { jobId, filename } = req.params;
     return serveFile(req, reply, jobId, filename, req.query.revision);

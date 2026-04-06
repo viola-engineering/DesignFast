@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { uploadFile, deleteUpload, listUploads, getThumbnailUrl, updateUploadPurpose } from '@/api/uploads'
+import type { Upload } from '@/api/uploads'
 
 type Model = 'claude' | 'gemini'
 type Mode = 'landing' | 'webapp'
@@ -24,6 +26,7 @@ const emit = defineEmits<{
     versions: number
     themeMode: 'auto' | 'explicit'
     styles?: string[]
+    uploadIds?: string[]
   }]
 }>()
 
@@ -41,6 +44,79 @@ const showAllStyles = ref(false)
 
 const maxChars = 2000
 const charCount = computed(() => prompt.value.length)
+
+// ── Uploads state ────────────────────────────────────────────────────
+const uploads = ref<Upload[]>([])
+const uploadBytesUsed = ref(0)
+const isUploading = ref(false)
+const uploadError = ref('')
+
+const MAX_UPLOAD_BYTES: number = 10_485_760 // 10 MB — matches plan
+
+const uploadStoragePct = computed(() => {
+  if (MAX_UPLOAD_BYTES <= 0) return 0
+  return Math.min(100, Math.round((uploadBytesUsed.value / MAX_UPLOAD_BYTES) * 100))
+})
+
+const allUploadIds = computed(() => uploads.value.map(u => u.id))
+
+async function loadUploads() {
+  if (!isPro.value) return
+  try {
+    const res = await listUploads()
+    uploadBytesUsed.value = res.bytesUsed
+    uploads.value = res.uploads
+  } catch { /* ignore — non-critical */ }
+}
+
+async function handleFileUpload(event: Event) {
+  const input = event.target as HTMLInputElement
+  const files = input.files
+  if (!files || files.length === 0) return
+
+  uploadError.value = ''
+  isUploading.value = true
+
+  try {
+    for (const file of files) {
+      // Default: screenshots/large images → reference, small images → asset.
+      // User can toggle after upload.
+      const result = await uploadFile(file, 'reference')
+      uploadBytesUsed.value += result.sizeBytes
+      uploads.value.push(result)
+    }
+  } catch (err: unknown) {
+    uploadError.value = err instanceof Error ? err.message : 'Upload failed'
+  } finally {
+    isUploading.value = false
+    input.value = ''
+  }
+}
+
+async function toggleUploadPurpose(upload: Upload) {
+  const newPurpose = upload.purpose === 'reference' ? 'asset' : 'reference'
+  try {
+    // Update on server
+    await updateUploadPurpose(upload.id, newPurpose)
+    // Update locally
+    upload.purpose = newPurpose
+  } catch { /* ignore */ }
+}
+
+async function handleDeleteUpload(id: string) {
+  try {
+    const upload = uploads.value.find(u => u.id === id)
+    await deleteUpload(id)
+    uploads.value = uploads.value.filter(u => u.id !== id)
+    if (upload) {
+      uploadBytesUsed.value = Math.max(0, uploadBytesUsed.value - upload.sizeBytes)
+    }
+  } catch { /* ignore */ }
+}
+
+onMounted(() => {
+  loadUploads()
+})
 
 // All style options
 const styleOptions: StyleOption[] = [
@@ -168,7 +244,8 @@ function handleSubmit() {
     mode: selectedMode.value,
     versions: selectedVersions.value,
     themeMode: aiPick.value ? 'auto' : 'explicit',
-    styles: aiPick.value ? undefined : [...selectedStyles.value]
+    styles: aiPick.value ? undefined : [...selectedStyles.value],
+    uploadIds: allUploadIds.value.length > 0 ? allUploadIds.value : undefined,
   })
 }
 
@@ -194,6 +271,79 @@ defineExpose({ setExamplePrompt })
         :disabled="disabled"
       ></textarea>
       <p class="gen-char-count">{{ charCount }} / {{ maxChars }}</p>
+    </div>
+
+    <!-- Step 1.5: Images (Pro only) -->
+    <div class="gen-section">
+      <p class="gen-section-label">
+        <span class="num">&#128206;</span> Images
+        <span v-if="!isPro" class="pro-badge-sm">Pro</span>
+      </p>
+
+      <!-- Free users: upgrade prompt -->
+      <div v-if="!isPro" class="upload-locked">
+        <p class="upload-locked-text">Upload reference designs and your own assets (logos, photos).</p>
+      </div>
+
+      <!-- Pro users: unified upload UI -->
+      <template v-else>
+        <!-- Uploaded images list -->
+        <div v-if="uploads.length > 0" class="upload-list">
+          <div v-for="u in uploads" :key="u.id" class="upload-item">
+            <img :src="getThumbnailUrl(u.id)" :alt="u.filename" class="upload-item-thumb" />
+            <div class="upload-item-info">
+              <span class="upload-item-name">{{ u.filename }}</span>
+              <button
+                class="upload-purpose-toggle"
+                :class="u.purpose"
+                :disabled="disabled"
+                @click="toggleUploadPurpose(u)"
+              >
+                {{ u.purpose === 'reference' ? '🎨 Reference' : '📁 Asset' }}
+              </button>
+            </div>
+            <button
+              class="upload-delete-btn"
+              title="Remove"
+              :disabled="disabled"
+              @click="handleDeleteUpload(u.id)"
+            >&times;</button>
+          </div>
+        </div>
+
+        <!-- Drop zone / add button -->
+        <label class="upload-drop-zone" :class="{ disabled: disabled || isUploading }">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/svg+xml"
+            multiple
+            class="upload-file-input"
+            :disabled="disabled || isUploading"
+            @change="handleFileUpload($event)"
+          />
+          <span v-if="isUploading" class="upload-drop-label">Uploading…</span>
+          <span v-else-if="uploads.length === 0" class="upload-drop-label">📷 Drop images or click to browse</span>
+          <span v-else class="upload-drop-label">+ Add more images</span>
+        </label>
+
+        <p class="upload-hint">
+          <strong>🎨 Reference</strong> = AI studies the design &nbsp;
+          <strong>📁 Asset</strong> = included in website. Click to toggle.
+        </p>
+
+        <!-- Error -->
+        <p v-if="uploadError" class="upload-error">{{ uploadError }}</p>
+
+        <!-- Storage bar -->
+        <div class="upload-storage">
+          <div class="upload-storage-bar">
+            <div class="upload-storage-fill" :style="{ width: uploadStoragePct + '%' }"></div>
+          </div>
+          <p class="upload-storage-text">
+            {{ (uploadBytesUsed / 1024 / 1024).toFixed(1) }} MB / {{ (MAX_UPLOAD_BYTES / 1024 / 1024).toFixed(0) }} MB
+          </p>
+        </div>
+      </template>
     </div>
 
     <!-- Step 2: AI Model -->
@@ -757,5 +907,182 @@ defineExpose({ setExamplePrompt })
   color: var(--ink-light);
   text-align: center;
   margin-top: 0.75rem;
+}
+
+/* ── Upload section ──────────────────────────────────────────────── */
+
+.pro-badge-sm {
+  display: inline-block;
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.1em 0.45em;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.35em;
+}
+
+.upload-locked {
+  padding: 0.75rem;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.upload-locked-text {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  margin: 0;
+}
+
+.upload-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--surface, #f7f7f7);
+  border-radius: 8px;
+}
+
+.upload-item-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.upload-item-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.upload-item-name {
+  font-size: 0.7rem;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-purpose-toggle {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.upload-purpose-toggle.reference {
+  background: #ede9fe;
+  color: #6d28d9;
+  border-color: #c4b5fd;
+}
+.upload-purpose-toggle.asset {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #7dd3fc;
+}
+.upload-purpose-toggle:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.upload-delete-btn {
+  background: none;
+  border: none;
+  color: var(--ink-light);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.upload-delete-btn:hover {
+  color: var(--danger, #e53e3e);
+}
+
+.upload-drop-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: 1.5px dashed var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.upload-drop-zone:hover:not(.disabled) {
+  border-color: var(--accent);
+  background: var(--surface-hover, rgba(0,0,0,0.02));
+}
+.upload-drop-zone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.upload-drop-label {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+}
+
+.upload-file-input {
+  display: none;
+}
+
+.upload-hint {
+  font-size: 0.65rem;
+  color: var(--ink-light);
+  margin: 0.35rem 0 0;
+  line-height: 1.4;
+}
+
+.upload-error {
+  font-size: 0.7rem;
+  color: var(--danger, #e53e3e);
+  margin: 0.25rem 0 0;
+}
+
+.upload-storage {
+  margin-top: 0.5rem;
+}
+
+.upload-storage-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.upload-storage-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.upload-storage-text {
+  font-size: 0.65rem;
+  color: var(--ink-light);
+  margin: 0.2rem 0 0;
 }
 </style>

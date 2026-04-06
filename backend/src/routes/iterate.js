@@ -24,13 +24,27 @@ export default async function (app) {
     const { jobId } = req.params;
     if (requireUUID(jobId, reply)) return;
 
-    const { model: explicitModelKey, message } = req.body || {};
+    const { model: explicitModelKey, message, uploadIds = [] } = req.body || {};
 
     if (message !== undefined && (typeof message !== 'string' || message.trim().length === 0)) {
       return reply.code(400).send({ error: 'Message must be a non-empty string when provided' });
     }
     if (message && message.trim().length > 2000) {
       return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
+    }
+    if (!Array.isArray(uploadIds)) {
+      return reply.code(400).send({ error: 'uploadIds must be an array' });
+    }
+
+    // Validate upload ownership
+    if (uploadIds.length > 0) {
+      const { rows: validUploads } = await query(
+        `SELECT id FROM designfast.uploads WHERE id = ANY($1) AND user_id = $2`,
+        [uploadIds, req.userId]
+      );
+      if (validUploads.length !== uploadIds.length) {
+        return reply.code(400).send({ error: 'One or more uploadIds are invalid' });
+      }
     }
 
     // Verify job ownership and status
@@ -89,6 +103,21 @@ export default async function (app) {
       [sessionId, jobId, req.userId, modelCfg.model]
     );
 
+    // Link any new uploads to the job
+    if (uploadIds.length > 0) {
+      for (const uploadId of uploadIds) {
+        const { rows: [upload] } = await query(
+          `SELECT purpose FROM designfast.uploads WHERE id = $1`,
+          [uploadId]
+        );
+        await query(
+          `INSERT INTO designfast.job_uploads (job_id, upload_id, purpose)
+           VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`,
+          [jobId, uploadId, upload.purpose]
+        );
+      }
+    }
+
     // Push task to Queen — the iterate worker will do the heavy lifting
     await queen
       .queue('designfast-iterate')
@@ -122,13 +151,27 @@ export default async function (app) {
     const { sessionId } = req.params;
     if (requireUUID(sessionId, reply)) return;
 
-    const { message } = req.body || {};
+    const { message, uploadIds = [] } = req.body || {};
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return reply.code(400).send({ error: 'Message is required' });
     }
     if (message.trim().length > 2000) {
       return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
+    }
+    if (!Array.isArray(uploadIds)) {
+      return reply.code(400).send({ error: 'uploadIds must be an array' });
+    }
+
+    // Validate upload ownership
+    if (uploadIds.length > 0) {
+      const { rows: validUploads } = await query(
+        `SELECT id FROM designfast.uploads WHERE id = ANY($1) AND user_id = $2`,
+        [uploadIds, req.userId]
+      );
+      if (validUploads.length !== uploadIds.length) {
+        return reply.code(400).send({ error: 'One or more uploadIds are invalid' });
+      }
     }
 
     // Verify session ownership
@@ -173,6 +216,7 @@ export default async function (app) {
           messageId,
           message: message.trim(),
           userId: req.userId,
+          uploadIds,
         },
       }]);
 

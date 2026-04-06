@@ -442,7 +442,11 @@ RULES:
 
 5. Write style.css FIRST, then index.html.
 
-6. DO NOT explain anything. Just create the two files.`;
+6. If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it BEFORE designing.
+   Study the page content, structure, copy, branding, and layout. Use what you learn to inform the design.
+   If the user asks to replicate or reference it, match the structure and feel as closely as possible.
+
+7. DO NOT explain anything. Just create the files.`;
 
 export const WEBAPP_INSTRUCTIONS = `You are a world-class web designer and frontend developer. Your job is to create a beautiful, complete, multi-page web application prototype.
 
@@ -479,7 +483,11 @@ RULES:
 
 6. Write style.css FIRST, then app.js, then each HTML page starting with index.html.
 
-7. DO NOT explain anything. Just create the files.`;
+7. If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it BEFORE designing.
+   Study the page content, structure, copy, branding, and layout. Use what you learn to inform the design.
+   If the user asks to replicate or reference it, match the structure and feel as closely as possible.
+
+8. DO NOT explain anything. Just create the files.`;
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -499,32 +507,81 @@ function buildStyleCatalog() {
 /**
  * Build the full prompt for a generation job.
  *
- * @param {object} job - Job data with: prompt, mode, styleKey, stylePrompt, version, fromFiles
+ * @param {object} job - Job data with: prompt, mode, styleKey, stylePrompt, version, fromFiles,
+ *                       hasReferenceImages, assets
  * @param {string} outputDir - Working directory where the agent will write files
  * @returns {string} The complete prompt to pass to agent.run()
  */
 export function buildPrompt(job, outputDir) {
-  const baseInstructions = job.mode === 'webapp'
-    ? WEBAPP_INSTRUCTIONS
-    : LANDING_INSTRUCTIONS;
+  const hasRefImage = !!job.hasReferenceImages;
+  const isWebapp = job.mode === 'webapp';
 
-  let prompt = baseInstructions + '\n\n';
+  let prompt = '';
 
-  // Add style directive
-  if (job.stylePrompt) {
-    // Explicit style or synth-generated style
-    prompt += job.stylePrompt + '\n\n';
-  }
+  // ── When a reference image is provided, it is the PRIMARY directive ──────
+  // The prompt is restructured: reference first, minimal technical rules,
+  // NO style presets or variation nudges (the image IS the style).
+  if (hasRefImage) {
+    prompt += `You are a world-class web designer. The user has attached a REFERENCE IMAGE (screenshot or design mockup).
 
-  // Add variation nudge
-  if (job.version > 0 && job.version <= VARIATION_NUDGES.length) {
-    const nudge = VARIATION_NUDGES[job.version - 1];
-    if (nudge) {
-      prompt += `CREATIVE DIRECTION: ${nudge}\n\n`;
+YOUR #1 PRIORITY: Recreate the design in the reference image as faithfully as possible.
+This means matching:
+- The EXACT color palette — extract specific hex colors from the image and use them
+- The EXACT layout structure — same header style, hero layout, section arrangement, footer
+- The typography — same font style (serif/sans-serif), sizes, weights, spacing
+- The spacing rhythm, border styles, shadows, rounded corners
+- The overall visual identity and polish level
+- The content structure and section ordering
+
+The reference image is a DESIGN REFERENCE ONLY.
+DO NOT embed, save, or reference the image file itself in any HTML/CSS/JS.
+Recreate everything from scratch using code.
+
+`;
+
+    // Technical rules only (no design guidance)
+    if (isWebapp) {
+      prompt += `TECHNICAL RULES:
+1. Create these files: style.css (all custom CSS), app.js (shared JS), index.html (main page), and additional .html pages as needed.
+2. Every .html page must include: <script src="https://cdn.tailwindcss.com"></script>, <link rel="stylesheet" href="style.css">, <script src="app.js" defer></script>.
+3. Every page must have consistent navigation linking to all other pages.
+4. NEVER use style="..." attributes — use Tailwind classes or custom classes in style.css.
+5. Include Google Fonts via <link> if the reference uses web fonts.
+6. Make it responsive and self-contained.\n\n`;
+    } else {
+      prompt += `TECHNICAL RULES:
+1. Create exactly TWO files: style.css (all custom CSS) and index.html (the complete page).
+2. index.html must include: <script src="https://cdn.tailwindcss.com"></script> and <link rel="stylesheet" href="style.css">.
+3. NEVER use style="..." attributes — use Tailwind classes or custom classes in style.css.
+4. Include Google Fonts via <link> if the reference uses web fonts.
+5. Make it responsive and self-contained.
+6. Write style.css FIRST, then index.html.\n\n`;
+    }
+
+    prompt += `If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it FIRST.
+Extract the real text content, branding, and page structure from the live site.
+Combined with the reference image, produce a faithful recreation.\n\n`;
+
+  } else {
+    // ── Standard flow: no reference image ──────────────────────────────────
+    const baseInstructions = isWebapp ? WEBAPP_INSTRUCTIONS : LANDING_INSTRUCTIONS;
+    prompt += baseInstructions + '\n\n';
+
+    // Style directive
+    if (job.stylePrompt) {
+      prompt += job.stylePrompt + '\n\n';
+    }
+
+    // Variation nudge
+    if (job.version > 0 && job.version <= VARIATION_NUDGES.length) {
+      const nudge = VARIATION_NUDGES[job.version - 1];
+      if (nudge) {
+        prompt += `CREATIVE DIRECTION: ${nudge}\n\n`;
+      }
     }
   }
 
-  // Add reference files instruction
+  // Reference code files (fromJobId — design language replication)
   if (job.fromFiles && job.fromFiles.length > 0) {
     prompt += `\nREFERENCE DESIGN:
 Before writing any files, you MUST use your read tool to study the design language in these reference files:
@@ -536,11 +593,34 @@ Then read index.html to understand the structural patterns, Tailwind class usage
 IMPORTANT: Replicate the DESIGN LANGUAGE from these reference files — same colors, font choices, spacing rhythm, border styles, shadow styles, animation patterns, and component styling. You are NOT copying the content or layout — you are extracting the visual system and applying it to the NEW website described below.\n\n`;
   }
 
-  // Add the user's prompt
+  // User asset images
+  if (job.assets && job.assets.length > 0) {
+    const assetList = job.assets.map(a => {
+      const dims = a.width && a.height ? ` (${a.width}×${a.height}px)` : '';
+      return `  - assets/${a.filename}${dims}`;
+    }).join('\n');
+
+    prompt += `USER ASSETS:
+The user has provided these image files for use in the website:
+${assetList}
+
+RULES for assets:
+- Use these EXACT relative paths in your HTML/CSS, for example:
+    <img src="assets/${job.assets[0].filename}" alt="...">
+    background-image: url('assets/${job.assets[0].filename}');
+- These are real image files that will be served at these paths in the preview.
+- Use them where appropriate — logos in the navbar/footer, photos in hero sections, etc.
+- Do NOT use placeholder images or emoji icons when a real user asset is available.
+- Always include descriptive alt text on <img> tags.\n\n`;
+  }
+
+  // User prompt
   prompt += `WEBSITE TO CREATE:\n${job.prompt}`;
 
-  // Tell the agent to write files in the output directory
+  // Output directory
   prompt += `\n\nWrite all files to the current working directory: ${outputDir}`;
+
+  prompt += `\n\nDO NOT explain anything. Just create the files.`;
 
   return prompt;
 }

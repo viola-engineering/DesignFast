@@ -171,6 +171,37 @@ UPDATE designfast.users SET credits_limit = 100 WHERE plan = 'pro';
 
 -- Update existing free users to new limit
 UPDATE designfast.users SET generations_limit = 3 WHERE plan = 'free' AND generations_limit = 5;
+
+-- Uploads: image storage for reference designs and user assets
+CREATE TABLE IF NOT EXISTS designfast.uploads (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES designfast.users ON DELETE CASCADE,
+  filename text NOT NULL,
+  original_name text NOT NULL,
+  content_type text NOT NULL,
+  size_bytes int NOT NULL,
+  width int,
+  height int,
+  data bytea NOT NULL,
+  purpose text NOT NULL DEFAULT 'asset',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_uploads_user_id ON designfast.uploads(user_id);
+
+-- Link uploads to jobs (covers both initial generation and iterate-added assets)
+CREATE TABLE IF NOT EXISTS designfast.job_uploads (
+  job_id uuid NOT NULL REFERENCES designfast.jobs ON DELETE CASCADE,
+  upload_id uuid NOT NULL REFERENCES designfast.uploads ON DELETE CASCADE,
+  purpose text NOT NULL DEFAULT 'asset',
+  PRIMARY KEY (job_id, upload_id)
+);
+CREATE INDEX IF NOT EXISTS idx_job_uploads_job_id ON designfast.job_uploads(job_id);
+
+-- Track total upload storage per user for quota enforcement
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN uploads_bytes_used bigint NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
 `;
 
 async function migrate() {

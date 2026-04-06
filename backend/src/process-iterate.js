@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { mkdtempSync, writeFileSync, readdirSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -98,6 +98,36 @@ async function handleStart(task) {
 
     const fileList = files.map(f => f.filename);
 
+    // ── Fetch uploads linked to this job (from generation + any iterate additions) ──
+    const referenceImages = []; // ImageInput[] for LLM vision
+    const assetMeta = [];       // metadata for init prompt
+
+    const { rows: uploads } = await query(
+      `SELECT u.filename, u.content_type, u.width, u.height, u.size_bytes, u.data, ju.purpose
+       FROM designfast.job_uploads ju
+       JOIN designfast.uploads u ON u.id = ju.upload_id
+       WHERE ju.job_id = $1`,
+      [jobId]
+    );
+
+    for (const u of uploads) {
+      if (u.purpose === 'reference') {
+        referenceImages.push({
+          data: u.data.toString('base64'),
+          mimeType: u.content_type,
+        });
+      } else if (u.purpose === 'asset') {
+        const assetsDir = join(tempDir, 'assets');
+        mkdirSync(assetsDir, { recursive: true });
+        writeFileSync(join(assetsDir, u.filename), u.data);
+        assetMeta.push({
+          filename: u.filename,
+          width: u.width,
+          height: u.height,
+        });
+      }
+    }
+
     // Create agent
     const provider = createProvider({ name: modelCfg.providerName, apiKey });
     const agentDb = new DatabaseImpl();
@@ -140,13 +170,31 @@ async function handleStart(task) {
     });
 
     // Init prompt — agent reads all project files
+    let assetBlock = '';
+    if (assetMeta.length > 0) {
+      const assetList = assetMeta.map(a => {
+        const dims = a.width && a.height ? ` (${a.width}×${a.height}px)` : '';
+        return `  - assets/${a.filename}${dims}`;
+      }).join('\n');
+      assetBlock = `\nUSER ASSETS available in the project:
+${assetList}
+Use these EXACT relative paths (e.g. assets/${assetMeta[0].filename}) in HTML/CSS.\n`;
+    }
+
+    let refBlock = '';
+    if (referenceImages.length > 0) {
+      refBlock = `\nREFERENCE IMAGE:
+The user provided a reference image showing their desired visual style.
+Keep this design direction in mind when making changes.\n`;
+    }
+
     const initPrompt = `You are a world-class web designer and developer working on an existing project.
 
 The project files are in "${tempDir}/". The files are:
 ${fileList.map(f => `  - ${tempDir}/${f}`).join('\n')}
 
 FIRST: Use your read tool to read ALL of these files so you understand the current state of the project. Start with style.css, then the HTML files, then any JS files.
-
+${refBlock}${assetBlock}
 RULES:
 - When the user asks for changes, modify the existing files in "${tempDir}/" using the edit tool or write tool.
 - Always re-read a file before editing it if you haven't read it recently in this conversation.
@@ -155,10 +203,13 @@ RULES:
 - Keep all file paths relative within the "${tempDir}/" folder.
 - After making changes, briefly confirm what you changed (one line).
 - Do NOT rewrite entire files unless necessary — prefer targeted edits.
+- If the user provides a URL (https://...), use your WebFetch tool to visit it and study the content, structure, and design before making changes.
 
 Start by reading all the files now.`;
 
-    const session = await agent.run(initPrompt);
+    // NOTE: AgentLoop.run() expects ImageInput[] directly as the 2nd arg,
+    // NOT wrapped in { images }. The .d.ts is misleading.
+    const session = await agent.run(initPrompt, referenceImages.length > 0 ? referenceImages : undefined);
 
     // Store session in memory.
     // Object.assign mutates liveRef in-place so live === liveRef.
@@ -231,9 +282,10 @@ Start by reading all the files now.`;
 
 /**
  * Handle 'iterate-send': continue agent conversation with user message.
+ * Supports optional uploadIds for new reference images or assets.
  */
 async function handleSend(task) {
-  const { sessionId, messageId, message, userId } = task;
+  const { sessionId, messageId, message, userId, uploadIds = [] } = task;
 
   const live = activeSessions.get(sessionId);
   if (!live) {
@@ -255,7 +307,46 @@ async function handleSend(task) {
       }
     }
 
-    const result = await runSend(sessionId, live, message);
+    // Process new uploads for this message
+    const sendImages = []; // reference images → vision input
+    let assetNote = '';    // note appended to message about new assets
+
+    if (uploadIds.length > 0) {
+      const { rows: uploads } = await query(
+        `SELECT id, filename, content_type, width, height, size_bytes, data, purpose
+         FROM designfast.uploads WHERE id = ANY($1) AND user_id = $2`,
+        [uploadIds, userId]
+      );
+
+      for (const u of uploads) {
+        if (u.purpose === 'reference') {
+          sendImages.push({
+            data: u.data.toString('base64'),
+            mimeType: u.content_type,
+          });
+        } else if (u.purpose === 'asset') {
+          // Write new asset to the session's temp dir
+          const assetsDir = join(live.tempDir, 'assets');
+          mkdirSync(assetsDir, { recursive: true });
+          writeFileSync(join(assetsDir, u.filename), u.data);
+
+          // Link to job so preview can serve it
+          await query(
+            `INSERT INTO designfast.job_uploads (job_id, upload_id, purpose)
+             VALUES ($1, $2, 'asset') ON CONFLICT DO NOTHING`,
+            [live.jobId, u.id]
+          );
+
+          const dims = u.width && u.height ? ` (${u.width}×${u.height}px)` : '';
+          assetNote += `\n[New asset available: assets/${u.filename}${dims} — use it as <img src="assets/${u.filename}">]`;
+        }
+      }
+    }
+
+    // Build the final message with optional asset notes
+    const fullMessage = assetNote ? message + assetNote : message;
+
+    const result = await runSend(sessionId, live, fullMessage, sendImages);
 
     await pushEvent(sessionId, {
       type: 'done',
@@ -272,8 +363,12 @@ async function handleSend(task) {
 
 /**
  * Shared logic: run agent with a user message, save files, return result.
+ * @param {string} sessionId
+ * @param {object} live - active session from activeSessions map
+ * @param {string} message - user message
+ * @param {Array} images - optional ImageInput[] for vision (reference images)
  */
-async function runSend(sessionId, live, message) {
+async function runSend(sessionId, live, message, images = []) {
   // Snapshot files before
   const filesBefore = new Set(readdirSync(live.tempDir).filter(f => /\.(html|css|js)$/.test(f)));
 
@@ -288,7 +383,8 @@ async function runSend(sessionId, live, message) {
   live._assistantText = '';
   live._collectText = true;
 
-  await live.agent.continueSession(live.agentSessionId, message);
+  // NOTE: continueSession() expects ImageInput[] directly as the 3rd arg.
+  await live.agent.continueSession(live.agentSessionId, message, images.length > 0 ? images : undefined);
 
   live._collectText = false;
   const assistantText = live._assistantText;

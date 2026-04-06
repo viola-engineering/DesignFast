@@ -11,6 +11,7 @@ export const PLANS = {
     allowedModels: ['gemini'],
     byokEnabled: false,
     byokGenerationCap: 0,
+    maxUploadBytes: 0,
   },
   pro: {
     generationsPerMonth: 3, // fallback allowance when credits exhausted
@@ -20,6 +21,7 @@ export const PLANS = {
     allowedModels: ['gemini', 'claude'],
     byokEnabled: true,
     byokGenerationCap: 200,
+    maxUploadBytes: 10_485_760, // 10 MB
   },
 };
 

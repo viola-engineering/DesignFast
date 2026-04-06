@@ -9,3 +9,11 @@ export const db = new Pool({
 export async function query(text, params) {
   return db.query(text, params);
 }
+
+/**
+ * Get a dedicated client from the pool for transactions.
+ * Caller MUST call client.release() when done.
+ */
+export async function getClient() {
+  return db.connect();
+}

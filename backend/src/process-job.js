@@ -1,4 +1,4 @@
-import { mkdtempSync, readdirSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readdirSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import {
@@ -69,7 +69,7 @@ async function pushEvent(jobId, event) {
  */
 export async function processJob(message) {
   const job = message.data || message;
-  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, fromJobId, billingMode, creditCost } = job;
+  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, fromJobId, billingMode, creditCost, uploadIds = [] } = job;
 
   let tempDir;
   let agentDb;
@@ -94,11 +94,43 @@ export async function processJob(message) {
         [fromJobId]
       );
       if (refFiles.length > 0) {
-        const { writeFileSync } = await import('node:fs');
         for (const f of refFiles) {
           writeFileSync(join(tempDir, f.filename), f.content, 'utf8');
         }
         fromFiles = refFiles.map(f => ({ filename: f.filename }));
+      }
+    }
+
+    // ── Fetch uploads linked to this job ──────────────────────────────
+    const referenceImages = []; // ImageInput[] for LLM vision
+    const assetMeta = [];       // metadata for prompt builder
+
+    if (uploadIds.length > 0) {
+      const { rows: uploads } = await query(
+        `SELECT id, filename, content_type, size_bytes, width, height, data, purpose
+         FROM designfast.uploads WHERE id = ANY($1)`,
+        [uploadIds]
+      );
+
+      for (const u of uploads) {
+        if (u.purpose === 'reference') {
+          // Reference image → pass to LLM as base64 vision input
+          referenceImages.push({
+            data: u.data.toString('base64'),
+            mimeType: u.content_type,
+          });
+        } else if (u.purpose === 'asset') {
+          // Asset image → write to tempDir/assets/ for the agent
+          const assetsDir = join(tempDir, 'assets');
+          mkdirSync(assetsDir, { recursive: true });
+          writeFileSync(join(assetsDir, u.filename), u.data);
+          assetMeta.push({
+            filename: u.filename,
+            width: u.width,
+            height: u.height,
+            sizeBytes: u.size_bytes,
+          });
+        }
       }
     }
 
@@ -118,7 +150,8 @@ export async function processJob(message) {
 
     // Build the full prompt
     const fullPrompt = buildPrompt(
-      { prompt, mode, styleKey, stylePrompt, version, fromFiles },
+      { prompt, mode, styleKey, stylePrompt, version, fromFiles,
+        hasReferenceImages: referenceImages.length > 0, assets: assetMeta },
       tempDir
     );
 
@@ -162,8 +195,10 @@ export async function processJob(message) {
       }
     });
 
-    // Run the agent
-    await agent.run(fullPrompt);
+    // Run the agent (with reference images if provided)
+    // NOTE: AgentLoop.run() expects ImageInput[] directly as the 2nd arg,
+    // NOT wrapped in { images }. The .d.ts is misleading.
+    await agent.run(fullPrompt, referenceImages.length > 0 ? referenceImages : undefined);
 
     // Read generated files from temp dir and store in Postgres
     const generatedFiles = readdirSync(tempDir).filter(f =>

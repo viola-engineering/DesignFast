@@ -2,6 +2,7 @@ import 'dotenv/config';
 import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
+import multipart from '@fastify/multipart';
 
 import authRoutes from './routes/auth.js';
 import generationsRoutes from './routes/generations.js';
@@ -10,6 +11,7 @@ import previewRoutes from './routes/preview.js';
 import iterateRoutes from './routes/iterate.js';
 import accountRoutes from './routes/account.js';
 import billingRoutes from './routes/billing.js';
+import uploadsRoutes from './routes/uploads.js';
 
 import { initQueues } from './queen-setup.js';
 import { startWorker, startIterateWorker } from './worker.js';
@@ -22,6 +24,12 @@ await app.register(cors, {
   origin: true,
   credentials: true,
 });
+await app.register(multipart, {
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5 MB per file
+    files: 1,                   // one file per request
+  },
+});
 
 // Register route plugins — routes define their own full paths
 await app.register(authRoutes);
@@ -31,6 +39,7 @@ await app.register(previewRoutes);
 await app.register(iterateRoutes);
 await app.register(accountRoutes);
 await app.register(billingRoutes);
+await app.register(uploadsRoutes);
 
 // Initialize queues and start worker
 try {

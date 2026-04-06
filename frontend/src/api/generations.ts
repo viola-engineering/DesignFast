@@ -13,6 +13,7 @@ export interface CreateGenerationRequest {
   versions?: number
   models: ('claude' | 'gemini')[]
   fromJobId?: string
+  uploadIds?: string[]
 }
 
 export interface JobSummary {

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 import JobStatusBadge from './JobStatusBadge.vue'
 import PreviewFrame from './PreviewFrame.vue'
 import { getDownloadUrl } from '@/api/jobs'
+import { uploadFile, deleteUpload, getThumbnailUrl } from '@/api/uploads'
+import type { Upload } from '@/api/uploads'
 
 type JobStatus = 'queued' | 'running' | 'done' | 'failed'
 
@@ -25,14 +28,20 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  iterate: [prompt: string]
+  iterate: [prompt: string, uploadIds?: string[]]
   exampleClick: [prompt: string]
   revisionChange: [revision: number]
   startNew: []
   jobChange: [index: number]
 }>()
 
+const authStore = useAuthStore()
+const isPro = computed(() => authStore.user?.plan === 'pro')
+
 const iteratePrompt = ref('')
+const iterateAttachments = ref<Upload[]>([])
+const isAttaching = ref(false)
+const attachError = ref('')
 
 const hasJob = computed(() => !!props.jobId)
 const isComplete = computed(() => props.status === 'done')
@@ -50,12 +59,37 @@ const examplePrompts = [
   'Startup landing page with animated hero and pricing table'
 ]
 
+async function handleAttach(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (!input.files || input.files.length === 0) return
+  attachError.value = ''
+  isAttaching.value = true
+  try {
+    for (const file of input.files) {
+      // Iterate attachments are typically reference images (vision input)
+      const result = await uploadFile(file, 'reference')
+      iterateAttachments.value.push(result)
+    }
+  } catch (err: unknown) {
+    attachError.value = err instanceof Error ? err.message : 'Upload failed'
+  } finally {
+    isAttaching.value = false
+    input.value = ''
+  }
+}
 
+function removeAttachment(id: string) {
+  iterateAttachments.value = iterateAttachments.value.filter(a => a.id !== id)
+  deleteUpload(id).catch(() => {})
+}
 
 function handleIterate() {
   if (iteratePrompt.value.trim()) {
-    emit('iterate', iteratePrompt.value.trim())
+    const uploadIds = iterateAttachments.value.map(a => a.id)
+    emit('iterate', iteratePrompt.value.trim(), uploadIds.length > 0 ? uploadIds : undefined)
     iteratePrompt.value = ''
+    iterateAttachments.value = []
+    attachError.value = ''
   }
 }
 </script>
@@ -186,20 +220,44 @@ function handleIterate() {
 
     <!-- Iterate bar -->
     <div v-if="isComplete" class="iterate-bar">
-      <input
-        v-model="iteratePrompt"
-        type="text"
-        class="iterate-input"
-        placeholder="Describe changes to refine your design..."
-        @keyup.enter="handleIterate"
-      />
-      <button
-        class="iterate-btn"
-        :disabled="!iteratePrompt.trim()"
-        @click="handleIterate"
-      >
-        Refine
-      </button>
+      <!-- Attachment thumbnails -->
+      <div v-if="iterateAttachments.length > 0" class="iterate-attachments">
+        <div v-for="att in iterateAttachments" :key="att.id" class="iterate-attach-thumb">
+          <img :src="getThumbnailUrl(att.id)" :alt="att.filename" />
+          <button class="iterate-attach-remove" @click="removeAttachment(att.id)">&times;</button>
+        </div>
+      </div>
+      <p v-if="attachError" class="iterate-attach-error">{{ attachError }}</p>
+      <div class="iterate-input-row">
+        <!-- Attach button (Pro only) -->
+        <label v-if="isPro" class="iterate-attach-btn" :class="{ disabled: isAttaching }" title="Attach image">
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/svg+xml"
+            multiple
+            class="iterate-attach-input"
+            :disabled="isAttaching"
+            @change="handleAttach"
+          />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"></path>
+          </svg>
+        </label>
+        <input
+          v-model="iteratePrompt"
+          type="text"
+          class="iterate-input"
+          placeholder="Describe changes to refine your design..."
+          @keyup.enter="handleIterate"
+        />
+        <button
+          class="iterate-btn"
+          :disabled="!iteratePrompt.trim()"
+          @click="handleIterate"
+        >
+          Refine
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -486,7 +544,8 @@ function handleIterate() {
 
 .iterate-bar {
   display: flex;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-top: 1px solid var(--rule);
   background-color: var(--white);
@@ -531,5 +590,85 @@ function handleIterate() {
 .iterate-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.iterate-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+}
+
+.iterate-attachments {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.iterate-attach-thumb {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+
+.iterate-attach-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+}
+
+.iterate-attach-remove {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  font-size: 0.65rem;
+  line-height: 16px;
+  text-align: center;
+  padding: 0;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--ink-light);
+  display: none;
+}
+.iterate-attach-thumb:hover .iterate-attach-remove {
+  display: block;
+}
+
+.iterate-attach-error {
+  font-size: 0.7rem;
+  color: var(--danger, #e53e3e);
+  margin: 0;
+}
+
+.iterate-attach-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink-light);
+  transition: border-color 0.15s, color 0.15s;
+}
+.iterate-attach-btn:hover:not(.disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.iterate-attach-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iterate-attach-input {
+  display: none;
 }
 </style>

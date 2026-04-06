@@ -50,11 +50,12 @@ export interface IterateEvent {
  */
 export async function startSession(
   jobId: string,
-  options?: { model?: 'claude' | 'gemini'; message?: string }
+  options?: { model?: 'claude' | 'gemini'; message?: string; uploadIds?: string[] }
 ): Promise<StartSessionResponse> {
-  const body: Record<string, string | undefined> = {}
+  const body: Record<string, unknown> = {}
   if (options?.model) body.model = options.model
   if (options?.message) body.message = options.message
+  if (options?.uploadIds?.length) body.uploadIds = options.uploadIds
   return post<StartSessionResponse>(`/api/iterate/${jobId}/start`, body)
 }
 
@@ -64,9 +65,12 @@ export async function startSession(
  */
 export async function sendMessage(
   sessionId: string,
-  message: string
+  message: string,
+  uploadIds?: string[]
 ): Promise<SendMessageResponse> {
-  return post<SendMessageResponse>(`/api/iterate/${sessionId}/send`, { message })
+  const body: Record<string, unknown> = { message }
+  if (uploadIds?.length) body.uploadIds = uploadIds
+  return post<SendMessageResponse>(`/api/iterate/${sessionId}/send`, body)
 }
 
 /**

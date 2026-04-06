@@ -259,7 +259,7 @@ function waitForIterateEvent(
   })
 }
 
-async function handleIterate(prompt: string) {
+async function handleIterate(prompt: string, uploadIds?: string[]) {
   if (!currentJobId.value) return
 
   isGenerating.value = true
@@ -273,7 +273,10 @@ async function handleIterate(prompt: string) {
     if (!currentSessionId.value) {
       // First refine: start session with the message bundled.
       // Backend pushes to Queen queue; we get progress via SSE.
-      const session = await startSession(currentJobId.value, { message: prompt })
+      const session = await startSession(currentJobId.value, {
+        message: prompt,
+        ...(uploadIds?.length ? { uploadIds } : {}),
+      })
       currentSessionId.value = session.sessionId
 
       // Wait for the 'done' event (init + first message processed)
@@ -286,7 +289,7 @@ async function handleIterate(prompt: string) {
       // Subsequent refine: connect SSE first to avoid missing events,
       // then push message to Queen queue.
       const eventPromise = waitForIterateEvent(currentSessionId.value, e => e.type === 'done')
-      await sendMessage(currentSessionId.value, prompt)
+      await sendMessage(currentSessionId.value, prompt, uploadIds)
       const event = await eventPromise
 
       const newRevision = event.revision ?? revision.value + 1
