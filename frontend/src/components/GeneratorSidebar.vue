@@ -39,7 +39,7 @@ const aiPick = ref(false)
 const selectedStyles = ref<Set<string>>(new Set(props.preselectedStyle ? [props.preselectedStyle] : []))
 const showAllStyles = ref(false)
 
-const maxChars = 600
+const maxChars = 2000
 const charCount = computed(() => prompt.value.length)
 
 // All style options

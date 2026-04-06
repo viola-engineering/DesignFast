@@ -12,7 +12,7 @@ import accountRoutes from './routes/account.js';
 import billingRoutes from './routes/billing.js';
 
 import { initQueues } from './queen-setup.js';
-import { startWorker } from './worker.js';
+import { startWorker, startIterateWorker } from './worker.js';
 import { startEventConsumer } from './event-bus.js';
 
 const app = Fastify({ logger: true });
@@ -40,6 +40,7 @@ try {
 }
 
 startWorker();
+startIterateWorker();
 startEventConsumer();
 
 const port = parseInt(process.env.PORT || '5000', 10);

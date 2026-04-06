@@ -1,20 +1,17 @@
 import { get, post } from './client'
 
-export type SessionStatus = 'active' | 'closed'
+export type SessionStatus = 'active' | 'closed' | 'failed'
 
 export interface StartSessionResponse {
   sessionId: string
   jobId: string
   model: string
-  status: SessionStatus
-  files: string[]
+  status: 'initializing'
 }
 
 export interface SendMessageResponse {
-  role: 'assistant'
-  content: string
-  filesChanged: string[]
-  revision: number
+  messageId: string
+  status: 'processing'
 }
 
 export interface SessionMessage {
@@ -33,20 +30,37 @@ export interface SessionDetail {
   messages: SessionMessage[]
 }
 
+export interface IterateEvent {
+  type: 'status' | 'ready' | 'done' | 'error' | 'text'
+  sessionId?: string
+  status?: string
+  message?: string
+  text?: string
+  revision?: number
+  content?: string
+  filesChanged?: string[]
+}
+
 /**
  * Start an iterate session on a completed job.
- * NOTE: Uses jobId in the URL, returns sessionId for subsequent calls.
+ * Optionally include the first refinement message so init + first edit
+ * happen in a single queued task.
+ *
+ * No model parameter → backend defaults to the job's original model.
  */
 export async function startSession(
   jobId: string,
-  model: 'claude' | 'gemini' = 'claude'
+  options?: { model?: 'claude' | 'gemini'; message?: string }
 ): Promise<StartSessionResponse> {
-  return post<StartSessionResponse>(`/api/iterate/${jobId}/start`, { model })
+  const body: Record<string, string | undefined> = {}
+  if (options?.model) body.model = options.model
+  if (options?.message) body.message = options.message
+  return post<StartSessionResponse>(`/api/iterate/${jobId}/start`, body)
 }
 
 /**
  * Send a refinement message to an active session.
- * NOTE: Uses sessionId (not jobId) from startSession response.
+ * Returns immediately — progress via SSE events.
  */
 export async function sendMessage(
   sessionId: string,
@@ -56,8 +70,15 @@ export async function sendMessage(
 }
 
 /**
+ * Connect to SSE events for an iterate session.
+ * Returns an EventSource. Caller should handle `onmessage` and cleanup.
+ */
+export function connectEvents(sessionId: string): EventSource {
+  return new EventSource(`/api/iterate/${sessionId}/events`)
+}
+
+/**
  * Close an iterate session and clean up resources.
- * NOTE: Uses sessionId (not jobId).
  */
 export async function closeSession(
   sessionId: string
@@ -67,7 +88,6 @@ export async function closeSession(
 
 /**
  * Get session with message history.
- * NOTE: Uses sessionId (not jobId).
  */
 export async function getSession(sessionId: string): Promise<SessionDetail> {
   return get<SessionDetail>(`/api/iterate/${sessionId}`)

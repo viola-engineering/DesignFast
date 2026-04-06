@@ -9,6 +9,10 @@ export async function initQueues() {
       retryLimit: 2,
       leaseTime: 600,
     }).create(),
+    queen.queue('designfast-iterate').config({
+      retryLimit: 1,
+      leaseTime: 600,
+    }).create(),
     queen.queue('designfast-events').config({
       retentionSeconds: 3600,
     }).create(),

@@ -52,6 +52,9 @@ export default async function (app) {
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
       return reply.code(400).send({ error: 'Prompt is required' });
     }
+    if (prompt.trim().length > 2000) {
+      return reply.code(400).send({ error: 'Prompt must be 2000 characters or fewer' });
+    }
     if (!VALID_MODES.includes(mode)) {
       return reply.code(400).send({ error: `Mode must be one of: ${VALID_MODES.join(', ')}` });
     }

@@ -6,7 +6,7 @@ bus.setMaxListeners(0); // unlimited SSE connections
 
 /**
  * Start a single long-running consumer for designfast-events.
- * Dispatches events to in-memory listeners keyed by jobId.
+ * Dispatches events to in-memory listeners keyed by jobId and/or sessionId.
  */
 export async function startEventConsumer() {
   await queen
@@ -19,6 +19,9 @@ export async function startEventConsumer() {
       const event = message.data || message;
       if (event.jobId) {
         bus.emit(event.jobId, event);
+      }
+      if (event.sessionId) {
+        bus.emit(`session:${event.sessionId}`, event);
       }
     })
 

@@ -6,7 +6,8 @@ import GeneratorOutput from '@/components/GeneratorOutput.vue'
 import { useGenerationsStore } from '@/stores/generations'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
-import { startSession, sendMessage } from '@/api/iterate'
+import { startSession, sendMessage, connectEvents as connectIterateSSE } from '@/api/iterate'
+import type { IterateEvent } from '@/api/iterate'
 import { getById as getJobById } from '@/api/jobs'
 import type { CreateGenerationRequest, JobStatus } from '@/api/generations'
 
@@ -33,6 +34,7 @@ interface TrackedJob {
 const jobs = ref<TrackedJob[]>([])
 const activeJobIndex = ref(0)
 const currentSessionId = ref<string | undefined>()
+const iterateES = ref<EventSource | undefined>()
 const revision = ref(0)
 const latestRevision = ref(0)
 
@@ -153,6 +155,7 @@ onMounted(async () => {
 // Cleanup on unmount
 onUnmounted(() => {
   disconnectSSE()
+  disconnectIterateSSE()
 })
 
 async function handleGenerate(formData: CreateGenerationRequest) {
@@ -192,6 +195,70 @@ async function handleGenerate(formData: CreateGenerationRequest) {
   }
 }
 
+/**
+ * Wait for an iterate SSE event matching the given predicate.
+ * Resolves with the matching event or rejects on error/timeout.
+ */
+function waitForIterateEvent(
+  sessionId: string,
+  predicate: (e: IterateEvent) => boolean,
+  timeoutMs = 300_000,
+): Promise<IterateEvent> {
+  return new Promise((resolve, reject) => {
+    // Disconnect any previous iterate SSE
+    if (iterateES.value) {
+      iterateES.value.close()
+      iterateES.value = undefined
+    }
+
+    const es = connectIterateSSE(sessionId)
+    iterateES.value = es
+
+    const timeout = setTimeout(() => {
+      es.close()
+      iterateES.value = undefined
+      reject(new Error('Refine timed out'))
+    }, timeoutMs)
+
+    es.onmessage = (e) => {
+      try {
+        const event: IterateEvent = JSON.parse(e.data)
+
+        // Update status message for progress
+        const job = activeJob.value
+        if (event.type === 'status' && event.message && job) {
+          job.statusMessage = event.message
+        }
+
+        if (event.type === 'error') {
+          clearTimeout(timeout)
+          es.close()
+          iterateES.value = undefined
+          reject(new Error(event.message || 'Refine failed'))
+          return
+        }
+
+        if (predicate(event)) {
+          clearTimeout(timeout)
+          es.close()
+          iterateES.value = undefined
+          resolve(event)
+        }
+      } catch (err) {
+        console.error('Failed to parse iterate SSE event:', err)
+      }
+    }
+
+    es.onerror = () => {
+      if (es.readyState === EventSource.CLOSED) {
+        clearTimeout(timeout)
+        iterateES.value = undefined
+        reject(new Error('Connection lost during refine'))
+      }
+    }
+  })
+}
+
 async function handleIterate(prompt: string) {
   if (!currentJobId.value) return
 
@@ -203,20 +270,31 @@ async function handleIterate(prompt: string) {
   }
 
   try {
-    // Start session if not already started
     if (!currentSessionId.value) {
-      const session = await startSession(currentJobId.value)
+      // First refine: start session with the message bundled.
+      // Backend pushes to Queen queue; we get progress via SSE.
+      const session = await startSession(currentJobId.value, { message: prompt })
       currentSessionId.value = session.sessionId
+
+      // Wait for the 'done' event (init + first message processed)
+      const event = await waitForIterateEvent(session.sessionId, e => e.type === 'done')
+
+      const newRevision = event.revision ?? revision.value + 1
+      revision.value = newRevision
+      latestRevision.value = newRevision
+    } else {
+      // Subsequent refine: connect SSE first to avoid missing events,
+      // then push message to Queen queue.
+      const eventPromise = waitForIterateEvent(currentSessionId.value, e => e.type === 'done')
+      await sendMessage(currentSessionId.value, prompt)
+      const event = await eventPromise
+
+      const newRevision = event.revision ?? revision.value + 1
+      revision.value = newRevision
+      latestRevision.value = newRevision
     }
 
-    // Send iterate message — this is synchronous (no SSE needed)
-    const result = await sendMessage(currentSessionId.value, prompt)
-
-    // Update UI directly — files are already saved to DB
     isGenerating.value = false
-    const newRevision = result.revision ?? revision.value + 1
-    revision.value = newRevision
-    latestRevision.value = newRevision
     if (job) {
       job.status = 'done'
       job.statusMessage = 'Design updated'
@@ -232,10 +310,18 @@ async function handleIterate(prompt: string) {
   }
 }
 
+function disconnectIterateSSE() {
+  if (iterateES.value) {
+    iterateES.value.close()
+    iterateES.value = undefined
+  }
+}
+
 function handleJobChange(index: number) {
   activeJobIndex.value = index
   // Reset session and revision when switching jobs
   currentSessionId.value = undefined
+  disconnectIterateSSE()
   revision.value = 0
   latestRevision.value = 0
   // TODO: load latestRevision from the job if needed
@@ -249,6 +335,7 @@ function handleStartNew() {
   jobs.value = []
   activeJobIndex.value = 0
   currentSessionId.value = undefined
+  disconnectIterateSSE()
   revision.value = 0
   latestRevision.value = 0
   isGenerating.value = false

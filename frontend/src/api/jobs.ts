@@ -42,6 +42,8 @@ export function getDownloadUrl(id: string): string {
 }
 
 export function getPreviewUrl(jobId: string, filename = 'index.html', revision?: number): string {
-  const base = `/preview/${jobId}/${filename}`
-  return revision !== undefined ? `${base}?revision=${revision}` : base
+  if (revision !== undefined && revision !== null) {
+    return `/preview/${jobId}/r/${revision}/${filename}`
+  }
+  return `/preview/${jobId}/${filename}`
 }

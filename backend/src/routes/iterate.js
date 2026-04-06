@@ -1,52 +1,37 @@
 import { randomUUID } from 'node:crypto';
-import { mkdtempSync, writeFileSync, readdirSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import {
-  AgentLoop,
-  createProvider,
-  createDefaultRegistry,
-  DatabaseImpl,
-} from '@angycode/core';
+import { rmSync } from 'node:fs';
 import { query } from '../db.js';
 import { authMiddleware } from '../auth.js';
-import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
-import { decrypt } from '../encryption.js';
+import { MODEL_MAP, PROVIDER_TO_MODEL_KEY } from '../models.js';
 import { requireUUID } from '../validation.js';
 import { PLANS, CREDIT_COSTS, hasApiKeys } from '../plans.js';
-
-// In-memory store for active iterate sessions.
-// If the server restarts, active sessions are lost. The user can start a new
-// session — it reads current files from Postgres, so no work is lost.
-const activeSessions = new Map();
-
-async function getApiKey(userId, providerName) {
-  const apiKeyProvider = PROVIDER_TO_APIKEY_PROVIDER[providerName];
-  if (apiKeyProvider) {
-    const { rows } = await query(
-      `SELECT key_encrypted FROM designfast.api_keys WHERE user_id = $1 AND provider = $2`,
-      [userId, apiKeyProvider]
-    );
-    if (rows.length > 0) {
-      return decrypt(rows[0].key_encrypted);
-    }
-  }
-  const modelEntry = Object.values(MODEL_MAP).find(m => m.providerName === providerName);
-  if (modelEntry && process.env[modelEntry.apiKeyEnv]) {
-    return process.env[modelEntry.apiKeyEnv];
-  }
-  return null;
-}
+import { activeSessions } from '../iterate-sessions.js';
+import queen from '../queen-client.js';
+import bus from '../event-bus.js';
 
 export default async function (app) {
   app.addHook('onRequest', authMiddleware);
 
   // POST /api/iterate/:jobId/start
+  //
+  // Starts an iterate session. Accepts an optional `message` so the first
+  // refinement can be bundled with init (avoids a round-trip).
+  //
+  // The heavy work (agent init + first message) is pushed to the
+  // designfast-iterate Queen queue and processed by the iterate worker.
+  // Progress is streamed via GET /api/iterate/:sessionId/events (SSE).
   app.post('/api/iterate/:jobId/start', async (req, reply) => {
     const { jobId } = req.params;
     if (requireUUID(jobId, reply)) return;
 
-    const { model: modelKey = 'claude' } = req.body || {};
+    const { model: explicitModelKey, message } = req.body || {};
+
+    if (message !== undefined && (typeof message !== 'string' || message.trim().length === 0)) {
+      return reply.code(400).send({ error: 'Message must be a non-empty string when provided' });
+    }
+    if (message && message.trim().length > 2000) {
+      return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
+    }
 
     // Verify job ownership and status
     const { rows: jobs } = await query(
@@ -60,12 +45,16 @@ export default async function (app) {
       return reply.code(400).send({ error: 'Job is not completed' });
     }
 
+    // Resolve model: explicit override > job's original model
+    const jobProvider = jobs[0].provider; // 'anthropic' | 'gemini'
+    const modelKey = explicitModelKey || PROVIDER_TO_MODEL_KEY[jobProvider] || 'gemini';
+
     const modelCfg = MODEL_MAP[modelKey];
     if (!modelCfg) {
       return reply.code(400).send({ error: `Invalid model: ${modelKey}` });
     }
 
-    // Check plan limits for iterate
+    // Check plan limits
     const { rows: [iterUser] } = await query(
       `SELECT * FROM designfast.users WHERE id = $1`,
       [req.userId]
@@ -81,65 +70,16 @@ export default async function (app) {
     const isByok = await hasApiKeys(req.userId, [modelCfg.providerName]);
     const creditCost = CREDIT_COSTS[modelCfg.providerName] || 0;
 
-    let iterBillingMode = 'generation';
+    let billingMode = 'generation';
     if (isByok && plan.byokEnabled) {
-      iterBillingMode = 'byok';
+      billingMode = 'byok';
     } else if (iterUser.plan === 'pro') {
       if (iterUser.credits_used + creditCost <= iterUser.credits_limit) {
-        iterBillingMode = 'credits';
+        billingMode = 'credits';
       } else if (modelKey !== 'gemini') {
         return reply.code(403).send({ error: 'Credits exhausted. You can still refine with Gemini.' });
       }
     }
-
-    // Resolve API key
-    const apiKey = await getApiKey(req.userId, modelCfg.providerName);
-    if (!apiKey) {
-      return reply.code(400).send({ error: `No API key available for ${modelCfg.providerName}` });
-    }
-
-    // Load job files at latest revision into temp dir
-    const { rows: files } = await query(
-      `SELECT filename, content FROM designfast.job_files
-       WHERE job_id = $1 AND revision = (SELECT latest_revision FROM designfast.jobs WHERE id = $1)`,
-      [jobId]
-    );
-
-    const tempDir = mkdtempSync(join(tmpdir(), `designfast-iterate-`));
-    for (const f of files) {
-      writeFileSync(join(tempDir, f.filename), f.content, 'utf8');
-    }
-
-    const fileList = files.map(f => f.filename);
-
-    // Create agent
-    const provider = createProvider({ name: modelCfg.providerName, apiKey });
-    const agentDb = new DatabaseImpl();
-    const tools = createDefaultRegistry();
-
-    const agent = new AgentLoop({
-      provider,
-      tools,
-      db: agentDb,
-      workingDir: tempDir,
-      maxTokens: 32768,
-      maxTurns: 50,
-      model: modelCfg.model,
-      providerName: modelCfg.providerName,
-    });
-
-    // Track usage
-    let totalTokensIn = 0;
-    let totalTokensOut = 0;
-    let totalCostUsd = 0;
-
-    agent.on('event', (event) => {
-      if (event.type === 'usage') {
-        totalTokensIn += event.input_tokens || 0;
-        totalTokensOut += event.output_tokens || 0;
-        totalCostUsd += event.cost_usd || 0;
-      }
-    });
 
     // Create session in DB
     const sessionId = randomUUID();
@@ -149,71 +89,35 @@ export default async function (app) {
       [sessionId, jobId, req.userId, modelCfg.model]
     );
 
-    // Initialize agent — read all files
-    const dir = tempDir;
-    const initPrompt = `You are a world-class web designer and developer working on an existing project.
-
-The project files are in "${dir}/". The files are:
-${fileList.map(f => `  - ${dir}/${f}`).join('\n')}
-
-FIRST: Use your read tool to read ALL of these files so you understand the current state of the project. Start with style.css, then the HTML files, then any JS files.
-
-RULES:
-- When the user asks for changes, modify the existing files in "${dir}/" using the edit tool or write tool.
-- Always re-read a file before editing it if you haven't read it recently in this conversation.
-- Maintain visual consistency — same design language, colors, fonts, spacing.
-- If adding new pages, follow the same patterns (same nav, same head, same CSS/JS includes).
-- Keep all file paths relative within the "${dir}/" folder.
-- After making changes, briefly confirm what you changed (one line).
-- Do NOT rewrite entire files unless necessary — prefer targeted edits.
-
-Start by reading all the files now.`;
-
-    const session = await agent.run(initPrompt);
-
-    // Deduct credits for the initial /start call
-    if (iterBillingMode === 'credits') {
-      await query(
-        `UPDATE designfast.users SET credits_used = credits_used + $2 WHERE id = $1`,
-        [req.userId, creditCost]
-      );
-    } else if (iterBillingMode === 'byok') {
-      await query(
-        `UPDATE designfast.users SET byok_generations_used = byok_generations_used + 1 WHERE id = $1`,
-        [req.userId]
-      );
-    } else {
-      await query(
-        `UPDATE designfast.users SET generations_used = generations_used + 1 WHERE id = $1`,
-        [req.userId]
-      );
-    }
-
-    // Store session in memory
-    activeSessions.set(sessionId, {
-      agent,
-      agentDb,
-      tempDir,
-      agentSessionId: session.id,
-      userId: req.userId,
-      jobId,
-      totalTokensIn,
-      totalTokensOut,
-      totalCostUsd,
-      modelKey,
-      billingMode: iterBillingMode,
-    });
+    // Push task to Queen — the iterate worker will do the heavy lifting
+    await queen
+      .queue('designfast-iterate')
+      .partition(sessionId)
+      .push([{
+        data: {
+          type: 'iterate-start',
+          sessionId,
+          jobId,
+          userId: req.userId,
+          modelKey,
+          billingMode,
+          creditCost,
+          message: message ? message.trim() : null,
+        },
+      }]);
 
     return reply.code(201).send({
       sessionId,
       jobId,
       model: modelCfg.model,
-      status: 'active',
-      files: fileList,
+      status: 'initializing',
     });
   });
 
   // POST /api/iterate/:sessionId/send
+  //
+  // Send a refinement message to an active session.
+  // The work is pushed to the Queen queue. Progress via SSE.
   app.post('/api/iterate/:sessionId/send', async (req, reply) => {
     const { sessionId } = req.params;
     if (requireUUID(sessionId, reply)) return;
@@ -222,6 +126,9 @@ Start by reading all the files now.`;
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return reply.code(400).send({ error: 'Message is required' });
+    }
+    if (message.trim().length > 2000) {
+      return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
     }
 
     // Verify session ownership
@@ -241,7 +148,7 @@ Start by reading all the files now.`;
       return reply.code(400).send({ error: 'Session is no longer active (server may have restarted)' });
     }
 
-    // Check credits for this /send call
+    // Check credits
     if (live.billingMode === 'credits') {
       const { rows: [sendUser] } = await query(
         `SELECT credits_used, credits_limit FROM designfast.users WHERE id = $1`,
@@ -253,84 +160,78 @@ Start by reading all the files now.`;
       }
     }
 
-    // Snapshot files before the agent runs
-    const filesBefore = new Set(readdirSync(live.tempDir).filter(f => /\.(html|css|js)$/.test(f)));
+    const messageId = randomUUID();
 
-    // Record user message
-    await query(
-      `INSERT INTO designfast.iterate_messages (id, session_id, role, content) VALUES ($1, $2, 'user', $3)`,
-      [randomUUID(), sessionId, message.trim()]
+    // Push task to Queen
+    await queen
+      .queue('designfast-iterate')
+      .partition(sessionId)
+      .push([{
+        data: {
+          type: 'iterate-send',
+          sessionId,
+          messageId,
+          message: message.trim(),
+          userId: req.userId,
+        },
+      }]);
+
+    return { messageId, status: 'processing' };
+  });
+
+  // GET /api/iterate/:sessionId/events — SSE stream for iterate progress
+  app.get('/api/iterate/:sessionId/events', async (req, reply) => {
+    const { sessionId } = req.params;
+    if (requireUUID(sessionId, reply)) return;
+
+    // Verify session ownership
+    const { rows: sessions } = await query(
+      `SELECT * FROM designfast.iterate_sessions WHERE id = $1 AND user_id = $2`,
+      [sessionId, req.userId]
     );
-
-    // Collect assistant text
-    let assistantText = '';
-    const textHandler = (event) => {
-      if (event.type === 'text') {
-        assistantText += event.text;
-      }
-      if (event.type === 'usage') {
-        live.totalTokensIn += event.input_tokens || 0;
-        live.totalTokensOut += event.output_tokens || 0;
-        live.totalCostUsd += event.cost_usd || 0;
-      }
-    };
-    live.agent.on('event', textHandler);
-
-    await live.agent.continueSession(live.agentSessionId, message.trim());
-
-    // Determine changed files
-    const filesAfter = readdirSync(live.tempDir).filter(f => /\.(html|css|js)$/.test(f));
-    const filesChanged = filesAfter.filter(f => !filesBefore.has(f));
-    // Also check modified files by comparing content — simplified: just report all current files
-    // For a more accurate diff we'd need to hash before/after, but this is sufficient
-
-    // Record assistant message
-    const content = assistantText.trim() || '(no text output)';
-    await query(
-      `INSERT INTO designfast.iterate_messages (id, session_id, role, content) VALUES ($1, $2, 'assistant', $3)`,
-      [randomUUID(), sessionId, content]
-    );
-
-    // Deduct credits for this /send call
-    if (live.billingMode === 'credits') {
-      const sendCost = CREDIT_COSTS[MODEL_MAP[live.modelKey]?.providerName] || 0;
-      if (sendCost > 0) {
-        await query(
-          `UPDATE designfast.users SET credits_used = credits_used + $2 WHERE id = $1`,
-          [req.userId, sendCost]
-        );
-      }
+    if (sessions.length === 0) {
+      return reply.code(404).send({ error: 'Session not found' });
     }
 
-    // Update session usage in DB
-    await query(
-      `UPDATE designfast.iterate_sessions SET tokens_in = $2, tokens_out = $3, cost_usd = $4 WHERE id = $1`,
-      [sessionId, live.totalTokensIn, live.totalTokensOut, live.totalCostUsd]
-    );
+    // Set SSE headers
+    reply.raw.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive',
+    });
 
-    // Increment revision counter and save all files as a new snapshot
-    const { rows: [{ latest_revision: newRevision }] } = await query(
-      `UPDATE designfast.jobs SET latest_revision = latest_revision + 1
-       WHERE id = $1 RETURNING latest_revision`,
-      [live.jobId]
-    );
-
-    for (const filename of filesAfter) {
-      const fileContent = readFileSync(join(live.tempDir, filename), 'utf8');
-      const sizeBytes = Buffer.byteLength(fileContent, 'utf8');
-      await query(
-        `INSERT INTO designfast.job_files (job_id, filename, content, size_bytes, revision)
-         VALUES ($1, $2, $3, $4, $5)`,
-        [live.jobId, filename, fileContent, sizeBytes, newRevision]
-      );
+    // If session is already failed/closed, send that and close
+    if (sessions[0].status === 'failed') {
+      reply.raw.write(`data: ${JSON.stringify({ type: 'error', message: 'Session failed' })}\n\n`);
+      reply.raw.end();
+      return reply;
+    }
+    if (sessions[0].status === 'closed') {
+      reply.raw.write(`data: ${JSON.stringify({ type: 'error', message: 'Session closed' })}\n\n`);
+      reply.raw.end();
+      return reply;
     }
 
-    return {
-      role: 'assistant',
-      content,
-      filesChanged,
-      revision: newRevision,
+    const eventKey = `session:${sessionId}`;
+
+    const onEvent = (event) => {
+      reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
+
+      // Close SSE on terminal events
+      if (event.type === 'done' || event.type === 'error') {
+        bus.off(eventKey, onEvent);
+        reply.raw.end();
+      }
     };
+
+    bus.on(eventKey, onEvent);
+
+    // Clean up on client disconnect
+    req.raw.on('close', () => {
+      bus.off(eventKey, onEvent);
+    });
+
+    return reply;
   });
 
   // POST /api/iterate/:sessionId/close

@@ -18,3 +18,11 @@ export const PROVIDER_TO_APIKEY_PROVIDER = {
   anthropic: 'anthropic',
   gemini: 'google',
 };
+
+/**
+ * Reverse map: provider name → frontend model key.
+ * Used to default iterate sessions to the job's original model.
+ */
+export const PROVIDER_TO_MODEL_KEY = Object.fromEntries(
+  Object.entries(MODEL_MAP).map(([key, cfg]) => [cfg.providerName, key])
+);
