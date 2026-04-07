@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+
+const API_BASE = import.meta.env.VITE_API_URL || ''
 import StyleCard from '@/components/StyleCard.vue'
 import StylePreviewModal from '@/components/StylePreviewModal.vue'
 import ScrollReveal from '@/components/ScrollReveal.vue'
@@ -31,7 +33,7 @@ const previewModal = ref({
 // Fetch available examples on mount
 onMounted(async () => {
   try {
-    const res = await fetch('/api/examples')
+    const res = await fetch(`${API_BASE}/api/examples`)
     if (res.ok) {
       const data = await res.json()
       for (const ex of data.examples) {

@@ -2,6 +2,8 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 const props = defineProps<{
   styleKey: string
   styleName: string
@@ -24,7 +26,7 @@ const styleClass = computed(() => {
 })
 
 const thumbnailUrl = computed(() => {
-  return `/api/examples/${props.styleKey}/thumbnail.png`
+  return `${API_BASE}/api/examples/${props.styleKey}/thumbnail.png`
 })
 
 function useStyle() {

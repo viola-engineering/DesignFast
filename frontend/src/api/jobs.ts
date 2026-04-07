@@ -1,6 +1,8 @@
 import { get } from './client'
 import type { JobStatus } from './generations'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export interface JobDetail {
   id: string
   generationId: string
@@ -38,7 +40,7 @@ export async function getFiles(id: string): Promise<JobFilesResponse> {
 }
 
 export function getDownloadUrl(id: string): string {
-  return `/api/jobs/${id}/download`
+  return `${API_BASE}/api/jobs/${id}/download`
 }
 
 export function getPreviewUrl(jobId: string, filename = 'index.html', revision?: number): string {

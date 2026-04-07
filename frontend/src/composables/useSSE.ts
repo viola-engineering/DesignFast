@@ -1,5 +1,7 @@
 import { ref, onUnmounted, type Ref } from 'vue'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export type SSEEventType = 'progress' | 'done' | 'error'
 
 export interface SSEEvent {
@@ -53,7 +55,7 @@ export function useSSE(
     status.value = 'connecting'
     error.value = null
 
-    eventSource = new EventSource(`/api/jobs/${jobId}/events`)
+    eventSource = new EventSource(`${API_BASE}/api/jobs/${jobId}/events`)
 
     eventSource.onopen = () => {
       // Status will be updated when we receive an event

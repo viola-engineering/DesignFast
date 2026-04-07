@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export interface User {
   id: string
   email: string
@@ -26,7 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUser() {
     try {
-      const response = await fetch('/api/auth/me', {
+      const response = await fetch(`${API_BASE}/api/auth/me`, {
         credentials: 'include'
       })
 
@@ -46,7 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(email: string, password: string) {
     loading.value = true
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -71,7 +73,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function register(email: string, password: string, name?: string) {
     loading.value = true
     try {
-      const response = await fetch('/api/auth/register', {
+      const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -95,7 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     try {
-      await fetch('/api/auth/logout', {
+      await fetch(`${API_BASE}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       })
@@ -107,7 +109,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function updateProfile(data: { name?: string }) {
     loading.value = true
     try {
-      const response = await fetch('/api/account', {
+      const response = await fetch(`${API_BASE}/api/account`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

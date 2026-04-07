@@ -2,6 +2,8 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 const props = defineProps<{
   visible: boolean
   styleKey: string
@@ -41,7 +43,7 @@ function useStyle() {
 }
 
 function download() {
-  window.open(`/api/examples/${props.styleKey}/download`, '_blank')
+  window.open(`${API_BASE}/api/examples/${props.styleKey}/download`, '_blank')
 }
 
 function handleBackdropClick(e: MouseEvent) {
@@ -99,7 +101,7 @@ function handleKeydown(e: KeyboardEvent) {
               <span>Loading preview...</span>
             </div>
             <iframe
-              :src="`/api/examples/${styleKey}/index.html`"
+              :src="`${API_BASE}/api/examples/${styleKey}/index.html`"
               :class="{ loaded: iframeLoaded }"
               sandbox="allow-scripts allow-same-origin"
               @load="onIframeLoad"

@@ -2,6 +2,8 @@
  * API client wrapper with credentials: 'include' for cookie auth
  */
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -41,7 +43,7 @@ export async function api<T>(
     headers['Content-Type'] = 'application/json'
   }
 
-  const response = await fetch(path, {
+  const response = await fetch(`${API_BASE}${path}`, {
     ...fetchOptions,
     credentials: 'include',
     headers

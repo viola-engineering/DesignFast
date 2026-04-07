@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+
+const API_BASE = import.meta.env.VITE_API_URL || ''
 import { useRoute, useRouter } from 'vue-router'
 import GeneratorSidebar from '@/components/GeneratorSidebar.vue'
 import GeneratorOutput from '@/components/GeneratorOutput.vue'
@@ -49,7 +51,7 @@ const eventSources = ref<Map<string, EventSource>>(new Map())
 function connectSSE(jobId: string) {
   if (eventSources.value.has(jobId)) return
 
-  const es = new EventSource(`/api/jobs/${jobId}/events`)
+  const es = new EventSource(`${API_BASE}/api/jobs/${jobId}/events`)
 
   es.onmessage = (e) => {
     try {

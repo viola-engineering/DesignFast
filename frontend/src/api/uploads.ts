@@ -1,5 +1,7 @@
 import { get, del, patch } from './client'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 export interface Upload {
   id: string
   filename: string
@@ -31,7 +33,7 @@ export async function uploadFile(
   form.append('file', file)
   form.append('purpose', purpose)
 
-  const res = await fetch('/api/uploads', {
+  const res = await fetch(`${API_BASE}/api/uploads`, {
     method: 'POST',
     body: form,
     credentials: 'include',
@@ -74,5 +76,5 @@ export async function deleteUpload(id: string): Promise<{ ok: boolean }> {
  * Get the thumbnail URL for an upload.
  */
 export function getThumbnailUrl(id: string): string {
-  return `/api/uploads/${id}/thumbnail`
+  return `${API_BASE}/api/uploads/${id}/thumbnail`
 }

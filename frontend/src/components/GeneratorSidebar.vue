@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+
+const API_BASE = import.meta.env.VITE_API_URL || ''
 import { uploadFile, deleteUpload, listUploads, getThumbnailUrl, updateUploadPurpose } from '@/api/uploads'
 import type { Upload } from '@/api/uploads'
 
@@ -514,7 +516,7 @@ defineExpose({ setExamplePrompt })
             :style="{ left: tooltipPosition.x + 'px', top: tooltipPosition.y + 'px' }"
           >
             <img
-              :src="`/api/examples/${hoveredStyle}/thumbnail.png`"
+              :src="`${API_BASE}/api/examples/${hoveredStyle}/thumbnail.png`"
               :alt="hoveredStyle"
               @error="onTooltipImageError"
             />
