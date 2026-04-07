@@ -5,6 +5,8 @@ import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
 import { saveApiKey, deleteApiKey, type ApiKeyProvider } from '@/api/account'
 
+const API_BASE = import.meta.env.VITE_API_URL || ''
+
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
@@ -128,7 +130,7 @@ async function handlePurchase(packageId: string) {
   isPurchasing.value = packageId
 
   try {
-    const res = await fetch('/api/billing/checkout', {
+    const res = await fetch(`${API_BASE}/api/billing/checkout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
