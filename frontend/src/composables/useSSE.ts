@@ -1,4 +1,5 @@
 import { ref, onUnmounted, type Ref } from 'vue'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
 
@@ -55,7 +56,9 @@ export function useSSE(
     status.value = 'connecting'
     error.value = null
 
-    eventSource = new EventSource(`${API_BASE}/api/jobs/${jobId}/events`)
+    eventSource = new EventSourcePolyfill(`${API_BASE}/api/jobs/${jobId}/events`, {
+      withCredentials: true
+    }) as EventSource
 
     eventSource.onopen = () => {
       // Status will be updated when we receive an event

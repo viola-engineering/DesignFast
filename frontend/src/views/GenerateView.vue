@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
 import { useRoute, useRouter } from 'vue-router'
@@ -51,7 +52,9 @@ const eventSources = ref<Map<string, EventSource>>(new Map())
 function connectSSE(jobId: string) {
   if (eventSources.value.has(jobId)) return
 
-  const es = new EventSource(`${API_BASE}/api/jobs/${jobId}/events`)
+  const es = new EventSourcePolyfill(`${API_BASE}/api/jobs/${jobId}/events`, {
+    withCredentials: true
+  })
 
   es.onmessage = (e) => {
     try {

@@ -1,4 +1,5 @@
 import { get, post } from './client'
+import { EventSourcePolyfill } from 'event-source-polyfill'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
 
@@ -80,7 +81,9 @@ export async function sendMessage(
  * Returns an EventSource. Caller should handle `onmessage` and cleanup.
  */
 export function connectEvents(sessionId: string): EventSource {
-  return new EventSource(`${API_BASE}/api/iterate/${sessionId}/events`)
+  return new EventSourcePolyfill(`${API_BASE}/api/iterate/${sessionId}/events`, {
+    withCredentials: true
+  }) as EventSource
 }
 
 /**
