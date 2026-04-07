@@ -66,6 +66,7 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      QUEEN_CLIENT_LOG: "true"
     depends_on:
       postgres:
         condition: service_healthy
@@ -90,6 +91,7 @@ services:
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      QUEEN_CLIENT_LOG: "true"
     depends_on:
       postgres:
         condition: service_healthy

@@ -261,11 +261,17 @@ export default async function (app) {
 
     const eventKey = `session:${sessionId}`;
 
+    // Send keepalive every 30s to prevent proxy timeouts
+    const keepalive = setInterval(() => {
+      reply.raw.write(`: keepalive\n\n`);
+    }, 30000);
+
     const onEvent = (event) => {
       reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
 
       // Close SSE on terminal events
       if (event.type === 'done' || event.type === 'error') {
+        clearInterval(keepalive);
         bus.off(eventKey, onEvent);
         reply.raw.end();
       }
@@ -275,6 +281,7 @@ export default async function (app) {
 
     // Clean up on client disconnect
     req.raw.on('close', () => {
+      clearInterval(keepalive);
       bus.off(eventKey, onEvent);
     });
 

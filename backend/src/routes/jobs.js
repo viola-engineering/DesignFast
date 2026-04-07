@@ -102,11 +102,17 @@ export default async function (app) {
       return;
     }
 
+    // Send keepalive every 30s to prevent proxy timeouts
+    const keepalive = setInterval(() => {
+      reply.raw.write(`: keepalive\n\n`);
+    }, 30000);
+
     // Listen to in-memory event bus (fed by the global Queen consumer)
     const onEvent = (event) => {
       reply.raw.write(`data: ${JSON.stringify(event)}\n\n`);
 
       if (event.type === 'done' || event.type === 'error') {
+        clearInterval(keepalive);
         bus.off(jobId, onEvent);
         reply.raw.end();
       }
@@ -116,6 +122,7 @@ export default async function (app) {
 
     // Clean up listener on client disconnect
     req.raw.on('close', () => {
+      clearInterval(keepalive);
       bus.off(jobId, onEvent);
     });
 
