@@ -1,4 +1,10 @@
-# DesignFast
+<p>
+  <svg viewBox="0 0 220 45" width="220" height="45" xmlns="http://www.w3.org/2000/svg">
+    <text x="0" y="35" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700">
+      <tspan fill="#100e0b">Design</tspan><tspan fill="#c45a3b">Fast</tspan>
+    </text>
+  </svg>
+</p>
 
 AI-powered design generation for developers. Describe what you want, pick a style, and get production-quality HTML, CSS, and JS in seconds.
 
