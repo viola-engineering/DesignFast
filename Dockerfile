@@ -1,4 +1,4 @@
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -6,16 +6,16 @@ WORKDIR /app
 RUN apk add --no-cache python3 make g++
 
 # Copy package files
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install --omit=dev
+RUN npm install
 
 # Copy backend source and examples
 COPY backend/ ./backend/
 COPY examples/ ./examples/
 
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
