@@ -8,48 +8,52 @@ const router = useRouter()
 const authStore = useAuthStore()
 const toastStore = useToastStore()
 
-const email = ref('')
-const password = ref('')
-const name = ref('')
+const code = ref('')
 const error = ref('')
+const resendCooldown = ref(0)
 const isSubmitting = computed(() => authStore.loading)
 
-const passwordError = computed(() => {
-  if (!password.value) return ''
-  if (password.value.length < 8) return 'Password must be at least 8 characters'
-  return ''
-})
-
 const isValid = computed(() => {
-  return (
-    email.value.trim() &&
-    password.value.length >= 8 &&
-    isValidEmail(email.value)
-  )
+  return code.value.trim().length === 6 && /^\d{6}$/.test(code.value.trim())
 })
 
-function isValidEmail(email: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
+let cooldownInterval: ReturnType<typeof setInterval> | null = null
 
 async function handleSubmit() {
   if (!isValid.value || isSubmitting.value) return
 
   error.value = ''
 
-  const result = await authStore.register(
-    email.value.trim(),
-    password.value,
-    name.value.trim() || undefined
-  )
+  const result = await authStore.verifyEmail(code.value.trim())
 
   if (result.success) {
-    toastStore.success('Account created! Welcome to DesignFast.')
-    // If email verification is enabled, user will be redirected to verify-email by router guard
-    // If not enabled, they'll go to generate (emailVerified will be true)
+    toastStore.success('Email verified!')
     router.push('/generate')
   } else {
-    error.value = result.error || 'Registration failed'
+    error.value = result.error || 'Verification failed'
+  }
+}
+
+async function handleResend() {
+  if (resendCooldown.value > 0 || isSubmitting.value) return
+
+  error.value = ''
+
+  const result = await authStore.resendVerification()
+
+  if (result.success) {
+    toastStore.success('Verification code sent!')
+    resendCooldown.value = 60
+
+    cooldownInterval = setInterval(() => {
+      resendCooldown.value--
+      if (resendCooldown.value <= 0 && cooldownInterval) {
+        clearInterval(cooldownInterval)
+        cooldownInterval = null
+      }
+    }, 1000)
+  } else {
+    error.value = result.error || 'Failed to resend code'
   }
 }
 </script>
@@ -58,8 +62,10 @@ async function handleSubmit() {
   <div class="auth-page">
     <div class="auth-container">
       <div class="auth-header">
-        <h1 class="auth-title">Create an account</h1>
-        <p class="auth-subtitle">Start generating beautiful designs for free</p>
+        <h1 class="auth-title">Verify your email</h1>
+        <p class="auth-subtitle">
+          We sent a 6-digit code to <strong>{{ authStore.user?.email }}</strong>
+        </p>
       </div>
 
       <form class="auth-form" @submit.prevent="handleSubmit">
@@ -68,43 +74,18 @@ async function handleSubmit() {
         </div>
 
         <div class="form-group">
-          <label for="name" class="form-label">Name <span class="optional">(optional)</span></label>
+          <label for="code" class="form-label">Verification code</label>
           <input
-            id="name"
-            v-model="name"
+            id="code"
+            v-model="code"
             type="text"
-            class="form-input"
-            placeholder="Your name"
-            autocomplete="name"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="6"
+            class="form-input code-input"
+            placeholder="000000"
+            autocomplete="one-time-code"
           />
-        </div>
-
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input
-            id="email"
-            v-model="email"
-            type="email"
-            class="form-input"
-            placeholder="you@example.com"
-            required
-            autocomplete="email"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password" class="form-label">Password</label>
-          <input
-            id="password"
-            v-model="password"
-            type="password"
-            class="form-input"
-            :class="{ 'input-error': passwordError }"
-            placeholder="At least 8 characters"
-            required
-            autocomplete="new-password"
-          />
-          <p v-if="passwordError" class="field-error">{{ passwordError }}</p>
         </div>
 
         <button
@@ -113,20 +94,21 @@ async function handleSubmit() {
           :disabled="!isValid || isSubmitting"
         >
           <span v-if="isSubmitting" class="spinner"></span>
-          {{ isSubmitting ? 'Creating account...' : 'Create account' }}
+          {{ isSubmitting ? 'Verifying...' : 'Verify email' }}
         </button>
 
-        <p class="terms-note">
-          By creating an account, you agree to our terms of service.
+        <p class="resend-text">
+          Didn't receive the code?
+          <button
+            type="button"
+            class="resend-link"
+            :disabled="resendCooldown > 0 || isSubmitting"
+            @click="handleResend"
+          >
+            {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend code' }}
+          </button>
         </p>
       </form>
-
-      <div class="auth-footer">
-        <p class="auth-switch">
-          Already have an account?
-          <RouterLink to="/login" class="auth-link">Sign in</RouterLink>
-        </p>
-      </div>
     </div>
   </div>
 </template>
@@ -164,6 +146,10 @@ async function handleSubmit() {
   color: var(--ink-light);
 }
 
+.auth-subtitle strong {
+  color: var(--ink);
+}
+
 .auth-form {
   background-color: var(--white);
   padding: 2rem;
@@ -192,11 +178,6 @@ async function handleSubmit() {
   margin-bottom: 0.5rem;
 }
 
-.form-label .optional {
-  font-weight: 400;
-  color: var(--ink-light);
-}
-
 .form-input {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -217,14 +198,12 @@ async function handleSubmit() {
   color: var(--ink-light);
 }
 
-.form-input.input-error {
-  border-color: #dc2626;
-}
-
-.field-error {
-  font-size: 0.75rem;
-  color: #dc2626;
-  margin-top: 0.375rem;
+.code-input {
+  font-family: monospace;
+  font-size: 1.5rem;
+  text-align: center;
+  letter-spacing: 0.5em;
+  padding: 1rem;
 }
 
 .auth-submit {
@@ -269,30 +248,30 @@ async function handleSubmit() {
   to { transform: rotate(360deg); }
 }
 
-.terms-note {
-  font-size: 0.75rem;
+.resend-text {
+  font-size: 0.875rem;
   color: var(--ink-light);
-  text-align: center;
-  margin-top: 1rem;
-}
-
-.auth-footer {
   text-align: center;
   margin-top: 1.5rem;
 }
 
-.auth-switch {
-  font-size: 0.875rem;
-  color: var(--ink-light);
-}
-
-.auth-link {
+.resend-link {
   color: var(--accent);
-  text-decoration: none;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
   font-weight: 500;
+  cursor: pointer;
+  padding: 0;
 }
 
-.auth-link:hover {
+.resend-link:hover:not(:disabled) {
   text-decoration: underline;
+}
+
+.resend-link:disabled {
+  color: var(--ink-light);
+  cursor: not-allowed;
 }
 </style>

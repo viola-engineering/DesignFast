@@ -9,6 +9,7 @@ export interface User {
   name: string | null
   plan: 'free' | 'pro'
   avatarUrl: string | null
+  emailVerified: boolean
   generationsUsed: number
   generationsLimit: number
   creditsUsed: number
@@ -131,6 +132,53 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function verifyEmail(code: string) {
+    loading.value = true
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/verify-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ code })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Verification failed')
+      }
+
+      user.value = data.user
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Verification failed' }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function resendVerification() {
+    loading.value = true
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/resend-verification`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to resend')
+      }
+
+      return { success: true }
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Failed to resend' }
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     user,
     loading,
@@ -140,6 +188,8 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     logout,
-    updateProfile
+    updateProfile,
+    verifyEmail,
+    resendVerification
   }
 })

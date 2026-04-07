@@ -202,6 +202,22 @@ DO $$ BEGIN
   ALTER TABLE designfast.users ADD COLUMN uploads_bytes_used bigint NOT NULL DEFAULT 0;
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
+
+-- Email verification columns
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN email_verified_at timestamptz;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN email_verification_code text;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER TABLE designfast.users ADD COLUMN email_verification_expires timestamptz;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
 `;
 
 async function migrate() {

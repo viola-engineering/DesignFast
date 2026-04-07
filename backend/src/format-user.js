@@ -12,6 +12,7 @@ export function formatUser(row) {
     name: row.name,
     plan: row.plan,
     avatarUrl: row.avatar_url || null,
+    emailVerified: !!row.email_verified_at,
     generationsUsed: row.generations_used,
     generationsLimit: plan.generationsPerMonth,
     creditsUsed: row.credits_used,

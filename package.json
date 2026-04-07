@@ -20,7 +20,8 @@
     "image-size": "^2.0.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
-    "queen-mq": "latest"
+    "queen-mq": "latest",
+    "resend": "^6.10.0"
   },
   "devDependencies": {
     "puppeteer": "^24.0.0"

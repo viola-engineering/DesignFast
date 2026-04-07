@@ -47,6 +47,12 @@ const router = createRouter({
       meta: { guestOnly: true }
     },
     {
+      path: '/verify-email',
+      name: 'verify-email',
+      component: () => import('@/views/VerifyEmailView.vue'),
+      meta: { requiresAuth: true, requiresUnverified: true }
+    },
+    {
       path: '/account',
       name: 'account',
       component: () => import('@/views/AccountView.vue'),
@@ -93,6 +99,25 @@ router.beforeEach(async (to, _from, next) => {
 
   // Redirect logged-in users away from guest-only pages
   if (to.meta.guestOnly && authStore.isAuthenticated) {
+    next({ name: 'generate' })
+    return
+  }
+
+  // Hard enforcement: redirect unverified users to verify-email page
+  // (except for verify-email page itself and logout-accessible pages)
+  if (
+    authStore.isAuthenticated &&
+    authStore.user &&
+    !authStore.user.emailVerified &&
+    !to.meta.requiresUnverified &&
+    to.meta.requiresAuth
+  ) {
+    next({ name: 'verify-email' })
+    return
+  }
+
+  // Redirect verified users away from verify-email page
+  if (to.meta.requiresUnverified && authStore.user?.emailVerified) {
     next({ name: 'generate' })
     return
   }

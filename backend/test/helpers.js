@@ -62,6 +62,50 @@ export async function seedUser(app, overrides = {}) {
 }
 
 /**
+ * Create a test user with pending email verification.
+ * Manually sets verification code in DB to simulate RESEND_API_KEY being set.
+ * Returns { user, cookie, verificationCode }.
+ */
+export async function seedUnverifiedUser(app, options = {}) {
+  counter++;
+  const email = options.email || `test-${counter}-${Date.now()}@example.com`;
+  const password = options.password || 'testpassword123';
+  const name = options.name || 'Test User';
+  const verificationCode = '123456';
+
+  // First register normally (will be auto-verified since no RESEND_API_KEY)
+  const res = await app.inject({
+    method: 'POST',
+    url: '/api/auth/register',
+    payload: { email, password, name },
+  });
+
+  const user = res.json().user;
+  const setCookie = res.headers['set-cookie'];
+  const cookieHeader = Array.isArray(setCookie) ? setCookie[0] : setCookie;
+
+  // Override to unverified state with a verification code
+  const expires = options.expired
+    ? new Date(Date.now() - 60000) // 1 minute ago
+    : new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+
+  await query(
+    `UPDATE designfast.users
+     SET email_verified_at = NULL,
+         email_verification_code = $1,
+         email_verification_expires = $2
+     WHERE id = $3`,
+    [verificationCode, expires, user.id]
+  );
+
+  return {
+    user: { ...user, emailVerified: false },
+    cookie: cookieHeader,
+    verificationCode,
+  };
+}
+
+/**
  * Clean up test-created data only. Deletes users whose email matches
  * the test pattern (test-*@example.com) and cascades to their related rows.
  * Real user data is preserved.
