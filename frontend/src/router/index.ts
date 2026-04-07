@@ -104,13 +104,14 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   // Hard enforcement: redirect unverified users to verify-email page
-  // (except for verify-email page itself and logout-accessible pages)
+  // Allow access to: verify-email, public info pages (home, pricing, privacy, terms, styles)
+  const publicPages = ['home', 'pricing', 'privacy', 'terms', 'styles', 'login', 'register']
   if (
     authStore.isAuthenticated &&
     authStore.user &&
     !authStore.user.emailVerified &&
     !to.meta.requiresUnverified &&
-    to.meta.requiresAuth
+    !publicPages.includes(to.name as string)
   ) {
     next({ name: 'verify-email' })
     return
