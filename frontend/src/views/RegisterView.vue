@@ -44,10 +44,13 @@ async function handleSubmit() {
   )
 
   if (result.success) {
-    toastStore.success('Account created! Welcome to DesignFast.')
-    // If email verification is enabled, user will be redirected to verify-email by router guard
-    // If not enabled, they'll go to generate (emailVerified will be true)
-    router.push('/generate')
+    if (authStore.user?.emailVerified) {
+      toastStore.success('Account created! Welcome to DesignFast.')
+      router.push('/generate')
+    } else {
+      toastStore.success('Account created! Please check your email for the verification code.')
+      router.push('/verify-email')
+    }
   } else {
     error.value = result.error || 'Registration failed'
   }
