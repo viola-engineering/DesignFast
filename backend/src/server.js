@@ -4,6 +4,8 @@ import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import multipart from '@fastify/multipart';
 
+import { allowedOrigins } from './cors.js';
+
 import authRoutes from './routes/auth.js';
 import generationsRoutes from './routes/generations.js';
 import jobsRoutes from './routes/jobs.js';
@@ -26,7 +28,14 @@ const app = Fastify({ logger: true });
 
 await app.register(cookie);
 await app.register(cors, {
-  origin: true,
+  origin: (origin, cb) => {
+    // Allow requests with no origin (mobile apps, curl, server-to-server)
+    if (!origin || allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Not allowed by CORS'), false);
+    }
+  },
   credentials: true,
 });
 await app.register(multipart, {

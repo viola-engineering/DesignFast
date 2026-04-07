@@ -8,6 +8,7 @@ import { PLANS, CREDIT_COSTS, hasApiKeys } from '../plans.js';
 import { activeSessions } from '../iterate-sessions.js';
 import queen from '../queen-client.js';
 import bus from '../event-bus.js';
+import { getSafeOrigin } from '../cors.js';
 
 export default async function (app) {
   app.addHook('onRequest', authMiddleware);
@@ -238,7 +239,7 @@ export default async function (app) {
     }
 
     // Set SSE headers with CORS
-    const origin = req.headers.origin || '*';
+    const origin = getSafeOrigin(req.headers.origin);
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
