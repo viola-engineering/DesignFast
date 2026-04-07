@@ -45,7 +45,7 @@ export function getDownloadUrl(id: string): string {
 
 export function getPreviewUrl(jobId: string, filename = 'index.html', revision?: number): string {
   if (revision !== undefined && revision !== null) {
-    return `/preview/${jobId}/r/${revision}/${filename}`
+    return `${API_BASE}/preview/${jobId}/r/${revision}/${filename}`
   }
-  return `/preview/${jobId}/${filename}`
+  return `${API_BASE}/preview/${jobId}/${filename}`
 }
