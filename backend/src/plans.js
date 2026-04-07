@@ -6,7 +6,7 @@ export const PLANS = {
   free: {
     generationsPerMonth: 3,
     maxStyles: 2,
-    maxVersions: 1,
+    maxVersions: 2,
     creditsPerMonth: 0,
     allowedModels: ['gemini'],
     byokEnabled: false,
@@ -16,7 +16,7 @@ export const PLANS = {
   pro: {
     generationsPerMonth: 3, // fallback allowance when credits exhausted
     maxStyles: 4,
-    maxVersions: 1,
+    maxVersions: 4,
     creditsPerMonth: 100,
     allowedModels: ['gemini', 'claude'],
     byokEnabled: true,

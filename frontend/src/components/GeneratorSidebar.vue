@@ -225,7 +225,7 @@ const isPro = computed(() => user.value?.plan === 'pro')
 const isFreePlan = computed(() => !user.value || user.value.plan === 'free')
 
 const maxStyles = computed(() => isPro.value ? 4 : 2)
-const maxVersions = computed(() => 1)
+const maxVersions = computed(() => isPro.value ? 4 : 2)
 
 const creditsRemaining = computed(() => {
   if (!user.value) return 0
