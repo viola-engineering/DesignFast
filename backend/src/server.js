@@ -18,6 +18,9 @@ import { initQueues } from './queen-setup.js';
 import { startWorker, startIterateWorker } from './worker.js';
 import { startEventConsumer } from './event-bus.js';
 
+// MODE: 'api' = only web server, 'worker' = only job workers, undefined = both (dev mode)
+const MODE = process.env.MODE;
+
 const app = Fastify({ logger: true });
 
 await app.register(cookie);
@@ -43,24 +46,33 @@ await app.register(billingRoutes);
 await app.register(uploadsRoutes);
 await app.register(examplesRoutes);
 
-// Initialize queues and start worker
+// Initialize queues
 try {
   await initQueues();
 } catch (err) {
   app.log.warn('Failed to initialize Queen queues (Queen may not be running): %s', err.message);
 }
 
-startWorker();
-startIterateWorker();
-startEventConsumer();
+// Start workers if MODE is 'worker' or undefined (dev mode)
+if (MODE !== 'api') {
+  startWorker();
+  startIterateWorker();
+  startEventConsumer();
+  app.log.info('Workers started');
+}
 
-const port = parseInt(process.env.PORT || '5000', 10);
-
-try {
-  await app.listen({ port, host: '0.0.0.0' });
-} catch (err) {
-  app.log.error(err);
-  process.exit(1);
+// Start API server if MODE is 'api' or undefined (dev mode)
+if (MODE !== 'worker') {
+  const port = parseInt(process.env.PORT || '5000', 10);
+  try {
+    await app.listen({ port, host: '0.0.0.0' });
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+} else {
+  // Keep worker process alive
+  app.log.info('Running in worker-only mode');
 }
 
 export { app };

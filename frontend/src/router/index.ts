@@ -20,6 +20,16 @@ const router = createRouter({
       component: () => import('@/views/PricingView.vue')
     },
     {
+      path: '/privacy',
+      name: 'privacy',
+      component: () => import('@/views/PrivacyView.vue')
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('@/views/TermsView.vue')
+    },
+    {
       path: '/generate',
       name: 'generate',
       component: () => import('@/views/GenerateView.vue')

@@ -9,8 +9,8 @@ import { RouterLink } from 'vue-router'
       <RouterLink to="/pricing">Pricing</RouterLink>
       <RouterLink to="/styles">Styles</RouterLink>
       <a href="#">Docs</a>
-      <a href="#">Privacy</a>
-      <a href="#">Terms</a>
+      <RouterLink to="/privacy">Privacy</RouterLink>
+      <RouterLink to="/terms">Terms</RouterLink>
     </div>
     <span class="footer-copy">&copy; {{ new Date().getFullYear() }} DesignFast. Build something worth shipping.</span>
   </footer>

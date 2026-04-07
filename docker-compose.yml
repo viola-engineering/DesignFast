@@ -1,0 +1,117 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: designfast
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: designfast
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U designfast"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+    restart: unless-stopped
+
+  queen:
+    image: smartnessai/queen-mq:0.12.19
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://designfast:${POSTGRES_PASSWORD}@postgres:5432/designfast
+      NUM_WORKERS: 2
+      DB_POOL_SIZE: 5
+      SIDECAR_POOL_SIZE: 30
+    networks:
+      - internal
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MODE: api
+      DATABASE_URL: postgres://designfast:${POSTGRES_PASSWORD}@postgres:5432/designfast
+      QUEEN_URL: http://queen:6632
+      JWT_SECRET: ${JWT_SECRET}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      PORT: 3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      queen:
+        condition: service_started
+    networks:
+      - internal
+    restart: unless-stopped
+
+  worker-gen-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MODE: worker
+      DATABASE_URL: postgres://designfast:${POSTGRES_PASSWORD}@postgres:5432/designfast
+      QUEEN_URL: http://queen:6632
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      queen:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    networks:
+      - internal
+    restart: unless-stopped
+
+  worker-gen-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MODE: worker
+      DATABASE_URL: postgres://designfast:${POSTGRES_PASSWORD}@postgres:5432/designfast
+      QUEEN_URL: http://queen:6632
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      queen:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    networks:
+      - internal
+    restart: unless-stopped
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - api
+    networks:
+      - internal
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+
+networks:
+  internal:
+    driver: bridge

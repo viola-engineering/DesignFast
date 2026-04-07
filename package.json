@@ -9,7 +9,7 @@
     "generate-screenshots": "node backend/scripts/generate-screenshots.js"
   },
   "dependencies": {
-    "@angycode/core": "file:../../Work/angy/code/packages/core",
+    "@angycode/core": "0.1.3",
     "@fastify/cookie": "^11.0.1",
     "@fastify/cors": "^10.0.1",
     "@fastify/multipart": "^9.4.0",
@@ -20,7 +20,7 @@
     "image-size": "^2.0.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
-    "queen-mq": "file:../../Work/queen/client-js"
+    "queen-mq": "latest"
   },
   "devDependencies": {
     "puppeteer": "^24.0.0"
