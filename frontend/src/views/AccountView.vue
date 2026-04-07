@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
 import { saveApiKey, deleteApiKey, type ApiKeyProvider } from '@/api/account'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const toastStore = useToastStore()
 
 const user = computed(() => authStore.user)
+
+// Credit packages (min €10 to cover Stripe fees)
+const creditPackages = [
+  { id: '100', credits: 100, price: 10 },
+  { id: '250', credits: 250, price: 22 },
+  { id: '500', credits: 500, price: 40 }
+]
+const isPurchasing = ref<string | null>(null)
 
 // Profile form
 const editName = ref('')
@@ -23,10 +32,21 @@ const hasGoogleKey = ref(false)
 const isSavingKey = ref<ApiKeyProvider | null>(null)
 const isDeletingKey = ref<ApiKeyProvider | null>(null)
 
-// Initialize form
-onMounted(() => {
+// Initialize form and handle purchase callbacks
+onMounted(async () => {
   if (user.value) {
     editName.value = user.value.name || ''
+  }
+
+  // Handle purchase callback
+  const purchase = route.query.purchase
+  if (purchase === 'success') {
+    toastStore.success('Credits added to your account!')
+    await authStore.fetchUser() // Refresh user data
+    router.replace('/account')
+  } else if (purchase === 'cancelled') {
+    toastStore.info('Purchase cancelled')
+    router.replace('/account')
   }
 })
 
@@ -103,8 +123,29 @@ async function handleDeleteApiKey(provider: ApiKeyProvider) {
   }
 }
 
-function handleUpgrade() {
-  toastStore.info('Billing not configured')
+async function handlePurchase(packageId: string) {
+  if (isPurchasing.value) return
+  isPurchasing.value = packageId
+
+  try {
+    const res = await fetch('/api/billing/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ package: packageId })
+    })
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to start checkout')
+    }
+
+    // Redirect to Stripe
+    window.location.href = data.url
+  } catch (err) {
+    toastStore.error(err instanceof Error ? err.message : 'Failed to start checkout')
+    isPurchasing.value = null
+  }
 }
 
 async function handleLogout() {
@@ -166,17 +207,14 @@ async function handleLogout() {
                 <span class="plan-name">{{ planDisplayName }}</span>
                 <span class="plan-badge">Current Plan</span>
               </div>
-              <button v-if="!isPro" class="btn-upgrade" @click="handleUpgrade">
-                Upgrade
-              </button>
             </div>
 
             <!-- Pro: credits usage -->
             <template v-if="isPro">
               <div class="usage-section">
                 <div class="usage-header">
-                  <span class="usage-label">Credits this month</span>
-                  <span class="usage-count">{{ user.creditsUsed }} / {{ user.creditsLimit }}</span>
+                  <span class="usage-label">Credits remaining</span>
+                  <span class="usage-count">{{ user.creditsLimit - user.creditsUsed }}</span>
                 </div>
                 <div class="usage-bar">
                   <div class="usage-fill" :style="{ width: `${creditsProgress}%` }"></div>
@@ -199,10 +237,28 @@ async function handleLogout() {
                 </div>
               </div>
             </template>
+          </div>
+        </section>
 
-            <p v-if="user.billingPeriodStart" class="billing-note">
-              Billing period started {{ new Date(user.billingPeriodStart).toLocaleDateString() }}
-            </p>
+        <!-- Buy Credits Section -->
+        <section class="account-section">
+          <h2 class="section-title">Buy Credits</h2>
+          <p class="section-description">
+            One-time purchase. Credits never expire.
+          </p>
+          <div class="section-content">
+            <div class="credit-packages">
+              <button
+                v-for="pkg in creditPackages"
+                :key="pkg.id"
+                class="credit-package"
+                :disabled="isPurchasing !== null"
+                @click="handlePurchase(pkg.id)"
+              >
+                <span class="package-credits">{{ pkg.credits }} credits</span>
+                <span class="package-price">{{ isPurchasing === pkg.id ? 'Loading...' : `€${pkg.price}` }}</span>
+              </button>
+            </div>
           </div>
         </section>
 
@@ -610,5 +666,48 @@ async function handleLogout() {
 .btn-logout:hover {
   color: var(--ink);
   border-color: var(--ink);
+}
+
+/* Credit Packages */
+.credit-packages {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.credit-package {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.25rem 1rem;
+  background-color: var(--bg);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.credit-package:hover:not(:disabled) {
+  border-color: var(--accent);
+  background-color: var(--white);
+}
+
+.credit-package:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.package-credits {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.package-price {
+  font-size: 0.875rem;
+  color: var(--accent);
+  font-weight: 500;
 }
 </style>

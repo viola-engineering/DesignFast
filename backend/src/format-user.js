@@ -16,7 +16,7 @@ export function formatUser(row) {
     generationsUsed: row.generations_used,
     generationsLimit: plan.generationsPerMonth,
     creditsUsed: row.credits_used,
-    creditsLimit: row.plan === 'pro' ? plan.creditsPerMonth : 0,
+    creditsLimit: row.credits_limit,
     byokGenerationsUsed: row.byok_generations_used,
     byokGenerationCap: plan.byokGenerationCap,
     billingPeriodStart: row.billing_period_start || null,

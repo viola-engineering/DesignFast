@@ -104,8 +104,8 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   // Hard enforcement: redirect unverified users to verify-email page
-  // Allow access to: verify-email, public info pages (home, pricing, privacy, terms, styles)
-  const publicPages = ['home', 'pricing', 'privacy', 'terms', 'styles', 'login', 'register']
+  // Allow access to: verify-email, public info pages, and account (for buying credits)
+  const publicPages = ['home', 'pricing', 'privacy', 'terms', 'styles', 'login', 'register', 'account']
   if (
     authStore.isAuthenticated &&
     authStore.user &&

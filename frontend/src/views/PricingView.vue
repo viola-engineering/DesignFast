@@ -8,7 +8,7 @@ const tiers = [
   {
     name: 'Free',
     price: '\u20AC0',
-    period: ' / mo',
+    period: '',
     description: 'Explore DesignFast with Gemini-powered generations. No credit card, no commitment.',
     features: [
       { text: '3 generations per month', included: true },
@@ -27,31 +27,32 @@ const tiers = [
   },
   {
     name: 'Pro',
-    price: '\u20AC9',
-    period: ' / mo',
-    description: 'Full access to Claude and Gemini with 100 credits per month. Use your own keys for even more.',
+    price: 'from \u20AC10',
+    period: '',
+    description: 'Buy credits, use them anytime. Full access to Claude and Gemini. No subscription.',
     features: [
-      { text: '100 credits per month', included: true },
+      { text: 'Credits never expire', included: true },
       { text: 'Claude (20 cr) & Gemini (1 cr)', included: true },
       { text: 'Up to 4 styles per generation', included: true },
       { text: 'Single-page & multi-page modes', included: true },
       { text: 'Iterate & refine', included: true },
       { text: 'Download your output files', included: true },
       { text: 'BYOK — bypass credits', included: true },
-      { text: 'Fallback to Gemini when credits run out', included: true },
+      { text: '3 free Gemini generations when out of credits', included: true },
     ],
-    ctaText: 'Start Pro \u2014 \u20AC9/mo',
-    ctaLink: '/generate',
+    ctaText: 'Buy credits',
+    ctaLink: '/account',
     featured: true
   }
 ]
 
 const featureTableRows = [
   { feature: 'Usage', free: '', pro: '', isCategory: true },
-  { feature: 'Monthly allowance', free: '3 generations', pro: '100 credits' },
+  { feature: 'Pricing', free: 'Free', pro: 'Pay as you go' },
   { feature: 'Gemini cost', free: '1 generation', pro: '1 credit' },
   { feature: 'Claude cost', free: '-', pro: '20 credits' },
   { feature: 'Styles per generation', free: 'Up to 2', pro: 'Up to 4' },
+  { feature: 'Credit expiry', free: '-', pro: 'Never' },
   { feature: 'Models', free: '', pro: '', isCategory: true },
   { feature: 'Gemini', free: '✓', pro: '✓' },
   { feature: 'Claude', free: '-', pro: '✓' },
@@ -62,13 +63,17 @@ const featureTableRows = [
   { feature: 'Download files', free: '✓', pro: '✓' },
   { feature: 'Iterate & refine', free: '✓', pro: '✓' },
   { feature: 'BYOK (own API keys)', free: '-', pro: '✓' },
-  { feature: 'Fallback Gemini on credit exhaustion', free: '-', pro: '3 gen/mo' },
+  { feature: 'Fallback Gemini when out of credits', free: '-', pro: '3 gen/mo' },
 ]
 
 const faqs = [
   {
     question: 'How do credits work?',
-    answer: 'Pro users get 100 credits per month. Each generation costs credits based on the model: Gemini costs 1 credit, Claude costs 20 credits. Multiple styles multiply the cost. When your credits run out, you can still use Gemini with up to 3 fallback generations until your billing period resets.'
+    answer: 'Buy credits once, use them anytime. Each generation costs credits based on the model: Gemini costs 1 credit, Claude costs 20 credits. Multiple styles multiply the cost. Credits never expire. When your credits run out, you can still use Gemini with up to 3 fallback generations per month.'
+  },
+  {
+    question: 'What credit packages are available?',
+    answer: '100 credits for \u20AC10, 250 credits for \u20AC22, or 500 credits for \u20AC40. Buy what you need, top up when you want. No subscription, no recurring charges.'
   },
   {
     question: 'Can I use my own API keys?',
@@ -85,10 +90,6 @@ const faqs = [
   {
     question: 'What does Iterate & refine mean?',
     answer: 'After a generation completes, you can have a conversation with AI to refine the output. "Make the headline bigger", "Add a dark mode toggle", "Change the accent color to blue" - describe changes in plain language and see them applied immediately. Each refinement message costs credits based on the model used.'
-  },
-  {
-    question: 'Can I cancel anytime?',
-    answer: 'Yes. No contracts, no commitments. Cancel from your account page and you will not be charged again. You keep access until the end of your current billing period, and you can always download your generation history before you go.'
   }
 ]
 </script>
@@ -248,6 +249,14 @@ const faqs = [
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   border-top: 1px solid var(--rule);
+}
+
+.pricing-grid > :deep(*) {
+  height: 100%;
+}
+
+.pricing-grid :deep(.pricing-card) {
+  height: 100%;
 }
 
 /* Statement Band */

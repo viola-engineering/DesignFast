@@ -109,11 +109,11 @@ export function checkUsageLimits(user, request, modelMap) {
     // Pro user out of credits — fallback to free-tier allowance (Gemini only)
     for (const modelKey of request.models) {
       if (modelKey !== 'gemini') {
-        return { allowed: false, error: 'Credits exhausted. You can still use Gemini until your credits renew.' };
+        return { allowed: false, error: 'Credits exhausted. Buy more credits or use Gemini.' };
       }
     }
     if (user.generations_used >= plan.generationsPerMonth) {
-      return { allowed: false, error: 'Credits and fallback generations exhausted. Renew your credits or wait for the next billing period.' };
+      return { allowed: false, error: 'Credits and fallback generations exhausted. Buy more credits to continue.' };
     }
     return { allowed: true, billingMode: 'generation', creditCost: 0 };
   }

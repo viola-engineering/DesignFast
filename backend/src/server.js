@@ -35,6 +35,18 @@ await app.register(multipart, {
   },
 });
 
+// Add raw body support for Stripe webhooks
+app.addContentTypeParser('application/json', { parseAs: 'buffer' }, (req, body, done) => {
+  try {
+    const json = JSON.parse(body.toString());
+    // Attach raw body for webhook signature verification
+    req.rawBody = body;
+    done(null, json);
+  } catch (err) {
+    done(err, undefined);
+  }
+});
+
 // Register route plugins — routes define their own full paths
 await app.register(authRoutes);
 await app.register(generationsRoutes);
