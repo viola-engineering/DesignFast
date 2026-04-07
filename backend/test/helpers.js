@@ -10,6 +10,7 @@ import previewRoutes from '../src/routes/preview.js';
 import iterateRoutes from '../src/routes/iterate.js';
 import accountRoutes from '../src/routes/account.js';
 import billingRoutes from '../src/routes/billing.js';
+import configRoutes from '../src/routes/config.js';
 import { query, db } from '../src/db.js';
 
 let counter = 0;
@@ -31,6 +32,7 @@ export async function createApp() {
   await app.register(iterateRoutes);
   await app.register(accountRoutes);
   await app.register(billingRoutes);
+  await app.register(configRoutes);
 
   await app.ready();
   return app;

@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { useToastStore } from '@/stores/toast'
-import BaseButton from '@/components/BaseButton.vue'
 import StyleCard from '@/components/StyleCard.vue'
 import ScrollReveal from '@/components/ScrollReveal.vue'
 import TickerBand from '@/components/TickerBand.vue'
-
-const toastStore = useToastStore()
 
 const tickerItems = [
   '30 curated design styles',
@@ -26,18 +22,6 @@ const sampleStyles = [
   { key: 'editorial', name: 'Editorial', category: 'editorial', description: 'Magazine-spread energy. Typography as layout.', tags: ['Serif display', 'Column grid'] },
   { key: 'cyberpunk', name: 'CYBERPUNK', category: 'dark', description: 'Terminal glow. Neon on dark. Earned edge.', tags: ['Dark bg', 'Neon accents'] }
 ]
-
-function showSuccessToast() {
-  toastStore.success('Generation complete! Your design is ready.')
-}
-
-function showErrorToast() {
-  toastStore.error('Something went wrong. Please try again.')
-}
-
-function showInfoToast() {
-  toastStore.info('Processing your request...')
-}
 </script>
 
 <template>
@@ -45,7 +29,7 @@ function showInfoToast() {
     <!-- Hero Section -->
     <section class="hero">
       <div class="hero-top">
-        <p class="hero-label">AI-powered design generation</p>
+        <p class="hero-label">AI-powered design generation <span class="beta-badge">BETA</span></p>
         <h1 class="hero-headline">
           You know<br />
           great&nbsp;<em class="accent-word">design</em><br />
@@ -67,6 +51,14 @@ function showInfoToast() {
           </RouterLink>
           <RouterLink to="/styles" class="btn-ghost">See 30 styles</RouterLink>
         </div>
+        <p class="hero-opensource">
+          <a href="https://github.com/viola-engineering/designfast" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Open source
+          </a> — self-host with your own API keys
+        </p>
       </div>
     </section>
 
@@ -119,44 +111,6 @@ function showInfoToast() {
       <ScrollReveal>
         <div class="spectrum-cta">
           <RouterLink to="/styles" class="btn-ghost">View all 30 styles</RouterLink>
-        </div>
-      </ScrollReveal>
-    </section>
-
-    <!-- Button Demo Section -->
-    <section class="demo-section">
-      <ScrollReveal>
-        <h2 class="demo-title">Component Demo</h2>
-      </ScrollReveal>
-
-      <ScrollReveal :delay="100">
-        <div class="button-demo">
-          <h3 class="demo-subtitle">Button Variants</h3>
-          <div class="button-row">
-            <BaseButton variant="primary">Primary</BaseButton>
-            <BaseButton variant="outline">Outline</BaseButton>
-            <BaseButton variant="ghost">Ghost</BaseButton>
-          </div>
-          <div class="button-row dark-bg">
-            <BaseButton variant="banner">Banner</BaseButton>
-            <BaseButton variant="final">Final CTA</BaseButton>
-            <BaseButton variant="ghost-light">Ghost Light</BaseButton>
-          </div>
-          <div class="button-row">
-            <BaseButton variant="primary" :loading="true">Loading</BaseButton>
-            <BaseButton variant="primary" :disabled="true">Disabled</BaseButton>
-          </div>
-        </div>
-      </ScrollReveal>
-
-      <ScrollReveal :delay="200">
-        <div class="toast-demo">
-          <h3 class="demo-subtitle">Toast Notifications</h3>
-          <div class="button-row">
-            <BaseButton variant="primary" @click="showSuccessToast">Success Toast</BaseButton>
-            <BaseButton variant="outline" @click="showErrorToast">Error Toast</BaseButton>
-            <BaseButton variant="ghost" @click="showInfoToast">Info Toast</BaseButton>
-          </div>
         </div>
       </ScrollReveal>
     </section>
@@ -222,9 +176,21 @@ function showInfoToast() {
   background: var(--ink-light);
 }
 
+.beta-badge {
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  background: rgba(255, 107, 53, 0.12);
+  padding: 0.25em 0.6em;
+  border-radius: 3px;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+}
+
 .hero-headline {
   font-family: var(--ff-display);
-  font-size: var(--sz-monster);
+  font-size: clamp(3rem, 8vw, 7rem);
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: -0.03em;
@@ -368,48 +334,6 @@ function showInfoToast() {
   margin-top: 2rem;
 }
 
-/* Demo Section */
-.demo-section {
-  padding: var(--sp-section) var(--sp-page);
-  border-top: 1px solid var(--rule);
-}
-
-.demo-title {
-  font-family: var(--ff-display);
-  font-size: var(--sz-title);
-  font-weight: 700;
-  margin-bottom: 3rem;
-}
-
-.demo-subtitle {
-  font-size: var(--sz-lead);
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  color: var(--ink);
-}
-
-.button-demo,
-.toast-demo {
-  margin-bottom: 3rem;
-}
-
-.button-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 1.5rem;
-}
-
-.button-row.dark-bg {
-  background-color: var(--dark);
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-  padding-left: calc(var(--sp-page) + 1.5rem);
-  padding-right: calc(var(--sp-page) + 1.5rem);
-}
-
 /* Final CTA */
 .final-cta {
   background-color: var(--dark);
@@ -494,6 +418,34 @@ function showInfoToast() {
   border-color: var(--ink);
 }
 
+.hero-opensource {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  font-size: var(--sz-small);
+  color: var(--ink-light);
+}
+
+.hero-opensource a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hero-opensource a:hover {
+  color: var(--accent);
+}
+
+.hero-opensource svg {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
 .btn-final {
   display: inline-flex;
   align-items: center;
@@ -535,6 +487,10 @@ function showInfoToast() {
 }
 
 @media (max-width: 768px) {
+  .hero-headline {
+    font-size: clamp(3.5rem, 12vw, 5rem);
+  }
+
   .hero-bottom {
     grid-template-columns: 1fr;
   }

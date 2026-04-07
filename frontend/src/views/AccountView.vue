@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useToastStore } from '@/stores/toast'
+import { useConfigStore } from '@/stores/config'
 import { saveApiKey, deleteApiKey, type ApiKeyProvider } from '@/api/account'
 
 const API_BASE = import.meta.env.VITE_API_URL || ''
@@ -11,8 +12,10 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 const toastStore = useToastStore()
+const configStore = useConfigStore()
 
 const user = computed(() => authStore.user)
+const byokEnabled = computed(() => configStore.byokEnabled)
 
 // Credit packages
 const creditPackages = [
@@ -265,8 +268,8 @@ async function handleLogout() {
           </div>
         </section>
 
-        <!-- API Keys Section -->
-        <section class="account-section">
+        <!-- API Keys Section (only on self-hosted deployments) -->
+        <section v-if="byokEnabled" class="account-section">
           <h2 class="section-title">API Keys (BYOK)</h2>
           <p class="section-description">
             Bring your own API keys to use your own rate limits and billing.

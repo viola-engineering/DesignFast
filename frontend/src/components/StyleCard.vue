@@ -84,6 +84,7 @@ function onThumbnailError() {
 
 <style scoped>
 .style-card-full {
+  height: 100%;
   border-right: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   position: relative;

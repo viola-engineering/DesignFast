@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useConfigStore } from '@/stores/config'
 import ScrollReveal from '@/components/ScrollReveal.vue'
 import PricingCard from '@/components/PricingCard.vue'
 import FeatureTable from '@/components/FeatureTable.vue'
 import FaqAccordion from '@/components/FaqAccordion.vue'
 
-const tiers = [
+const configStore = useConfigStore()
+const byokEnabled = computed(() => configStore.byokEnabled)
+
+const tiers = computed(() => [
   {
     name: 'Free',
     price: '\u20AC0',
@@ -20,7 +25,7 @@ const tiers = [
       { text: 'Download your output files', included: true },
       { text: 'Claude model', included: false },
       { text: 'Credit-based usage', included: false },
-      { text: 'BYOK (own API keys)', included: false },
+      ...(byokEnabled.value ? [{ text: 'BYOK (own API keys)', included: false }] : []),
     ],
     ctaText: 'Get started free',
     ctaLink: '/generate',
@@ -39,16 +44,16 @@ const tiers = [
       { text: 'Single-page & multi-page modes', included: true },
       { text: 'Iterate & refine', included: true },
       { text: 'Download your output files', included: true },
-      { text: 'BYOK — bypass credits', included: true },
+      ...(byokEnabled.value ? [{ text: 'BYOK — bypass credits', included: true }] : []),
       { text: '3 free Gemini generations when out of credits', included: true },
     ],
     ctaText: 'Buy credits',
     ctaLink: '/account',
     featured: true
   }
-]
+])
 
-const featureTableRows = [
+const featureTableRows = computed(() => [
   { feature: 'Usage', free: '', pro: '', isCategory: true },
   { feature: 'Pricing', free: 'Free', pro: 'Pay as you go' },
   { feature: 'Gemini cost', free: '1 generation', pro: '1 credit' },
@@ -65,9 +70,9 @@ const featureTableRows = [
   { feature: 'Features', free: '', pro: '', isCategory: true },
   { feature: 'Download files', free: '✓', pro: '✓' },
   { feature: 'Iterate & refine', free: '✓', pro: '✓' },
-  { feature: 'BYOK (own API keys)', free: '-', pro: '✓' },
+  ...(byokEnabled.value ? [{ feature: 'BYOK (own API keys)', free: '-', pro: '✓' }] : []),
   { feature: 'Fallback Gemini when out of credits', free: '-', pro: '3 gen/mo' },
-]
+])
 
 const faqs = [
   {
@@ -79,8 +84,12 @@ const faqs = [
     answer: '50 credits for \u20AC5, 100 credits for \u20AC10, 250 credits for \u20AC22, or 500 credits for \u20AC40. Buy what you need, top up when you want. No subscription, no recurring charges.'
   },
   {
+    question: 'Is DesignFast open source?',
+    answer: 'Yes! DesignFast is fully open source. You can self-host it on your own infrastructure, use your own API keys, and pay only for what you use directly to Anthropic and Google. The cloud version is for those who want a ready-to-use service without setup.'
+  },
+  {
     question: 'Can I use my own API keys?',
-    answer: 'Pro users can add their own Anthropic (Claude) and Google (Gemini) API keys. When using your own keys, generations bypass the credit system entirely and use your API account directly. You still have a hard cap of 200 generations per month to manage server resources.'
+    answer: 'On the cloud version, we handle all API costs through credits. If you want to use your own API keys (BYOK), you can self-host DesignFast for free - just clone the repo from GitHub and run it with your own keys.'
   },
   {
     question: 'What is the difference between single-page and multi-page mode?',
@@ -108,6 +117,14 @@ const faqs = [
       <p class="page-hero-sub">
         No credit card required. Free tier gets you 3 Gemini generations per month
         to see if DesignFast works for you. Upgrade when it does.
+      </p>
+      <p class="hero-opensource">
+        <a href="https://github.com/viola-engineering/designfast" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Open source
+        </a> — self-host with your own API keys
       </p>
     </section>
 
@@ -243,6 +260,34 @@ const faqs = [
   line-height: 1.55;
 }
 
+.hero-opensource {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.5rem;
+  font-size: var(--sz-small);
+  color: var(--ink-light);
+}
+
+.hero-opensource a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--ink);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.hero-opensource a:hover {
+  color: var(--accent);
+}
+
+.hero-opensource svg {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
 /* Pricing Grid */
 .pricing-section {
   padding: 0;
@@ -338,12 +383,13 @@ const faqs = [
 
 /* FAQ Section */
 .faq-section {
-  padding: var(--sp-section) var(--sp-page);
+  padding: var(--sp-section) 0;
   border-top: 1px solid var(--rule);
 }
 
 .faq-list {
   max-width: 50rem;
+  padding: 0 var(--sp-page);
 }
 
 /* Final CTA */

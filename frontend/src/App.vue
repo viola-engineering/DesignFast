@@ -2,14 +2,17 @@
 import { RouterView } from 'vue-router'
 import { onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useConfigStore } from '@/stores/config'
 import AppNav from '@/components/AppNav.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import ToastContainer from '@/components/ToastContainer.vue'
 
 const authStore = useAuthStore()
+const configStore = useConfigStore()
 
 onMounted(() => {
   authStore.fetchUser()
+  configStore.load()
 })
 </script>
 

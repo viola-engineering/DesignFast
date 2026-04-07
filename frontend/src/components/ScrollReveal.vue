@@ -54,6 +54,7 @@ onUnmounted(() => {
 
 <style scoped>
 .reveal {
+  height: 100%;
   opacity: 0;
   transform: translateY(28px);
   transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),

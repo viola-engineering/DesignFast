@@ -29,6 +29,11 @@ export default async function (app) {
 
   // POST /api/account/api-keys
   app.post('/api/account/api-keys', async (req, reply) => {
+    // BYOK only available on self-hosted deployments
+    if (process.env.BYOK_ENABLED !== 'true') {
+      return reply.code(403).send({ error: 'API key management is only available on self-hosted deployments' });
+    }
+
     const { provider, key } = req.body || {};
 
     if (!provider || !VALID_PROVIDERS.includes(provider)) {
@@ -56,6 +61,10 @@ export default async function (app) {
 
   // DELETE /api/account/api-keys/:provider
   app.delete('/api/account/api-keys/:provider', async (req, reply) => {
+    if (process.env.BYOK_ENABLED !== 'true') {
+      return reply.code(403).send({ error: 'API key management is only available on self-hosted deployments' });
+    }
+
     const { provider } = req.params;
 
     const { rowCount } = await query(

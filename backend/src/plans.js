@@ -88,8 +88,11 @@ export function checkUsageLimits(user, request, modelMap) {
     }
   }
 
-  // BYOK path (pro only)
+  // BYOK path (pro only, and only if enabled for this deployment)
   if (request.isByok) {
+    if (process.env.BYOK_ENABLED !== 'true') {
+      return { allowed: false, error: 'BYOK is only available on self-hosted deployments' };
+    }
     if (!plan.byokEnabled) {
       return { allowed: false, error: 'BYOK is available on the Pro plan' };
     }

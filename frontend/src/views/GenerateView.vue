@@ -24,6 +24,7 @@ const toastStore = useToastStore()
 const sidebarRef = ref<InstanceType<typeof GeneratorSidebar>>()
 const preselectedStyle = route.query.style as string | undefined
 const isGenerating = ref(false)
+const sidebarCollapsed = ref(false)
 
 // Job tracking — supports multiple jobs per generation
 interface TrackedJob {
@@ -123,10 +124,13 @@ function checkAllDone() {
     const doneCount = jobs.value.filter(j => j.status === 'done').length
     if (doneCount === jobs.value.length) {
       toastStore.success(`All ${doneCount} generation${doneCount > 1 ? 's' : ''} complete!`)
+      sidebarCollapsed.value = true
     } else if (doneCount > 0) {
       toastStore.success(`${doneCount} of ${jobs.value.length} generations complete`)
+      sidebarCollapsed.value = true
     } else {
       toastStore.error('All generations failed')
+      // Keep sidebar open on failure so user can retry
     }
   }
 }
@@ -150,6 +154,8 @@ onMounted(async () => {
       if (job.status === 'running' || job.status === 'queued') {
         isGenerating.value = true
         connectSSE(job.id)
+      } else if (job.status === 'done') {
+        sidebarCollapsed.value = true
       }
     } catch {
       toastStore.error('Failed to load previous generation')
@@ -347,10 +353,15 @@ function handleStartNew() {
   revision.value = 0
   latestRevision.value = 0
   isGenerating.value = false
+  sidebarCollapsed.value = false
   disconnectSSE()
   if (route.query.jobId) {
     router.replace({ query: {} })
   }
+}
+
+function toggleSidebar() {
+  sidebarCollapsed.value = !sidebarCollapsed.value
 }
 
 function handleExampleClick(prompt: string) {
@@ -361,7 +372,7 @@ function handleExampleClick(prompt: string) {
 
 <template>
   <div class="generate-page">
-    <div class="generate-container">
+    <div class="generate-container" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <aside class="generate-sidebar">
         <GeneratorSidebar
           ref="sidebarRef"
@@ -379,11 +390,13 @@ function handleExampleClick(prompt: string) {
           :active-job-index="activeJobIndex"
           :revision="revision"
           :latest-revision="latestRevision"
+          :sidebar-collapsed="sidebarCollapsed"
           @iterate="handleIterate"
           @example-click="handleExampleClick"
           @revision-change="handleRevisionChange"
           @start-new="handleStartNew"
           @job-change="handleJobChange"
+          @toggle-sidebar="toggleSidebar"
         />
       </main>
     </div>
@@ -400,12 +413,24 @@ function handleExampleClick(prompt: string) {
   display: grid;
   grid-template-columns: 380px 1fr;
   min-height: calc(100vh - 62px);
+  transition: grid-template-columns 0.3s ease;
+}
+
+.generate-container.sidebar-collapsed {
+  grid-template-columns: 0 1fr;
 }
 
 .generate-sidebar {
   border-right: 1px solid var(--rule);
   background-color: var(--white);
   overflow-y: auto;
+  overflow-x: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-collapsed .generate-sidebar {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .generate-output {
@@ -420,10 +445,20 @@ function handleExampleClick(prompt: string) {
     grid-template-rows: auto 1fr;
   }
 
+  .generate-container.sidebar-collapsed {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0 1fr;
+  }
+
   .generate-sidebar {
     border-right: none;
     border-bottom: 1px solid var(--rule);
     max-height: 50vh;
+  }
+
+  .sidebar-collapsed .generate-sidebar {
+    max-height: 0;
+    border-bottom: none;
   }
 
   .generate-output {
