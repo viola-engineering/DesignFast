@@ -8,7 +8,6 @@ import { RouterLink } from 'vue-router'
     <div class="footer-links">
       <RouterLink to="/pricing">Pricing</RouterLink>
       <RouterLink to="/styles">Styles</RouterLink>
-      <a href="#">Docs</a>
       <RouterLink to="/privacy">Privacy</RouterLink>
       <RouterLink to="/terms">Terms</RouterLink>
     </div>
@@ -33,6 +32,7 @@ import { RouterLink } from 'vue-router'
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  flex: 1;
 }
 
 .footer-wordmark em {
@@ -44,6 +44,7 @@ import { RouterLink } from 'vue-router'
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
+  flex-shrink: 0;
 }
 
 .footer-links a {
@@ -63,6 +64,8 @@ import { RouterLink } from 'vue-router'
   font-size: 0.6875rem;
   color: rgba(253, 251, 247, 0.35);
   letter-spacing: 0.04em;
+  flex: 1;
+  text-align: right;
 }
 
 @media (max-width: 768px) {

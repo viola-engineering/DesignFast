@@ -78,6 +78,20 @@ const sampleStyles = [
       </div>
     </section>
 
+    <!-- Why Section -->
+    <section class="why">
+      <ScrollReveal>
+        <p class="why-label">Why we built this</p>
+        <p class="why-prose">
+          LLMs are wildly unpredictable — and <em class="accent">that's the point.</em>
+          We turn their randomness into a superpower: generate dozens of designs,
+          then pick the one that feels right. Because <em class="accent">you know great design
+          when you see it</em> — you just can't always make it from scratch.
+          DesignFast bridges that gap and <em class="accent">sets your imagination free.</em>
+        </p>
+      </ScrollReveal>
+    </section>
+
     <!-- Style Preview Section -->
     <section class="spectrum">
       <ScrollReveal>
@@ -272,6 +286,37 @@ const sampleStyles = [
 
 .statement-text .hot {
   color: var(--accent-warm);
+}
+
+/* Why */
+.why {
+  padding: var(--sp-section) var(--sp-page);
+  max-width: 54rem;
+  margin: 0 auto;
+}
+
+.why-label {
+  font-size: var(--sz-micro);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 1.5rem;
+}
+
+.why-prose {
+  font-family: var(--ff-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--ink-light);
+}
+
+.why-prose .accent {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 700;
 }
 
 /* Spectrum */

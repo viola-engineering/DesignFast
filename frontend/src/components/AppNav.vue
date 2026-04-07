@@ -115,7 +115,7 @@ onUnmounted(() => {
   letter-spacing: -0.02em;
   color: var(--ink);
   text-decoration: none;
-  flex-shrink: 0;
+  flex: 1;
 }
 
 .nav-wordmark em {
@@ -127,12 +127,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 0;
+  flex-shrink: 0;
 }
 
 .nav-right {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1.5rem;
+  flex: 1;
 }
 
 .nav-link {
