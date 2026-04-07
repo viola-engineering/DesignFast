@@ -1,8 +1,6 @@
 // Allowed origins for CORS
 // Set ALLOWED_ORIGINS env var as comma-separated list, or use defaults
 const defaultOrigins = [
-  'https://designfast.app',
-  'https://api.designfast.app',
   'http://localhost:5173',
   'http://localhost:3000',
 ];
