@@ -237,11 +237,14 @@ export default async function (app) {
       return reply.code(404).send({ error: 'Session not found' });
     }
 
-    // Set SSE headers
+    // Set SSE headers with CORS
+    const origin = req.headers.origin || '*';
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Credentials': 'true',
     });
 
     // If session is already failed/closed, send that and close

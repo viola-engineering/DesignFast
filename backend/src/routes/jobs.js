@@ -85,11 +85,14 @@ export default async function (app) {
 
     const jobId = req.params.id;
 
-    // Set SSE headers
+    // Set SSE headers with CORS
+    const origin = req.headers.origin || '*';
     reply.raw.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
       'Connection': 'keep-alive',
+      'Access-Control-Allow-Origin': origin,
+      'Access-Control-Allow-Credentials': 'true',
     });
 
     // If job is already done/failed, send final event and close
