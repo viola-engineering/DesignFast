@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumina Health | Modern Telemedicine & Wellness</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-teal-50">
+        <div class="max-w-site px-6 py-4 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-800">Lumina<span class="text-teal-600">Health</span></span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="#doctors" class="nav-link">Doctors</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#booking" class="btn-primary">Book Now</a>
+            </div>
+
+            <button class="md:hidden text-slate-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 overflow-hidden">
+        <div class="hero-gradient-blob blob-1"></div>
+        <div class="hero-gradient-blob blob-2"></div>
+        
+        <div class="max-w-site px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate-fade-up">
+                <span class="badge-teal mb-4 inline-block">24/7 Virtual Care Available</span>
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-800 leading-tight mb-6">
+                    Expert medical care, right from your <span class="text-teal-600">living room.</span>
+                </h1>
+                <p class="text-lg text-slate-600 mb-8 max-w-lg">
+                    Skip the waiting room. Connect with board-certified doctors in minutes for urgent care, mental health support, and routine checkups.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#booking" class="btn-primary">Schedule Your Visit</a>
+                    <a href="#services" class="btn-secondary">Explore Services</a>
+                </div>
+                <div class="mt-10 flex items-center space-x-4">
+                    <div class="flex -space-x-2">
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" class="rounded-full">
+                        </div>
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aria" alt="User" class="rounded-full">
+                        </div>
+                        <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jack" alt="User" class="rounded-full">
+                        </div>
+                    </div>
+                    <div class="text-sm">
+                        <span class="font-bold text-slate-800">4.9/5</span>
+                        <span class="text-slate-500">from 15,000+ patient reviews</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative animate-fade-up delay-200">
+                <div class="rounded-3xl overflow-hidden shadow-2xl relative z-10">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=800" alt="Doctor on Video Call" class="w-full h-auto">
+                    <div class="absolute bottom-6 left-6 bg-white p-4 rounded-2xl shadow-lg flex items-center space-x-3">
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <p class="text-sm font-medium text-slate-700">Dr. Sarah is online now</p>
+                    </div>
+                </div>
+                <!-- Decorative elements -->
+                <div class="absolute -top-6 -right-6 w-24 h-24 bg-teal-100 rounded-full z-0 opacity-50"></div>
+                <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-50 rounded-full z-0 opacity-50"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Trust Section -->
+    <section class="py-12 bg-slate-50/50 border-y border-slate-100">
+        <div class="max-w-site px-6">
+            <p class="text-center text-sm font-semibold text-slate-400 uppercase tracking-widest mb-8">We work with leading insurance providers</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all">
+                <span class="text-xl font-bold text-slate-600">Aetna</span>
+                <span class="text-xl font-bold text-slate-600">BlueCross</span>
+                <span class="text-xl font-bold text-slate-600">Cigna</span>
+                <span class="text-xl font-bold text-slate-600">UnitedHealth</span>
+                <span class="text-xl font-bold text-slate-600">Medicare</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-section">
+        <div class="max-w-site px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Comprehensive care for you and your family</h2>
+                <p class="text-slate-600">Our board-certified clinicians provide personalized care across a wide range of medical specialties.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Service 1 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Urgent Care</h3>
+                    <p class="text-slate-600 mb-6">Treatment for flu, infections, allergies, and minor injuries within minutes.</p>
+                    <a href="#" class="text-teal-600 font-semibold hover:underline">Learn more &rarr;</a>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Mental Health</h3>
+                    <p class="text-slate-600 mb-6">Compassionate therapy and psychiatry sessions for anxiety, depression, and stress.</p>
+                    <a href="#" class="text-teal-600 font-semibold hover:underline">Learn more &rarr;</a>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card">
+                    <div class="icon-box">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Primary Care</h3>
+                    <p class="text-slate-600 mb-6">Manage chronic conditions, get prescriptions, and build a long-term health plan.</p>
+                    <a href="#" class="text-teal-600 font-semibold hover:underline">Learn more &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="soft-bg py-section relative overflow-hidden">
+        <svg class="absolute top-0 w-full section-divider-white" preserveAspectRatio="none" viewBox="0 0 1440 60">
+            <path d="M0 60 Q 360 0 720 60 T 1440 60 V 0 H 0 Z"></path>
+        </svg>
+        
+        <div class="max-w-site px-6 relative z-10 pt-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">How to see a doctor today</h2>
+                <p class="text-slate-600">The simplest way to get medical attention in three easy steps.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-teal-600 mx-auto mb-6 shadow-sm">1</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Request Visit</h3>
+                    <p class="text-slate-600">Select your symptom and provide a brief medical history through our secure portal.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-teal-600 mx-auto mb-6 shadow-sm">2</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Connect Instantly</h3>
+                    <p class="text-slate-600">Meet with a board-certified doctor via high-definition video on any device.</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-teal-600 mx-auto mb-6 shadow-sm">3</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Feel Better</h3>
+                    <p class="text-slate-600">Get your diagnosis, treatment plan, and prescriptions sent to your local pharmacy.</p>
+                </div>
+            </div>
+        </div>
+
+        <svg class="absolute bottom-0 w-full section-divider-white rotate-180" preserveAspectRatio="none" viewBox="0 0 1440 60">
+            <path d="M0 60 Q 360 0 720 60 T 1440 60 V 0 H 0 Z"></path>
+        </svg>
+    </section>
+
+    <!-- Doctors Section -->
+    <section id="doctors" class="py-section">
+        <div class="max-w-site px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="max-w-xl">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">Meet our medical experts</h2>
+                    <p class="text-slate-600">Our team consists of board-certified clinicians from top-tier institutions across the country.</p>
+                </div>
+                <a href="#" class="btn-secondary">View All Doctors</a>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Doctor 1 -->
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71f153671f?auto=format&fit=crop&q=80&w=400" alt="Dr. Sarah Jenkins" class="doctor-image">
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-800">Dr. Sarah Jenkins</h4>
+                        <p class="text-teal-600 font-medium mb-2">Internal Medicine</p>
+                        <p class="text-sm text-slate-500 mb-4">Harvard Medical School, 12 years exp.</p>
+                        <div class="flex items-center text-orange-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="text-slate-700 text-sm font-bold ml-1">4.9 (2.1k)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 2 -->
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400" alt="Dr. Michael Chen" class="doctor-image">
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-800">Dr. Michael Chen</h4>
+                        <p class="text-teal-600 font-medium mb-2">Psychiatrist</p>
+                        <p class="text-sm text-slate-500 mb-4">Stanford University, 8 years exp.</p>
+                        <div class="flex items-center text-orange-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="text-slate-700 text-sm font-bold ml-1">4.8 (1.5k)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 3 -->
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=400" alt="Dr. Emily Rodriguez" class="doctor-image">
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-800">Dr. Emily Rodriguez</h4>
+                        <p class="text-teal-600 font-medium mb-2">Pediatrician</p>
+                        <p class="text-sm text-slate-500 mb-4">Johns Hopkins, 15 years exp.</p>
+                        <div class="flex items-center text-orange-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="text-slate-700 text-sm font-bold ml-1">5.0 (3.2k)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Doctor 4 -->
+                <div class="doctor-card">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400" alt="Dr. David Wilson" class="doctor-image">
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-800">Dr. David Wilson</h4>
+                        <p class="text-teal-600 font-medium mb-2">Dermatologist</p>
+                        <p class="text-sm text-slate-500 mb-4">Mayo Clinic, 10 years exp.</p>
+                        <div class="flex items-center text-orange-400">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                            <span class="text-slate-700 text-sm font-bold ml-1">4.9 (980)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="soft-bg py-section">
+        <div class="max-w-site px-6">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">What our patients say</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card">
+                    <div class="flex items-center space-x-1 text-orange-400 mb-4">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                        <!-- repeat 4 more times -->
+                    </div>
+                    <p class="text-slate-700 italic mb-6">"Being able to talk to a doctor at 9 PM on a Sunday when my toddler had a fever was a lifesaver. The prescription was ready at my pharmacy in 30 minutes."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Emma" alt="Emma" class="rounded-full">
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Emma Thompson</p>
+                            <p class="text-slate-500 text-xs">Mother of two</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="flex items-center space-x-1 text-orange-400 mb-4">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <p class="text-slate-700 italic mb-6">"The mental health support I've received through Lumina has been transformative. My therapist is incredibly insightful and the video platform is so easy to use."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus" alt="Marcus" class="rounded-full">
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Marcus Reed</p>
+                            <p class="text-slate-500 text-xs">Remote Professional</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="flex items-center space-x-1 text-orange-400 mb-4">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                    </div>
+                    <p class="text-slate-700 italic mb-6">"I manage my hypertension entirely through virtual visits now. No more driving an hour to the specialist. Highly recommend to anyone with chronic needs."</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-slate-200">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Robert" alt="Robert" class="rounded-full">
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">Robert Miller</p>
+                            <p class="text-slate-500 text-xs">Retired Teacher</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-section">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-slate-800 mb-12">Frequently Asked Questions</h2>
+            <div class="space-y-2">
+                <div class="faq-item">
+                    <button class="flex justify-between items-center w-full text-left font-semibold text-slate-800 hover:text-teal-600 transition-colors">
+                        <span>Is telemedicine covered by my insurance?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <p class="mt-4 text-slate-600">Yes, most major insurance plans now cover telemedicine visits just like in-person appointments. We recommend checking with your provider for specific co-pay details.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="flex justify-between items-center w-full text-left font-semibold text-slate-800 hover:text-teal-600 transition-colors">
+                        <span>How quickly can I see a doctor?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <p class="mt-4 text-slate-600">For urgent care, our average wait time is under 15 minutes. For scheduled appointments like therapy or primary care, we often have next-day availability.</p>
+                </div>
+                <div class="faq-item">
+                    <button class="flex justify-between items-center w-full text-left font-semibold text-slate-800 hover:text-teal-600 transition-colors">
+                        <span>Can doctors write prescriptions?</span>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <p class="mt-4 text-slate-600">Absolutely. If a prescription is medically necessary, our doctors can send it electronically to the pharmacy of your choice instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Appointment Booking Section -->
+    <section id="booking" class="py-section">
+        <div class="max-w-site px-6">
+            <div class="bg-teal-600 rounded-3xl p-8 md:p-16 text-white overflow-hidden relative">
+                <!-- Decorative background blob -->
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-teal-500 rounded-full opacity-50"></div>
+                
+                <div class="grid md:grid-cols-2 gap-12 relative z-10">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to feel better?</h2>
+                        <p class="text-teal-50 opacity-90 mb-8 text-lg">
+                            Take the first step towards better health today. Our clinicians are standing by to help you with your medical needs.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-6 h-6 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>HIPAA compliant & secure</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-6 h-6 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Board-certified clinicians</span>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <svg class="w-6 h-6 text-teal-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span>Affordable cash pay options</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 md:p-8 text-slate-800">
+                        <form class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">First Name</label>
+                                    <input type="text" class="input-field" placeholder="John">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-slate-700 mb-1">Last Name</label>
+                                    <input type="text" class="input-field" placeholder="Doe">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Email Address</label>
+                                <input type="email" class="input-field" placeholder="john@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">Reason for Visit</label>
+                                <select class="input-field">
+                                    <option>Urgent Care</option>
+                                    <option>Mental Health</option>
+                                    <option>Primary Care</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary w-full mt-4">Find an Available Doctor</button>
+                            <p class="text-xs text-center text-slate-400 mt-4 italic">By clicking "Find an Available Doctor", you agree to our Terms of Service and Privacy Policy.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer pt-16 pb-8">
+        <div class="max-w-site px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <a href="#" class="flex items-center space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold tracking-tight text-white">LuminaHealth</span>
+                    </a>
+                    <p class="text-slate-400 mb-6">Redefining medical care through technology and human compassion.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6">Quick Links</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link">Find a Doctor</a></li>
+                        <li><a href="#" class="footer-link">Services</a></li>
+                        <li><a href="#" class="footer-link">Insurance Partners</a></li>
+                        <li><a href="#" class="footer-link">How it Works</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6">Support</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link">Patient Dashboard</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="#" class="footer-link">Terms of Service</a></li>
+                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6">Connect</h4>
+                    <p class="text-slate-400 mb-4">Questions? We're here for you.</p>
+                    <p class="text-white font-bold mb-2">1-800-LUMINA</p>
+                    <p class="text-slate-400">support@luminahealth.com</p>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-500 text-sm">&copy; 2026 Lumina Health Systems Inc. All rights reserved.</p>
+                <div class="flex items-center space-x-4 grayscale opacity-40">
+                    <span class="text-xs font-bold border border-slate-600 px-2 py-1 rounded">HIPAA COMPLIANT</span>
+                    <span class="text-xs font-bold border border-slate-600 px-2 py-1 rounded">SSL SECURE</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

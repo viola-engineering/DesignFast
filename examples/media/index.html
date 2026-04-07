@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOXIS | Premier Podcast Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <!-- Top Navigation -->
+    <nav class="nav-border sticky top-0 bg-white/95 backdrop-blur-sm z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="serif text-2xl font-extrabold tracking-tighter">VOXIS.</span>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-sm font-medium hover:text-black transition-colors">Shows</a>
+                    <a href="#" class="text-sm font-medium hover:text-black transition-colors">Episodes</a>
+                    <a href="#" class="text-sm font-medium hover:text-black transition-colors">Creators</a>
+                    <a href="#" class="text-sm font-medium hover:text-black transition-colors">Live</a>
+                </div>
+
+                <!-- Search & Auth -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-500 hover:text-black">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    <a href="#" class="hidden sm:block text-sm font-medium px-4 py-2 hover:bg-gray-100 rounded-full transition-all">Sign In</a>
+                    <a href="#" class="bg-black text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-gray-800 transition-all">Get Unlimited</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Hero Section -->
+        <section class="mb-12 fade-in">
+            <div class="relative rounded-2xl overflow-hidden aspect-[16/9] lg:aspect-[21/9] group">
+                <div class="absolute inset-0 img-placeholder-1 transition-transform duration-700 group-hover:scale-105"></div>
+                <div class="absolute inset-0 hero-gradient-overlay"></div>
+                
+                <div class="absolute bottom-0 left-0 p-6 md:p-12 w-full md:w-3/4">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <span class="badge-tech px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Technology</span>
+                        <span class="text-white/80 text-xs font-medium uppercase tracking-widest">45 MIN READ</span>
+                    </div>
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-4">
+                        The Future of Synthetic Consciousness: Can Machines Feel?
+                    </h1>
+                    <p class="text-white/90 text-lg md:text-xl mb-6 line-clamp-2 max-w-2xl">
+                        Deep dive with Dr. Aris Thorne on the ethical horizon of AI sentience and what it means to be human in an era of silicon minds.
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-white text-black px-6 py-3 rounded-full font-semibold flex items-center space-x-2 hover:bg-gray-100 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <span>Listen Now</span>
+                        </button>
+                        <button class="text-white border border-white/30 px-6 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors">
+                            Episode Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filter -->
+        <div class="flex items-center justify-between mb-8 border-b border-gray-100 pb-4">
+            <div class="flex items-center space-x-2 overflow-x-auto hide-scrollbar pb-2">
+                <button class="btn-pill btn-pill-active whitespace-nowrap">All Stories</button>
+                <button class="btn-pill btn-pill-inactive whitespace-nowrap">Technology</button>
+                <button class="btn-pill btn-pill-inactive whitespace-nowrap">Design</button>
+                <button class="btn-pill btn-pill-inactive whitespace-nowrap">Culture</button>
+                <button class="btn-pill btn-pill-inactive whitespace-nowrap">Business</button>
+                <button class="btn-pill btn-pill-inactive whitespace-nowrap">Science</button>
+            </div>
+            <div class="hidden md:flex items-center text-sm font-medium text-gray-500 cursor-pointer hover:text-black">
+                <span>Refine by Date</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
+            
+            <!-- Left Column: Main Feed -->
+            <div class="lg:col-span-8 space-y-12">
+                
+                <!-- Feature Row: 1 Large, 2 Small -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Large Card (Spans 2 columns on mobile/tablet if needed, but here simple grid) -->
+                    <div class="md:col-span-2 group cursor-pointer">
+                        <div class="relative rounded-xl overflow-hidden aspect-[16/7] mb-4 content-card">
+                            <div class="absolute inset-0 img-placeholder-2"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="badge-design px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Design</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h2 class="text-2xl md:text-3xl font-bold hover:underline decoration-1 underline-offset-4 transition-all">
+                                Designing for the Next Billion Users: A Global Perspective
+                            </h2>
+                            <p class="text-gray-600 leading-relaxed line-clamp-2">
+                                How accessibility and low-bandwidth constraints are driving the most innovative UI patterns in the developing world.
+                            </p>
+                            <div class="flex items-center space-x-3 pt-2">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
+                                    <div class="w-full h-full img-placeholder-6 opacity-50"></div>
+                                </div>
+                                <div class="metadata flex items-center space-x-2">
+                                    <span class="font-semibold text-black">Sarah Jenkins</span>
+                                    <span class="text-gray-300">•</span>
+                                    <span>Oct 12</span>
+                                    <span class="text-gray-300">•</span>
+                                    <span>12 min read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Small Card 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="relative rounded-xl overflow-hidden aspect-[4/3] mb-4 content-card">
+                            <div class="absolute inset-0 img-placeholder-3"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="badge-business px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Business</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold leading-snug">
+                                The Economics of Space Mining: Beyond the Hype
+                            </h3>
+                            <div class="metadata pt-2">
+                                <span class="font-semibold text-black">Marcus Vane</span>
+                                <span class="text-gray-300 mx-2">•</span>
+                                <span>8 min read</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Small Card 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="relative rounded-xl overflow-hidden aspect-[4/3] mb-4 content-card">
+                            <div class="absolute inset-0 img-placeholder-4"></div>
+                            <div class="absolute top-4 left-4">
+                                <span class="badge-culture px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Culture</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-xl font-bold leading-snug">
+                                Modern Stoicism in a Hyper-Connected World
+                            </h3>
+                            <div class="metadata pt-2">
+                                <span class="font-semibold text-black">Elena Rossi</span>
+                                <span class="text-gray-300 mx-2">•</span>
+                                <span>15 min read</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-gray-100"></div>
+
+                <!-- Another Feed Item (horizontal layout) -->
+                <div class="flex flex-col md:flex-row gap-6 group cursor-pointer">
+                    <div class="w-full md:w-1/3 aspect-[4/3] rounded-xl overflow-hidden content-card flex-shrink-0">
+                        <div class="w-full h-full img-placeholder-5"></div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-3">
+                        <span class="metadata text-blue-600 font-bold">Science & Discovery</span>
+                        <h2 class="text-2xl font-bold group-hover:text-gray-700 transition-colors">
+                            Quantum Computing: Beyond the Hype and Into the Laboratory
+                        </h2>
+                        <p class="text-gray-600 line-clamp-2">
+                            We sit down with lead researchers at IBM to discuss the transition from theoretical models to functional quantum processors.
+                        </p>
+                        <div class="flex items-center space-x-3 pt-1">
+                            <div class="metadata flex items-center space-x-2">
+                                <span class="font-semibold text-black">Dr. Julian Gray</span>
+                                <span class="text-gray-300">•</span>
+                                <span>Oct 10, 2023</span>
+                                <span class="text-gray-300">•</span>
+                                <span class="flex items-center">
+                                    <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"></path></svg>
+                                    24 min
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Sidebar -->
+            <aside class="lg:col-span-4 space-y-12">
+                
+                <!-- Trending Section -->
+                <div>
+                    <h3 class="metadata text-black font-bold border-b border-black pb-2 mb-6">Trending Now</h3>
+                    <div class="space-y-8">
+                        <!-- Trending Item 1 -->
+                        <div class="flex items-start space-x-4 group cursor-pointer">
+                            <span class="serif text-3xl text-gray-200 font-bold leading-none">01</span>
+                            <div class="space-y-1">
+                                <h4 class="font-bold leading-tight group-hover:text-blue-600 transition-colors">Why Remote Work is Failing the Next Generation of Designers</h4>
+                                <div class="metadata">By Liam Parker</div>
+                            </div>
+                        </div>
+                        <!-- Trending Item 2 -->
+                        <div class="flex items-start space-x-4 group cursor-pointer">
+                            <span class="serif text-3xl text-gray-200 font-bold leading-none">02</span>
+                            <div class="space-y-1">
+                                <h4 class="font-bold leading-tight group-hover:text-blue-600 transition-colors">The Rise of Neo-Retro Gaming: Why Pixels Still Matter</h4>
+                                <div class="metadata">By Chloe Sims</div>
+                            </div>
+                        </div>
+                        <!-- Trending Item 3 -->
+                        <div class="flex items-start space-x-4 group cursor-pointer">
+                            <span class="serif text-3xl text-gray-200 font-bold leading-none">03</span>
+                            <div class="space-y-1">
+                                <h4 class="font-bold leading-tight group-hover:text-blue-600 transition-colors">Urban Farming: The Green Revolution in Concrete Jungles</h4>
+                                <div class="metadata">By Michael Chen</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Show Spotlight -->
+                <div class="bg-gray-900 rounded-2xl p-6 text-white overflow-hidden relative">
+                    <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-blue-600 rounded-full blur-3xl opacity-40"></div>
+                    <div class="relative z-10">
+                        <span class="metadata text-blue-400 font-bold mb-2 block">Featured Show</span>
+                        <h3 class="serif text-2xl font-bold mb-4 italic">Echo Chambers</h3>
+                        <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                            Join us every Tuesday for deep dives into the technologies shaping our world tomorrow.
+                        </p>
+                        <button class="w-full bg-white text-black py-2.5 rounded-lg text-sm font-bold hover:bg-gray-200 transition-colors">
+                            Subscribe on Spotify
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Newsletter Card -->
+                <div class="bg-white border border-gray-200 rounded-2xl p-6">
+                    <h3 class="text-xl font-bold mb-2">The Sunday Dispatch</h3>
+                    <p class="text-gray-600 text-sm mb-6">
+                        Get the best of Voxis delivered straight to your inbox every Sunday morning. No spam, just great audio stories.
+                    </p>
+                    <form class="space-y-3" onsubmit="event.preventDefault()">
+                        <input type="email" placeholder="Your email address" class="w-full px-4 py-3 rounded-lg newsletter-input text-sm">
+                        <button class="w-full bg-black text-white py-3 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors">
+                            Join 50k+ Readers
+                        </button>
+                    </form>
+                </div>
+
+            </aside>
+        </div>
+
+        <!-- Creator Spotlight Section -->
+        <section class="mt-20 pt-16 border-t border-gray-100">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-4xl font-bold mb-2">Creator Spotlights</h2>
+                    <p class="text-gray-500">The voices behind the stories you love.</p>
+                </div>
+                <a href="#" class="text-sm font-bold border-b-2 border-black pb-1 hover:text-gray-600 hover:border-gray-300 transition-all">View All Creators</a>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Creator 1 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 content-card">
+                        <div class="w-full h-full img-placeholder-1"></div>
+                    </div>
+                    <h4 class="font-bold text-lg">Sarah Jenkins</h4>
+                    <p class="metadata">Design Lead</p>
+                </div>
+                <!-- Creator 2 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 content-card">
+                        <div class="w-full h-full img-placeholder-2"></div>
+                    </div>
+                    <h4 class="font-bold text-lg">Dr. Julian Gray</h4>
+                    <p class="metadata">Science Correspondent</p>
+                </div>
+                <!-- Creator 3 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 content-card">
+                        <div class="w-full h-full img-placeholder-3"></div>
+                    </div>
+                    <h4 class="font-bold text-lg">Elena Rossi</h4>
+                    <p class="metadata">Culture Critic</p>
+                </div>
+                <!-- Creator 4 -->
+                <div class="text-center group cursor-pointer">
+                    <div class="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4 content-card">
+                        <div class="w-full h-full img-placeholder-4"></div>
+                    </div>
+                    <h4 class="font-bold text-lg">Marcus Vane</h4>
+                    <p class="metadata">Business Analyst</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-border bg-white pt-16 pb-8 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
+                <div class="col-span-2">
+                    <span class="serif text-3xl font-extrabold tracking-tighter mb-6 block">VOXIS.</span>
+                    <p class="text-gray-500 max-w-xs leading-relaxed">
+                        A network of thinkers, dreamers, and storytellers. We believe in the power of audio to change perspectives and ignite curiosity.
+                    </p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-black transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-black transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest">Network</h4>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-black">Our Shows</a></li>
+                        <li><a href="#" class="hover:text-black">Guest Applications</a></li>
+                        <li><a href="#" class="hover:text-black">Creators Portal</a></li>
+                        <li><a href="#" class="hover:text-black">Voxis Live Events</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest">Support</h4>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-black">Help Center</a></li>
+                        <li><a href="#" class="hover:text-black">Advertiser Guide</a></li>
+                        <li><a href="#" class="hover:text-black">Careers</a></li>
+                        <li><a href="#" class="hover:text-black">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold mb-6 text-sm uppercase tracking-widest">Listen On</h4>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-black">Apple Podcasts</a></li>
+                        <li><a href="#" class="hover:text-black">Spotify</a></li>
+                        <li><a href="#" class="hover:text-black">Overcast</a></li>
+                        <li><a href="#" class="hover:text-black">RSS Feed</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center text-xs text-gray-400">
+                <p>&copy; 2024 Voxis Media Group. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-black">Terms of Service</a>
+                    <a href="#" class="hover:text-black">Cookie Policy</a>
+                    <a href="#" class="hover:text-black">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

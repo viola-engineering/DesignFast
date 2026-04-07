@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verdant | Premium Indoor Plants & Care</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-neutral-100 py-2 text-center">
+        <p class="text-xs font-medium tracking-wide text-neutral-600 uppercase">Free carbon-neutral shipping on orders over $75</p>
+    </div>
+
+    <!-- Navigation -->
+    <header class="sticky-nav">
+        <nav class="container mx-auto px-4 md:px-8">
+            <!-- Main Nav Row -->
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-bold tracking-tight text-neutral-900 flex items-center">
+                    <svg class="w-8 h-8 mr-2 text-green-800" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8.17,20C12.21,20 16,16.63 16,12.5C16,11.29 15.7,10.15 15.15,9.15C16.11,8.61 17.1,8.22 18,8C21,7.24 22,6 22,6C22,6 21,6.5 19,6.5C17,6.5 17,8 17,8M8.17,18C6,18 4.25,16.25 4.25,14.12C4.25,12 6,10.25 8.17,10.25C10.34,10.25 12.09,12 12.09,14.12C12.09,16.25 10.34,18 8.17,18Z"/>
+                    </svg>
+                    VERDANT
+                </a>
+
+                <!-- Prominent Search Bar (Desktop) -->
+                <div class="hidden md:flex search-input-container mx-8">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </span>
+                    <input type="text" placeholder="Search for plants, pots, or care guides..." class="search-input text-sm">
+                </div>
+
+                <!-- Icons -->
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="hidden lg:block text-sm font-medium text-neutral-600 hover:text-green-800 transition-colors">Sign In</a>
+                    <a href="#" class="relative p-1 text-neutral-800 hover:text-green-800 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <span class="cart-badge">3</span>
+                    </a>
+                    <button class="md:hidden p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categories Nav (Desktop) -->
+            <div class="hidden md:flex items-center justify-center space-x-10 py-3 border-t border-neutral-100">
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-800 hover:text-green-800 transition-colors">Shop All</a>
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-green-800 transition-colors">New Arrivals</a>
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-green-800 transition-colors">Indoor Plants</a>
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-green-800 transition-colors">Low Light</a>
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-green-800 transition-colors">Pet Friendly</a>
+                <a href="#" class="text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-green-800 transition-colors">Care Guides</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-[80vh] flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 hero-gradient"></div>
+            <div class="relative z-10 text-center px-4 max-w-3xl animate-fade-in">
+                <h2 class="font-serif italic text-xl md:text-2xl text-white mb-4">Spring Refresh</h2>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8 tracking-tight">Bring the outdoors in.</h1>
+                <p class="text-lg md:text-xl text-neutral-200 mb-10 max-w-xl mx-auto leading-relaxed">Elevate your living space with our hand-picked collection of lush, vibrant greenery delivered straight to your door.</p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#" class="w-full sm:w-auto px-10 py-4 bg-white text-green-900 font-semibold rounded-full hover:bg-neutral-100 transition-colors">Shop Bestsellers</a>
+                    <a href="#" class="w-full sm:w-auto px-10 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-green-900 transition-colors">Find Your Plant</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Grid -->
+        <section class="py-20 px-4 md:px-8 container mx-auto">
+            <div class="flex items-center justify-between mb-12">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400">Shop by category</h2>
+                <a href="#" class="text-sm font-semibold text-green-800 border-b-2 border-green-800/20 hover:border-green-800 transition-all">View All</a>
+            </div>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cat 1 -->
+                <div class="category-card group">
+                    <img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?q=80&w=800&auto=format&fit=crop" alt="Indoor Plants" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="category-overlay">
+                        <h3 class="text-white text-xl font-semibold">Indoor Plants</h3>
+                    </div>
+                </div>
+                <!-- Cat 2 -->
+                <div class="category-card group">
+                    <img src="https://images.unsplash.com/photo-1526566762798-8fac9c07aa98?q=80&w=800&auto=format&fit=crop" alt="Pots & Planters" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="category-overlay">
+                        <h3 class="text-white text-xl font-semibold">Pots & Planters</h3>
+                    </div>
+                </div>
+                <!-- Cat 3 -->
+                <div class="category-card group">
+                    <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=800&auto=format&fit=crop" alt="Accessories" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="category-overlay">
+                        <h3 class="text-white text-xl font-semibold">Accessories</h3>
+                    </div>
+                </div>
+                <!-- Cat 4 -->
+                <div class="category-card group">
+                    <img src="https://images.unsplash.com/photo-1509423350716-97f9360b4e09?q=80&w=800&auto=format&fit=crop" alt="Gift Sets" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                    <div class="category-overlay">
+                        <h3 class="text-white text-xl font-semibold">Gift Sets</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="py-20 bg-neutral-50">
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4">Our Favorites</h2>
+                    <h3 class="text-3xl md:text-4xl font-bold text-neutral-900">Featured Greenery</h3>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="product-card bg-white p-4">
+                        <div class="product-image-container mb-6">
+                            <span class="absolute top-4 left-4 z-10 badge-new">New</span>
+                            <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?q=80&w=800&auto=format&fit=crop" alt="Monstera Deliciosa" class="product-image">
+                            <div class="absolute inset-x-4 bottom-4">
+                                <button class="add-to-cart-btn w-full py-3 rounded-md font-semibold text-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400 text-xs">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-neutral-400 ml-2 uppercase font-bold tracking-tighter">48 Reviews</span>
+                            </div>
+                            <h4 class="font-medium text-neutral-900 mb-1">Monstera Deliciosa</h4>
+                            <p class="text-sm text-neutral-500 mb-3 line-clamp-1">Iconic split leaves for a jungle vibe.</p>
+                            <p class="font-semibold text-neutral-900 tabular-nums">$65.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card bg-white p-4">
+                        <div class="product-image-container mb-6">
+                            <img src="https://images.unsplash.com/photo-1593482892290-f54927ae1bb6?q=80&w=800&auto=format&fit=crop" alt="Snake Plant" class="product-image">
+                            <div class="absolute inset-x-4 bottom-4">
+                                <button class="add-to-cart-btn w-full py-3 rounded-md font-semibold text-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400 text-xs">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current text-neutral-300" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-neutral-400 ml-2 uppercase font-bold tracking-tighter">112 Reviews</span>
+                            </div>
+                            <h4 class="font-medium text-neutral-900 mb-1">Snake Plant Laurentii</h4>
+                            <p class="text-sm text-neutral-500 mb-3 line-clamp-1">Low light friendly and air purifying.</p>
+                            <p class="font-semibold text-neutral-900 tabular-nums">$38.00</p>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card bg-white p-4">
+                        <div class="product-image-container mb-6">
+                            <span class="absolute top-4 left-4 z-10 badge-sale">Sale</span>
+                            <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?q=80&w=800&auto=format&fit=crop" alt="Fiddle Leaf Fig" class="product-image">
+                            <div class="absolute inset-x-4 bottom-4">
+                                <button class="add-to-cart-btn w-full py-3 rounded-md font-semibold text-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400 text-xs">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current text-neutral-300" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-neutral-400 ml-2 uppercase font-bold tracking-tighter">86 Reviews</span>
+                            </div>
+                            <h4 class="font-medium text-neutral-900 mb-1">Fiddle Leaf Fig</h4>
+                            <p class="text-sm text-neutral-500 mb-3 line-clamp-1">The designer's favorite statement plant.</p>
+                            <p class="font-semibold text-neutral-900 tabular-nums">
+                                <span class="text-neutral-400 line-through mr-2">$110.00</span> $89.00
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card bg-white p-4">
+                        <div class="product-image-container mb-6">
+                            <img src="https://images.unsplash.com/photo-1512428813824-f713cb752935?q=80&w=800&auto=format&fit=crop" alt="Bird of Paradise" class="product-image">
+                            <div class="absolute inset-x-4 bottom-4">
+                                <button class="add-to-cart-btn w-full py-3 rounded-md font-semibold text-sm">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center mb-1">
+                                <div class="flex text-yellow-400 text-xs">
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    <svg class="w-3 h-3 fill-current text-neutral-300" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                </div>
+                                <span class="text-[10px] text-neutral-400 ml-2 uppercase font-bold tracking-tighter">54 Reviews</span>
+                            </div>
+                            <h4 class="font-medium text-neutral-900 mb-1">Bird of Paradise</h4>
+                            <p class="text-sm text-neutral-500 mb-3 line-clamp-1">Large tropical leaves for a dramatic look.</p>
+                            <p class="font-semibold text-neutral-900 tabular-nums">$125.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Care Guides Section -->
+        <section class="py-20 px-4 md:px-8 container mx-auto">
+            <div class="max-w-xl mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4">Plant Education</h2>
+                <h3 class="text-3xl md:text-4xl font-bold text-neutral-900 mb-6">Expert Care Guides</h3>
+                <p class="text-neutral-500 leading-relaxed">We don't just sell plants; we make sure they thrive. Explore our library of expert-written care guides.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Guide 1 -->
+                <div class="care-guide-card p-8 rounded-2xl group">
+                    <div class="mb-6 text-green-800">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Watering 101</h4>
+                    <p class="text-neutral-600 text-sm mb-6 leading-relaxed">Learn the "finger test" and how to identify signs of overwatering or dehydration in your plants.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-green-800 group-hover:underline">
+                        Read Guide
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                </div>
+                <!-- Guide 2 -->
+                <div class="care-guide-card p-8 rounded-2xl group">
+                    <div class="mb-6 text-green-800">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 12.728L5.636 5.636"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Light Requirements</h4>
+                    <p class="text-neutral-600 text-sm mb-6 leading-relaxed">From bright direct sun to low-light corners, find the perfect spot for your greenery to flourish.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-green-800 group-hover:underline">
+                        Read Guide
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                </div>
+                <!-- Guide 3 -->
+                <div class="care-guide-card p-8 rounded-2xl group">
+                    <div class="mb-6 text-green-800">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    </div>
+                    <h4 class="text-xl font-bold mb-4">Repotting Basics</h4>
+                    <p class="text-neutral-600 text-sm mb-6 leading-relaxed">Understand when your plant has outgrown its home and how to transfer it without causing shock.</p>
+                    <a href="#" class="inline-flex items-center text-sm font-bold text-green-800 group-hover:underline">
+                        Read Guide
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="py-20 bg-neutral-900 text-white">
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-400 mb-8">Testimonials</h2>
+                        <blockquote class="text-3xl md:text-4xl font-serif italic mb-8 leading-tight">
+                            "The quality of the plants I received from Verdant surpassed all my expectations. They arrived perfectly packaged and healthy. My living room finally feels complete."
+                        </blockquote>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full bg-neutral-800 mr-4 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop" alt="Sarah J." class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p class="font-bold">Sarah Jenkins</p>
+                                <p class="text-sm text-neutral-400">Verified Customer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1544605522-83536c927f61?q=80&w=800&auto=format&fit=crop" alt="Plant 1" class="rounded-xl aspect-[4/5] object-cover">
+                        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=800&auto=format&fit=crop" alt="Plant 2" class="rounded-xl aspect-[4/5] object-cover mt-8">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="py-20 newsletter-section">
+            <div class="container mx-auto px-4 md:px-8 text-center max-w-2xl">
+                <h2 class="text-2xl md:text-3xl font-bold mb-4">Join the Green Club</h2>
+                <p class="text-neutral-500 mb-8">Sign up for our newsletter to receive plant care tips, exclusive offers, and early access to new arrivals.</p>
+                <form class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Email Address" class="flex-grow input-pill bg-white">
+                    <button type="submit" class="px-8 py-3 bg-green-800 text-white font-bold rounded-full hover:bg-green-900 transition-colors">Subscribe</button>
+                </form>
+                <p class="text-[10px] text-neutral-400 mt-4 uppercase tracking-widest">By subscribing, you agree to our Terms of Service and Privacy Policy.</p>
+            </div>
+        </section>
+
+        <!-- Trust Badges -->
+        <section class="py-12 border-y border-neutral-100">
+            <div class="container mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="flex flex-col items-center text-center">
+                        <svg class="w-6 h-6 mb-3 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+                        <p class="text-xs font-bold uppercase tracking-widest">Secure Shipping</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <svg class="w-6 h-6 mb-3 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        <p class="text-xs font-bold uppercase tracking-widest">30 Day Returns</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <svg class="w-6 h-6 mb-3 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A3.33 3.33 0 0018.846 4h-1.34a3.33 3.33 0 00-3.342 3.333v3.333c0 1.841 1.496 3.333 3.342 3.333h1.34a3.33 3.33 0 003.342-3.333V7.333a3.33 3.33 0 00-1.114-2.35l-2.112-2zM4 12V4a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2z"></path></svg>
+                        <p class="text-xs font-bold uppercase tracking-widest">Plant Guarantee</p>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <svg class="w-6 h-6 mb-3 text-neutral-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                        <p class="text-xs font-bold uppercase tracking-widest">Secure Payments</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-20 bg-white">
+        <div class="container mx-auto px-4 md:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 mb-16">
+                <!-- Column 1 -->
+                <div class="col-span-2">
+                    <a href="#" class="text-xl font-bold tracking-tight text-neutral-900 mb-6 block">VERDANT</a>
+                    <p class="text-neutral-500 text-sm leading-relaxed mb-6 max-w-xs">Connecting people with nature through premium greenery and expert care knowledge. Your home's transformation begins here.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-neutral-400 hover:text-green-800"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+                        <a href="#" class="text-neutral-400 hover:text-green-800"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-6">Shop</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link text-sm">All Plants</a></li>
+                        <li><a href="#" class="footer-link text-sm">Best Sellers</a></li>
+                        <li><a href="#" class="footer-link text-sm">Accessories</a></li>
+                        <li><a href="#" class="footer-link text-sm">Bundles</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-6">Support</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link text-sm">Shipping Policy</a></li>
+                        <li><a href="#" class="footer-link text-sm">Returns</a></li>
+                        <li><a href="#" class="footer-link text-sm">Help Center</a></li>
+                        <li><a href="#" class="footer-link text-sm">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-6">About</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link text-sm">Our Story</a></li>
+                        <li><a href="#" class="footer-link text-sm">Sustainability</a></li>
+                        <li><a href="#" class="footer-link text-sm">Reviews</a></li>
+                        <li><a href="#" class="footer-link text-sm">Careers</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold uppercase tracking-widest mb-6">Explore</h5>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="footer-link text-sm">Care Guides</a></li>
+                        <li><a href="#" class="footer-link text-sm">Blog</a></li>
+                        <li><a href="#" class="footer-link text-sm">Refer a Friend</a></li>
+                        <li><a href="#" class="footer-link text-sm">Wholesale</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center justify-between pt-12 border-t border-neutral-100">
+                <p class="text-xs text-neutral-400 mb-4 md:mb-0">© 2024 Verdant Plant Shop. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <svg class="w-8 h-8 text-neutral-300" fill="currentColor" viewBox="0 0 40 24"><rect width="40" height="24" rx="4"/><circle cx="14" cy="12" r="6" fill="#EB001B"/><circle cx="26" cy="12" r="6" fill="#F79E1B" fill-opacity="0.8"/></svg>
+                    <svg class="w-8 h-8 text-neutral-300" fill="currentColor" viewBox="0 0 40 24"><rect width="40" height="24" rx="4"/><path d="M26.5 7h-13C12.7 7 12 7.7 12 8.5v7c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5v-7c0-.8-.7-1.5-1.5-1.5z" fill="#0070BA"/><path d="M19.2 14.2h-1.1c-.1 0-.2-.1-.2-.2v-3.3h-1.3c-.1 0-.2-.1-.2-.2v-.4c0-.1.1-.2.2-.2h3.3c.1 0 .2.1.2.2v3.3h-1.3c.1 0 .2.1.2.2v.4c-.1.1-.2.1-.2.1z" fill="#fff"/></svg>
+                    <svg class="w-8 h-8 text-neutral-300" fill="currentColor" viewBox="0 0 40 24"><rect width="40" height="24" rx="4"/><path d="M15 8l-2 2 2 2m10-4l2 2-2 2M18 16h4" stroke="#000" stroke-width="2" fill="none"/></svg>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import StyleCard from '@/components/StyleCard.vue'
+import StylePreviewModal from '@/components/StylePreviewModal.vue'
 import ScrollReveal from '@/components/ScrollReveal.vue'
 
 type FilterCategory = 'all' | 'minimal' | 'bold' | 'editorial' | 'dark' | 'luxury' | 'technical' | 'retro'
@@ -13,7 +14,54 @@ interface StyleDefinition {
   tags: string[]
 }
 
+interface ExampleInfo {
+  styleKey: string
+  hasHtml: boolean
+  hasThumbnail: boolean
+}
+
 const activeFilter = ref<FilterCategory>('all')
+const availableExamples = ref<Map<string, ExampleInfo>>(new Map())
+const previewModal = ref({
+  visible: false,
+  styleKey: '',
+  styleName: '',
+})
+
+// Fetch available examples on mount
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/examples')
+    if (res.ok) {
+      const data = await res.json()
+      for (const ex of data.examples) {
+        availableExamples.value.set(ex.styleKey, ex)
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch examples:', err)
+  }
+})
+
+function hasExampleThumbnail(styleKey: string): boolean {
+  const ex = availableExamples.value.get(styleKey)
+  return ex?.hasThumbnail ?? false
+}
+
+function openPreview(styleKey: string) {
+  const style = allStyles.find(s => s.key === styleKey)
+  if (style) {
+    previewModal.value = {
+      visible: true,
+      styleKey,
+      styleName: style.name,
+    }
+  }
+}
+
+function closePreview() {
+  previewModal.value.visible = false
+}
 
 const allStyles: StyleDefinition[] = [
   { key: 'minimalist', name: 'Minimalist', description: 'Whitespace as the hero. Every element earns its place. Nothing decorative, everything intentional.', categories: ['minimal', 'luxury'], tags: ['Whitespace-led', 'High contrast', 'Serif or sans'] },
@@ -120,9 +168,19 @@ function setFilter(filter: FilterCategory) {
           :description="style.description"
           :tags="style.tags"
           :number="allStyles.findIndex(s => s.key === style.key) + 1"
+          :has-thumbnail="hasExampleThumbnail(style.key)"
+          @preview="openPreview"
         />
       </ScrollReveal>
     </div>
+
+    <!-- Preview Modal -->
+    <StylePreviewModal
+      :visible="previewModal.visible"
+      :style-key="previewModal.styleKey"
+      :style-name="previewModal.styleName"
+      @close="closePreview"
+    />
 
     <!-- CTA Section -->
     <section class="styles-cta">

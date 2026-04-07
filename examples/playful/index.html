@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathyMinds | Adventure with Numbers!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream">
+    <!-- Navigation -->
+    <nav class="container mx-auto px-6 py-8 flex justify-between items-center relative z-50">
+        <div class="flex items-center space-x-2">
+            <div class="bg-purple p-3 rounded-2xl animate-wiggle">
+                <span class="text-white text-2xl font-bold">∑</span>
+            </div>
+            <span class="text-3xl font-black text-purple">MathyMinds</span>
+        </div>
+        <div class="hidden md:flex space-x-6">
+            <a href="#" class="nav-pill font-bold text-dark">Games</a>
+            <a href="#" class="nav-pill font-bold text-dark">Puzzles</a>
+            <a href="#" class="nav-pill font-bold text-dark">Parents</a>
+            <a href="#" class="nav-pill font-bold text-dark">Pricing</a>
+        </div>
+        <button class="btn-chunky btn-purple py-3 px-8 rounded-full font-black text-lg">
+            PLAY NOW
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="container mx-auto px-6 py-12 lg:py-24 relative overflow-visible">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <div class="lg:w-3/5 text-center lg:text-left z-10">
+                <span class="inline-block bg-mint text-white px-4 py-2 rounded-full font-bold mb-6 rotated-left">
+                    Level Up Your Brain! 🚀
+                </span>
+                <h1 class="hero-title text-purple mb-8">
+                    Math is Your <br>
+                    <span class="text-coral squiggle-underline">Superpower!</span>
+                </h1>
+                <p class="text-xl md:text-2xl font-bold text-gray-700 mb-10 max-w-2xl">
+                    Join over 100,000 little explorers solving magical puzzles, defeating number monsters, and winning awesome rewards!
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                    <button class="btn-chunky btn-yellow py-5 px-10 rounded-3xl font-black text-2xl">
+                        START ADVENTURE
+                    </button>
+                    <button class="btn-chunky bg-white py-5 px-10 rounded-3xl font-black text-2xl border-4 border-purple text-purple">
+                        WATCH TRAILER
+                    </button>
+                </div>
+            </div>
+            
+            <div class="lg:w-2/5 relative">
+                <div class="relative z-10 animate-float">
+                    <div class="bg-sky-blue p-8 card-rounded chunky-shadow-purple rotated-right">
+                        <div class="bg-white p-4 rounded-2xl mb-4">
+                            <div class="h-40 bg-purple rounded-xl flex items-center justify-center text-6xl">
+                                🎒
+                            </div>
+                        </div>
+                        <div class="text-white">
+                            <p class="font-black text-2xl mb-1">Quest #42</p>
+                            <p class="font-bold opacity-90">Can you solve: 5 + ? = 12</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Floating Decorations -->
+                <div class="floating-sticker top-0 -left-10 animate-wiggle text-4xl">
+                    ⭐
+                </div>
+                <div class="floating-sticker bottom-0 -right-5 animate-pulse-soft text-4xl">
+                    🍭
+                </div>
+                <div class="floating-sticker -top-20 right-20 animate-float text-4xl">
+                    🦖
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Blobs -->
+        <div class="blob-shape bg-yellow w-96 h-96 top-0 right-0"></div>
+        <div class="blob-shape bg-coral w-64 h-64 bottom-0 left-0"></div>
+    </header>
+
+    <!-- Features Bento Grid -->
+    <section class="container mx-auto px-6 py-20">
+        <div class="text-center mb-16">
+            <h2 class="text-5xl md:text-6xl text-purple mb-4">Why Kids Love Us</h2>
+            <p class="text-xl font-bold text-gray-600">The most exciting classroom in the universe!</p>
+        </div>
+
+        <div class="bento-grid">
+            <!-- Large Card -->
+            <div class="span-2 row-2 bg-coral card-rounded p-10 flex flex-col justify-between chunky-shadow text-white card-hover">
+                <div>
+                    <div class="text-5xl mb-6">🎮</div>
+                    <h3 class="text-4xl mb-4">Epic Game Worlds</h3>
+                    <p class="text-xl font-bold leading-relaxed">Travel through the Triangle Tundra and Equation Island. Every math problem solved helps you progress in your journey!</p>
+                </div>
+                <div class="mt-8">
+                    <button class="btn-chunky bg-white text-coral py-3 px-8 rounded-2xl font-black">EXPLORE MAPS</button>
+                </div>
+            </div>
+
+            <!-- Medium Card -->
+            <div class="span-2 bg-mint card-rounded p-8 chunky-shadow text-white card-hover">
+                <div class="flex items-center gap-6">
+                    <div class="text-5xl">🏆</div>
+                    <div>
+                        <h3 class="text-3xl mb-2">Daily Rewards</h3>
+                        <p class="font-bold">Login every day to collect rare items and stickers for your notebook!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Small Card -->
+            <div class="bg-sky-blue card-rounded p-8 chunky-shadow text-white card-hover flex flex-col items-center text-center justify-center">
+                <div class="text-4xl mb-4">📊</div>
+                <h3 class="text-2xl mb-2">Progress</h3>
+                <p class="font-bold text-sm">See how much you've learned today!</p>
+            </div>
+
+            <!-- Small Card -->
+            <div class="bg-bubblegum card-rounded p-8 chunky-shadow text-white card-hover flex flex-col items-center text-center justify-center">
+                <div class="text-4xl mb-4">🤝</div>
+                <h3 class="text-2xl mb-2">Multiplayer</h3>
+                <p class="font-bold text-sm">Team up with your best friends!</p>
+            </div>
+
+            <!-- Medium Card -->
+            <div class="span-2 bg-yellow card-rounded p-8 chunky-shadow text-dark card-hover rotated-right">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="text-5xl animate-bounce">🎨</div>
+                    <div>
+                        <h3 class="text-3xl mb-2">Custom Avatars</h3>
+                        <p class="font-bold">Design your own hero with thousands of fun outfits and accessories.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works (Irregular) -->
+    <section class="py-20 overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="bg-purple card-rounded p-12 lg:p-20 relative text-white">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <h2 class="text-5xl md:text-6xl mb-8">How to Play? <br>It's Easy-Peasy!</h2>
+                        <div class="space-y-10">
+                            <div class="flex gap-6 items-start">
+                                <div class="bg-yellow text-dark w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-2xl font-black chunky-shadow">1</div>
+                                <div>
+                                    <h4 class="text-2xl mb-2">Pick Your Character</h4>
+                                    <p class="font-bold text-purple-100">Are you a Brave Knight, a Clever Cat, or a Space Pirate?</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6 items-start">
+                                <div class="bg-mint text-white w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-2xl font-black chunky-shadow">2</div>
+                                <div>
+                                    <h4 class="text-2xl mb-2">Solve Fun Puzzles</h4>
+                                    <p class="font-bold text-purple-100">Match numbers, complete patterns, and solve logic riddles.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-6 items-start">
+                                <div class="bg-bubblegum text-white w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center text-2xl font-black chunky-shadow">3</div>
+                                <div>
+                                    <h4 class="text-2xl mb-2">Earn Magic Stars</h4>
+                                    <p class="font-bold text-purple-100">Collect stars to unlock new levels and super abilities.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-white rounded-3xl p-4 rotate-3 chunky-shadow-coral">
+                            <div class="h-80 bg-sky-blue rounded-2xl flex items-center justify-center">
+                                <div class="text-8xl animate-float">🧩</div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-10 -right-10 bg-yellow text-dark p-6 rounded-full font-black animate-wiggle chunky-shadow">
+                            FUN!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="container mx-auto px-6 py-20">
+        <h2 class="text-5xl text-center text-purple mb-16">What Grown-ups Say</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 card-rounded chunky-shadow-purple rotated-left border-4 border-purple">
+                <div class="text-coral text-3xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="text-lg font-bold italic mb-6">"My daughter used to hate math. Now she asks to play MathyMinds before breakfast! Truly magical."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-sky-blue rounded-full"></div>
+                    <div>
+                        <p class="font-black">Sarah Jenkins</p>
+                        <p class="text-sm opacity-70 text-dark">Super Mom</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-8 card-rounded chunky-shadow-coral border-4 border-coral mt-8">
+                <div class="text-coral text-3xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="text-lg font-bold italic mb-6">"As a teacher, I recommend this to all my students. It perfectly aligns with the curriculum while being incredibly fun."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-yellow rounded-full"></div>
+                    <div>
+                        <p class="font-black">Mr. Thompson</p>
+                        <p class="text-sm opacity-70 text-dark">Math Teacher</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 card-rounded chunky-shadow-mint rotated-right border-4 border-mint">
+                <div class="text-coral text-3xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p class="text-lg font-bold italic mb-6">"Safe, educational, and no annoying ads. The subscription is worth every penny for my kids' education."</p>
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-purple rounded-full"></div>
+                    <div>
+                        <p class="font-black">Jessica Wu</p>
+                        <p class="text-sm opacity-70 text-dark">Tech Parent</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="container mx-auto px-6 py-20">
+        <div class="bg-yellow card-rounded p-12 text-center relative overflow-hidden chunky-shadow">
+            <div class="relative z-10">
+                <h2 class="text-5xl md:text-7xl text-purple mb-6">Ready for Takeoff?</h2>
+                <p class="text-2xl font-bold text-dark mb-10 max-w-xl mx-auto">Start your 7-day free trial today and watch your math skills soar to the moon! 🌙</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="btn-chunky btn-coral py-5 px-12 rounded-3xl font-black text-2xl">GET STARTED</button>
+                    <button class="btn-chunky bg-white py-5 px-12 rounded-3xl font-black text-2xl border-4 border-dark">VIEW PLANS</button>
+                </div>
+            </div>
+            <!-- Background Shapes -->
+            <div class="absolute -top-10 -left-10 text-8xl opacity-20">➕</div>
+            <div class="absolute -bottom-10 -right-10 text-8xl opacity-20">➖</div>
+            <div class="absolute top-1/2 left-10 text-6xl opacity-20 animate-wiggle">✖️</div>
+            <div class="absolute top-1/4 right-20 text-6xl opacity-20 animate-float">➗</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-purple text-white pt-20 pb-10">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-2">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="bg-white p-2 rounded-xl">
+                            <span class="text-purple text-xl font-bold">∑</span>
+                        </div>
+                        <span class="text-3xl font-black">MathyMinds</span>
+                    </div>
+                    <p class="text-purple-100 font-bold text-lg max-w-sm mb-8">
+                        Making math the most exciting part of every child's day through play, creativity, and discovery.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 bg-coral rounded-full flex items-center justify-center text-xl cursor-pointer hover:scale-110 transition-transform">FB</div>
+                        <div class="w-12 h-12 bg-sky-blue rounded-full flex items-center justify-center text-xl cursor-pointer hover:scale-110 transition-transform">IG</div>
+                        <div class="w-12 h-12 bg-bubblegum rounded-full flex items-center justify-center text-xl cursor-pointer hover:scale-110 transition-transform">TW</div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-black mb-6 uppercase tracking-wider text-yellow">Explore</h4>
+                    <ul class="space-y-4 font-bold">
+                        <li><a href="#" class="hover:text-yellow transition-colors">Games Library</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Learning Path</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Puzzle of the Day</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Achievements</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-black mb-6 uppercase tracking-wider text-yellow">Support</h4>
+                    <ul class="space-y-4 font-bold">
+                        <li><a href="#" class="hover:text-yellow transition-colors">Parent Guide</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-yellow transition-colors">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t-4 border-purple-800 pt-10 text-center font-bold text-purple-200">
+                <p>&copy; 2026 MathyMinds Adventure Inc. All rights reserved. Made with ❤️ for little explorers.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

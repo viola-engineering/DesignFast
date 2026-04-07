@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+:root {
+  --dusty-rose: #D4A59A;
+  --olive-green: #606C38;
+  --mustard: #DDA15E;
+  --faded-navy: #283D3B;
+  --cream: #FEFAE0;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--faded-navy);
+  font-family: 'Libre Baskerville', serif;
+  line-height: 1.6;
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.subheading {
+  font-variant: small-caps;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.max-w-vintage {
+  max-width: 960px;
+}
+
+.vintage-border {
+  border: 4px double var(--faded-navy);
+}
+
+.vintage-border-bottom {
+  border-bottom: 4px double var(--faded-navy);
+}
+
+.vintage-border-top {
+  border-top: 4px double var(--faded-navy);
+}
+
+.ornamental-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.ornamental-divider::before,
+.ornamental-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--faded-navy);
+}
+
+.ornamental-divider:not(:empty)::before {
+  margin-right: 1rem;
+}
+
+.ornamental-divider:not(:empty)::after {
+  margin-left: 1rem;
+}
+
+.symbol {
+  font-size: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--faded-navy);
+  border-radius: 50px;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.btn-vintage {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--faded-navy);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  background: transparent;
+  cursor: pointer;
+}
+
+.btn-vintage:hover {
+  background-color: var(--faded-navy);
+  color: var(--cream);
+}
+
+.bg-mustard { background-color: var(--mustard); }
+.bg-olive { background-color: var(--olive-green); }
+.bg-rose { background-color: var(--dusty-rose); }
+.text-navy { color: var(--faded-navy); }
+.border-navy { border-color: var(--faded-navy); }
+
+.album-card {
+  transition: transform 0.3s ease;
+  border: 1px solid var(--faded-navy);
+  padding: 1rem;
+}
+
+.album-card:hover {
+  transform: translateY(-5px);
+}
+
+.album-image-wrapper {
+  background-color: var(--faded-navy);
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--faded-navy);
+  margin-bottom: 1rem;
+}
+
+.texture-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+  z-index: 9999;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  line-height: 1;
+}
+
+.section-padding {
+  padding: 4rem 2rem;
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding: 2rem 1rem;
+  }
+}
+
+.stacked-section {
+  border-left: 4px double var(--faded-navy);
+  border-right: 4px double var(--faded-navy);
+}
+
+.footer-vintage {
+  background-color: var(--faded-navy);
+  color: var(--cream);
+}

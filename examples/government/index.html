@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City of Riverdale Services Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="gov-banner">
+            <div class="gov-container flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="font-bold tracking-tight">CITY OF RIVERDALE</span>
+                </div>
+                <div class="hidden md:block">
+                    <span class="text-sm">Official government services portal</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="gov-header">
+            <div class="gov-container">
+                <a href="/" class="gov-logo" aria-label="City of Riverdale Home">
+                    Riverdale.gov
+                </a>
+                
+                <nav class="gov-nav" aria-label="Primary navigation">
+                    <ul>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Departments</a></li>
+                        <li><a href="#">Business</a></li>
+                        <li><a href="#">News</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="gov-container">
+        
+        <section class="hero-section mt-8">
+            <div class="px-4">
+                <h1>Find city services and information</h1>
+                <p class="max-w-2xl mb-8">
+                    Use this portal to apply for permits, pay your council tax, report issues in your neighborhood, or find information about city council meetings.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#" class="btn-gov btn-gov--start">
+                        Start now
+                    </a>
+                    <a href="#" class="btn-gov">
+                        Sign in to your account
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-spacing">
+            <h2 id="popular-tasks">Most used services</h2>
+            <div class="grid-cols-3">
+                <a href="#" class="gov-card">
+                    <h3>Pay Council Tax</h3>
+                    <p>Set up a direct debit, pay your bill online, or apply for a reduction.</p>
+                </a>
+                <a href="#" class="gov-card">
+                    <h3>Waste and recycling</h3>
+                    <p>Check your collection day, report a missed bin, or book a bulky waste collection.</p>
+                </a>
+                <a href="#" class="gov-card">
+                    <h3>Parking permits</h3>
+                    <p>Apply for or renew a residential parking permit or visitor vouchers.</p>
+                </a>
+                <a href="#" class="gov-card">
+                    <h3>Housing and council tax support</h3>
+                    <p>Check eligibility and apply for support with your housing costs or council tax.</p>
+                </a>
+                <a href="#" class="gov-card">
+                    <h3>Schools and learning</h3>
+                    <p>Apply for a school place, check term dates, or find adult learning courses.</p>
+                </a>
+                <a href="#" class="gov-card">
+                    <h3>Planning and building</h3>
+                    <p>Search for planning applications, apply for building control, or report a breach.</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="section-spacing">
+            <div class="grid-cols-2">
+                <div>
+                    <h2>Report a problem</h2>
+                    <p>Help us keep Riverdale clean and safe by reporting issues online. We will respond to most reports within 5 working days.</p>
+                    <ul class="list-disc pl-5 mb-6 space-y-2">
+                        <li><a href="#" class="text-blue-700 underline font-bold">Report a pothole or road damage</a></li>
+                        <li><a href="#" class="text-blue-700 underline font-bold">Report fly-tipping or litter</a></li>
+                        <li><a href="#" class="text-blue-700 underline font-bold">Report a broken street light</a></li>
+                        <li><a href="#" class="text-blue-700 underline font-bold">Report anti-social behavior</a></li>
+                    </ul>
+                    <a href="#" class="btn-gov">View all report forms</a>
+                </div>
+                
+                <div>
+                    <h2>Your local area</h2>
+                    <div class="p-6 border border-gray-300 bg-gray-50">
+                        <form action="#">
+                            <div class="gov-form-group">
+                                <label for="postcode-search" class="gov-label">Find services near you</label>
+                                <p class="text-sm mb-2">Enter your postcode to find bin days, councilors, and local facilities.</p>
+                                <input type="text" id="postcode-search" name="postcode" class="gov-input" placeholder="e.g. SW1A 1AA">
+                            </div>
+                            <button type="submit" class="btn-gov">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-spacing">
+            <h2>Department information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3>Environmental Health</h3>
+                    <p>Food safety inspections, noise complaints, and pollution control across the city.</p>
+                    <a href="#" class="text-blue-700 underline font-bold">Contact Environmental Health</a>
+                </div>
+                <div>
+                    <h3>Social Care</h3>
+                    <p>Support for adults, children, and families, including safeguarding and care assessments.</p>
+                    <a href="#" class="text-blue-700 underline font-bold">Access social care services</a>
+                </div>
+                <div>
+                    <h3>Leisure and Parks</h3>
+                    <p>Information on city parks, leisure centers, swimming pools, and community events.</p>
+                    <a href="#" class="text-blue-700 underline font-bold">Find a park or center</a>
+                </div>
+                <div>
+                    <h3>Registrars</h3>
+                    <p>Register a birth or death, book a marriage ceremony, or order certificates.</p>
+                    <a href="#" class="text-blue-700 underline font-bold">Book an appointment</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="gov-footer" role="contentinfo">
+        <div class="gov-container">
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Benefits and support</a></li>
+                        <li><a href="#">Births, deaths and marriages</a></li>
+                        <li><a href="#">Business and licensing</a></li>
+                        <li><a href="#">Council tax</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="#">Accessibility statement</a></li>
+                        <li><a href="#">Cookies</a></li>
+                        <li><a href="#">Privacy policy</a></li>
+                        <li><a href="#">Terms and conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <p>Riverdale City Council<br>
+                    Civic Centre, High Street<br>
+                    Riverdale, RD1 1AA</p>
+                    <p>Phone: 0123 456 7890<br>
+                    Email: contact@riverdale.gov</p>
+                </div>
+            </div>
+            
+            <div class="footer-meta">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <p>© Riverdale City Council 2024. All content is available under the Open Government Licence v3.0, except where otherwise stated.</p>
+                    <div>
+                        <label for="lang-select" class="sr-only">Select Language</label>
+                        <select id="lang-select" class="gov-input h-10 w-40 text-sm">
+                            <option value="en">English</option>
+                            <option value="cy">Cymraeg</option>
+                            <option value="gd">Gàidhlig</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

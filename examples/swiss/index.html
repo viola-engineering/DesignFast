@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STRUKTUR | International Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="border-b-black fixed w-full top-0 bg-white z-50">
+        <div class="grid grid-cols-12 w-full">
+            <div class="col-span-4 p-6 border-r-black">
+                <h1 class="type-12 font-black">Struktur Studio</h1>
+            </div>
+            <div class="col-span-8 p-6 flex justify-between items-center">
+                <nav class="flex gap-12">
+                    <a href="#projects" class="type-12 hover-red">Projects</a>
+                    <a href="#about" class="type-12 hover-red">Philosophy</a>
+                    <a href="#contact" class="type-12 hover-red">Contact</a>
+                </nav>
+                <div class="square-black"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="mt-[65px]">
+        <!-- HERO SECTION -->
+        <section class="border-b-black overflow-hidden">
+            <div class="grid grid-cols-12 w-full">
+                <div class="col-span-12 md:col-span-8 p-6 md:p-12 border-r-black animate-fade">
+                    <span class="type-12 mb-8 block">01 / Foundation</span>
+                    <h2 class="type-72 font-black mb-12">ORDER THROUGH<br>MODULARITY.</h2>
+                    <div class="flex items-end gap-8">
+                        <div class="circle-red"></div>
+                        <p class="type-16 max-w-xs pb-4">
+                            We believe in the mathematical precision of space. Architecture is not decoration; it is the organization of life within a grid.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-4 bg-primary-yellow p-6 flex flex-col justify-between items-start animate-fade delay-1">
+                    <div class="type-72 font-black text-black leading-none">12.04</div>
+                    <div class="rect-blue mb-12"></div>
+                    <button class="btn-swiss w-full">View Monographs</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS GRID -->
+        <section id="projects" class="border-b-black">
+            <div class="grid grid-cols-12">
+                <!-- Project 1 -->
+                <div class="col-span-12 md:col-span-4 border-r-black border-b-black md:border-b-0 project-card">
+                    <div class="p-6 h-full flex flex-col justify-between">
+                        <div>
+                            <span class="type-12 block mb-4">Residential</span>
+                            <h3 class="type-36 font-bold mb-8">HAUS 01<br>STUTTGART</h3>
+                        </div>
+                        <div class="bg-black aspect-ratio-square w-full mb-6"></div>
+                        <p class="type-12">Completed 2024 / 420sqm</p>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="col-span-12 md:col-span-8 border-b-black md:border-b-0">
+                    <div class="grid grid-cols-8 h-full">
+                        <div class="col-span-8 p-12 bg-primary-blue text-white flex flex-col justify-center">
+                            <h3 class="type-48 font-black mb-6">KUBUS 74<br>COMMERCIAL HUB</h3>
+                            <p class="type-16 max-w-md">
+                                A monolithic concrete structure designed for maximum efficiency. The façade follows a strict 1.2m grid interval, ensuring perfect symmetry across all horizontal planes.
+                            </p>
+                        </div>
+                        <div class="col-span-4 p-6 border-t-black border-r-black">
+                            <span class="type-12">Location</span>
+                            <p class="type-16 font-bold">Berlin, DE</p>
+                        </div>
+                        <div class="col-span-4 p-6 border-t-black">
+                            <span class="type-12">Type</span>
+                            <p class="type-16 font-bold">Office / Retail</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PHILOSOPHY / ABOUT -->
+        <section id="about" class="border-b-black">
+            <div class="grid grid-cols-12">
+                <div class="col-span-12 md:col-span-3 border-r-black p-6 hidden md:block">
+                    <div class="vertical-text type-12 font-bold h-full flex justify-between">
+                        <span>THE INTERNATIONAL STYLE</span>
+                        <span>SINCE 1994</span>
+                        <span>FORM FOLLOWS FUNCTION</span>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-9 p-6 md:p-12">
+                    <div class="grid grid-cols-9 gap-12">
+                        <div class="col-span-9 md:col-span-6">
+                            <span class="type-12 block mb-8">02 / Methodology</span>
+                            <h2 class="type-48 font-black mb-8">THE GRID IS THE LIBERATOR, NOT THE CAGE.</h2>
+                            <p class="type-24 mb-12">
+                                We utilize a strict 12-column modular system for every project. This mathematical rigor allows for unexpected moments of asymmetry that remain balanced within the whole.
+                            </p>
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="border-t-black pt-4">
+                                    <span class="type-12 font-bold">01. RATIO</span>
+                                    <p class="type-12 mt-2">The Golden Section applied to structural voids.</p>
+                                </div>
+                                <div class="border-t-black pt-4">
+                                    <span class="type-12 font-bold">02. AXIS</span>
+                                    <p class="type-12 mt-2">Clear sightlines across all living planes.</p>
+                                </div>
+                                <div class="border-t-black pt-4">
+                                    <span class="type-12 font-bold">03. MASS</span>
+                                    <p class="type-12 mt-2">Subtraction of volume to create light.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-3 hidden md:flex flex-col justify-between items-end">
+                            <div class="rect-yellow"></div>
+                            <div class="square-black"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="grid grid-cols-12">
+                <div class="col-span-12 md:col-span-6 p-6 md:p-12 border-r-black border-b-black md:border-b-0">
+                    <h2 class="type-48 font-black mb-12">START A<br>PROJEKT.</h2>
+                    <div class="flex flex-col gap-8">
+                        <div>
+                            <span class="type-12 block">Email</span>
+                            <a href="mailto:office@struktur.studio" class="type-24 font-bold border-b-black inline-block">office@struktur.studio</a>
+                        </div>
+                        <div>
+                            <span class="type-12 block">Phone</span>
+                            <p class="type-24 font-bold">+49 30 921 00 44</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-12 md:col-span-6">
+                    <div class="grid grid-cols-2 h-full">
+                        <div class="col-span-2 p-6 md:p-12 border-b-black">
+                            <span class="type-12 block mb-4">Newsletter</span>
+                            <div class="flex">
+                                <input type="email" placeholder="YOUR@EMAIL.COM" class="bg-transparent border-black border-b w-full p-2 type-12 focus:outline-none">
+                                <button class="btn-swiss">Join</button>
+                            </div>
+                        </div>
+                        <div class="col-span-1 p-6 border-r-black border-b-black md:border-b-0">
+                            <span class="type-12">Social</span>
+                            <ul class="mt-4">
+                                <li><a href="#" class="type-12 font-bold hover-blue">Instagram</a></li>
+                                <li><a href="#" class="type-12 font-bold hover-red">LinkedIn</a></li>
+                                <li><a href="#" class="type-12 font-bold hover-yellow">Twitter</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-span-1 p-6 border-b-black md:border-b-0">
+                            <span class="type-12">Office</span>
+                            <p class="type-12 mt-4">
+                                Torstraße 104<br>
+                                10119 Berlin<br>
+                                Germany
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="p-6 border-t-black bg-black text-white">
+        <div class="grid grid-cols-12 w-full">
+            <div class="col-span-6">
+                <p class="type-12">© 2026 STRUKTUR Studio — ALL RIGHTS RESERVED.</p>
+            </div>
+            <div class="col-span-6 text-right">
+                <p class="type-12">BUILT WITH PRECISION.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

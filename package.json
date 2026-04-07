@@ -4,7 +4,9 @@
   "scripts": {
     "start": "node -r dotenv/config backend/src/server.js",
     "migrate": "node -r dotenv/config backend/src/migrate.js",
-    "test": "node -r dotenv/config --test --test-concurrency=1 'backend/test/*.test.js'"
+    "test": "node -r dotenv/config --test --test-concurrency=1 'backend/test/*.test.js'",
+    "generate-examples": "node -r dotenv/config backend/scripts/generate-style-examples.js",
+    "generate-screenshots": "node backend/scripts/generate-screenshots.js"
   },
   "dependencies": {
     "@angycode/core": "file:../../Work/angy/code/packages/core",
@@ -19,5 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "queen-mq": "file:../../Work/queen/client-js"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.0.0"
   }
 }

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atmosphere | Premium Weather Forecasting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen p-6 md:p-12 overflow-y-auto">
+    <!-- Background Elements -->
+    <div class="mesh-background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-5xl space-y-8 z-10">
+        
+        <!-- Header & Search -->
+        <header class="flex flex-col md:flex-row items-center justify-between gap-6 fade-in">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 glass-card flex items-center justify-center">
+                    <i class="fas fa-cloud-sun text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight">Atmosphere</h1>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-white/50"></i>
+                <input type="text" placeholder="Search for a city..." class="search-input pl-12">
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button class="glass-button text-sm font-medium">°C</button>
+                <button class="glass-button text-sm font-medium opacity-50">°F</button>
+            </div>
+        </header>
+
+        <!-- Weather Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Current Weather -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Current Weather Card -->
+                <div class="glass-card p-10 flex flex-col md:flex-row justify-between items-center fade-in delay-1">
+                    <div class="text-center md:text-left space-y-4">
+                        <div>
+                            <h2 class="text-5xl font-bold">San Francisco</h2>
+                            <p class="text-white/60 text-lg">Monday, 7 April 2026</p>
+                        </div>
+                        <div class="flex items-center justify-center md:justify-start gap-4">
+                            <span class="text-8xl font-light">19°</span>
+                            <div class="text-left">
+                                <p class="text-2xl font-medium">Partly Cloudy</p>
+                                <p class="text-white/60">High: 21° Low: 14°</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 md:mt-0">
+                        <i class="fas fa-cloud-sun text-[120px] weather-icon text-yellow-400"></i>
+                    </div>
+                </div>
+
+                <!-- Detailed Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fade-in delay-2">
+                    <div class="glass-card p-6 flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-wind weather-stat-icon text-blue-300"></i>
+                        <span class="text-sm text-white/60 uppercase tracking-wider">Wind</span>
+                        <span class="text-xl font-semibold mt-1">12 km/h</span>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-droplet weather-stat-icon text-cyan-300"></i>
+                        <span class="text-sm text-white/60 uppercase tracking-wider">Humidity</span>
+                        <span class="text-xl font-semibold mt-1">64%</span>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-eye weather-stat-icon text-purple-300"></i>
+                        <span class="text-sm text-white/60 uppercase tracking-wider">Visibility</span>
+                        <span class="text-xl font-semibold mt-1">10 km</span>
+                    </div>
+                    <div class="glass-card p-6 flex flex-col items-center justify-center text-center">
+                        <i class="fas fa-gauge-high weather-stat-icon text-emerald-300"></i>
+                        <span class="text-sm text-white/60 uppercase tracking-wider">Pressure</span>
+                        <span class="text-xl font-semibold mt-1">1012 hPa</span>
+                    </div>
+                </div>
+
+                <!-- Hourly Forecast (Mobile Visible/Desktop Integrated) -->
+                <div class="glass-card p-8 fade-in delay-3">
+                    <h3 class="text-lg font-semibold mb-6 flex items-center gap-2">
+                        <i class="fas fa-clock text-white/60"></i> Hourly Forecast
+                    </h3>
+                    <div class="flex justify-between items-center overflow-x-auto pb-2 gap-8 scrollbar-hide">
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">Now</span>
+                            <i class="fas fa-cloud-sun text-yellow-400"></i>
+                            <span class="font-bold">19°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">2 PM</span>
+                            <i class="fas fa-sun text-yellow-500"></i>
+                            <span class="font-bold">21°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">3 PM</span>
+                            <i class="fas fa-sun text-yellow-500"></i>
+                            <span class="font-bold">21°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">4 PM</span>
+                            <i class="fas fa-cloud-sun text-yellow-400"></i>
+                            <span class="font-bold">20°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">5 PM</span>
+                            <i class="fas fa-cloud text-gray-400"></i>
+                            <span class="font-bold">18°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">6 PM</span>
+                            <i class="fas fa-cloud-showers-heavy text-blue-400"></i>
+                            <span class="font-bold">16°</span>
+                        </div>
+                        <div class="flex flex-col items-center min-w-[60px] space-y-2">
+                            <span class="text-sm text-white/60">7 PM</span>
+                            <i class="fas fa-cloud-moon text-indigo-300"></i>
+                            <span class="font-bold">15°</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: 5-Day Forecast -->
+            <div class="space-y-8">
+                <div class="glass-card p-8 h-full fade-in delay-2">
+                    <h3 class="text-xl font-semibold mb-8 flex items-center gap-2">
+                        <i class="fas fa-calendar-days text-white/60"></i> 5-Day Forecast
+                    </h3>
+                    
+                    <div class="space-y-2">
+                        <!-- Day 1 -->
+                        <div class="forecast-item flex items-center justify-between">
+                            <span class="w-12 font-medium">Tue</span>
+                            <div class="flex items-center gap-4 flex-1 justify-center">
+                                <i class="fas fa-sun text-yellow-400 text-lg"></i>
+                                <span class="text-sm text-white/60 w-16">Sunny</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold w-8 text-right">22°</span>
+                                <span class="text-white/40 w-8 text-right">15°</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Day 2 -->
+                        <div class="forecast-item flex items-center justify-between">
+                            <span class="w-12 font-medium">Wed</span>
+                            <div class="flex items-center gap-4 flex-1 justify-center">
+                                <i class="fas fa-cloud-sun text-yellow-200 text-lg"></i>
+                                <span class="text-sm text-white/60 w-16">Cloudy</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold w-8 text-right">20°</span>
+                                <span class="text-white/40 w-8 text-right">14°</span>
+                            </div>
+                        </div>
+
+                        <!-- Day 3 -->
+                        <div class="forecast-item flex items-center justify-between">
+                            <span class="w-12 font-medium">Thu</span>
+                            <div class="flex items-center gap-4 flex-1 justify-center">
+                                <i class="fas fa-cloud-showers-water text-blue-400 text-lg"></i>
+                                <span class="text-sm text-white/60 w-16">Rain</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold w-8 text-right">17°</span>
+                                <span class="text-white/40 w-8 text-right">12°</span>
+                            </div>
+                        </div>
+
+                        <!-- Day 4 -->
+                        <div class="forecast-item flex items-center justify-between">
+                            <span class="w-12 font-medium">Fri</span>
+                            <div class="flex items-center gap-4 flex-1 justify-center">
+                                <i class="fas fa-bolt text-yellow-600 text-lg"></i>
+                                <span class="text-sm text-white/60 w-16">Storm</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold w-8 text-right">16°</span>
+                                <span class="text-white/40 w-8 text-right">11°</span>
+                            </div>
+                        </div>
+
+                        <!-- Day 5 -->
+                        <div class="forecast-item flex items-center justify-between">
+                            <span class="w-12 font-medium">Sat</span>
+                            <div class="flex items-center gap-4 flex-1 justify-center">
+                                <i class="fas fa-cloud-sun-rain text-blue-300 text-lg"></i>
+                                <span class="text-sm text-white/60 w-16">Light rain</span>
+                            </div>
+                            <div class="flex gap-4">
+                                <span class="font-bold w-8 text-right">18°</span>
+                                <span class="text-white/40 w-8 text-right">13°</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sunset/Sunrise -->
+                    <div class="mt-12 space-y-4">
+                        <div class="glass-card p-4 bg-white/5 border-none flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-sun text-yellow-400"></i>
+                                <span class="text-sm text-white/60">Sunrise</span>
+                            </div>
+                            <span class="font-medium">06:42 AM</span>
+                        </div>
+                        <div class="glass-card p-4 bg-white/5 border-none flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fas fa-moon text-indigo-400"></i>
+                                <span class="text-sm text-white/60">Sunset</span>
+                            </div>
+                            <span class="font-medium">07:54 PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="pt-12 pb-6 text-center text-white/40 text-sm fade-in delay-3">
+            <p>© 2026 Atmosphere Weather. Designed for clarity.</p>
+        </footer>
+    </main>
+</body>
+</html>

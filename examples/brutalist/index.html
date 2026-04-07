@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID CONTEMPORARY | ART GALLERY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white">
+    <div class="grid-overlay"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-start p-4 md:p-8 pointer-events-none">
+        <div class="brutalist-border bg-white p-2 pointer-events-auto">
+            <a href="#" class="font-extrabold text-2xl tracking-tighter">VOID_</a>
+        </div>
+        <div class="flex flex-col items-end gap-2 pointer-events-auto">
+            <a href="#exhibitions" class="brutalist-btn bg-white text-sm">Exhibitions</a>
+            <a href="#artists" class="brutalist-btn bg-white text-sm">Artists</a>
+            <a href="#about" class="brutalist-btn bg-accent text-sm">About</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="min-h-screen flex flex-col justify-end p-4 md:p-8 pt-32">
+        <div class="broken-grid">
+            <div class="col-span-12 md:col-span-9">
+                <h1 class="massive-text mb-8">
+                    FUTURE<br>
+                    <span class="bg-accent">IS_BLANK</span>
+                </h1>
+            </div>
+            <div class="col-span-12 md:col-span-3 flex items-end">
+                <p class="text-xl md:text-2xl font-bold brutalist-border-l pl-4 mb-12">
+                    CONTEMPORARY ART <br> FOR THE <br> END OF THE WORLD.
+                </p>
+            </div>
+        </div>
+        <div class="w-full brutalist-border-t pt-4 flex flex-wrap justify-between items-baseline gap-4">
+            <span class="font-bold">BERLIN / TOKYO / NYC</span>
+            <span class="font-bold">EST. 2024</span>
+            <div class="diagonal-stripes h-8 w-32 brutalist-border"></div>
+        </div>
+    </header>
+
+    <!-- MARQUEE -->
+    <section class="marquee brutalist-border-t brutalist-border-b">
+        <div class="marquee-content">
+            <span class="text-4xl font-extrabold mx-8">NOW SHOWING: "STATIC DREAMS" BY K. VOGEL</span>
+            <span class="text-4xl font-extrabold mx-8">NOW SHOWING: "STATIC DREAMS" BY K. VOGEL</span>
+            <span class="text-4xl font-extrabold mx-8">NOW SHOWING: "STATIC DREAMS" BY K. VOGEL</span>
+            <span class="text-4xl font-extrabold mx-8">NOW SHOWING: "STATIC DREAMS" BY K. VOGEL</span>
+        </div>
+    </section>
+
+    <!-- EXHIBITION 01 -->
+    <section id="exhibitions" class="py-20 px-4 md:px-8">
+        <div class="broken-grid items-center">
+            <div class="col-span-12 md:col-span-7 z-20">
+                <div class="image-container rotate-neg-3 shadow-[20px_20px_0px_0px_rgba(0,0,0,1)]">
+                    <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=1000&auto=format&fit=crop" alt="Exhibition piece">
+                    <span class="exposed-tag">REF_092</span>
+                </div>
+            </div>
+            <div class="col-span-12 md:col-span-5 pt-12 md:pt-0 overlap-left">
+                <div class="bg-white brutalist-border p-6 md:p-12 relative">
+                    <div class="absolute -top-6 -left-6 diagonal-stripes w-12 h-12 brutalist-border"></div>
+                    <h2 class="sub-massive-text mb-6">STATIC<br>DREAMS</h2>
+                    <p class="mb-8 font-bold leading-relaxed">
+                        An exploration of digital decay and the aesthetics of failure. K. Vogel challenges the permanence of the digital image through destructive manipulation.
+                    </p>
+                    <a href="#" class="brutalist-btn-accent brutalist-btn w-full text-center">View Gallery</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXHIBITION 02 - ASYMMETRIC -->
+    <section class="py-20 px-4 md:px-8 bg-black text-white">
+        <div class="flex flex-col md:flex-row-reverse gap-12">
+            <div class="w-full md:w-1/2">
+                <h3 class="massive-text text-white leading-none">UP<br>COMING</h3>
+                <div class="mt-8 brutalist-border border-white p-8">
+                    <span class="text-accent text-sm font-bold block mb-2">// MAY 12 - JUNE 20</span>
+                    <h4 class="text-4xl font-extrabold mb-4 uppercase">Concrete Jungle</h4>
+                    <p class="text-lg opacity-80">
+                        Urban brutalism reinterpreted through textile sculpture. Featuring work by AR-7 and The Concrete Collective.
+                    </p>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 flex items-center justify-center">
+                <div class="image-container border-white w-full max-w-md rotate-3">
+                    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1000&auto=format&fit=crop" alt="Upcoming exhibition">
+                    <span class="exposed-tag bg-white text-black">NEXT_EXP</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTISTS GRID -->
+    <section id="artists" class="py-20 px-4 md:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
+            <h2 class="massive-text">ROSTER</h2>
+            <div class="vertical-text font-bold text-6xl hidden md:block brutalist-border-l pl-4">
+                2024_ARTISTS
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-0 brutalist-border">
+            <div class="brutalist-border p-8 hover:bg-accent group transition-colors cursor-pointer">
+                <span class="block text-xs font-bold mb-4">01.</span>
+                <h3 class="text-3xl font-extrabold uppercase mb-2">MARCUS_VOID</h3>
+                <p class="text-sm font-bold opacity-0 group-hover:opacity-100 uppercase">Kinetic Sculpture</p>
+            </div>
+            <div class="brutalist-border p-8 hover:bg-accent group transition-colors cursor-pointer md:translate-y-12 bg-white">
+                <span class="block text-xs font-bold mb-4">02.</span>
+                <h3 class="text-3xl font-extrabold uppercase mb-2">ELARA_K</h3>
+                <p class="text-sm font-bold opacity-0 group-hover:opacity-100 uppercase">Glitch Photography</p>
+            </div>
+            <div class="brutalist-border p-8 hover:bg-accent group transition-colors cursor-pointer bg-white">
+                <span class="block text-xs font-bold mb-4">03.</span>
+                <h3 class="text-3xl font-extrabold uppercase mb-2">NEO_DADA</h3>
+                <p class="text-sm font-bold opacity-0 group-hover:opacity-100 uppercase">AI Surrealism</p>
+            </div>
+            <div class="brutalist-border p-8 hover:bg-accent group transition-colors cursor-pointer md:-translate-y-4 bg-white">
+                <span class="block text-xs font-bold mb-4">04.</span>
+                <h3 class="text-3xl font-extrabold uppercase mb-2">ZINC_7</h3>
+                <p class="text-sm font-bold opacity-0 group-hover:opacity-100 uppercase">Industrial Sound</p>
+            </div>
+            <div class="brutalist-border p-8 hover:bg-accent group transition-colors cursor-pointer bg-white md:col-span-2">
+                <span class="block text-xs font-bold mb-4">05.</span>
+                <h3 class="text-3xl font-extrabold uppercase mb-2">THE_COLLECTIVE</h3>
+                <p class="text-sm font-bold opacity-0 group-hover:opacity-100 uppercase">Multi-disciplinary</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER -->
+    <section class="py-20 px-4 md:px-8 bg-accent brutalist-border-t brutalist-border-b">
+        <div class="max-w-4xl">
+            <h2 class="sub-massive-text mb-8">JOIN THE_VOID</h2>
+            <div class="flex flex-col md:flex-row gap-0 brutalist-border">
+                <input type="email" placeholder="YOUR_EMAIL@PROVIDER.COM" class="flex-grow p-6 bg-white font-bold outline-none border-b-4 md:border-b-0 md:border-r-4 border-black">
+                <button class="brutalist-btn bg-black text-white px-12 py-6 text-2xl font-black">SUBMIT</button>
+            </div>
+            <p class="mt-4 font-bold uppercase text-xs">NO SPAM. ONLY ART. PROBABLY.</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="about" class="py-20 px-4 md:px-8 flex flex-col md:flex-row justify-between gap-12">
+        <div class="w-full md:w-1/3">
+            <h3 class="text-4xl font-extrabold mb-8 brutalist-border-b inline-block">VOID_GALLERY</h3>
+            <p class="font-bold leading-relaxed mb-8">
+                VOID is a space dedicated to the unpolished, the experimental, and the confrontational. We provide a platform for artists who operate outside traditional commercial structures.
+            </p>
+            <div class="flex gap-4">
+                <a href="#" class="brutalist-border p-2 hover:bg-black hover:text-white transition-colors">INSTAGRAM</a>
+                <a href="#" class="brutalist-border p-2 hover:bg-black hover:text-white transition-colors">TWITTER/X</a>
+            </div>
+        </div>
+        <div class="w-full md:w-1/3 flex flex-col gap-4">
+            <div class="brutalist-border p-4">
+                <span class="block text-xs font-bold uppercase opacity-50">LOCATION_A</span>
+                <p class="font-bold">SCHÖNEBERG_STR 14<br>10781 BERLIN, GERMANY</p>
+            </div>
+            <div class="brutalist-border p-4">
+                <span class="block text-xs font-bold uppercase opacity-50">LOCATION_B</span>
+                <p class="font-bold">34 SHIBUYA-KU<br>TOKYO 150-0043, JAPAN</p>
+            </div>
+        </div>
+        <div class="w-full md:w-1/3 flex flex-col justify-end items-end">
+            <div class="diagonal-stripes w-full h-20 brutalist-border mb-4"></div>
+            <p class="text-xs font-bold uppercase">© 2026 VOID CONTEMPORARY. ALL RIGHTS DESTROYED.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

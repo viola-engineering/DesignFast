@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFlow SDK Documentation | Integration Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle" class="menu-trigger">
+
+    <header class="mobile-header lg:hidden">
+        <label for="menu-toggle" class="p-2 cursor-pointer">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </label>
+        <div class="ml-4 font-bold text-xl tracking-tight text-blue-600">PayFlow</div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="p-6 hidden lg:block">
+            <div class="font-bold text-2xl tracking-tight text-blue-600">PayFlow</div>
+            <div class="text-xs text-gray-400 mt-1 uppercase font-semibold">SDK Documentation</div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" placeholder="Search documentation..." class="search-input">
+        </div>
+
+        <nav class="pb-10">
+            <div class="nav-section-header">Getting Started</div>
+            <a href="#introduction" class="nav-link active">Introduction</a>
+            <a href="#quickstart" class="nav-link">Quickstart Guide</a>
+            <a href="#authentication" class="nav-link">Authentication</a>
+
+            <div class="nav-section-header">Core Concepts</div>
+            <a href="#payment-intents" class="nav-link">Payment Intents</a>
+            <a href="#customers" class="nav-link">Customers</a>
+            <a href="#subscriptions" class="nav-link">Subscriptions</a>
+
+            <div class="nav-section-header">SDK Reference</div>
+            <a href="#js-sdk" class="nav-link">JavaScript SDK</a>
+            <a href="#python-sdk" class="nav-link">Python SDK</a>
+            <a href="#ruby-sdk" class="nav-link">Ruby SDK</a>
+
+            <div class="nav-section-header">Guides</div>
+            <a href="#webhooks" class="nav-link">Handling Webhooks</a>
+            <a href="#compliance" class="nav-link">PCI Compliance</a>
+            <a href="#testing" class="nav-link">Test Mode & Cards</a>
+        </nav>
+    </aside>
+
+    <main class="content-wrapper">
+        <div class="px-6 py-8 lg:px-12 lg:py-12">
+            <!-- Breadcrumbs -->
+            <nav class="flex text-sm text-gray-500 mb-8" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2">
+                    <li>Docs</li>
+                    <li><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"></path></svg></li>
+                    <li>Getting Started</li>
+                    <li><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"></path></svg></li>
+                    <li class="text-gray-900 font-medium">Introduction</li>
+                </ol>
+            </nav>
+
+            <article class="prose-custom">
+                <h1 id="introduction">Introduction <a href="#introduction" class="anchor-link">#</a></h1>
+                <p class="text-xl text-gray-600 mb-8">PayFlow is a complete payments infrastructure for the internet. Millions of companies of all sizes—from startups to Fortune 500s—use PayFlow's software and APIs to accept payments, send payouts, and manage their businesses online.</p>
+
+                <div class="callout callout-info">
+                    <div>
+                        <svg class="w-6 h-6 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Looking for the API Explorer?</p>
+                        <p class="text-sm">Visit our interactive API playground to test requests against your live data directly in the browser.</p>
+                    </div>
+                </div>
+
+                <h2 id="quickstart">Quickstart Guide <a href="#quickstart" class="anchor-link">#</a></h2>
+                <p>To start using PayFlow, you'll need to install the SDK and initialize it with your API key. We provide libraries for most popular programming languages.</p>
+
+                <h3 id="install-sdk">Installing the SDK</h3>
+                <p>Choose your preferred language and run the installation command:</p>
+
+                <div class="relative">
+                    <div class="code-header">
+                        <span class="lang-label">bash</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code><span class="token-comment"># Install via npm</span>
+npm install @payflow/payflow-js
+
+<span class="token-comment"># Or via yarn</span>
+yarn add @payflow/payflow-js</code></pre>
+                </div>
+
+                <h2 id="authentication">Authentication <a href="#authentication" class="anchor-link">#</a></h2>
+                <p>The PayFlow API uses API keys to authenticate requests. You can view and manage your API keys in the <span class="inline-code">PayFlow Dashboard</span>.</p>
+                <p>Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.</p>
+
+                <div class="callout callout-warning">
+                    <div>
+                        <svg class="w-6 h-6 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Keep your Secret Key safe</p>
+                        <p class="text-sm">Never use your secret key in frontend code. Always use the publishable key for client-side operations.</p>
+                    </div>
+                </div>
+
+                <h3 id="api-keys">API Key Types</h3>
+                <table class="docs-table">
+                    <thead>
+                        <tr>
+                            <th>Key Type</th>
+                            <th>Prefix</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Publishable</td>
+                            <td><span class="inline-code">pk_test_</span></td>
+                            <td>Use in client-side code to tokenize payment info.</td>
+                        </tr>
+                        <tr>
+                            <td>Secret</td>
+                            <td><span class="inline-code">sk_test_</span></td>
+                            <td>Use in server-side code for sensitive operations.</td>
+                        </tr>
+                        <tr>
+                            <td>Restricted</td>
+                            <td><span class="inline-code">rk_test_</span></td>
+                            <td>Granular permissions for specific API resources.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h2 id="payment-intents">Payment Intents <a href="#payment-intents" class="anchor-link">#</a></h2>
+                <p>A PaymentIntent is an object that represents your intent to collect payment from a customer and tracks the lifecycle of the payment process.</p>
+
+                <div class="relative">
+                    <div class="code-header">
+                        <span class="lang-label">javascript</span>
+                        <button class="copy-btn">Copy</button>
+                    </div>
+                    <pre><code><span class="token-keyword">const</span> payflow = <span class="token-function">require</span>(<span class="token-string">'@payflow/payflow-js'</span>)(<span class="token-string">'sk_test_51Mz...'</span>);
+
+<span class="token-keyword">const</span> paymentIntent = <span class="token-keyword">await</span> payflow.paymentIntents.<span class="token-function">create</span>({
+  amount: <span class="token-number">2000</span>,
+  currency: <span class="token-string">'usd'</span>,
+  automatic_payment_methods: {
+    enabled: <span class="token-keyword">true</span>,
+  },
+});
+
+console.<span class="token-function">log</span>(paymentIntent.client_secret);</code></pre>
+                </div>
+
+                <h2 id="webhooks">Handling Webhooks <a href="#webhooks" class="anchor-link">#</a></h2>
+                <p>Webhooks allow PayFlow to notify your server when an event happens in your account. Webhooks are particularly useful for asynchronous events like customer disputes or successful subscription renewals.</p>
+                <ul>
+                    <li><strong>Listen for events:</strong> Define a webhook endpoint to receive notifications.</li>
+                    <li><strong>Verify signatures:</strong> Always verify that requests come from PayFlow.</li>
+                    <li><strong>Respond promptly:</strong> Return a 200 OK status code to acknowledge receipt.</li>
+                </ul>
+
+                <div class="pagination-nav">
+                    <a href="#" class="pagination-item">
+                        <span class="pagination-label">Previous</span>
+                        <span class="pagination-title">Getting Started</span>
+                    </a>
+                    <a href="#payment-intents" class="pagination-item items-end">
+                        <span class="pagination-label text-right">Next</span>
+                        <span class="pagination-title">Payment Intents</span>
+                    </a>
+                </div>
+
+                <footer class="mt-20 pt-8 border-t border-gray-100 flex justify-between items-center text-sm text-gray-500">
+                    <div>
+                        Last updated on April 7, 2026
+                    </div>
+                    <div>
+                        <a href="#" class="hover:text-blue-600 flex items-center gap-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            Edit this page
+                        </a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <aside class="toc-sidebar">
+        <div class="px-4">
+            <div class="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">On this page</div>
+            <nav class="space-y-1">
+                <a href="#introduction" class="toc-link active">Introduction</a>
+                <a href="#quickstart" class="toc-link">Quickstart Guide</a>
+                <a href="#authentication" class="toc-link">Authentication</a>
+                <a href="#api-keys" class="toc-link">API Key Types</a>
+                <a href="#payment-intents" class="toc-link">Payment Intents</a>
+                <a href="#webhooks" class="toc-link">Handling Webhooks</a>
+            </nav>
+        </div>
+    </aside>
+
+    <script>
+        // Simple logic for the mobile sidebar (if needed, though mostly handled by CSS checkbox)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('menu-toggle').checked = false;
+            });
+        });
+
+        // Intersection Observer for TOC highlight
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -80% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                const id = entry.target.getAttribute('id');
+                const tocLink = document.querySelector(`.toc-link[href="#${id}"]`);
+                if (entry.isIntersecting) {
+                    document.querySelectorAll('.toc-link').forEach(link => link.classList.remove('active'));
+                    if (tocLink) tocLink.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('h1, h2, h3').forEach(heading => {
+            observer.observe(heading);
+        });
+    </script>
+</body>
+</html>

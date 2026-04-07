@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Finance | Complete Control Over Your Wealth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-site px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <div class="w-4 h-4 bg-white rounded-full"></div>
+                </div>
+                <span class="text-xl font-bold tracking-tight text-slate-900 uppercase">Aura</span>
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#features" class="hover:text-blue-600 transition-colors">Features</a>
+                <a href="#security" class="hover:text-blue-600 transition-colors">Security</a>
+                <a href="#pricing" class="hover:text-blue-600 transition-colors">Pricing</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button class="text-sm font-semibold text-slate-700 px-4 py-2 hover:text-blue-600 transition-colors">Log In</button>
+                <button class="bg-blue-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-all shadow-sm">Open Account</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-gradient text-white pt-20 pb-32 overflow-hidden">
+        <div class="max-w-site px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="animate-fade-in">
+                    <div class="accent-line"></div>
+                    <h1 class="text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
+                        Control your wealth with <span class="text-blue-400">absolute precision.</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 mb-10 max-w-lg leading-relaxed">
+                        Aura combines high-velocity data with beautiful visual clarity. Manage your assets, track every penny, and grow your net worth on one unified platform.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-blue-600 px-8 py-4 rounded-xl font-bold text-white hover:bg-blue-700 transition-all shadow-xl shadow-blue-900/20">Get Started Free</button>
+                        <button class="bg-slate-800 border border-slate-700 px-8 py-4 rounded-xl font-bold text-white hover:bg-slate-700 transition-all">Watch Demo</button>
+                    </div>
+                    <div class="mt-12 flex items-center space-x-8">
+                        <div class="flex -space-x-2">
+                            <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-700"></div>
+                            <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-600"></div>
+                            <div class="w-8 h-8 rounded-full border-2 border-slate-900 bg-slate-500"></div>
+                        </div>
+                        <p class="text-sm text-slate-500 font-medium">Joined by 12,000+ investors this month</p>
+                    </div>
+                </div>
+
+                <!-- Card/App Mockup Visual -->
+                <div class="relative animate-fade-in delay-200">
+                    <div class="card-premium rounded-3xl p-8 aspect-[1.58/1] relative z-10">
+                        <div class="flex justify-between items-start mb-12">
+                            <div class="space-y-1">
+                                <p class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Total Balance</p>
+                                <h2 class="text-4xl font-bold tabular-nums">$142,508.42</h2>
+                            </div>
+                            <div class="w-12 h-8 bg-slate-700/50 rounded-md border border-slate-600 flex items-center justify-center">
+                                <div class="w-6 h-4 bg-blue-500/20 rounded"></div>
+                            </div>
+                        </div>
+                        <div class="mb-12">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex space-x-1">
+                                    <span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span>
+                                </div>
+                                <div class="flex space-x-1">
+                                    <span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span><span class="card-number-dot"></span>
+                                </div>
+                                <span class="text-lg font-mono tracking-tighter opacity-80">9012</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Card Holder</p>
+                                <p class="text-sm font-medium tracking-wide">ALEXANDER VAUGHN</p>
+                            </div>
+                            <div class="flex -space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-red-500/80"></div>
+                                <div class="w-8 h-8 rounded-full bg-orange-500/80"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Secondary Glass UI Panel -->
+                    <div class="glass-panel absolute -bottom-12 -left-12 p-6 rounded-2xl shadow-2xl hidden md:block z-20 w-64">
+                        <p class="text-xs font-bold text-slate-500 uppercase mb-4">Monthly Spending</p>
+                        <div class="chart-bar-container">
+                            <div class="chart-bar h-[40%]"></div>
+                            <div class="chart-bar h-[65%]"></div>
+                            <div class="chart-bar chart-bar-success h-[85%]"></div>
+                            <div class="chart-bar h-[45%]"></div>
+                            <div class="chart-bar h-[55%]"></div>
+                            <div class="chart-bar chart-bar-success h-[95%]"></div>
+                        </div>
+                        <div class="mt-4 flex justify-between items-center">
+                            <span class="text-sm font-bold text-slate-900 tabular-nums">$4,281.00</span>
+                            <span class="text-xs font-bold text-emerald-600">+12.5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Trusted By -->
+    <section class="py-12 border-b border-slate-100">
+        <div class="max-w-site px-6">
+            <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-8">Integrated with your favorite institutions</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 grayscale opacity-40">
+                <span class="text-2xl font-bold tracking-tighter">GOLDMAN</span>
+                <span class="text-2xl font-bold tracking-tighter">CHASE</span>
+                <span class="text-2xl font-bold tracking-tighter">MORGAN</span>
+                <span class="text-2xl font-bold tracking-tighter">BARCLAYS</span>
+                <span class="text-2xl font-bold tracking-tighter">HSBC</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-slate-50">
+        <div class="max-w-site px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Master your money in real-time</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Complex financial tools simplified for everyday use. Track spending, set limits, and reach your goals faster.</p>
+            </div>
+
+            <div class="feature-grid">
+                <!-- Feature 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Intelligent Budgeting</h3>
+                    <p class="text-slate-600 mb-6">Set category limits and let our AI adjust your projections based on real-time spending habits.</p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-xs font-bold uppercase tracking-tight text-slate-400">
+                            <span>Groceries</span>
+                            <span class="tabular-nums">82% Used</span>
+                        </div>
+                        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-blue-500 w-[82%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Global Payments</h3>
+                    <p class="text-slate-600 mb-6">Hold and exchange 40+ currencies at the real interbank rate with no hidden fees.</p>
+                    <div class="transaction-row py-3 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-xs font-bold">EUR</div>
+                            <span class="text-sm font-semibold text-slate-700">Euro</span>
+                        </div>
+                        <span class="text-sm font-bold tabular-nums">€1,240.00</span>
+                    </div>
+                    <div class="transaction-row py-3 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center text-xs font-bold">GBP</div>
+                            <span class="text-sm font-semibold text-slate-700">British Pound</span>
+                        </div>
+                        <span class="text-sm font-bold tabular-nums">£850.20</span>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Wealth Tracking</h3>
+                    <p class="text-slate-600 mb-6">Connect your brokerage accounts and track your entire net worth in one dashboard.</p>
+                    <div class="flex justify-between items-end h-20 pt-4">
+                        <div class="chart-bar-container items-end w-full">
+                            <div class="chart-bar bg-purple-500 flex-1 h-[30%]"></div>
+                            <div class="chart-bar bg-purple-500 flex-1 h-[50%]"></div>
+                            <div class="chart-bar bg-purple-500 flex-1 h-[45%]"></div>
+                            <div class="chart-bar bg-purple-500 flex-1 h-[70%]"></div>
+                            <div class="chart-bar bg-purple-500 flex-1 h-[90%]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transaction Experience Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-site px-6">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-slate-900 mb-6 leading-tight">Every transaction, <br>completely transparent.</h2>
+                    <p class="text-slate-600 mb-8 leading-relaxed">
+                        Say goodbye to mysterious bank statements. Aura automatically categorizes every purchase, identifies recurring subscriptions, and warns you of price hikes.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center space-x-3">
+                            <div class="w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="font-medium text-slate-700">Real-time push notifications</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="font-medium text-slate-700">Subscription management</span>
+                        </li>
+                        <li class="flex items-center space-x-3">
+                            <div class="w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            </div>
+                            <span class="font-medium text-slate-700">Fraud detection powered by AI</span>
+                        </li>
+                    </ul>
+                    <div class="mt-10">
+                        <a href="#" class="text-blue-600 font-bold hover:underline">Learn more about our insights &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                            <span class="text-sm font-bold text-slate-700">Recent Activity</span>
+                            <span class="text-xs font-semibold text-blue-600 px-2 py-1 bg-blue-50 rounded">Live</span>
+                        </div>
+                        <div class="divide-y divide-slate-50">
+                            <!-- Row 1 -->
+                            <div class="transaction-row px-6 py-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg">A</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-900">Apple Store</p>
+                                        <p class="text-[11px] text-slate-500 font-medium">May 24 • Electronics</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-slate-900 tabular-nums">-$1,299.00</p>
+                                    <p class="text-[10px] text-emerald-600 font-bold">3% Cashback</p>
+                                </div>
+                            </div>
+                            <!-- Row 2 -->
+                            <div class="transaction-row px-6 py-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-black rounded-lg flex items-center justify-center text-white font-bold text-lg">U</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-900">Uber</p>
+                                        <p class="text-[11px] text-slate-500 font-medium">May 23 • Transport</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-slate-900 tabular-nums">-$24.50</p>
+                                </div>
+                            </div>
+                            <!-- Row 3 -->
+                            <div class="transaction-row px-6 py-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold text-lg">S</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-900">Stripe Payout</p>
+                                        <p class="text-[11px] text-slate-500 font-medium">May 22 • Income</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-emerald-600 tabular-nums">+$4,200.00</p>
+                                </div>
+                            </div>
+                            <!-- Row 4 -->
+                            <div class="transaction-row px-6 py-4 flex items-center justify-between">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-slate-200 rounded-lg flex items-center justify-center text-slate-900 font-bold text-lg">N</div>
+                                    <div>
+                                        <p class="text-sm font-bold text-slate-900">Netflix</p>
+                                        <p class="text-[11px] text-slate-500 font-medium">May 21 • Entertainment</p>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-bold text-slate-900 tabular-nums">-$15.99</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security & Trust -->
+    <section id="security" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-site px-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2">
+                    <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-3 py-1 mb-6">
+                        <span class="text-blue-400 text-lg">🔒</span>
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Bank-Level Security</span>
+                    </div>
+                    <h2 class="text-4xl font-bold mb-6">Your safety is our top priority.</h2>
+                    <p class="text-slate-400 text-lg mb-8 leading-relaxed">
+                        We use state-of-the-art encryption and security protocols to ensure your data and money are always protected. 
+                    </p>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <span class="badge-security">AES-256</span>
+                            <p class="mt-2 text-sm text-slate-400 font-medium">Encrypted data storage</p>
+                        </div>
+                        <div>
+                            <span class="badge-security">FDIC Insured</span>
+                            <p class="mt-2 text-sm text-slate-400 font-medium">Funds up to $250k</p>
+                        </div>
+                        <div>
+                            <span class="badge-security">SIPC Member</span>
+                            <p class="mt-2 text-sm text-slate-400 font-medium">Investment protection</p>
+                        </div>
+                        <div>
+                            <span class="badge-security">2FA Enabled</span>
+                            <p class="mt-2 text-sm text-slate-400 font-medium">Biometric security</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative">
+                        <div class="w-64 h-64 border-4 border-blue-500/20 rounded-full flex items-center justify-center animate-pulse">
+                            <div class="w-48 h-48 border-4 border-blue-500/40 rounded-full flex items-center justify-center">
+                                <div class="w-32 h-32 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl shadow-blue-500/50">
+                                    <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 4.925-3.375 9.102-8 10.334a11.954 11.954 0 01-8-10.334c0-.68.056-1.35.166-2.001zm8 10.334c3.818-1.077 6.5-4.707 6.5-8.333 0-.58-.04-1.15-.118-1.708A9.954 9.954 0 0110 3.194a9.954 9.954 0 01-7.382 2.1c-.078.558-.118 1.127-.118 1.708 0 3.626 2.682 7.256 6.5 8.333z" clip-rule="evenodd"></path></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="absolute -top-4 -right-4 glass-panel text-slate-900 px-4 py-2 rounded-lg font-bold text-xs">
+                            Verified Secure
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-24 bg-white">
+        <div class="max-w-site px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Choose your plan</h2>
+                <p class="text-slate-600">Free for individuals, scalable for families and businesses.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Plan 1 -->
+                <div class="pricing-card p-10 rounded-2xl bg-white">
+                    <h3 class="text-lg font-bold mb-2">Standard</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-bold tabular-nums">$0</span>
+                        <span class="text-slate-500 ml-2">/ month</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-600">
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Core budgeting tools</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Single bank connection</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Standard support</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-slate-200 font-bold text-slate-800 hover:bg-slate-50 transition-colors">Select Plan</button>
+                </div>
+
+                <!-- Plan 2 -->
+                <div class="pricing-card popular p-10 rounded-2xl bg-white shadow-xl shadow-blue-500/5">
+                    <span class="popular-tag">MOST POPULAR</span>
+                    <h3 class="text-lg font-bold mb-2">Premium</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-bold tabular-nums">$9</span>
+                        <span class="text-slate-500 ml-2">/ month</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-600">
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Unlimited bank connections</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>AI Spending Insights</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Custom category rules</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Priority 24/7 support</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20">Get Started</button>
+                </div>
+
+                <!-- Plan 3 -->
+                <div class="pricing-card p-10 rounded-2xl bg-white">
+                    <h3 class="text-lg font-bold mb-2">Elite</h3>
+                    <div class="flex items-baseline mb-6">
+                        <span class="text-4xl font-bold tabular-nums">$29</span>
+                        <span class="text-slate-500 ml-2">/ month</span>
+                    </div>
+                    <ul class="space-y-4 mb-10 text-sm text-slate-600">
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Everything in Premium</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Investment Portfolio Tools</span>
+                        </li>
+                        <li class="flex items-center space-x-2">
+                            <span class="text-blue-500">✓</span>
+                            <span>Concierge Tax Support</span>
+                        </li>
+                    </ul>
+                    <button class="w-full py-3 rounded-lg border border-slate-200 font-bold text-slate-800 hover:bg-slate-50 transition-colors">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-slate-50">
+        <div class="max-w-site px-6">
+            <h2 class="text-3xl font-bold text-center mb-16">Loved by financial professionals</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-slate-600 italic mb-6 leading-relaxed">
+                        "Aura has completely changed how I look at my business and personal finances. The speed of the UI and the clarity of the charts is better than any legacy banking app I've used."
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-slate-200"></div>
+                        <div>
+                            <p class="text-sm font-bold">Sarah Jenkins</p>
+                            <p class="text-xs text-slate-500">Founder, Velocity Media</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-slate-600 italic mb-6 leading-relaxed">
+                        "The multi-currency support is a game-changer for my international team. We save thousands on exchange fees every quarter. Highly recommended."
+                    </p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 rounded-full bg-slate-200"></div>
+                        <div>
+                            <p class="text-sm font-bold">David Chen</p>
+                            <p class="text-xs text-slate-500">CFO, Horizon Tech</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="py-24 bg-blue-600 text-white relative overflow-hidden">
+        <div class="max-w-site px-6 text-center relative z-10">
+            <h2 class="text-4xl font-bold mb-8">Take control of your financial future today.</h2>
+            <p class="text-blue-100 mb-10 max-w-xl mx-auto text-lg">Join 150,000+ users who are building wealth with Aura. It takes less than 2 minutes to open an account.</p>
+            <button class="bg-white text-blue-600 px-10 py-4 rounded-xl font-bold hover:bg-slate-100 transition-all shadow-xl">Get Started Now</button>
+        </div>
+        <!-- Decorative Circle -->
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500 rounded-full opacity-50"></div>
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-700 rounded-full opacity-50"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 bg-white border-t border-slate-100">
+        <div class="max-w-site px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-6 h-6 bg-blue-600 rounded flex items-center justify-center">
+                            <div class="w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+                        <span class="text-lg font-bold tracking-tight text-slate-900 uppercase">Aura</span>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">Empowering the next generation of investors with precision tools and bank-level security.</p>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-6 uppercase tracking-widest">Platform</h4>
+                    <ul class="space-y-4 text-sm text-slate-500 font-medium">
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Personal Banking</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Business Accounts</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Investments</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Credit Cards</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-6 uppercase tracking-widest">Company</h4>
+                    <ul class="space-y-4 text-sm text-slate-500 font-medium">
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-slate-900 mb-6 uppercase tracking-widest">Support</h4>
+                    <ul class="space-y-4 text-sm text-slate-500 font-medium">
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Contact Support</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">Security Overview</a></li>
+                        <li><a href="#" class="hover:text-blue-600 transition-colors">System Status</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+                <p>&copy; 2026 Aura Financial Technologies Inc. All Rights Reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <span>Twitter</span>
+                    <span>LinkedIn</span>
+                    <span>Instagram</span>
+                </div>
+            </div>
+            <div class="mt-8 text-[9px] text-slate-400 leading-relaxed text-center md:text-left">
+                Aura is a financial technology company, not a bank. Banking services provided by Evolve Bank & Trust; Members FDIC. The Aura Visa® Debit Card is issued by Evolve Bank & Trust pursuant to a license from Visa U.S.A. Inc. and may be used everywhere Visa debit cards are accepted.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

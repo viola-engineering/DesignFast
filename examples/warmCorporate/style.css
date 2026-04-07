@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+
+:root {
+  --bg-warm-white: #FEFDFB;
+  --bg-soft-gray: #F5F3EF;
+  --primary-teal: #0B8A8A;
+  --primary-teal-light: #10a3a3;
+  --accent-terracotta: #C2410C;
+  --accent-terracotta-light: #d84d14;
+  --text-heading: #1C1917;
+  --text-body: #57534E;
+  --border-warm: #E7E5E4;
+  --dot-color: rgba(11, 138, 138, 0.05);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-warm-white);
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-heading);
+  font-weight: 700;
+}
+
+.max-w-content {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Background Decorations */
+.dot-pattern {
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Cards */
+.hr-card {
+  background-color: white;
+  border: 1px solid var(--border-warm);
+  border-top: 4px solid var(--primary-teal);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hr-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.testimonial-card {
+  background-color: var(--bg-soft-gray);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-teal);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.1s active;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-teal-light);
+}
+
+.btn-accent {
+  background-color: var(--accent-terracotta);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-terracotta-light);
+}
+
+.btn-outline {
+  border: 2px solid var(--primary-teal);
+  color: var(--primary-teal);
+  padding: 10px 26px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-teal);
+  color: white;
+}
+
+/* Section Labels */
+.section-label {
+  display: inline-block;
+  background-color: rgba(11, 138, 138, 0.1);
+  color: var(--primary-teal);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+/* Hero Elements */
+.hero-image-container {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.hero-overlay-card {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--accent-terracotta);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .max-w-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Grayscale Logos */
+.logo-grayscale {
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+.logo-grayscale:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* Custom Navigation */
+.nav-link {
+  color: var(--text-body);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary-teal);
+}
+
+footer {
+  border-top: 1px solid var(--border-warm);
+  background-color: var(--bg-soft-gray);
+}

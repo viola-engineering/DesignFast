@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary: #0EA5E9;
+    --primary-dark: #0284C7;
+    --bg-main: #FAFBFC;
+    --text-heading: #111827;
+    --text-body: #4B5563;
+    --text-caption: #9CA3AF;
+    --border-color: #E5E7EB;
+    --font-main: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-main);
+    color: var(--text-body);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-heading);
+    line-height: 1.2;
+}
+
+/* Decorative background blobs */
+.mesh-blob {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, rgba(255, 255, 255, 0) 70%);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(60px);
+}
+
+.blob-1 {
+    top: -200px;
+    right: -100px;
+}
+
+.blob-2 {
+    bottom: 20%;
+    left: -200px;
+}
+
+/* Custom Grid & Layout */
+.container-custom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Card Hover Effects */
+.feature-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 1px solid var(--border-color);
+    background: #FFFFFF;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+.btn-secondary {
+    border: 1px solid var(--border-color);
+    background: white;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #F9FAFB;
+    border-color: #D1D5DB;
+}
+
+/* Typography tweaks */
+.heading-tight {
+    letter-spacing: -0.02em;
+}
+
+/* Sections */
+.section-spacing {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .section-spacing {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Pill badge */
+.pill-badge {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.dot-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Custom Footer Gradient */
+.footer-cta-band {
+    background: #111827;
+    color: white;
+}
+
+.footer-cta-band h2 {
+    color: white;
+}

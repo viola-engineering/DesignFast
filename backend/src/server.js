@@ -12,6 +12,7 @@ import iterateRoutes from './routes/iterate.js';
 import accountRoutes from './routes/account.js';
 import billingRoutes from './routes/billing.js';
 import uploadsRoutes from './routes/uploads.js';
+import examplesRoutes from './routes/examples.js';
 
 import { initQueues } from './queen-setup.js';
 import { startWorker, startIterateWorker } from './worker.js';
@@ -40,6 +41,7 @@ await app.register(iterateRoutes);
 await app.register(accountRoutes);
 await app.register(billingRoutes);
 await app.register(uploadsRoutes);
+await app.register(examplesRoutes);
 
 // Initialize queues and start worker
 try {

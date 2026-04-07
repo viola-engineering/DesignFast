@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo | Neumorphic Podcast Player</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="p-4 md:p-8">
+    <div class="neu-container">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+            <div class="flex items-center gap-3">
+                <div class="neu-button neu-icon-button accent-text">
+                    <i class="fas fa-wave-square fa-lg"></i>
+                </div>
+                <h1 class="text-2xl font-bold sculpted-text uppercase tracking-widest">Echo</h1>
+            </div>
+            
+            <nav class="flex gap-4">
+                <a href="#" class="nav-link active font-semibold">Discover</a>
+                <a href="#" class="nav-link font-semibold">Library</a>
+                <a href="#" class="nav-link font-semibold">Trending</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <button class="neu-button neu-icon-button">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <div class="neu-button neu-icon-button overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&h=80&fit=crop" alt="User Profile" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="mb-12">
+            <div class="relative max-w-2xl mx-auto">
+                <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 opacity-50"></i>
+                <input type="text" class="neu-input pl-14 h-14" placeholder="Search podcasts, episodes, or creators...">
+            </div>
+        </section>
+
+        <!-- Hero: Now Playing / Featured -->
+        <section class="mb-16">
+            <div class="neu-raised p-8 md:p-10 flex flex-col md:flex-row gap-10 items-center">
+                <div class="w-full md:w-2/5">
+                    <img src="https://images.unsplash.com/photo-1478737270239-2fccd27ee1f3?w=600&h=600&fit=crop" alt="Featured Podcast" class="card-img">
+                </div>
+                <div class="w-full md:w-3/5 space-y-6">
+                    <div class="flex items-center gap-2">
+                        <span class="neu-pressed px-4 py-1 text-xs font-bold uppercase accent-text">Featured Show</span>
+                    </div>
+                    <h2 class="text-4xl font-bold sculpted-text leading-tight">The Modern Stoic: Navigating Chaos</h2>
+                    <p class="text-lg opacity-80 leading-relaxed">Join Marcus Aurelius Junior as he explores ancient wisdom applied to the high-speed demands of the 21st-century digital landscape.</p>
+                    
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button class="neu-button bg-accent px-8">
+                            <i class="fas fa-play mr-2"></i> Play Latest
+                        </button>
+                        <button class="neu-button neu-icon-button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="neu-button neu-icon-button">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Shows Grid -->
+        <section class="mb-16">
+            <div class="flex justify-between items-end mb-8 px-2">
+                <div>
+                    <h3 class="text-xl font-bold sculpted-text">Popular Shows</h3>
+                    <p class="text-sm opacity-60">Top picks for you this week</p>
+                </div>
+                <button class="neu-button text-sm py-2 px-6">View All</button>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <!-- Show 1 -->
+                <div class="neu-raised p-4 space-y-4 group cursor-pointer transition-transform hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1557683316-973673baf926?w=300&h=300&fit=crop" alt="Show 1" class="card-img">
+                    <div class="px-1">
+                        <h4 class="font-bold truncate text-sm">Future Horizon</h4>
+                        <p class="text-xs opacity-60">Tech & Ethics</p>
+                    </div>
+                </div>
+                <!-- Show 2 -->
+                <div class="neu-raised p-4 space-y-4 group cursor-pointer transition-transform hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300&h=300&fit=crop" alt="Show 2" class="card-img">
+                    <div class="px-1">
+                        <h4 class="font-bold truncate text-sm">Deep House Bliss</h4>
+                        <p class="text-xs opacity-60">Music Mix</p>
+                    </div>
+                </div>
+                <!-- Show 3 -->
+                <div class="neu-raised p-4 space-y-4 group cursor-pointer transition-transform hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&h=300&fit=crop" alt="Show 3" class="card-img">
+                    <div class="px-1">
+                        <h4 class="font-bold truncate text-sm">Creative Spark</h4>
+                        <p class="text-xs opacity-60">Design & Art</p>
+                    </div>
+                </div>
+                <!-- Show 4 -->
+                <div class="neu-raised p-4 space-y-4 group cursor-pointer transition-transform hover:scale-105">
+                    <img src="https://images.unsplash.com/photo-1453733190371-0a9bedd82893?w=300&h=300&fit=crop" alt="Show 4" class="card-img">
+                    <div class="px-1">
+                        <h4 class="font-bold truncate text-sm">The Daily Mind</h4>
+                        <p class="text-xs opacity-60">Health & Wellness</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Episode Highlights -->
+        <section class="mb-24">
+            <div class="flex justify-between items-end mb-8 px-2">
+                <div>
+                    <h3 class="text-xl font-bold sculpted-text">Episode Highlights</h3>
+                    <p class="text-sm opacity-60">Don't miss these trending segments</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Episode 1 -->
+                <div class="neu-raised p-5 flex items-center gap-6 episode-card">
+                    <div class="w-16 h-16 neu-pressed overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=100&h=100&fit=crop" alt="Ep 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <h5 class="font-bold text-sm md:text-base">042: The Philosophy of UI Design</h5>
+                        <p class="text-xs md:text-sm opacity-60">Creative Spark • 45 min</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="neu-button neu-icon-button w-10 h-10">
+                            <i class="fas fa-heart text-xs"></i>
+                        </button>
+                        <button class="neu-button neu-icon-button w-10 h-10 accent-text">
+                            <i class="fas fa-play text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Episode 2 -->
+                <div class="neu-raised p-5 flex items-center gap-6 episode-card">
+                    <div class="w-16 h-16 neu-pressed overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=100&h=100&fit=crop" alt="Ep 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <h5 class="font-bold text-sm md:text-base">Why We Dream: Neuroscience Explored</h5>
+                        <p class="text-xs md:text-sm opacity-60">The Daily Mind • 52 min</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="neu-button neu-icon-button w-10 h-10">
+                            <i class="fas fa-heart text-xs"></i>
+                        </button>
+                        <button class="neu-button neu-icon-button w-10 h-10 accent-text">
+                            <i class="fas fa-play text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Episode 3 -->
+                <div class="neu-raised p-5 flex items-center gap-6 episode-card">
+                    <div class="w-16 h-16 neu-pressed overflow-hidden flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop" alt="Ep 3" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-grow">
+                        <h5 class="font-bold text-sm md:text-base">AI Ethics in the 2030s</h5>
+                        <p class="text-xs md:text-sm opacity-60">Future Horizon • 38 min</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="neu-button neu-icon-button w-10 h-10">
+                            <i class="fas fa-heart text-xs"></i>
+                        </button>
+                        <button class="neu-button neu-icon-button w-10 h-10 accent-text">
+                            <i class="fas fa-play text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Player Bar (Floating/Sticky) -->
+        <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[95%] max-w-[900px] z-50">
+            <div class="neu-raised p-4 md:px-8 md:py-4 flex flex-col md:flex-row items-center gap-4 md:gap-8">
+                <!-- Track Info -->
+                <div class="flex items-center gap-4 w-full md:w-1/4">
+                    <div class="w-12 h-12 neu-pressed overflow-hidden rounded-lg flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1478737270239-2fccd27ee1f3?w=100&h=100&fit=crop" alt="Playing" class="w-full h-full object-cover">
+                    </div>
+                    <div class="overflow-hidden">
+                        <h6 class="font-bold text-xs truncate">The Modern Stoic</h6>
+                        <p class="text-[10px] opacity-60 truncate">Navigating Chaos</p>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex flex-col items-center gap-2 w-full md:w-2/4">
+                    <div class="flex items-center gap-6">
+                        <button class="text-sm opacity-60 hover:opacity-100 transition-opacity"><i class="fas fa-random"></i></button>
+                        <button class="neu-button neu-icon-button w-10 h-10"><i class="fas fa-step-backward text-xs"></i></button>
+                        <button class="neu-button neu-icon-button w-12 h-12 accent-text"><i class="fas fa-pause"></i></button>
+                        <button class="neu-button neu-icon-button w-10 h-10"><i class="fas fa-step-forward text-xs"></i></button>
+                        <button class="text-sm opacity-60 hover:opacity-100 transition-opacity"><i class="fas fa-redo"></i></button>
+                    </div>
+                    <!-- Progress Bar -->
+                    <div class="flex items-center gap-3 w-full">
+                        <span class="text-[10px] opacity-60">12:45</span>
+                        <div class="progress-container flex-grow">
+                            <div class="progress-bar"></div>
+                            <div class="knob"></div>
+                        </div>
+                        <span class="text-[10px] opacity-60">42:10</span>
+                    </div>
+                </div>
+
+                <!-- Volume/Settings -->
+                <div class="hidden md:flex items-center justify-end gap-4 w-1/4">
+                    <i class="fas fa-volume-up text-xs opacity-60"></i>
+                    <div class="progress-container w-24 h-1.5">
+                        <div class="progress-bar w-[70%]"></div>
+                    </div>
+                    <button class="neu-button neu-icon-button w-10 h-10"><i class="fas fa-list text-xs"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="pb-32 pt-12 text-center">
+            <p class="text-sm opacity-40">&copy; 2026 Echo Audio. Sculpted with love.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON SYNDICATE // NEXT-GEN RPG SYSTEMS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-black text-white">
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+
+    <main class="hud-grid min-h-screen">
+        <!-- SYSTEM STATUS HEADER (Span full width) -->
+        <header class="col-span-12 neon-panel p-4 corner-accent border-cyan-400">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-6">
+                    <h1 class="text-4xl font-black glitch glow-text-cyan" data-text="NEON SYNDICATE">NEON SYNDICATE</h1>
+                    <div class="hidden md:block h-10 w-px bg-cyan-500/30"></div>
+                    <div class="hidden md:block">
+                        <p class="font-mono text-cyan-400">EST. 2024 // NEURAL PROTOCOL: ACTIVE</p>
+                        <p class="font-mono text-xs text-cyan-700">LATENCY: 12MS // NODES: 4/4</p>
+                    </div>
+                </div>
+                <nav class="mt-4 md:mt-0 flex space-x-8 font-mono text-sm">
+                    <a href="#" class="hover:text-cyan-400 transition-colors">PROJECTS</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors">INTEL</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors">ARCHIVE</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors">CONTACT</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- MAIN TERMINAL (Left Wide) -->
+        <section class="col-span-12 lg:col-span-8 neon-panel corner-accent overflow-hidden">
+            <div class="terminal-header font-mono">
+                [SYSTEM.LOG] - PROJECT_CYBERPUNK_RPG
+            </div>
+            <div class="p-8">
+                <div class="mb-6">
+                    <p class="font-mono text-green-400 mb-2">> INITIALIZING NEURAL LINK...</p>
+                    <p class="font-mono text-green-400 mb-2">> LOADING ASSETS: CORE_ENGINE_V4.2</p>
+                    <p class="font-mono text-green-400 mb-4">> LINK ESTABLISHED.</p>
+                </div>
+                
+                <h2 class="text-6xl font-bold mb-6 glow-text-cyan tracking-tighter">PROJECT: NULL_VOID</h2>
+                <p class="text-xl text-cyan-100 max-w-2xl mb-8 leading-relaxed">
+                    A high-octane action RPG set in the sprawling megacity of Neo-Golgotha. 
+                    Augment your consciousness, hack the mainframe, and survive the digital revolution.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="p-4 border border-cyan-500/20 bg-cyan-500/5">
+                        <h3 class="font-mono text-cyan-400 mb-2">NEURAL AUGMENTATION</h3>
+                        <p class="text-sm opacity-80">Over 150 unique cybernetic enhancements that alter your playstyle and perception of the city.</p>
+                    </div>
+                    <div class="p-4 border border-magenta-500/20 bg-magenta-500/5">
+                        <h3 class="font-mono text-magenta-400 mb-2">OMNI-HACKING</h3>
+                        <p class="text-sm opacity-80">Every object in the world is a node. Bridge the physical and digital with seamless hacking mechanics.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                    <button class="neon-btn">DOWNLOAD DEMO</button>
+                    <button class="neon-btn neon-btn-magenta">WATCH TRAILER</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATUS PANEL (Right Narrow) -->
+        <aside class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+            <div class="neon-panel neon-panel-magenta corner-accent flex-grow">
+                <div class="terminal-header terminal-header-magenta font-mono">
+                    [TARGET.INTEL]
+                </div>
+                <div class="p-6">
+                    <div class="mb-4 aspect-video bg-zinc-900 border border-magenta-500/30 relative flex items-center justify-center">
+                        <span class="font-mono text-magenta-500/50">NO_SIGNAL.EXE</span>
+                        <div class="absolute inset-0 bg-magenta-500/10 animate-pulse"></div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">THE SYNDICATE</h3>
+                    <p class="text-sm opacity-80 mb-4">
+                        We are an independent collective of architects, hackers, and storytellers building worlds that bite back. 
+                    </p>
+                    <ul class="space-y-2 font-mono text-xs">
+                        <li class="flex justify-between border-b border-magenta-500/20 pb-1">
+                            <span>LOCATION</span>
+                            <span class="text-magenta-400">ENCRYPTED</span>
+                        </li>
+                        <li class="flex justify-between border-b border-magenta-500/20 pb-1">
+                            <span>STAFF</span>
+                            <span class="text-magenta-400">12 HUMANS / 2 AI</span>
+                        </li>
+                        <li class="flex justify-between border-b border-magenta-500/20 pb-1">
+                            <span>UPTIME</span>
+                            <span class="text-magenta-400">99.9%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="neon-panel neon-panel-green corner-accent h-48">
+                <div class="p-4">
+                    <h3 class="font-mono text-green-400 mb-2">SYSTEM MONITOR</h3>
+                    <div class="space-y-3 mt-4">
+                        <div class="w-full h-1 bg-green-900">
+                            <div class="h-full bg-green-400 w-3/4 shadow-[0_0_10px_#39FF14]"></div>
+                        </div>
+                        <div class="w-full h-1 bg-green-900">
+                            <div class="h-full bg-green-400 w-1/2 shadow-[0_0_10px_#39FF14]"></div>
+                        </div>
+                        <div class="w-full h-1 bg-green-900">
+                            <div class="h-full bg-green-400 w-5/6 shadow-[0_0_10px_#39FF14]"></div>
+                        </div>
+                    </div>
+                    <p class="font-mono text-[10px] text-green-600 mt-6">
+                        CPU_LOAD: 78% // MEMORY: 12.4GB // ENCRYPTION: AES-256
+                    </p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- DATA FEED (Bottom Left) -->
+        <section class="col-span-12 lg:col-span-5 neon-panel corner-accent">
+            <div class="terminal-header font-mono">
+                [NEWS_FEED]
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="border-l-2 border-cyan-500 pl-4">
+                    <p class="text-xs font-mono text-cyan-500">2026.04.07 // 14:00</p>
+                    <h4 class="font-bold text-lg">ALPHA BUILD 0.9.1 DEPLOYED</h4>
+                    <p class="text-sm opacity-70">Major combat overhaul and volumetric fog implementation now live in the dev branch.</p>
+                </div>
+                <div class="border-l-2 border-magenta-500 pl-4">
+                    <p class="text-xs font-mono text-magenta-500">2026.03.15 // 09:30</p>
+                    <h4 class="font-bold text-lg">COMPOSER REVEAL: K0SM0S</h4>
+                    <p class="text-sm opacity-70">Legendary synthwave producer K0SM0S joins the project for the OST.</p>
+                </div>
+                <div class="border-l-2 border-cyan-500 pl-4">
+                    <p class="text-xs font-mono text-cyan-500">2026.02.28 // 23:59</p>
+                    <h4 class="font-bold text-lg">COMMUNITY CONTEST WINNERS</h4>
+                    <p class="text-sm opacity-70">Congratulations to the hackers who cracked the ARG site. Prizes sent.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULES / FEATURES (Bottom Right) -->
+        <section class="col-span-12 lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="neon-panel p-4 flex flex-col justify-between corner-accent border-pink-500">
+                <span class="font-mono text-[10px] text-pink-500">MODULE_01</span>
+                <h4 class="font-orbitron font-bold mt-2">DENSE CITYSCAPES</h4>
+                <p class="text-xs mt-2 opacity-60">Verticality exploration in every district.</p>
+            </div>
+            <div class="neon-panel p-4 flex flex-col justify-between corner-accent border-cyan-500">
+                <span class="font-mono text-[10px] text-cyan-500">MODULE_02</span>
+                <h4 class="font-orbitron font-bold mt-2">REAL-TIME HACKING</h4>
+                <p class="text-xs mt-2 opacity-60">No mini-games. Pure systemic interaction.</p>
+            </div>
+            <div class="neon-panel p-4 flex flex-col justify-between corner-accent border-green-500">
+                <span class="font-mono text-[10px] text-green-500">MODULE_03</span>
+                <h4 class="font-orbitron font-bold mt-2">NEURAL BRANCHES</h4>
+                <p class="text-xs mt-2 opacity-60">Choices that rewire the narrative flow.</p>
+            </div>
+            <div class="col-span-1 md:col-span-3 neon-panel p-6 corner-accent bg-cyan-950/20">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="font-orbitron text-xl">JOIN THE NETWORK</h3>
+                        <p class="font-mono text-xs text-cyan-400">SUBSCRIBE FOR EARLY ACCESS UPDATES</p>
+                    </div>
+                    <div class="flex-grow max-w-md ml-8">
+                        <div class="flex">
+                            <input type="text" placeholder="USER@PROTOCOL.COM" class="w-full bg-black border border-cyan-500/50 p-2 font-mono text-cyan-400 text-sm focus:outline-none focus:border-cyan-400">
+                            <button class="bg-cyan-500 text-black px-4 font-mono font-bold hover:bg-cyan-400 transition-colors">JOIN</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER / CONSOLE -->
+        <footer class="col-span-12 p-4 font-mono text-[10px] flex justify-between opacity-50 border-t border-cyan-500/20">
+            <div>&copy; 2026 NEON SYNDICATE // ALL RIGHTS RESERVED</div>
+            <div class="flex space-x-6">
+                <span>> TERMINAL: CONNECTED</span>
+                <span>> ENCRYPTION: ON</span>
+                <span>> USER: GUEST_0041</span>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Simple blinking cursor effect for terminal lines if we wanted to add more interactivity
+        // but keeping it simple as per instructions.
+    </script>
+</body>
+</html>

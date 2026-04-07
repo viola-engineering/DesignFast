@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julian Voss — Freelance Product Designer</title>
+    <meta name="description" content="Portfolio of Julian Voss, a freelance product designer specializing in minimalist interfaces and complex systems.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-40 nav-blur py-6">
+        <div class="max-w-[1000px] mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="font-serif text-2xl tracking-tight">Julian Voss</a>
+            
+            <!-- Desktop Nav -->
+            <div class="hidden md:flex gap-10 text-sm font-medium">
+                <a href="#work" class="nav-link uppercase tracking-widest text-[10px]">Work</a>
+                <a href="#about" class="nav-link uppercase tracking-widest text-[10px]">About</a>
+                <a href="#contact" class="nav-link uppercase tracking-widest text-[10px]">Contact</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 focus:outline-none">
+                <div class="w-6 h-[1px] bg-[#1A1A1A]"></div>
+                <div class="w-6 h-[1px] bg-[#1A1A1A]"></div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu px-10">
+        <button id="menu-close" class="absolute top-8 right-8 text-3xl">&times;</button>
+        <a href="#work" class="font-serif text-5xl mobile-link">Work</a>
+        <a href="#about" class="font-serif text-5xl mobile-link">About</a>
+        <a href="#contact" class="font-serif text-5xl mobile-link">Contact</a>
+    </div>
+
+    <main class="max-w-[1000px] mx-auto px-6">
+        
+        <!-- Hero Section -->
+        <section class="min-h-screen flex flex-col justify-center pt-20">
+            <h1 class="hero-title text-7xl md:text-9xl mb-8 reveal">
+                Independent<br>Product Designer
+            </h1>
+            <p class="text-xl md:text-2xl max-w-xl reveal text-black/60">
+                Helping technology companies build interfaces that feel as good as they look. Focused on clarity, precision, and human-centric systems.
+            </p>
+        </section>
+
+        <!-- Work Section -->
+        <section id="work" class="pb-32">
+            <span class="section-label reveal">Selected Work</span>
+            
+            <div class="flex flex-col gap-32">
+                <!-- Project 01 -->
+                <article class="project-card reveal">
+                    <div class="flex items-baseline justify-between mb-4">
+                        <span class="text-xs font-medium opacity-40">01</span>
+                        <span class="text-xs font-medium opacity-40">2023</span>
+                    </div>
+                    <a href="#" class="group block">
+                        <div class="project-image-container mb-8">
+                            <h3 class="text-3xl md:text-5xl italic font-serif text-black/20 group-hover:text-black/80 transition-colors">Lumin Fintech</h3>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                            <div>
+                                <h2 class="text-3xl mb-2">Lumin Dashboard</h2>
+                                <p class="text-black/50">Lead Product Design — End-to-end banking experience</p>
+                            </div>
+                            <span class="text-link text-sm font-medium">View project &rarr;</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Project 02 -->
+                <article class="project-card reveal">
+                    <div class="flex items-baseline justify-between mb-4">
+                        <span class="text-xs font-medium opacity-40">02</span>
+                        <span class="text-xs font-medium opacity-40">2023</span>
+                    </div>
+                    <a href="#" class="group block">
+                        <div class="project-image-container mb-8">
+                            <h3 class="text-3xl md:text-5xl italic font-serif text-black/20 group-hover:text-black/80 transition-colors">Ether Commerce</h3>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                            <div>
+                                <h2 class="text-3xl mb-2">Ether Concept</h2>
+                                <p class="text-black/50">Senior UI Designer — High-end retail experience</p>
+                            </div>
+                            <span class="text-link text-sm font-medium">View project &rarr;</span>
+                        </div>
+                    </a>
+                </article>
+
+                <!-- Project 03 -->
+                <article class="project-card reveal">
+                    <div class="flex items-baseline justify-between mb-4">
+                        <span class="text-xs font-medium opacity-40">03</span>
+                        <span class="text-xs font-medium opacity-40">2022</span>
+                    </div>
+                    <a href="#" class="group block">
+                        <div class="project-image-container mb-8">
+                            <h3 class="text-3xl md:text-5xl italic font-serif text-black/20 group-hover:text-black/80 transition-colors">Zenith OS</h3>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                            <div>
+                                <h2 class="text-3xl mb-2">Zenith Workspace</h2>
+                                <p class="text-black/50">Product Consultant — Productivity tool for creatives</p>
+                            </div>
+                            <span class="text-link text-sm font-medium">View project &rarr;</span>
+                        </div>
+                    </a>
+                </article>
+            </div>
+        </section>
+
+        <!-- Hairline Divider -->
+        <div class="hairline reveal"></div>
+
+        <!-- About Section -->
+        <section id="about" class="py-32 grid md:grid-cols-2 gap-20">
+            <div>
+                <span class="section-label reveal">About</span>
+                <h2 class="text-4xl md:text-5xl mb-8 reveal">Designing for the future of digital interaction.</h2>
+            </div>
+            <div class="reveal">
+                <p class="text-lg mb-8 leading-relaxed text-black/80">
+                    I am a freelance product designer based in Berlin, with over eight years of experience working with startups and established brands globally. My approach is rooted in minimalism and functional aesthetics.
+                </p>
+                <p class="text-lg mb-12 leading-relaxed text-black/80">
+                    I believe that the best design is often invisible — it’s the seamless flow that allows users to achieve their goals without friction. I specialize in design systems, interaction design, and complex web applications.
+                </p>
+                <div class="flex flex-wrap gap-x-12 gap-y-6">
+                    <div>
+                        <span class="block text-[10px] uppercase tracking-widest opacity-40 mb-2">Capabilities</span>
+                        <ul class="text-sm space-y-1">
+                            <li>Product Strategy</li>
+                            <li>UX/UI Design</li>
+                            <li>Design Systems</li>
+                            <li>Prototyping</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] uppercase tracking-widest opacity-40 mb-2">Selected Clients</span>
+                        <ul class="text-sm space-y-1">
+                            <li>Framework</li>
+                            <li>Linear</li>
+                            <li>Vercel</li>
+                            <li>Stripe</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-32 mb-20">
+            <span class="section-label reveal">Contact</span>
+            <div class="grid md:grid-cols-2 gap-20">
+                <div class="reveal">
+                    <h2 class="text-5xl md:text-7xl mb-8">Let's build<br>something.</h2>
+                    <p class="text-lg text-black/60 mb-8">Available for new projects starting June 2024.</p>
+                    <a href="mailto:hello@julianvoss.com" class="accent-link text-xl underline-offset-8 decoration-1 underline">hello@julianvoss.com</a>
+                </div>
+                <form class="reveal flex flex-col gap-8">
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest opacity-40">Name</label>
+                        <input type="text" class="input-field" placeholder="Jane Doe">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest opacity-40">Email</label>
+                        <input type="email" class="input-field" placeholder="jane@example.com">
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest opacity-40">Message</label>
+                        <textarea class="input-field" rows="4" placeholder="Tell me about your project"></textarea>
+                    </div>
+                    <div class="pt-4">
+                        <button type="submit" class="btn-outline text-sm uppercase tracking-widest">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-black/10">
+        <div class="max-w-[1000px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <p class="text-[10px] uppercase tracking-widest opacity-40">&copy; 2024 Julian Voss. All rights reserved.</p>
+            <div class="flex gap-8">
+                <a href="#" class="text-[10px] uppercase tracking-widest hover:text-blue-500 transition-colors">Twitter</a>
+                <a href="#" class="text-[10px] uppercase tracking-widest hover:text-blue-500 transition-colors">Read.cv</a>
+                <a href="#" class="text-[10px] uppercase tracking-widest hover:text-blue-500 transition-colors">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .project-card').forEach(el => observer.observe(el));
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
+            }
+        });
+
+        // Mobile Menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        const closeMenu = () => {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        menuClose.addEventListener('click', closeMenu);
+        mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+        // Form Submission (Prevents reload for demo)
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for your message. I will get back to you soon.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

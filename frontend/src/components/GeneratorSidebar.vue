@@ -42,6 +42,55 @@ const aiPick = ref(false)
 const selectedStyles = ref<Set<string>>(new Set(props.preselectedStyle ? [props.preselectedStyle] : []))
 const showAllStyles = ref(false)
 
+// Thumbnail hover preview
+const hoveredStyle = ref<string | null>(null)
+const hoverTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+const tooltipPosition = ref({ x: 0, y: 0 })
+const tooltipError = ref(false)
+
+const TOOLTIP_WIDTH = 320
+const TOOLTIP_HEIGHT = 200 // approximate based on 16:10 ratio
+
+function onStyleMouseEnter(styleKey: string, event: MouseEvent) {
+  if (hoverTimer.value) clearTimeout(hoverTimer.value)
+  tooltipError.value = false
+
+  hoverTimer.value = setTimeout(() => {
+    const rect = (event.target as HTMLElement).getBoundingClientRect()
+    const viewportWidth = window.innerWidth
+    const viewportHeight = window.innerHeight
+
+    // Position to the right by default, but flip to left if not enough space
+    let x = rect.right + 12
+    if (x + TOOLTIP_WIDTH > viewportWidth - 20) {
+      x = rect.left - TOOLTIP_WIDTH - 12
+    }
+
+    // Adjust vertical position to stay in viewport
+    let y = rect.top
+    if (y + TOOLTIP_HEIGHT > viewportHeight - 20) {
+      y = viewportHeight - TOOLTIP_HEIGHT - 20
+    }
+    if (y < 20) y = 20
+
+    tooltipPosition.value = { x, y }
+    hoveredStyle.value = styleKey
+  }, 200)
+}
+
+function onStyleMouseLeave() {
+  if (hoverTimer.value) {
+    clearTimeout(hoverTimer.value)
+    hoverTimer.value = null
+  }
+  hoveredStyle.value = null
+}
+
+function onTooltipImageError() {
+  tooltipError.value = true
+  hoveredStyle.value = null
+}
+
 const maxChars = 2000
 const charCount = computed(() => prompt.value.length)
 
@@ -448,11 +497,30 @@ defineExpose({ setExamplePrompt })
           class="gen-style-card"
           :class="{ selected: selectedStyles.has(style.key) && !aiPick }"
           @click="toggleStyle(style.key)"
+          @mouseenter="onStyleMouseEnter(style.key, $event)"
+          @mouseleave="onStyleMouseLeave"
         >
           <span class="gen-style-name">{{ style.name }}</span>
           <span class="gen-style-preview" :class="`sn-${style.key}`">{{ style.preview }}</span>
         </div>
       </div>
+
+      <!-- Thumbnail tooltip -->
+      <Teleport to="body">
+        <Transition name="tooltip">
+          <div
+            v-if="hoveredStyle && !tooltipError"
+            class="style-thumbnail-tooltip"
+            :style="{ left: tooltipPosition.x + 'px', top: tooltipPosition.y + 'px' }"
+          >
+            <img
+              :src="`/api/examples/${hoveredStyle}/thumbnail.png`"
+              :alt="hoveredStyle"
+              @error="onTooltipImageError"
+            />
+          </div>
+        </Transition>
+      </Teleport>
       <div class="style-link">
         <button class="btn-ghost" @click="showAllStyles = !showAllStyles">
           {{ showAllStyles ? 'Show fewer styles' : `Show all ${styleOptions.length} styles` }}
@@ -1084,5 +1152,37 @@ defineExpose({ setExamplePrompt })
   font-size: 0.65rem;
   color: var(--ink-light);
   margin: 0.2rem 0 0;
+}
+
+/* Thumbnail Tooltip */
+.style-thumbnail-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.style-thumbnail-tooltip img {
+  display: block;
+  width: 320px;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top left;
+}
+
+.tooltip-enter-active,
+.tooltip-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.tooltip-enter-from,
+.tooltip-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
 }
 </style>

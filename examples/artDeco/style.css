@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&family=Poiret+One&display=swap');
+
+:root {
+    --cream: #FAF3E0;
+    --gold: #D4AF37;
+    --dark-gold: #B8860B;
+    --black: #1A1A1A;
+    --emerald: #1B4332;
+    --white: #FFFFFF;
+}
+
+body {
+    background-color: var(--cream);
+    color: var(--black);
+    font-family: 'EB Garamond', serif;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .art-deco-font {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.sub-heading {
+    font-family: 'Poiret One', cursive;
+    letter-spacing: 0.15em;
+}
+
+/* Layout Symmetry */
+.main-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    border-left: 1px solid var(--gold);
+    border-right: 1px solid var(--gold);
+    padding: 0 40px;
+    background-color: var(--white);
+}
+
+/* Decorative Frames */
+.frame-corner {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--gold);
+}
+
+.frame-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+.frame-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+.frame-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+.frame-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+/* Sunburst Effect */
+.sunburst-bg {
+    background: conic-gradient(
+        from 0deg at 50% 50%,
+        var(--cream) 0deg,
+        var(--cream) 10deg,
+        var(--gold) 15deg,
+        var(--cream) 20deg,
+        var(--cream) 30deg,
+        var(--gold) 35deg,
+        var(--cream) 40deg
+    );
+    opacity: 0.1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+/* Ornamental Dividers */
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    height: 1px;
+    background-color: var(--gold);
+    flex-grow: 1;
+}
+
+.divider-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--gold);
+    transform: rotate(45deg);
+    margin: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.divider-icon::after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-color: var(--gold);
+}
+
+/* Stepped Borders */
+.stepped-border {
+    position: relative;
+    border: 1px solid var(--gold);
+    padding: 20px;
+}
+
+.stepped-border::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 1px solid var(--gold);
+    pointer-events: none;
+}
+
+/* Art Deco Buttons */
+.btn-deco {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid var(--gold);
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    font-family: 'Cinzel', serif;
+    position: relative;
+    transition: all 0.4s ease;
+    cursor: pointer;
+    background: transparent;
+}
+
+.btn-deco:hover {
+    background-color: var(--gold);
+    color: var(--white);
+    letter-spacing: 0.4em;
+}
+
+.btn-deco::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    bottom: 3px;
+    border: 1px solid var(--gold);
+    opacity: 0.5;
+}
+
+/* Hero Section Styles */
+.hero-title {
+    font-size: 4rem;
+    line-height: 1.1;
+    margin-bottom: 0.5em;
+    text-shadow: 2px 2px 0px rgba(212, 175, 55, 0.2);
+}
+
+@media (max-width: 768px) {
+    .hero-title { font-size: 2.5rem; }
+    .main-container { padding: 0 20px; }
+}
+
+/* Room Cards */
+.room-card {
+    transition: transform 0.5s ease;
+    background: var(--white);
+    border: 1px solid var(--gold);
+}
+
+.room-card:hover {
+    transform: translateY(-10px);
+}
+
+.room-image-frame {
+    position: relative;
+    padding: 10px;
+    border: 1px solid var(--gold);
+}
+
+/* Zigzag Pattern */
+.zigzag {
+    height: 20px;
+    background: linear-gradient(135deg, var(--gold) 25%, transparent 25%) -10px 0,
+                linear-gradient(225deg, var(--gold) 25%, transparent 25%) -10px 0,
+                linear-gradient(315deg, var(--gold) 25%, transparent 25%),
+                linear-gradient(45deg, var(--gold) 25%, transparent 25%);
+    background-size: 20px 20px;
+    opacity: 0.15;
+}
+
+/* Fade In Animations */
+.fade-in {
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Utility Classes */
+.tracking-extrawide { letter-spacing: 0.4em; }
+.border-gold { border-color: var(--gold); }
+.text-gold { color: var(--gold); }
+.bg-cream { background-color: var(--cream); }
+.bg-gold { background-color: var(--gold); }
+.bg-black { background-color: var(--black); }
+
+/* Navigation */
+.nav-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    position: relative;
+    padding: 5px 15px;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Form Styles */
+.deco-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gold);
+    padding: 10px 0;
+    width: 100%;
+    font-family: 'EB Garamond', serif;
+    color: var(--black);
+    outline: none;
+}
+
+.deco-input::placeholder {
+    color: rgba(26, 26, 26, 0.5);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+}
+
+/* Section specific */
+.section-padding {
+    padding: 80px 0;
+}
+
+.gold-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(26,26,26,0), rgba(26,26,26,0.7));
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE CELESTIAL | Art Deco Luxury Hotel Manhattan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-cream">
+
+    <div class="main-container min-h-screen shadow-2xl relative">
+        <div class="sunburst-bg"></div>
+        
+        <!-- Decorative Frame Corners -->
+        <div class="frame-corner frame-tl"></div>
+        <div class="frame-corner frame-tr"></div>
+        <div class="frame-corner frame-bl"></div>
+        <div class="frame-corner frame-br"></div>
+
+        <!-- Header -->
+        <header class="pt-16 pb-8 text-center border-b border-gold fade-in">
+            <div class="mb-4">
+                <span class="sub-heading text-sm text-gold block mb-2">ESTABLISHED 1924</span>
+                <h1 class="text-4xl md:text-5xl font-bold tracking-widest">The Celestial</h1>
+                <p class="sub-heading text-xs mt-2 text-gold">GRAND HOTEL & SUITES</p>
+            </div>
+            
+            <nav class="mt-8 flex flex-wrap justify-center gap-6 md:gap-12">
+                <a href="#" class="nav-link">The Rooms</a>
+                <a href="#" class="nav-link">Amenities</a>
+                <a href="#" class="nav-link">Dining</a>
+                <a href="#" class="nav-link">Reservation</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="section-padding text-center fade-in">
+            <div class="mb-12 stepped-border max-w-2xl mx-auto">
+                <div class="p-4 border border-gold">
+                    <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&q=80&w=1000" alt="Hotel Lobby" class="w-full grayscale brightness-50 contrast-125">
+                </div>
+            </div>
+            
+            <div class="max-w-xl mx-auto px-4">
+                <h2 class="hero-title">Elegance Refined</h2>
+                <div class="divider">
+                    <div class="divider-icon"></div>
+                </div>
+                <p class="text-xl italic leading-relaxed">
+                    A timeless sanctuary soaring above the Manhattan skyline. Experience the golden age of luxury where geometric precision meets unparalleled comfort.
+                </p>
+                <div class="mt-10">
+                    <button class="btn-deco">Discover Luxury</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Room Section -->
+        <section class="section-padding border-t border-gold">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl tracking-extrawide mb-4">The Chambers</h2>
+                <p class="sub-heading italic">Exquisite dwelling for the modern aristocrat</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Room 1 -->
+                <div class="room-card p-6 flex flex-col items-center text-center">
+                    <div class="room-image-frame mb-6">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=400" alt="Sapphire Suite" class="w-full h-64 object-cover grayscale">
+                    </div>
+                    <h3 class="text-xl mb-4">The Sapphire Suite</h3>
+                    <p class="text-sm mb-6 leading-relaxed">Deep velvet textures, brass accents, and a panoramic view of Central Park. Pure 1920s opulence.</p>
+                    <span class="text-gold tracking-widest text-xs mb-4">FROM $850 / NIGHT</span>
+                    <button class="btn-deco text-xs">View Details</button>
+                </div>
+
+                <!-- Room 2 -->
+                <div class="room-card p-6 flex flex-col items-center text-center">
+                    <div class="room-image-frame mb-6">
+                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&q=80&w=400" alt="Onyx Penthouse" class="w-full h-64 object-cover grayscale">
+                    </div>
+                    <h3 class="text-xl mb-4">The Onyx Penthouse</h3>
+                    <p class="text-sm mb-6 leading-relaxed">Black marble, gold leaf ceilings, and a private terrace overlooking the Chrysler Building.</p>
+                    <span class="text-gold tracking-widest text-xs mb-4">FROM $1,400 / NIGHT</span>
+                    <button class="btn-deco text-xs">View Details</button>
+                </div>
+
+                <!-- Room 3 -->
+                <div class="room-card p-6 flex flex-col items-center text-center">
+                    <div class="room-image-frame mb-6">
+                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&q=80&w=400" alt="Gilded Deluxe" class="w-full h-64 object-cover grayscale">
+                    </div>
+                    <h3 class="text-xl mb-4">The Gilded Deluxe</h3>
+                    <p class="text-sm mb-6 leading-relaxed">Symmetrical geometry and warm ambient lighting. A masterclass in Art Deco residential design.</p>
+                    <span class="text-gold tracking-widest text-xs mb-4">FROM $650 / NIGHT</span>
+                    <button class="btn-deco text-xs">View Details</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Amenities -->
+        <section class="section-padding border-t border-gold bg-black text-white relative overflow-hidden">
+            <div class="zigzag absolute top-0 left-0 w-full"></div>
+            
+            <div class="relative z-10 text-center mb-16">
+                <h2 class="text-3xl tracking-extrawide mb-4 text-gold">The Experience</h2>
+                <div class="divider max-w-xs mx-auto">
+                    <div class="divider-icon border-white"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto px-4">
+                <div class="flex items-start gap-6 border-l border-gold pl-6">
+                    <div>
+                        <h4 class="text-gold mb-2 tracking-widest">The Jazz Lounge</h4>
+                        <p class="text-sm italic opacity-80">Nightly performances by the city's finest quintets in a room lined with polished mahogany and brass.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6 border-l border-gold pl-6">
+                    <div>
+                        <h4 class="text-gold mb-2 tracking-widest">The Emerald Spa</h4>
+                        <p class="text-sm italic opacity-80">Revitalize within our geometric sanctuary. Steam rooms, cold plunges, and gold-infused treatments.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6 border-l border-gold pl-6">
+                    <div>
+                        <h4 class="text-gold mb-2 tracking-widest">Private Chauffeur</h4>
+                        <p class="text-sm italic opacity-80">Arrival in style with our fleet of vintage-inspired black and gold town cars at your disposal.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-6 border-l border-gold pl-6">
+                    <div>
+                        <h4 class="text-gold mb-2 tracking-widest">Rooftop Garden</h4>
+                        <p class="text-sm italic opacity-80">A symmetrical botanical escape high above the city, perfect for a sunset martini and quiet reflection.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="zigzag absolute bottom-0 left-0 w-full"></div>
+        </section>
+
+        <!-- Booking Section -->
+        <section class="section-padding text-center">
+            <div class="max-w-xl mx-auto px-4">
+                <h2 class="text-3xl tracking-extrawide mb-8">Secure Your Stay</h2>
+                <p class="sub-heading italic mb-12">The golden keys await your arrival</p>
+                
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                    <div class="col-span-1">
+                        <label class="block text-xs tracking-widest text-gold mb-1 uppercase">Check In</label>
+                        <input type="date" class="deco-input">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs tracking-widest text-gold mb-1 uppercase">Check Out</label>
+                        <input type="date" class="deco-input">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs tracking-widest text-gold mb-1 uppercase">Select Suite</label>
+                        <select class="deco-input bg-white">
+                            <option>The Sapphire Suite</option>
+                            <option>The Onyx Penthouse</option>
+                            <option>The Gilded Deluxe</option>
+                        </select>
+                    </div>
+                    <div class="col-span-2 text-center mt-8">
+                        <button type="submit" class="btn-deco w-full md:w-auto">Confirm Reservation</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="section-padding border-t border-gold text-center relative">
+            <div class="mb-8">
+                <h3 class="text-2xl tracking-widest mb-2">The Celestial</h3>
+                <p class="text-xs tracking-widest text-gold">42 WEST 57TH STREET, NEW YORK CITY</p>
+            </div>
+            
+            <div class="flex justify-center gap-8 mb-12">
+                <a href="#" class="text-xs tracking-widest hover:text-gold transition">Instagram</a>
+                <a href="#" class="text-xs tracking-widest hover:text-gold transition">Twitter</a>
+                <a href="#" class="text-xs tracking-widest hover:text-gold transition">Concierge</a>
+            </div>
+            
+            <div class="max-w-xs mx-auto">
+                <div class="divider">
+                    <div class="divider-icon scale-75"></div>
+                </div>
+            </div>
+            
+            <p class="text-[10px] tracking-widest opacity-50 mt-8">
+                &copy; 1924-2024 CELESTIAL HOSPITALITY GROUP. ALL RIGHTS RESERVED.
+            </p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
