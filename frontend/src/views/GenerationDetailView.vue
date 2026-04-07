@@ -256,7 +256,7 @@ async function confirmDelete() {
         <iframe
           :src="getPreviewUrl(previewJobId)"
           class="preview-iframe"
-          sandbox="allow-scripts"
+          sandbox="allow-scripts allow-same-origin"
         ></iframe>
       </div>
     </div>

@@ -83,6 +83,7 @@ export default async function (app) {
     }
 
     // Validate uploadIds
+    req.log.info({ uploadIds, uploadIdsLength: uploadIds?.length }, 'Generation: uploadIds received');
     if (!Array.isArray(uploadIds)) {
       return reply.code(400).send({ error: 'uploadIds must be an array' });
     }
@@ -211,6 +212,7 @@ export default async function (app) {
 
       // Link uploads to each job
       if (uploadIds.length > 0) {
+        req.log.info({ uploadIds, jobCount: jobs.length }, 'Generation: linking uploads to jobs');
         for (const job of jobs) {
           for (const uploadId of uploadIds) {
             // Look up purpose from the uploads table
@@ -218,6 +220,7 @@ export default async function (app) {
               `SELECT purpose FROM designfast.uploads WHERE id = $1`,
               [uploadId]
             );
+            req.log.info({ jobId: job.id, uploadId, purpose: upload?.purpose }, 'Generation: linking upload');
             await client.query(
               `INSERT INTO designfast.job_uploads (job_id, upload_id, purpose)
                VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`,
@@ -225,6 +228,9 @@ export default async function (app) {
             );
           }
         }
+        req.log.info('Generation: uploads linked successfully');
+      } else {
+        req.log.info('Generation: no uploadIds to link');
       }
 
       // Push jobs to Queen — if this fails, the transaction is rolled back

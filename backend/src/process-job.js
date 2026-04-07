@@ -101,16 +101,21 @@ export async function processJob(message) {
       }
     }
 
-    // ── Fetch uploads linked to this job ──────────────────────────────
+    // ── Fetch uploads linked to this job ���─────────────────────────────
+    // Read from job_uploads to ensure consistency with download endpoint
+    // (purpose is captured at link-time, not read from uploads table at run-time)
     const referenceImages = []; // ImageInput[] for LLM vision
     const assetMeta = [];       // metadata for prompt builder
 
-    if (uploadIds.length > 0) {
-      const { rows: uploads } = await query(
-        `SELECT id, filename, content_type, size_bytes, width, height, data, purpose
-         FROM designfast.uploads WHERE id = ANY($1)`,
-        [uploadIds]
-      );
+    const { rows: uploads } = await query(
+      `SELECT u.id, u.filename, u.content_type, u.size_bytes, u.width, u.height, u.data, ju.purpose
+       FROM designfast.job_uploads ju
+       JOIN designfast.uploads u ON u.id = ju.upload_id
+       WHERE ju.job_id = $1`,
+      [jobId]
+    );
+
+    if (uploads.length > 0) {
 
       for (const u of uploads) {
         if (u.purpose === 'reference') {

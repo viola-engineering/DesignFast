@@ -53,7 +53,10 @@ export default async function (app) {
     }
 
     const { rows } = await query(
-      `SELECT id, filename, size_bytes, created_at FROM designfast.job_files WHERE job_id = $1 ORDER BY filename`,
+      `SELECT DISTINCT ON (filename) id, filename, size_bytes, created_at 
+       FROM designfast.job_files 
+       WHERE job_id = $1 
+       ORDER BY filename, revision DESC`,
       [req.params.id]
     );
 
@@ -131,11 +134,35 @@ export default async function (app) {
     }
 
     const { rows: files } = await query(
-      `SELECT filename, content FROM designfast.job_files WHERE job_id = $1`,
+      `SELECT DISTINCT ON (filename) filename, content 
+       FROM designfast.job_files 
+       WHERE job_id = $1 
+       ORDER BY filename, revision DESC`,
       [req.params.id]
     );
 
-    if (files.length === 0) {
+    // Debug: check ALL job_uploads for this job
+    const { rows: allJobUploads } = await query(
+      `SELECT ju.upload_id, ju.purpose, u.filename
+       FROM designfast.job_uploads ju
+       JOIN designfast.uploads u ON u.id = ju.upload_id
+       WHERE ju.job_id = $1`,
+      [req.params.id]
+    );
+    req.log.info({ jobId: req.params.id, allJobUploads }, 'Download: all job_uploads for this job');
+
+    const { rows: assets } = await query(
+      `SELECT u.filename, u.data
+       FROM designfast.job_uploads ju
+       JOIN designfast.uploads u ON u.id = ju.upload_id
+       WHERE ju.job_id = $1 AND ju.purpose = 'asset'`,
+      [req.params.id]
+    );
+
+    // Debug: log what we found
+    req.log.info({ jobId: req.params.id, fileCount: files.length, assetCount: assets.length, assetFilenames: assets.map(a => a.filename) }, 'Download: files and assets found');
+
+    if (files.length === 0 && assets.length === 0) {
       return reply.code(404).send({ error: 'No files found' });
     }
 
@@ -151,6 +178,11 @@ export default async function (app) {
 
     for (const file of files) {
       archive.append(file.content, { name: file.filename });
+    }
+
+    for (const asset of assets) {
+      // Put assets in the assets/ folder inside the zip
+      archive.append(asset.data, { name: `assets/${asset.filename}` });
     }
 
     await archive.finalize();
