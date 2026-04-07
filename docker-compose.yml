@@ -35,6 +35,7 @@ services:
     restart: unless-stopped
 
   api:
+    container_name: api
     build:
       context: .
       dockerfile: Dockerfile
@@ -111,6 +112,8 @@ services:
     environment:
       TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN}
     depends_on:
+      - api
+    links:
       - api
     networks:
       - internal
