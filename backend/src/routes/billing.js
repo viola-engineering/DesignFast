@@ -2,8 +2,9 @@ import Stripe from 'stripe';
 import { query } from '../db.js';
 import { authMiddleware } from '../auth.js';
 
-// Credit packages available for purchase (min €10 to cover Stripe fees)
+// Credit packages available for purchase
 const CREDIT_PACKAGES = {
+  '50': { credits: 50, priceEur: 500 },     // €5
   '100': { credits: 100, priceEur: 1000 },  // €10
   '250': { credits: 250, priceEur: 2200 },  // €22
   '500': { credits: 500, priceEur: 4000 }   // €40

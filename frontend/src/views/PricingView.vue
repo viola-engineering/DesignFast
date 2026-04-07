@@ -27,7 +27,7 @@ const tiers = [
   },
   {
     name: 'Pro',
-    price: 'from \u20AC10',
+    price: 'from \u20AC5',
     period: '',
     description: 'Buy credits, use them anytime. Full access to Claude and Gemini. No subscription.',
     features: [
@@ -73,7 +73,7 @@ const faqs = [
   },
   {
     question: 'What credit packages are available?',
-    answer: '100 credits for \u20AC10, 250 credits for \u20AC22, or 500 credits for \u20AC40. Buy what you need, top up when you want. No subscription, no recurring charges.'
+    answer: '50 credits for \u20AC5, 100 credits for \u20AC10, 250 credits for \u20AC22, or 500 credits for \u20AC40. Buy what you need, top up when you want. No subscription, no recurring charges.'
   },
   {
     question: 'Can I use my own API keys?',

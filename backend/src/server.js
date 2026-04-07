@@ -36,14 +36,21 @@ await app.register(multipart, {
 });
 
 // Add raw body support for Stripe webhooks
-app.addContentTypeParser('application/json', { parseAs: 'buffer' }, (req, body, done) => {
+app.addContentTypeParser('application/json', { parseAs: 'buffer' }, function (req, body, done) {
+  // Store raw body on the raw request for later access
+  req.rawBody = body;
   try {
     const json = JSON.parse(body.toString());
-    // Attach raw body for webhook signature verification
-    req.rawBody = body;
     done(null, json);
   } catch (err) {
     done(err, undefined);
+  }
+});
+
+// Hook to copy rawBody from raw request to Fastify request
+app.addHook('preHandler', async (request) => {
+  if (request.raw.rawBody) {
+    request.rawBody = request.raw.rawBody;
   }
 });
 

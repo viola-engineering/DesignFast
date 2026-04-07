@@ -14,8 +14,9 @@ const toastStore = useToastStore()
 
 const user = computed(() => authStore.user)
 
-// Credit packages (min €10 to cover Stripe fees)
+// Credit packages
 const creditPackages = [
+  { id: '50', credits: 50, price: 5 },
   { id: '100', credits: 100, price: 10 },
   { id: '250', credits: 250, price: 22 },
   { id: '500', credits: 500, price: 40 }
