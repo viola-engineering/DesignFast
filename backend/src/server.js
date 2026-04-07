@@ -57,8 +57,13 @@ try {
 if (MODE !== 'api') {
   startWorker();
   startIterateWorker();
-  startEventConsumer();
   app.log.info('Workers started');
+}
+
+// Start event consumer in API (or dev mode) — NOT in workers
+// Each API instance needs its own consumer group for fan-out
+if (MODE !== 'worker') {
+  startEventConsumer();
 }
 
 // Start API server if MODE is 'api' or undefined (dev mode)
