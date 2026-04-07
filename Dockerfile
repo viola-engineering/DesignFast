@@ -9,10 +9,11 @@ RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm install --omit=dev
 
-# Copy backend source
+# Copy backend source and examples
 COPY backend/ ./backend/
+COPY examples/ ./examples/
 
 FROM node:20-alpine
 
@@ -21,6 +22,7 @@ WORKDIR /app
 # Copy built node_modules and source
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/backend ./backend
+COPY --from=builder /app/examples ./examples
 COPY --from=builder /app/package.json ./
 
 ENV NODE_ENV=production
