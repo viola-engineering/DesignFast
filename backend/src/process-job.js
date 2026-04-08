@@ -16,6 +16,67 @@ import queen from './queen-client.js';
 const MAX_TURNS = 50;
 
 /**
+ * Error types that are fatal and should not be retried.
+ * These indicate configuration/billing issues, not transient failures.
+ */
+const FATAL_ERROR_TYPES = [
+  'invalid_request_error',  // Bad request, insufficient credits, invalid params
+  'authentication_error',   // Invalid API key
+  'permission_error',       // No permission to access resource
+  'not_found_error',        // Model or resource not found
+];
+
+/**
+ * Generic user-facing error message.
+ * We don't expose internal API details to users.
+ */
+const USER_ERROR_MESSAGE = 'An internal error occurred. Please try again later.';
+
+/**
+ * Parse an error message to extract the API error type.
+ * Message format: "400 {"type":"error","error":{"type":"invalid_request_error",...}}"
+ *
+ * @param {string} message - The error message
+ * @returns {{ httpStatus: number|null, errorType: string|null, isFatal: boolean, userMessage: string }}
+ */
+function parseApiError(message) {
+  const result = {
+    httpStatus: null,
+    errorType: null,
+    isFatal: false,
+    userMessage: USER_ERROR_MESSAGE,
+  };
+
+  if (!message || typeof message !== 'string') {
+    return result;
+  }
+
+  // Try to extract HTTP status and JSON body
+  const match = message.match(/^(\d{3})\s*(\{.+\})$/s);
+  if (match) {
+    result.httpStatus = parseInt(match[1], 10);
+    try {
+      const body = JSON.parse(match[2]);
+      result.errorType = body?.error?.type || body?.type || null;
+    } catch {
+      // JSON parse failed, not a structured API error
+    }
+  }
+
+  // Check if this is a fatal error
+  if (result.errorType && FATAL_ERROR_TYPES.includes(result.errorType)) {
+    result.isFatal = true;
+  }
+
+  // Also treat 401/403 as fatal regardless of body
+  if (result.httpStatus === 401 || result.httpStatus === 403) {
+    result.isFatal = true;
+  }
+
+  return result;
+}
+
+/**
  * Resolve the API key for a given user and provider.
  * First checks for a BYOK key in the DB, then falls back to env vars.
  *
@@ -177,6 +238,9 @@ export async function processJob(message) {
     let totalTokensOut = 0;
     let totalCostUsd = 0;
 
+    // Track fatal errors that should fail the job
+    let fatalError = null;
+
     // Stream events to Queen for SSE
     agent.on('event', (event) => {
       switch (event.type) {
@@ -194,8 +258,26 @@ export async function processJob(message) {
           totalTokensOut += event.output_tokens || 0;
           totalCostUsd += event.cost_usd || 0;
           break;
-        case 'error':
-          pushEvent(jobId, { type: 'error', message: event.message });
+        case 'error': {
+          const parsed = parseApiError(event.message);
+          pushEvent(jobId, {
+            type: 'error',
+            message: parsed.userMessage,  // User-friendly message
+            rawMessage: event.message,    // Full raw error for debugging
+            errorType: parsed.errorType,
+            isFatal: parsed.isFatal,
+          });
+          // Store fatal error to throw after agent.run() completes
+          if (parsed.isFatal && !fatalError) {
+            fatalError = parsed.userMessage;
+          }
+          break;
+        }
+        case 'done':
+          // If agent stopped due to error, check if we should fail the job
+          if (event.stop_reason === 'error' && fatalError) {
+            // Will be handled after agent.run() returns
+          }
           break;
       }
     });
@@ -204,6 +286,11 @@ export async function processJob(message) {
     // NOTE: AgentLoop.run() expects ImageInput[] directly as the 2nd arg,
     // NOT wrapped in { images }. The .d.ts is misleading.
     await agent.run(fullPrompt, referenceImages.length > 0 ? referenceImages : undefined);
+
+    // If a fatal error occurred during generation, fail the job
+    if (fatalError) {
+      throw new Error(fatalError);
+    }
 
     // Read generated files from temp dir and store in Postgres
     const generatedFiles = readdirSync(tempDir).filter(f =>
