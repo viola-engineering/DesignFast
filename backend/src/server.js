@@ -16,6 +16,7 @@ function getClientIp(req) {
 }
 
 import authRoutes from './routes/auth.js';
+import oauthRoutes from './routes/oauth.js';
 import generationsRoutes from './routes/generations.js';
 import jobsRoutes from './routes/jobs.js';
 import previewRoutes from './routes/preview.js';
@@ -86,6 +87,7 @@ app.addHook('preHandler', async (request) => {
 
 // Register route plugins — routes define their own full paths
 await app.register(authRoutes);
+await app.register(oauthRoutes);
 await app.register(generationsRoutes);
 await app.register(jobsRoutes);
 await app.register(previewRoutes);

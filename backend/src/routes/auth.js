@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { query } from '../db.js';
 import { signToken, authMiddleware } from '../auth.js';
-import { formatUser } from '../format-user.js';
+import { formatUser, formatUserWithOAuth } from '../format-user.js';
 import {
   isEmailVerificationEnabled,
   generateVerificationCode,
@@ -105,6 +105,12 @@ export default async function (app) {
     }
 
     const user = rows[0];
+
+    // OAuth-only users don't have a password
+    if (!user.password_hash) {
+      return reply.code(401).send({ error: 'This account uses social login. Please sign in with Google or GitHub.' });
+    }
+
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
       return reply.code(401).send({ error: 'Invalid email or password' });
@@ -119,7 +125,7 @@ export default async function (app) {
       maxAge: 7 * 24 * 60 * 60,
     });
 
-    return reply.code(200).send({ user: formatUser(user) });
+    return reply.code(200).send({ user: await formatUserWithOAuth(user) });
   });
 
   // POST /api/auth/logout
@@ -139,7 +145,7 @@ export default async function (app) {
       return reply.code(401).send({ error: 'Not authenticated' });
     }
 
-    return { user: formatUser(rows[0]) };
+    return { user: await formatUserWithOAuth(rows[0]) };
   });
 
   // POST /api/auth/verify-email
@@ -188,7 +194,7 @@ export default async function (app) {
       [req.userId]
     );
 
-    return { user: formatUser(updatedRows[0]) };
+    return { user: await formatUserWithOAuth(updatedRows[0]) };
   });
 
   // POST /api/auth/resend-verification

@@ -218,6 +218,27 @@ DO $$ BEGIN
   ALTER TABLE designfast.users ADD COLUMN email_verification_expires timestamptz;
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
+
+-- OAuth support: make password_hash nullable for OAuth-only users
+ALTER TABLE designfast.users ALTER COLUMN password_hash DROP NOT NULL;
+
+-- OAuth identities table - links OAuth providers to users (many-to-one)
+CREATE TABLE IF NOT EXISTS designfast.oauth_identities (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL REFERENCES designfast.users ON DELETE CASCADE,
+  provider text NOT NULL,
+  provider_user_id text NOT NULL,
+  provider_email text,
+  access_token text,
+  refresh_token text,
+  token_expires_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now(),
+  UNIQUE(provider, provider_user_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_oauth_identities_user_id ON designfast.oauth_identities(user_id);
+CREATE INDEX IF NOT EXISTS idx_oauth_identities_provider_email ON designfast.oauth_identities(provider, provider_email);
 `;
 
 async function migrate() {

@@ -1,7 +1,7 @@
 import { query } from '../db.js';
 import { authMiddleware } from '../auth.js';
 import { encrypt } from '../encryption.js';
-import { formatUser } from '../format-user.js';
+import { formatUserWithOAuth } from '../format-user.js';
 
 const VALID_PROVIDERS = ['anthropic', 'google'];
 
@@ -14,7 +14,7 @@ export default async function (app) {
       `SELECT * FROM designfast.users WHERE id = $1`,
       [req.userId]
     );
-    return { user: formatUser(rows[0]) };
+    return { user: await formatUserWithOAuth(rows[0]) };
   });
 
   // PATCH /api/account
@@ -24,7 +24,7 @@ export default async function (app) {
       `UPDATE designfast.users SET name = COALESCE($2, name) WHERE id = $1 RETURNING *`,
       [req.userId, name]
     );
-    return { user: formatUser(rows[0]) };
+    return { user: await formatUserWithOAuth(rows[0]) };
   });
 
   // POST /api/account/api-keys
