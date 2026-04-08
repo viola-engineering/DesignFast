@@ -10,6 +10,12 @@ import queen from '../queen-client.js';
 import bus from '../event-bus.js';
 import { getSafeOrigin } from '../cors.js';
 
+// Rate limits for iterate endpoints (LLM-consuming operations)
+const ITERATE_RATE_LIMITS = {
+  start: { max: 10, timeWindow: '1 minute' },
+  send: { max: 20, timeWindow: '1 minute' },
+};
+
 export default async function (app) {
   app.addHook('onRequest', authMiddleware);
 
@@ -21,7 +27,9 @@ export default async function (app) {
   // The heavy work (agent init + first message) is pushed to the
   // designfast-iterate Queen queue and processed by the iterate worker.
   // Progress is streamed via GET /api/iterate/:sessionId/events (SSE).
-  app.post('/api/iterate/:jobId/start', async (req, reply) => {
+  app.post('/api/iterate/:jobId/start', {
+    config: { rateLimit: ITERATE_RATE_LIMITS.start }
+  }, async (req, reply) => {
     const { jobId } = req.params;
     if (requireUUID(jobId, reply)) return;
 
@@ -148,7 +156,9 @@ export default async function (app) {
   //
   // Send a refinement message to an active session.
   // The work is pushed to the Queen queue. Progress via SSE.
-  app.post('/api/iterate/:sessionId/send', async (req, reply) => {
+  app.post('/api/iterate/:sessionId/send', {
+    config: { rateLimit: ITERATE_RATE_LIMITS.send }
+  }, async (req, reply) => {
     const { sessionId } = req.params;
     if (requireUUID(sessionId, reply)) return;
 

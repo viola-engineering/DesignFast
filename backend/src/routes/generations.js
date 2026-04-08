@@ -12,6 +12,9 @@ const VALID_MODES = ['landing', 'webapp'];
 const VALID_THEME_MODES = ['explicit', 'auto', 'synth', 'freestyle'];
 const VALID_MODEL_KEYS = Object.keys(MODEL_MAP);
 
+// Rate limit for generation creation (prevents rapid-fire LLM abuse)
+const GENERATION_RATE_LIMIT = { max: 10, timeWindow: '1 minute' };
+
 /**
  * Resolve API key for a provider — BYOK first, then env fallback.
  */
@@ -37,7 +40,9 @@ export default async function (app) {
   app.addHook('onRequest', authMiddleware);
 
   // POST /api/generations
-  app.post('/api/generations', async (req, reply) => {
+  app.post('/api/generations', {
+    config: { rateLimit: GENERATION_RATE_LIMIT }
+  }, async (req, reply) => {
     const {
       prompt,
       mode = 'landing',

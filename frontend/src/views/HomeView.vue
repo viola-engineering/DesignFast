@@ -4,7 +4,7 @@ import ScrollReveal from '@/components/ScrollReveal.vue'
 import TickerBand from '@/components/TickerBand.vue'
 
 const tickerItems = [
-  '30 curated design styles',
+  '48 curated design styles',
   'Claude & Gemini support',
   'Multi-page webapp mode',
   'Instant generation',
@@ -49,7 +49,7 @@ const sampleStyles = [
           <RouterLink to="/generate" class="btn-primary">
             Generate something <span class="arrow">-></span>
           </RouterLink>
-          <RouterLink to="/styles" class="btn-ghost">See 30 styles</RouterLink>
+          <RouterLink to="/styles" class="btn-ghost">See 48 styles</RouterLink>
         </div>
         <p class="hero-opensource">
           <a href="https://github.com/viola-engineering/designfast" target="_blank" rel="noopener">
@@ -92,6 +92,124 @@ const sampleStyles = [
       </ScrollReveal>
     </section>
 
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+      <ScrollReveal>
+        <div class="hiw-header">
+          <h2 class="hiw-title">
+            How it<br />
+            <em>works.</em>
+          </h2>
+          <p class="hiw-tagline">
+            Three steps.<br />
+            No design experience needed.<br />
+            No subscriptions to wrestling with.
+          </p>
+        </div>
+      </ScrollReveal>
+
+      <div class="hiw-steps">
+        <ScrollReveal>
+          <div class="hiw-step">
+            <span class="step-number">01</span>
+            <h3 class="step-title">Describe it.</h3>
+            <p class="step-desc">"A landing page for my CLI tool. Technical but not cold. Dark theme, monospace type, clean layout." Plain English. Specific or vague — DesignFast figures it out.</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal :delay="100">
+          <div class="hiw-step">
+            <span class="step-number">02</span>
+            <h3 class="step-title">Choose a style.</h3>
+            <p class="step-desc">Pick from 48 curated styles, or let AI choose based on your description. Minimalist, editorial, brutalist, luxe — there's a design vocabulary for what you're building.</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal :delay="200">
+          <div class="hiw-step">
+            <span class="step-number">03</span>
+            <h3 class="step-title">Ship it.</h3>
+            <p class="step-desc">Get production-quality HTML, CSS, and JS in seconds. Download it. Iterate on it. Drop it into your project or build on top of it with your own tools.</p>
+          </div>
+        </ScrollReveal>
+      </div>
+    </section>
+
+    <!-- Alternative to Suffering Section -->
+    <section class="suffering-alt">
+      <ScrollReveal>
+        <p class="suffering-eyebrow">The alternative to suffering</p>
+        <h2 class="suffering-headline">
+          Production code.<br />
+          <em>Not a mockup.</em>
+        </h2>
+        <p class="suffering-body">
+          Other tools give you pretty screenshots. DesignFast gives you clean, semantic HTML — ready to open in a browser, customize, and deploy. You own every line.
+        </p>
+        <RouterLink to="/generate" class="btn-suffering">
+          Try it free <span>→</span>
+        </RouterLink>
+      </ScrollReveal>
+    </section>
+
+    <!-- Everything You Need Section -->
+    <section class="features">
+      <ScrollReveal>
+        <div class="features-header">
+          <h2 class="features-title">
+            Everything<br />
+            you<br />
+            <em>actually need.</em>
+          </h2>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal :delay="100">
+        <div class="features-list">
+          <div class="feature-item">
+            <span class="feature-number">01</span>
+            <div class="feature-content">
+              <h3 class="feature-name">Instant generation</h3>
+              <p class="feature-desc">Claude and Gemini models, your choice. Results in seconds, not minutes. Multiple creative versions per prompt so you can pick the direction that fits.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-number">02</span>
+            <div class="feature-content">
+              <h3 class="feature-name">48 style presets</h3>
+              <p class="feature-desc">Hand-curated aesthetics that span the full range — from razor-clean minimalism to opinionated brutalism. Each style has a distinct layout logic, not just a different color scheme.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-number">03</span>
+            <div class="feature-content">
+              <h3 class="feature-name">AI theme selection</h3>
+              <p class="feature-desc">Describe your project and let DesignFast recommend the right style. The AI reads intent — a security tool shouldn't look like a recipe blog.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-number">04</span>
+            <div class="feature-content">
+              <h3 class="feature-name">Multi-page webapp mode</h3>
+              <p class="feature-desc">Generate full webapps with multiple linked pages, consistent navigation, and shared design systems — not just single hero screens.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-number">05</span>
+            <div class="feature-content">
+              <h3 class="feature-name">Iterate and refine</h3>
+              <p class="feature-desc">"Make the headline bigger." "Try a dark version." "Add a pricing section." Describe changes in plain language and get updated code immediately.</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="feature-number">06</span>
+            <div class="feature-content">
+              <h3 class="feature-name">Download and own it</h3>
+              <p class="feature-desc">No lock-in. No proprietary editor. Download clean files and build with whatever tools you use — VS Code, your own deploy pipeline, or raw git. It's your code.</p>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+    </section>
+
     <!-- Style Preview Section -->
     <section class="spectrum">
       <ScrollReveal>
@@ -103,7 +221,7 @@ const sampleStyles = [
             </h2>
           </div>
           <div class="spectrum-count">
-            30
+            48
             <span>Styles</span>
           </div>
         </div>
@@ -124,7 +242,7 @@ const sampleStyles = [
 
       <ScrollReveal>
         <div class="spectrum-cta">
-          <RouterLink to="/styles" class="btn-ghost">View all 30 styles</RouterLink>
+          <RouterLink to="/styles" class="btn-ghost">View all 48 styles</RouterLink>
         </div>
       </ScrollReveal>
     </section>
@@ -319,9 +437,202 @@ const sampleStyles = [
   font-weight: 700;
 }
 
+/* How It Works */
+.how-it-works {
+  padding: var(--sp-section) var(--sp-page);
+  background-color: var(--white);
+}
+
+.hiw-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4rem;
+}
+
+.hiw-title {
+  font-family: var(--ff-display);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.hiw-title em {
+  font-style: italic;
+}
+
+.hiw-tagline {
+  font-size: var(--sz-body);
+  color: var(--ink-light);
+  text-align: right;
+  line-height: 1.6;
+}
+
+.hiw-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+}
+
+.hiw-step {
+  padding: 3rem 2rem;
+  border-right: 1px solid var(--rule);
+}
+
+.hiw-step:last-child {
+  border-right: none;
+}
+
+.step-number {
+  font-family: var(--ff-display);
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: rgba(0, 0, 0, 0.06);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-family: var(--ff-display);
+  font-size: var(--sz-h3);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+
+.step-desc {
+  font-size: var(--sz-body);
+  color: var(--ink-light);
+  line-height: 1.6;
+}
+
+/* Alternative to Suffering */
+.suffering-alt {
+  background-color: var(--accent);
+  padding: var(--sp-section) var(--sp-page);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.suffering-eyebrow {
+  font-size: var(--sz-micro);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 2rem;
+}
+
+.suffering-headline {
+  font-family: var(--ff-display);
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 2rem;
+}
+
+.suffering-headline em {
+  font-style: italic;
+}
+
+.suffering-body {
+  font-size: var(--sz-lead);
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 42ch;
+  margin: 0 auto 2.5rem;
+  line-height: 1.6;
+}
+
+.btn-suffering {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--ff-body);
+  font-size: var(--sz-small);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background-color: var(--white);
+  text-decoration: none;
+  padding: 1rem 2.5rem;
+  border: none;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn-suffering:hover {
+  background-color: var(--surface);
+  transform: translateY(-2px);
+}
+
+/* Everything You Need */
+.features {
+  padding: var(--sp-section) var(--sp-page);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+}
+
+.features-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  position: sticky;
+  top: 6rem;
+}
+
+.features-title em {
+  font-style: italic;
+  color: var(--ink-light);
+}
+
+.features-list {
+  border-top: 1px solid var(--rule);
+}
+
+.feature-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.feature-number {
+  font-size: var(--sz-small);
+  font-weight: 500;
+  color: var(--ink-light);
+}
+
+.feature-name {
+  font-family: var(--ff-display);
+  font-size: var(--sz-h4);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.feature-desc {
+  font-size: var(--sz-body);
+  color: var(--ink-light);
+  line-height: 1.6;
+}
+
 /* Spectrum */
 .spectrum {
   padding: var(--sp-section) var(--sp-page);
+  background-color: var(--white);
 }
 
 .spectrum-header {
@@ -552,6 +863,38 @@ const sampleStyles = [
   .statement-eyebrow {
     writing-mode: horizontal-tb;
     transform: none;
+  }
+
+  .hiw-header {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hiw-tagline {
+    text-align: left;
+  }
+
+  .hiw-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .hiw-step {
+    border-right: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 2rem 0;
+  }
+
+  .hiw-step:last-child {
+    border-bottom: none;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .features-title {
+    position: static;
   }
 
   .style-grid {

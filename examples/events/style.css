@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@700&display=swap');
+
+:root {
+    --primary: #7C3AED;
+    --primary-light: #A78BFA;
+    --primary-dark: #5B21B6;
+    --secondary: #111827;
+    --accent: #10B981;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+    background-color: #030712;
+    color: #f9fafb;
+}
+
+h1, h2, h3, .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Background Decorations */
+.bg-mesh {
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+}
+
+.grid-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+/* Custom Navigation */
+.nav-blur {
+    backdrop-filter: blur(12px);
+    background-color: rgba(3, 7, 18, 0.8);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Hero Section */
+.hero-text-glow {
+    text-shadow: 0 0 40px rgba(124, 58, 237, 0.4);
+}
+
+/* Countdown */
+.countdown-box {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(4px);
+    min-width: 80px;
+}
+
+/* Cards */
+.speaker-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.speaker-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.speaker-image-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--secondary), transparent);
+    opacity: 0.6;
+}
+
+/* Tickets */
+.ticket-card {
+    transition: transform 0.3s ease;
+    border: 1px solid var(--glass-border);
+}
+
+.ticket-card.featured {
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+}
+
+.ticket-card:hover {
+    transform: scale(1.02);
+}
+
+/* Schedule */
+.schedule-row {
+    border-left: 2px solid var(--glass-border);
+    transition: border-color 0.3s ease;
+}
+
+.schedule-row:hover {
+    border-left-color: var(--primary);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--primary);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background: var(--glass);
+    border-color: var(--primary);
+}
+
+/* Urgency Tag */
+.urgency-badge {
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+/* Animations */
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3.5rem;
+        line-height: 1;
+    }
+}

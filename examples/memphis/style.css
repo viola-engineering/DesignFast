@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;700&display=swap');
+
+:root {
+    --hot-pink: #FF6B9D;
+    --electric-blue: #0066FF;
+    --yellow: #FFE600;
+    --mint-green: #98FF98;
+    --coral: #FF6F61;
+    --purple: #9B59B6;
+    --black: #000000;
+    --white: #ffffff;
+}
+
+body {
+    font-family: 'Space+Grotesk', sans-serif;
+    background-color: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, .font-heading {
+    font-family: 'Archivo Black', sans-serif;
+    text-transform: uppercase;
+}
+
+/* Memphis Foundations */
+.memphis-border {
+    border: 3px solid var(--black);
+}
+
+.memphis-shadow {
+    box-shadow: 8px 8px 0px var(--black);
+}
+
+.memphis-shadow-sm {
+    box-shadow: 4px 4px 0px var(--black);
+}
+
+.memphis-shadow-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 10px 10px 0px var(--black);
+}
+
+/* Patterns */
+.pattern-dots {
+    background-image: radial-gradient(var(--black) 15%, transparent 16%);
+    background-size: 20px 20px;
+}
+
+.pattern-grid {
+    background-image: 
+        linear-gradient(var(--black) 1px, transparent 1px),
+        linear-gradient(90deg, var(--black) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.pattern-stripes {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0,0,0,0.1),
+        rgba(0,0,0,0.1) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+}
+
+/* Irregular Shapes & Layouts */
+.tilted-left { transform: rotate(-3deg); }
+.tilted-right { transform: rotate(3deg); }
+.tilted-steep { transform: rotate(-7deg); }
+
+.shape-blob {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.zigzag-border {
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20" viewBox="0 0 100 20"><path d="M0 20 L10 0 L20 20 L30 0 L40 20 L50 0 L60 20 L70 0 L80 20 L90 0 L100 20 Z" fill="black"/></svg>');
+    mask-size: 50px 20px;
+    mask-repeat: repeat-x;
+}
+
+/* Floating Decorations */
+.float-element {
+    animation: floating 6s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes floating {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.wiggle:hover {
+    animation: wiggle 0.3s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(-1deg); }
+    50% { transform: rotate(2deg); }
+    100% { transform: rotate(-1deg); }
+}
+
+/* Sections */
+.hero-text {
+    font-size: clamp(3rem, 10vw, 8rem);
+    line-height: 0.9;
+    letter-spacing: -2px;
+}
+
+.bg-memphis-pink { background-color: var(--hot-pink); }
+.bg-memphis-blue { background-color: var(--electric-blue); }
+.bg-memphis-yellow { background-color: var(--yellow); }
+.bg-memphis-green { background-color: var(--mint-green); }
+.bg-memphis-coral { background-color: var(--coral); }
+.bg-memphis-purple { background-color: var(--purple); }
+
+/* Buttons */
+.btn-memphis {
+    display: inline-block;
+    padding: 1rem 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-memphis:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px var(--black);
+}
+
+/* Nav */
+.nav-link {
+    position: relative;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: var(--black);
+    transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Marquee */
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .hero-text {
+        font-size: 4rem;
+    }
+    .tilted-left, .tilted-right, .tilted-steep {
+        transform: rotate(0);
+    }
+}

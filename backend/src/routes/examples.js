@@ -41,6 +41,7 @@ export default async function (app) {
   });
 
   // GET /api/examples/:styleKey/:filename — serve example files
+  // SECURITY: SVG files are sandboxed to prevent embedded script execution.
   app.get('/api/examples/:styleKey/:filename', async (req, reply) => {
     const { styleKey, filename } = req.params;
 
@@ -59,8 +60,16 @@ export default async function (app) {
     const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
     const content = readFileSync(filePath);
-    reply.header('Content-Type', contentType);
-    reply.header('Cache-Control', 'public, max-age=86400'); // Cache for 1 day
+    reply
+      .header('Content-Type', contentType)
+      .header('Cache-Control', 'public, max-age=86400')
+      .header('X-Content-Type-Options', 'nosniff');
+
+    // SVG files can contain <script> tags — sandbox them to prevent XSS
+    if (contentType === 'image/svg+xml') {
+      reply.header('Content-Security-Policy', "sandbox; default-src 'none'; style-src 'unsafe-inline'");
+    }
+
     return reply.send(content);
   });
 

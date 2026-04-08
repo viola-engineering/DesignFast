@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LingoClay — Sculpt Your New Language Skills</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 clay-nav px-6 py-4">
+        <div class="max-w-[1100px] mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="stat-circle clay-base clay-card-coral w-10 h-10 text-xl font-bold text-white">L</div>
+                <span class="text-2xl font-bold tracking-tight">LingoClay</span>
+            </div>
+            <div class="hidden md:flex gap-8 font-semibold">
+                <a href="#courses" class="hover:text-gray-600">Courses</a>
+                <a href="#features" class="hover:text-gray-600">Features</a>
+                <a href="#progress" class="hover:text-gray-600">My Progress</a>
+            </div>
+            <button class="clay-button clay-card-mint text-white">Get Started</button>
+        </div>
+    </nav>
+
+    <main class="clay-container mx-auto px-6">
+
+        <!-- Hero Section -->
+        <section class="section-padding flex flex-col md:flex-row items-center gap-12 mt-20">
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                    Learn languages like <span class="text-[#FFB4A2]">playing with clay.</span>
+                </h1>
+                <p class="text-xl text-gray-700 mb-8 max-w-lg mx-auto md:mx-0">
+                    The tactile, fun, and colorful way to master a new language. 
+                    Interactive lessons that feel more like a game and less like a chore.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <button class="clay-button clay-card-coral text-white text-lg">Start Learning Free</button>
+                    <button class="clay-button clay-card-white text-dark text-lg">View All Courses</button>
+                </div>
+            </div>
+            <div class="flex-1 flex justify-center items-center">
+                <div class="blob-shape clay-base clay-card-blue floating text-5xl flex-col gap-2">
+                    <div class="font-bold">Hola!</div>
+                    <div class="text-sm font-medium">Hello in Spanish</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="section-padding">
+            <div class="clay-grid clay-grid-3">
+                <div class="clay-base clay-card-white p-8 text-center flex flex-col items-center">
+                    <div class="stat-circle clay-base clay-card-yellow mb-4 text-3xl">🔥</div>
+                    <h3 class="text-3xl font-bold">12 Days</h3>
+                    <p class="text-gray-500 font-medium">Current Streak</p>
+                </div>
+                <div class="clay-base clay-card-white p-8 text-center flex flex-col items-center">
+                    <div class="stat-circle clay-base clay-card-mint mb-4 text-3xl">📚</div>
+                    <h3 class="text-3xl font-bold">850</h3>
+                    <p class="text-gray-500 font-medium">Words Learned</p>
+                </div>
+                <div class="clay-base clay-card-white p-8 text-center flex flex-col items-center">
+                    <div class="stat-circle clay-base clay-card-blue mb-4 text-3xl">✨</div>
+                    <h3 class="text-3xl font-bold">4.2k</h3>
+                    <p class="text-gray-500 font-medium">Experience Points</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="section-padding">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Choose Your Path</h2>
+                <p class="text-gray-600 text-lg">Every language is a new world waiting to be shaped.</p>
+            </div>
+            <div class="clay-grid clay-grid-3">
+                <!-- Spanish -->
+                <div class="clay-base clay-card-white p-8 hover:translate-y-[-8px]">
+                    <div class="course-icon">🇪🇸</div>
+                    <h3 class="text-2xl font-bold mb-2">Spanish</h3>
+                    <p class="text-gray-600 mb-6">Master the language of Cervantes with our beginner-friendly track.</p>
+                    <div class="clay-progress-bar mb-6">
+                        <div class="clay-progress-fill clay-card-coral w-3/4"></div>
+                    </div>
+                    <button class="clay-button clay-card-coral text-white w-full">Continue Learning</button>
+                </div>
+                <!-- Japanese -->
+                <div class="clay-base clay-card-white p-8 hover:translate-y-[-8px]">
+                    <div class="course-icon">🇯🇵</div>
+                    <h3 class="text-2xl font-bold mb-2">Japanese</h3>
+                    <p class="text-gray-600 mb-6">Dive into Kanji and conversational Japanese through visual play.</p>
+                    <div class="clay-progress-bar mb-6">
+                        <div class="clay-progress-fill clay-card-lavender w-1/4"></div>
+                    </div>
+                    <button class="clay-button clay-card-lavender text-white w-full">Start Lesson</button>
+                </div>
+                <!-- French -->
+                <div class="clay-base clay-card-white p-8 hover:translate-y-[-8px]">
+                    <div class="course-icon">🇫🇷</div>
+                    <h3 class="text-2xl font-bold mb-2">French</h3>
+                    <p class="text-gray-600 mb-6">The language of love, rendered in beautiful 3D clay lessons.</p>
+                    <div class="clay-progress-bar mb-6">
+                        <div class="clay-progress-fill clay-card-mint w-1/2"></div>
+                    </div>
+                    <button class="clay-button clay-card-mint text-white w-full">Continue French</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section-padding">
+            <div class="clay-base clay-card-yellow p-12 flex flex-col md:flex-row items-center gap-12">
+                <div class="flex-1">
+                    <h2 class="text-4xl font-bold mb-6">Daily Progress Tracking</h2>
+                    <p class="text-xl text-gray-800 mb-8">
+                        Stay motivated with our tactile progress system. Watching your clay bar fill up as you learn new words is more satisfying than ever.
+                    </p>
+                    <div class="clay-base clay-card-white p-6 mb-4">
+                        <div class="flex justify-between mb-2 font-bold">
+                            <span>Daily Goal</span>
+                            <span>45/50 XP</span>
+                        </div>
+                        <div class="clay-progress-bar">
+                            <div class="clay-progress-fill clay-card-yellow w-[90%]"></div>
+                        </div>
+                    </div>
+                    <p class="font-bold text-lg">Just 5 more XP to hit your goal! 🚀</p>
+                </div>
+                <div class="flex-1 hidden md:flex justify-center">
+                    <div class="blob-shape clay-base clay-card-white floating text-5xl">🏆</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Us -->
+        <section class="section-padding">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Why LingoClay?</h2>
+            </div>
+            <div class="clay-grid clay-grid-2">
+                <div class="clay-base clay-card-lavender p-10 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Visual Storytelling</h3>
+                    <p class="text-lg opacity-90">Every word is connected to a 3D visual scene, making it 4x easier to remember through spatial association.</p>
+                </div>
+                <div class="clay-base clay-card-blue p-10 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Tactile Feedback</h3>
+                    <p class="text-lg opacity-90">Our interface responds to your touch like real clay. It's a sensory experience designed for maximum engagement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial -->
+        <section class="section-padding text-center">
+            <div class="max-w-3xl mx-auto">
+                <div class="clay-base clay-card-white p-12 italic text-2xl relative">
+                    <span class="text-6xl absolute top-4 left-4 opacity-20">"</span>
+                    I've tried every app out there, but LingoClay is the only one that keeps me coming back. It's so soft, friendly, and actually works!
+                    <span class="text-6xl absolute bottom-4 right-4 opacity-20">"</span>
+                </div>
+                <div class="mt-8">
+                    <p class="font-bold text-xl">— Sarah Jenks</p>
+                    <p class="text-gray-500 font-medium">Bilingual in Spanish & French</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section-padding">
+            <div class="clay-base clay-card-coral p-12 text-center text-white">
+                <h2 class="text-4xl font-bold mb-6">Ready to shape your future?</h2>
+                <p class="text-xl mb-10 max-w-2xl mx-auto">Join 1,000,000+ learners who are already sculpting their way to fluency.</p>
+                <button class="clay-button clay-card-white text-[#FFB4A2] text-xl px-12 py-4">Create Your Profile</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100/50 py-12 mt-20 px-6">
+        <div class="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1 md:col-span-2">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="stat-circle clay-base clay-card-coral w-8 h-8 text-lg font-bold text-white">L</div>
+                    <span class="text-xl font-bold tracking-tight">LingoClay</span>
+                </div>
+                <p class="text-gray-500 max-w-xs">Building a more colorful world, one word at a time. The world's first clay-morphic language learning platform.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Learn</h4>
+                <ul class="text-gray-600 space-y-2">
+                    <li><a href="#" class="hover:underline">Spanish</a></li>
+                    <li><a href="#" class="hover:underline">French</a></li>
+                    <li><a href="#" class="hover:underline">Japanese</a></li>
+                    <li><a href="#" class="hover:underline">Korean</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Company</h4>
+                <ul class="text-gray-600 space-y-2">
+                    <li><a href="#" class="hover:underline">About Us</a></li>
+                    <li><a href="#" class="hover:underline">Careers</a></li>
+                    <li><a href="#" class="hover:underline">Contact</a></li>
+                    <li><a href="#" class="hover:underline">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-[1100px] mx-auto border-t border-gray-200 mt-12 pt-8 text-center text-gray-500">
+            <p>&copy; 2024 LingoClay Inc. All rights reserved. Sculpted with love.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

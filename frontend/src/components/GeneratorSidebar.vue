@@ -171,6 +171,7 @@ onMounted(() => {
 
 // All style options
 const styleOptions: StyleOption[] = [
+  // Visual Styles
   { key: 'editorial', name: 'Editorial', preview: 'Edit' },
   { key: 'minimalist', name: 'Minimalist', preview: 'Min' },
   { key: 'brutalist', name: 'Brutalist', preview: 'BRUT' },
@@ -189,6 +190,15 @@ const styleOptions: StyleOption[] = [
   { key: 'neumorphism', name: 'Neumorphism', preview: 'Neu' },
   { key: 'y2k', name: 'Y2K', preview: 'Y2K' },
   { key: 'maximalist', name: 'Maximalist', preview: 'MAX' },
+  { key: 'gradient', name: 'Gradient', preview: 'Grad' },
+  { key: 'claymorphism', name: 'Claymorphism', preview: 'Clay' },
+  { key: 'vaporwave', name: 'Vaporwave', preview: 'Vapor' },
+  { key: 'darkTech', name: 'Dark Tech', preview: 'Dark' },
+  { key: 'pastel', name: 'Pastel', preview: 'Soft' },
+  { key: 'handDrawn', name: 'Hand-drawn', preview: 'Sketch' },
+  { key: 'memphis', name: 'Memphis', preview: 'MEM' },
+  { key: 'scandinavian', name: 'Scandinavian', preview: 'Nord' },
+  // Industry Styles
   { key: 'cleanTech', name: 'Clean Tech', preview: 'Tech' },
   { key: 'warmCorporate', name: 'Warm Corp', preview: 'Warm' },
   { key: 'startupBold', name: 'Startup Bold', preview: 'Bold' },
@@ -201,6 +211,16 @@ const styleOptions: StyleOption[] = [
   { key: 'fintech', name: 'Fintech', preview: 'Fin' },
   { key: 'media', name: 'Media', preview: 'Media' },
   { key: 'government', name: 'Government', preview: 'Gov' },
+  { key: 'education', name: 'Education', preview: 'Edu' },
+  { key: 'restaurant', name: 'Restaurant', preview: 'Food' },
+  { key: 'realEstate', name: 'Real Estate', preview: 'Home' },
+  { key: 'travel', name: 'Travel', preview: 'Travel' },
+  { key: 'fitness', name: 'Fitness', preview: 'Fit' },
+  { key: 'nonprofit', name: 'Non-profit', preview: 'NGO' },
+  { key: 'agency', name: 'Agency', preview: 'Agency' },
+  { key: 'events', name: 'Events', preview: 'Event' },
+  { key: 'gaming', name: 'Gaming', preview: 'Game' },
+  { key: 'legal', name: 'Legal', preview: 'Legal' },
 ]
 
 const visibleStyles = computed(() =>

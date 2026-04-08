@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AXIOM // Digital Design Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+    <!-- Grain Overlay -->
+    <div class="grain-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor" class="custom-cursor"></div>
+    <div id="cursor-follower" class="custom-cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-8 md:px-12 flex justify-between items-baseline mix-blend-difference">
+        <a href="#" class="text-2xl font-syne font-extrabold tracking-tighter">AXIOM</a>
+        <div class="flex gap-8 items-center">
+            <a href="#work" class="nav-link font-medium uppercase text-sm tracking-widest">Work</a>
+            <a href="#philosophy" class="nav-link font-medium uppercase text-sm tracking-widest">About</a>
+            <a href="#contact" class="nav-link font-medium uppercase text-sm tracking-widest">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center px-6 md:px-12 pt-24 overflow-hidden">
+        <div class="relative">
+            <h1 class="text-[clamp(4rem,15vw,18rem)] font-syne font-extrabold leading-[0.8] mb-8 reveal-text">
+                PURE<br>
+                <span class="text-stroke">DIGITAL</span><br>
+                MOTION.
+            </h1>
+            <div class="md:absolute bottom-10 right-0 max-w-md">
+                <p class="text-lg md:text-xl font-light opacity-80 reveal-text">
+                    AXIOM is a boutique design studio forging immersive digital experiences for brands that refuse to blend in. Award-winning craft, zero ego.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Scrolling Marquee -->
+        <div class="marquee-container mt-20 border-y border-white/10 py-6">
+            <div class="marquee-content">
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">STRATEGY</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10 text-stroke">DESIGN</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">DEVELOPMENT</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10 text-stroke">MOTION</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">IDENTITY</span>
+                <!-- Repeat for infinite loop -->
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">STRATEGY</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10 text-stroke">DESIGN</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">DEVELOPMENT</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10 text-stroke">MOTION</span>
+                <span class="text-4xl md:text-6xl font-syne font-extrabold px-10">IDENTITY</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="section-padding px-6 md:px-12">
+        <div class="mb-20 flex justify-between items-end">
+            <h2 class="text-6xl md:text-8xl font-syne font-extrabold">SELECTED<br>WORK</h2>
+            <p class="text-sm tracking-widest uppercase opacity-50 mb-4">(2023 — 2025)</p>
+        </div>
+
+        <div class="grid-unconventional">
+            <!-- Project 1 -->
+            <div class="span-7 project-card group mb-12">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop" alt="Abstract Architecture" class="project-image">
+                <div class="project-info">
+                    <p class="text-sm uppercase tracking-widest mb-2">Identity / Web</p>
+                    <h3 class="text-4xl font-syne font-extrabold">NEO ARCHIVES</h3>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="span-5 pt-0 md:pt-32 project-card group mb-12">
+                <img src="https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=2564&auto=format&fit=crop" alt="Digital Art" class="project-image">
+                <div class="project-info">
+                    <p class="text-sm uppercase tracking-widest mb-2">E-Commerce</p>
+                    <h3 class="text-4xl font-syne font-extrabold">KINETIC FORM</h3>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="span-5 project-card group mb-12">
+                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2670&auto=format&fit=crop" alt="Tech" class="project-image">
+                <div class="project-info">
+                    <p class="text-sm uppercase tracking-widest mb-2">Experience</p>
+                    <h3 class="text-4xl font-syne font-extrabold">CYBER CORE</h3>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="span-7 md:-mt-24 project-card group mb-12">
+                <img src="https://images.unsplash.com/photo-1605142859862-978be7eba909?q=80&w=2670&auto=format&fit=crop" alt="Minimalism" class="project-image">
+                <div class="project-info">
+                    <p class="text-sm uppercase tracking-widest mb-2">Branding</p>
+                    <h3 class="text-4xl font-syne font-extrabold">SILENT VOID</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section id="philosophy" class="section-padding bg-white text-black px-6 md:px-12">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-sm uppercase tracking-widest mb-12 font-bold opacity-50">Our Philosophy</h2>
+            <p class="philosophy-text font-syne font-extrabold">
+                WE BELIEVE THAT <span class="text-zinc-400">DESIGN</span> IS NOT DECORATION. IT IS THE <span class="hover-stroke">INTENTIONAL</span> REDUCTION OF CHAOS INTO <span class="text-blue-600">MEANING</span>. WE DON'T BUILD SITES; WE ENGINEER <span class="italic underline">DIGITAL LEGACIES</span>.
+            </p>
+            <div class="mt-20 grid md:grid-cols-3 gap-12 border-t border-black/10 pt-12">
+                <div>
+                    <h4 class="font-syne font-extrabold mb-4">RADICAL SIMPLICITY</h4>
+                    <p class="text-zinc-600">Removing the noise to reveal the core essence of your brand. If it doesn't serve a purpose, it doesn't belong.</p>
+                </div>
+                <div>
+                    <h4 class="font-syne font-extrabold mb-4">TECHNICAL DEPTH</h4>
+                    <p class="text-zinc-600">Beautiful interfaces backed by flawless engineering. Performance is as much a design choice as typography.</p>
+                </div>
+                <div>
+                    <h4 class="font-syne font-extrabold mb-4">BOLD NARRATIVES</h4>
+                    <p class="text-zinc-600">Every pixel should tell a story. We create emotional connections through strategic visual communication.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Client Section -->
+    <section class="section-padding px-6 md:px-12">
+        <h2 class="text-sm uppercase tracking-widest mb-20 text-center font-bold opacity-50">Trusted By</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 items-center">
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">VOLVO</h3></div>
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">SONY</h3></div>
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">FRAME</h3></div>
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">PRADA</h3></div>
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">NIKE</h3></div>
+            <div class="flex justify-center"><h3 class="client-logo text-2xl font-syne font-extrabold">ADOBE</h3></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <footer id="contact" class="section-padding px-6 md:px-12 border-t border-white/10">
+        <div class="flex flex-col items-center text-center">
+            <p class="text-xl mb-8 opacity-60">Ready to start the next revolution?</p>
+            <a href="mailto:hello@axiom.studio" class="text-[clamp(2.5rem,10vw,10rem)] font-syne font-extrabold hover-stroke leading-none mb-12">
+                LET'S TALK
+            </a>
+            
+            <div class="w-full flex flex-col md:flex-row justify-between items-center mt-20 pt-8 border-t border-white/5 text-sm uppercase tracking-widest opacity-40">
+                <div class="mb-4 md:mb-0">© 2026 AXIOM STUDIO — ALL RIGHTS RESERVED</div>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-white transition-colors">Instagram</a>
+                    <a href="#" class="hover:text-white transition-colors">Behance</a>
+                    <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                </div>
+                <div class="mt-4 md:mt-0">LOCATED IN THE DIGITAL ETHER</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+            follower.style.transform = `translate(${e.clientX - 20}px, ${e.clientY - 20}px)`;
+        });
+
+        // Hover Effect for Cursor
+        const interactiveElements = document.querySelectorAll('a, button, .project-card');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform += ' scale(2.5)';
+                cursor.style.backgroundColor = 'rgba(212, 255, 0, 0.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.backgroundColor = '#d4ff00';
+            });
+        });
+
+        // Simple Fade-in Observer for sections
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0');
+                    entry.target.classList.add('translate-y-0');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

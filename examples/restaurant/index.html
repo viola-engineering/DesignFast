@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hearth & Harvest | Farm-to-Table Dining</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-sm border-b border-[#E7E0D8]">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="#menu" class="nav-link text-sm uppercase tracking-widest font-semibold hidden md:block">Menu</a>
+                <a href="#story" class="nav-link text-sm uppercase tracking-widest font-semibold hidden md:block">Story</a>
+            </div>
+            
+            <a href="#" class="text-2xl font-serif font-bold tracking-tight text-[#166534]">H&H</a>
+
+            <div class="flex items-center space-x-8">
+                <a href="#reservations" class="nav-link text-sm uppercase tracking-widest font-semibold hidden md:block">Reservations</a>
+                <a href="#reservations" class="btn-primary px-6 py-2 text-xs uppercase tracking-widest font-bold">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex items-center justify-center text-center text-white overflow-hidden">
+        <div class="absolute inset-0 hero-image scale-105"></div>
+        <div class="absolute inset-0 hero-overlay"></div>
+        
+        <div class="relative z-10 px-6 max-w-4xl reveal">
+            <span class="block uppercase tracking-[0.3em] text-sm font-semibold mb-6">Rooted in Tradition</span>
+            <h1 class="hero-title text-6xl md:text-8xl font-serif mb-8 italic">The Hearth & Harvest</h1>
+            <p class="text-lg md:text-xl font-light max-w-2xl mx-auto mb-10 opacity-90 leading-relaxed">
+                Experience the rhythm of the seasons through our curated farm-to-table menu, 
+                sourced daily from local growers and our own heirloom gardens.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#menu" class="btn-primary px-10 py-4 w-full sm:w-auto uppercase tracking-widest text-sm font-bold">View Today's Menu</a>
+                <a href="#story" class="bg-white/10 backdrop-blur-md border border-white/30 hover:bg-white/20 px-10 py-4 w-full sm:w-auto uppercase tracking-widest text-sm font-bold transition-all">Our Story</a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Story Section -->
+    <section id="story" class="py-24 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div class="relative group zoom-container">
+                <div class="story-image aspect-[4/5] rounded-sm zoom-image"></div>
+                <div class="absolute -bottom-8 -right-8 w-64 h-64 chef-image border-8 border-[#FDF8F3] hidden lg:block"></div>
+            </div>
+            
+            <div class="reveal">
+                <span class="text-[#166534] font-semibold tracking-widest uppercase text-xs block mb-4">Our Philosophy</span>
+                <h2 class="text-4xl md:text-5xl font-serif mb-8 leading-tight">Grown with Intention,<br>Prepared with Respect</h2>
+                <p class="text-[#57534E] text-lg leading-relaxed mb-6">
+                    At Hearth & Harvest, we believe the best ingredients don't need to travel far. Our kitchen is a celebration of the Hudson Valley's bounty, where every dish tells a story of the soil, the weather, and the hands that nurtured it.
+                </p>
+                <p class="text-[#57534E] text-lg leading-relaxed mb-8">
+                    Led by Chef Elena Rossi, our menu changes weekly to reflect exactly what is being harvested. From heirloom tomatoes still warm from the sun to heritage grains milled just miles away, we honor the seasons in their purest form.
+                </p>
+                <div class="decorative-divider"></div>
+                <div class="grid grid-cols-2 gap-8 italic font-serif">
+                    <div>
+                        <span class="text-3xl block text-[#166534] mb-1">100%</span>
+                        <span class="text-sm text-[#57534E]">Locally Sourced</span>
+                    </div>
+                    <div>
+                        <span class="text-3xl block text-[#166534] mb-1">Weekly</span>
+                        <span class="text-sm text-[#57534E]">Seasonal Rotation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-24 bg-[#f8f3ed]">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl md:text-5xl font-serif mb-4 italic">Spring Harvest Menu</h2>
+                <p class="text-[#57534E] uppercase tracking-widest text-sm">Refined flavors of the early season</p>
+            </div>
+
+            <!-- Garden (Starters) -->
+            <div class="mb-20 reveal">
+                <div class="flex items-center mb-10">
+                    <h3 class="text-2xl font-serif italic pr-6 whitespace-nowrap">From the Garden</h3>
+                    <div class="h-px bg-[#E7E0D8] w-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-16 gap-y-10">
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Burrata & Heirloom Peach</h4>
+                            <span class="text-[#166534] font-serif">$18</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Hand-tied burrata, charred local peaches, wild honeycomb, toasted pistachio, and micro-basil.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Wild Nettle Soup</h4>
+                            <span class="text-[#166534] font-serif">$14</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Foraged young nettles, cultured cream, crispy sunchoke skins, and cold-pressed leek oil.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Early Beet Carpaccio</h4>
+                            <span class="text-[#166534] font-serif">$16</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Salt-roasted candy cane beets, goat cheese snow, pickled mustard seeds, and garden dill.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Artisanal Sourdough</h4>
+                            <span class="text-[#166534] font-serif">$9</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">House-fermented 48hr sourdough served with cultured butter and smoked sea salt.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Field & Sea (Mains) -->
+            <div class="mb-20 reveal">
+                <div class="flex items-center mb-10">
+                    <h3 class="text-2xl font-serif italic pr-6 whitespace-nowrap">Field & Sea</h3>
+                    <div class="h-px bg-[#E7E0D8] w-full"></div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-x-16 gap-y-10">
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Heritage Pork Belly</h4>
+                            <span class="text-[#166534] font-serif">$34</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Slow-braised pasture raised pork, cider reduction, roasted parsnip puree, and pickled apple.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Line-Caught Arctic Char</h4>
+                            <span class="text-[#166534] font-serif">$38</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Pan-seared char, spring peas, braised gem lettuce, and a lemon-verbena beurre blanc.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Roasted Oyster Mushrooms</h4>
+                            <span class="text-[#166534] font-serif">$29</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Locally foraged mushrooms, creamy farro risotto, aged pecorino, and truffle essence.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="flex justify-between items-baseline mb-2">
+                            <h4 class="text-lg font-semibold tracking-tight uppercase">Grass-Fed Ribeye</h4>
+                            <span class="text-[#166534] font-serif">$46</span>
+                        </div>
+                        <p class="text-sm italic text-[#57534E] leading-relaxed">Wood-fired 12oz ribeye, bone marrow butter, blistered vine tomatoes, and rosemary hearth potatoes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="#" class="btn-outline px-12 py-4 uppercase tracking-widest text-xs font-bold inline-block">Download Full Beverage List</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visual Highlights -->
+    <section class="grid grid-cols-2 md:grid-cols-4 h-96">
+        <div class="food-1 bg-center bg-cover hover:opacity-90 transition-opacity"></div>
+        <div class="food-2 bg-center bg-cover hover:opacity-90 transition-opacity"></div>
+        <div class="food-3 bg-center bg-cover hover:opacity-90 transition-opacity"></div>
+        <div class="food-4 bg-center bg-cover hover:opacity-90 transition-opacity"></div>
+    </section>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="py-24 px-6 bg-white">
+        <div class="max-w-7xl mx-auto linen-card p-10 md:p-20 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="reveal">
+                <h2 class="text-4xl md:text-5xl font-serif mb-6 italic">Secure Your Table</h2>
+                <p class="text-[#57534E] text-lg mb-10 leading-relaxed">
+                    We keep a portion of our dining room available for walk-in guests, but highly recommend booking in advance for weekend service. For parties larger than 8, please contact us directly.
+                </p>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="text-[#166534] mt-1">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold uppercase tracking-widest text-xs mb-1">Location</h4>
+                            <p class="text-sm text-[#57534E]">124 Harvest Lane, Millbrook, NY 12545</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <div class="text-[#166534] mt-1">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold uppercase tracking-widest text-xs mb-1">Phone</h4>
+                            <p class="text-sm text-[#57534E]">(845) 555-0192</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#FDF8F3] p-8 md:p-12 border border-[#E7E0D8] reveal">
+                <form class="space-y-8" onsubmit="return false;">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-60">Date</label>
+                            <input type="date" class="custom-input">
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-60">Time</label>
+                            <select class="custom-input bg-transparent">
+                                <option>5:30 PM</option>
+                                <option>6:00 PM</option>
+                                <option>6:30 PM</option>
+                                <option>7:00 PM</option>
+                                <option>7:30 PM</option>
+                                <option>8:00 PM</option>
+                                <option>8:30 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-60">Guests</label>
+                            <select class="custom-input bg-transparent">
+                                <option>2 People</option>
+                                <option>3 People</option>
+                                <option>4 People</option>
+                                <option>5-6 People</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="text-[10px] uppercase tracking-widest font-bold mb-1 opacity-60">Full Name</label>
+                            <input type="text" placeholder="John Doe" class="custom-input">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary w-full py-5 uppercase tracking-widest text-sm font-bold">Find a Table</button>
+                    <p class="text-[10px] text-center uppercase tracking-widest text-[#57534E] opacity-70 italic">Powered by OpenTable</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="py-24 bg-[#FDF8F3]">
+        <div class="max-w-7xl mx-auto px-6 text-center mb-16 reveal">
+            <h2 class="text-3xl font-serif mb-2 italic">Follow the Season</h2>
+            <a href="#" class="text-[#166534] text-sm uppercase tracking-widest font-bold hover:opacity-70 transition-opacity">@hearthandharvest</a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 px-4">
+            <div class="aspect-square gallery-1 bg-cover bg-center"></div>
+            <div class="aspect-square gallery-2 bg-cover bg-center"></div>
+            <div class="aspect-square gallery-3 bg-cover bg-center"></div>
+            <div class="aspect-square gallery-4 bg-cover bg-center"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1A1A1A] text-white py-20 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-12 border-b border-white/10 pb-16 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <h3 class="text-2xl font-serif italic mb-6">H&H</h3>
+                <p class="text-white/60 text-sm leading-relaxed max-w-xs">
+                    Rooted in the soil of the Hudson Valley, serving the soul of the community since 2014.
+                </p>
+            </div>
+            
+            <div>
+                <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-[#166534]">Visit Us</h4>
+                <p class="text-sm text-white/60 leading-relaxed">
+                    124 Harvest Lane<br>
+                    Millbrook, NY 12545<br>
+                    <span class="block mt-4">(845) 555-0192</span>
+                    hello@hearthandharvest.com
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-[#166534]">Hours</h4>
+                <p class="text-sm text-white/60 leading-relaxed">
+                    Mon - Thu: 5pm – 10pm<br>
+                    Fri - Sat: 5pm – 11pm<br>
+                    Sun: 10am – 3pm (Brunch)<br>
+                    Sun: 5pm – 9pm (Dinner)
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-[#166534]">Follow</h4>
+                <ul class="text-sm text-white/60 space-y-4">
+                    <li><a href="#" class="hover:text-white transition-colors">Instagram</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Facebook</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Newsletter</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto flex flex-col md:row items-center justify-between text-[10px] uppercase tracking-widest text-white/40">
+            <p>&copy; 2026 Hearth & Harvest. All Rights Reserved.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Accessibility</a>
+                <a href="#" class="hover:text-white">Press</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

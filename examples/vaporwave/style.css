@@ -1,0 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,700;1,400&family=Mr+Dafoe&display=swap');
+
+:root {
+  --bg-deep: #0d0221;
+  --bg-purple: #1a0a2e;
+  --neon-pink: #ff006e;
+  --neon-cyan: #00ffff;
+  --neon-magenta: #ff00ff;
+  --sunset-yellow: #ffbe0b;
+  --sunset-orange: #ff8c00;
+  --sunset-pink: #ff006e;
+  --chrome-silver: #c0c0c0;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: #fff;
+  font-family: 'Exo 2', sans-serif;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3 {
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.font-script {
+  font-family: 'Mr Dafoe', cursive;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Scanlines Effect */
+body::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 9999;
+  background-size: 100% 4px, 3px 100%;
+  pointer-events: none;
+}
+
+/* Perspective Grid */
+.grid-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  perspective: 450px;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.grid-lines {
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 255, 0.3) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: rotateX(60deg) translateZ(0);
+  animation: grid-move 20s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent, black);
+}
+
+@keyframes grid-move {
+  from { transform: rotateX(60deg) translateY(0); }
+  to { transform: rotateX(60deg) translateY(60px); }
+}
+
+/* Sunset Radial */
+.sunset {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle at center, var(--sunset-yellow) 0%, var(--sunset-orange) 30%, var(--sunset-pink) 60%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(2px);
+  box-shadow: 0 0 100px var(--sunset-orange);
+}
+
+.sunset-stripes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 20px,
+    var(--bg-deep) 20px,
+    var(--bg-deep) 25px
+  );
+  mask-image: radial-gradient(circle, black, transparent 70%);
+}
+
+/* Neon Text & Effects */
+.neon-text-pink {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px var(--neon-pink),
+    0 0 40px var(--neon-pink),
+    0 0 80px var(--neon-pink);
+}
+
+.neon-text-cyan {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan),
+    0 0 80px var(--neon-cyan);
+}
+
+.chrome-text {
+  background: linear-gradient(to bottom, #fff 0%, #c0c0c0 40%, #808080 50%, #c0c0c0 60%, #fff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+}
+
+.neon-border {
+  border: 2px solid var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan), inset 0 0 10px var(--neon-cyan);
+}
+
+.neon-border-pink {
+  border: 2px solid var(--neon-pink);
+  box-shadow: 0 0 10px var(--neon-pink), inset 0 0 5px var(--neon-pink);
+}
+
+/* Buttons */
+.btn-retro {
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 0.75rem 2rem;
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-retro:hover {
+  background: var(--neon-cyan);
+  color: var(--bg-deep);
+  box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+}
+
+.btn-retro-pink {
+  border-color: var(--neon-pink);
+  color: var(--neon-pink);
+}
+
+.btn-retro-pink:hover {
+  background: var(--neon-pink);
+  color: white;
+  box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+}
+
+/* Sections */
+.hero-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: linear-gradient(to bottom, var(--bg-deep), var(--bg-purple));
+  text-align: center;
+}
+
+.content-section {
+  position: relative;
+  padding: 100px 20px;
+  z-index: 10;
+}
+
+.section-diagonal {
+  clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+}
+
+/* Decorations */
+.statue-bust {
+  filter: grayscale(1) contrast(1.2) brightness(0.8) drop-shadow(0 0 15px var(--neon-magenta));
+  opacity: 0.7;
+}
+
+.palm-silhouette {
+  fill: #000;
+  filter: drop-shadow(0 0 5px var(--neon-pink));
+}
+
+.album-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: rgba(26, 10, 46, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.album-card:hover {
+  transform: translateY(-10px) rotate(-2deg);
+  box-shadow: 0 0 30px var(--neon-magenta);
+  border-color: var(--neon-magenta);
+}
+
+.tour-row {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  transition: background 0.3s ease;
+}
+
+.tour-row:hover {
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.glitch-text:hover {
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.flicker {
+  animation: flicker 4s linear infinite;
+}
+
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.8;
+  }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.vhs-noise {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.nav-link {
+  font-family: 'Orbitron', sans-serif;
+  color: #fff;
+  text-decoration: none;
+  padding: 0 15px;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 5px var(--neon-cyan);
+}

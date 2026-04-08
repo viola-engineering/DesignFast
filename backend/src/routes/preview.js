@@ -47,6 +47,9 @@ async function serveFile(req, reply, jobId, filename, revisionParam) {
 /**
  * Serve an uploaded asset image linked to a job.
  * Resolves: job → generation → job_uploads → uploads.data
+ *
+ * SECURITY: SVG files can contain embedded scripts. We serve them with
+ * Content-Security-Policy: sandbox to prevent script execution.
  */
 async function serveAsset(req, reply, jobId, filename) {
   if (requireUUID(jobId, reply)) return;
@@ -64,10 +67,20 @@ async function serveAsset(req, reply, jobId, filename) {
     return reply.code(404).send();
   }
 
+  const contentType = rows[0].content_type;
+
+  // Security headers for all assets
   reply
-    .header('Content-Type', rows[0].content_type)
+    .header('Content-Type', contentType)
     .header('Cache-Control', 'public, max-age=31536000, immutable')
-    .send(rows[0].data);
+    .header('X-Content-Type-Options', 'nosniff');
+
+  // SVG files can contain <script> tags — sandbox them to prevent XSS
+  if (contentType === 'image/svg+xml') {
+    reply.header('Content-Security-Policy', "sandbox; default-src 'none'; style-src 'unsafe-inline'");
+  }
+
+  return reply.send(rows[0].data);
 }
 
 export default async function (app) {

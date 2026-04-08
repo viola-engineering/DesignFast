@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+    --bg-paper: #FDF9F3;
+    --charcoal: #333333;
+    --rose: #E8B4B8;
+    --sage: #A3B18A;
+    --mustard: #D4A574;
+    --blue: #89A8B2;
+    --font-hand: 'Caveat', cursive;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-paper);
+    color: var(--charcoal);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Paper Texture Overlay */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+h1, h2, h3, h4, .font-hand {
+    font-family: var(--font-hand);
+}
+
+.max-w-sketch {
+    max-width: 1000px;
+}
+
+/* Sketchy Borders */
+.sketch-border {
+    border: 2px solid var(--charcoal);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+.sketch-border-sm {
+    border: 2px solid var(--charcoal);
+    border-radius: 120px 10px 100px 10px / 10px 100px 10px 120px;
+}
+
+/* Wavy Underline */
+.wavy-underline {
+    position: relative;
+    display: inline-block;
+}
+
+.wavy-underline::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10 Q 12.5 0 25 10 T 50 10 T 75 10 T 100 10' stroke='%23D4A574' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+    background-size: 50px 8px;
+}
+
+.wavy-underline-rose::after {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10 Q 12.5 0 25 10 T 50 10 T 75 10 T 100 10' stroke='%23E8B4B8' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+}
+
+/* Taped Corner Effect */
+.taped {
+    position: relative;
+}
+
+.taped::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    width: 80px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+/* Informal Rotations */
+.rotate-tiny-cw { transform: rotate(1.2deg); }
+.rotate-tiny-ccw { transform: rotate(-1.5deg); }
+.rotate-med-cw { transform: rotate(2.5deg); }
+.rotate-med-ccw { transform: rotate(-2.2deg); }
+
+/* Custom Buttons */
+.btn-sketch {
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    padding: 0.5rem 2rem;
+    border: 2px solid var(--charcoal);
+    background-color: transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border-radius: 80px 10px 90px 15px / 15px 90px 10px 80px;
+    display: inline-block;
+}
+
+.btn-sketch:hover {
+    transform: scale(1.02) rotate(-1deg);
+    background-color: var(--mustard);
+    box-shadow: 4px 4px 0px var(--charcoal);
+}
+
+.btn-sketch-sage:hover {
+    background-color: var(--sage);
+}
+
+.btn-sketch-rose:hover {
+    background-color: var(--rose);
+}
+
+/* Cards */
+.card-sketch {
+    background-color: white;
+    padding: 2rem;
+    box-shadow: 5px 5px 0px rgba(51, 51, 51, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.card-sketch:hover {
+    box-shadow: 8px 8px 0px rgba(51, 51, 51, 0.15);
+}
+
+/* Section Dividers */
+.divider-sketch {
+    height: 40px;
+    width: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 C 50 10 100 30 150 20 S 250 10 300 20 S 400 30 450 20 S 550 10 600 20 S 700 30 750 20 S 850 10 900 20 S 1000 30 1000 20' stroke='%23333333' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
+}
+
+/* Doodle Animations */
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Post-it Note */
+.post-it {
+    background-color: #FEF3C7;
+    padding: 1.5rem;
+    font-family: var(--font-hand);
+    font-size: 1.25rem;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+    border-radius: 2px 2px 30px 2px;
+}
+
+/* Custom Highlight */
+.highlight {
+    background-image: linear-gradient(120deg, var(--rose) 0%, var(--rose) 100%);
+    background-repeat: no-repeat;
+    background-size: 100% 0.3em;
+    background-position: 0 88%;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 768px) {
+    .max-w-sketch {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .rotate-med-cw, .rotate-med-ccw {
+        transform: rotate(0);
+    }
+}

@@ -396,6 +396,289 @@ export const STYLES = {
 - Buttons: filled with accent color, white text. Large (48px height, 24px horizontal padding). Clear text ("Start now", "Continue", "Sign in"). NO ghost buttons, NO subtle buttons — every button must be obviously a button. Green for positive primary actions, standard accent for secondary.
 - Vibe: GOV.UK, USDS, service.nsw.gov.au, Canada.ca. Radically simple. Aggressively clear. Designed for EVERYONE — the 80-year-old, the screen reader user, the person with slow internet, the non-native speaker. Not beautiful in a design award way — beautiful in a "7 million people used this today and nobody got confused" way. Form follows function, fully.`,
   },
+
+  // ─── Additional Visual Styles ───────────────────────────────────────────────
+
+  gradient: {
+    name: 'Gradient / Aurora',
+    prompt: `Use a GRADIENT / AURORA style.
+- Layout: max-width 1200px, centered. Spacious sections with generous padding (100px+ vertical). Hero takes full viewport height with centered content. Sections flow smoothly with gradient backgrounds that shift between them. NO harsh section boundaries.
+- Colors: rich, flowing gradient backgrounds are THE defining feature. Use multi-stop gradients: purple (#8B5CF6) → pink (#EC4899) → orange (#F97316), or blue (#3B82F6) → cyan (#06B6D4) → green (#10B981). Background gradients should be large-scale (covering entire sections or the full page). Mesh gradients via layered radial-gradients for organic blob effects. Text: white on dark gradient areas, dark (#111827) on light areas.
+- Gradient techniques: use CSS conic-gradient, radial-gradient, and linear-gradient layered together. Animate gradients subtly with @keyframes (background-position shift). Add noise texture overlay at 3-5% opacity for depth. Gradient borders using background-clip tricks.
+- Typography: clean, modern sans-serif (Inter, DM Sans, or Satoshi). White or very dark text depending on background luminosity. Headlines 3-4rem, semibold. Let the gradients be the star — typography is clean and secondary.
+- Cards: glassmorphism-style cards floating over gradient backgrounds — semi-transparent white (rgba(255,255,255,0.1)), backdrop-filter: blur(12px), subtle white border. Cards create contrast against the flowing colors beneath.
+- Decorations: floating gradient orbs (large radial-gradients positioned absolutely). Subtle grain texture overlay. Soft glow effects around key elements (box-shadow with gradient colors). NO hard edges, NO borders (except on glass cards). Everything flows.
+- Buttons: semi-transparent white or filled with a gradient. Rounded-full or rounded-xl. Glow effect on hover (box-shadow expands).
+- Vibe: Stripe's gradient backgrounds, Linear's color washes, Vercel's aurora effects. Modern, premium, atmospheric. The color itself creates emotion — the gradients ARE the design. Feels like looking at the northern lights through frosted glass.`,
+  },
+
+  claymorphism: {
+    name: 'Claymorphism',
+    prompt: `Use a CLAYMORPHISM / 3D CLAY style.
+- Layout: centered, max-width 1100px. Card-based with generous spacing (32px gaps). Hero with large 3D-style illustration area placeholder. Feature cards in 2-3 column grid. Sections have comfortable padding (80px vertical). Everything feels like physical objects sitting on a surface.
+- Background: soft, warm pastel background — light peach (#FEF3E7), soft lavender (#F3E8FF), or pale mint (#ECFDF5). The background is a flat, soft color — NOT white. This creates the "surface" the clay objects sit on.
+- 3D Clay effect: THE KEY TECHNIQUE. Every card/element uses:
+  - Rounded corners: border-radius 24-32px (very soft, pillowy)
+  - Soft inner shadow at top-left: box-shadow: inset 4px 4px 8px rgba(255,255,255,0.6)
+  - Soft outer shadow at bottom-right: box-shadow: 12px 12px 24px rgba(0,0,0,0.1)
+  - Slight outer glow: add a third shadow layer with the element's color tinted lighter
+  - Combine: box-shadow: inset 4px 4px 8px rgba(255,255,255,0.6), 12px 12px 24px rgba(0,0,0,0.1), 0 0 0 4px rgba(255,255,255,0.3);
+- Colors: soft, matte pastels for card backgrounds — coral (#FFB4A2), lavender (#B8A9C9), mint (#98D8C8), butter yellow (#F7DC6F), soft blue (#89CFF0). Each card can be a different pastel. Text: warm dark (#2D3436) for readability. NO vibrant or saturated colors — everything matte and soft.
+- Typography: rounded, friendly sans-serif (Nunito, Quicksand, or Poppins). Medium to bold weights. Comfortable sizes. The type should feel soft and approachable, matching the clay aesthetic.
+- Icons/graphics: describe simple blob shapes or rounded icons that look like clay sculptures. Soft, organic shapes with the same shadow treatment. NO sharp geometric icons.
+- Buttons: same clay treatment — soft pastel fill, rounded-2xl, inset highlight shadow + outer drop shadow. On hover: slight translateY(-2px) lift with shadow growing. Feels like pressing a soft rubber button.
+- Vibe: children's educational app, friendly SaaS, iOS 16+ design language. Soft, tactile, approachable. Everything looks like it was sculpted from soft clay or marshmallow. You want to reach out and squish the interface.`,
+  },
+
+  vaporwave: {
+    name: 'Vaporwave / Synthwave',
+    prompt: `Use a VAPORWAVE / SYNTHWAVE / 80s RETRO-FUTURISM style.
+- Layout: full-width with dramatic sections. Hero spans full viewport with centered content over the signature grid/sunset. Sections alternate between dark and gradient areas. Max-width 1100px for text content but backgrounds bleed edge to edge. Asymmetric element placement — some elements float off-grid.
+- Colors: the SIGNATURE palette. Background: deep dark purple (#1a0a2e) or dark blue (#0d0221). Accent gradients: hot pink (#ff006e) → orange (#ff8c00) → yellow (#ffbe0b), or cyan (#00ffff) → magenta (#ff00ff). Neon pink and cyan are mandatory. Sunset gradient (pink → orange → yellow) for hero backgrounds. Chrome/silver (#c0c0c0) accents.
+- Signature elements:
+  - Perspective grid: CSS grid lines receding to horizon using perspective and rotateX transforms, or repeating-linear-gradient creating a grid pattern that fades with a gradient mask
+  - Sunset: large radial-gradient (yellow center → orange → pink → purple) as background, positioned at bottom-center
+  - Neon glow: text-shadow and box-shadow with multiple layers of pink/cyan at increasing blur (0 0 10px, 0 0 20px, 0 0 40px)
+  - Chrome text: linear-gradient text with metallic colors (white → gray → white) using background-clip
+- Typography: retro display fonts — use script/cursive for main headlines (described as "neon sign script"), geometric sans-serif (Orbitron, Exo 2) for body. Neon glow effect on headlines. Text can be LARGE (5-6rem for hero).
+- Decorations: palm tree silhouettes (describe as dark shapes), Greek/Roman statue busts as imagery placeholders (the aesthetic signature), retro car silhouettes, geometric triangles and lines, scanlines overlay (repeating-linear-gradient). VHS tracking artifacts as CSS noise.
+- Buttons: outlined with neon glow, or filled with gradient. Hover: glow intensifies dramatically. Retro feel — could say "ENTER" or have 80s-style text.
+- Vibe: 1980s retrofuturism, Miami Vice, Blade Runner sunsets, vaporwave album covers, a e s t h e t i c. Nostalgic for a future that never happened. Makes you hear synthesizers just looking at it.`,
+  },
+
+  darkTech: {
+    name: 'Dark Tech',
+    prompt: `Use a DARK TECH / MODERN DARK MODE style.
+- Layout: max-width 1200px, centered. Clean and spacious. Hero with left-aligned headline + right-side visual/mockup area. Features in clean grid. Generous vertical rhythm (80-100px between sections). The layout itself is conventional — it's the dark treatment that defines this style. Full-width dark sections, no alternating light/dark.
+- Colors: dark background throughout — NOT pure black. Use very dark gray (#0A0A0B), dark navy (#0F1419), or near-black with slight warmth (#111113). This is softer than pure #000000. Text: off-white (#E5E7EB) for body, bright white (#FFFFFF) for headlines. ONE accent color used sparingly: electric blue (#3B82F6), purple (#8B5CF6), green (#10B981), or cyan (#06B6D4). Use accent ONLY for interactive elements, highlights, and key CTAs.
+- Subtle lighting effects: very subtle gradients that suggest light sources — a faint radial gradient of the accent color at 5% opacity behind hero text. Thin accent-colored borders (1px) on cards. Subtle glow (box-shadow: 0 0 20px accent at 10% opacity) on hover states. The page should feel like a dark room with soft accent lighting.
+- Typography: clean sans-serif (Inter, SF Pro, system-ui). White headlines (600-700 weight), gray body text (#9CA3AF for secondary, #E5E7EB for primary). Standard sizes — nothing oversized. The typography is functional, not decorative.
+- Cards: dark card backgrounds (#18181B or #1F2937) on the slightly lighter page background. Very subtle border (#27272A). Minimal shadow (shadows don't work well on dark backgrounds). Hover: border lightens or gains accent tint, subtle background lighten.
+- Decorations: minimal. Thin lines (accent-colored or gray). Subtle dot grid pattern in hero at 3% opacity. Code blocks with syntax highlighting (actual dark theme colors). NO gradients except very subtle lighting effects. NO glows except on hover states.
+- Buttons: primary filled with accent color + white text, rounded-lg. Secondary: outlined with gray border or ghost with hover fill. Small and refined — not chunky.
+- Vibe: GitHub dark mode, Discord, Spotify, Linear app. Professional dark UI that you'd use for 10 hours and never get tired. The dark mode that developers actually want to use. Functional, calm, focused. Nothing flashy — just good.`,
+  },
+
+  pastel: {
+    name: 'Pastel / Soft',
+    prompt: `Use a PASTEL / SOFT / GEN-Z style.
+- Layout: max-width 1100px, centered with generous margins. Rounded everything. Cards arranged in soft grids with large gaps (32px). Sections have very comfortable padding (100px vertical). Hero centered with soft, approachable headline. The layout feels gentle and breathable — nothing packed or dense.
+- Colors: soft, desaturated pastels — baby pink (#FFC0CB, but softer: #FFE4E9), lavender (#E6E0F8), mint (#C7F0DB), butter cream (#FFF8E7), sky (#D4EAFF), peach (#FFE5D9). Background: very soft off-white (#FEFEFE) or the palest tint of your main pastel. Text: soft charcoal (#444444, NOT black) for body, slightly darker for headings. Avoid high contrast — everything should feel gentle.
+- Rounded shapes: border-radius 20-30px on cards. Pill shapes (border-radius: 9999px) for buttons and tags. Blob-shaped decorative elements using border-radius with 8 values for organic shapes. NO sharp corners anywhere in the design.
+- Typography: rounded, friendly fonts (Nunito, Quicksand, Poppins, or DM Sans). Medium weights (500-600 for headings, 400 for body). Nothing bold or heavy. Generous line-height (1.7+). The type feels soft and approachable.
+- Decorations: floating blob shapes in soft pastels as background decorations. Subtle grain texture at 2-3% opacity. Small decorative elements: stars, hearts, sparkles (✦ ★ ♡) used sparingly. Soft shadows (large blur, low opacity, tinted with the element's color). Wavy section dividers using SVG or clip-path.
+- Cards: soft pastel background (each card can be a different pastel), extra-rounded corners, soft colored shadow (not gray — tint the shadow with the card's color). On hover: gentle lift with shadow spread.
+- Buttons: pill-shaped, soft pastel fill with slightly darker text. On hover: slight darkening or gentle scale. NO harsh hover states. Secondary: outlined with rounded border.
+- Vibe: Notion's softer pages, Glossier, modern Gen-Z brands, wellness apps, stationery aesthetics. Soft, approachable, calming. The design equivalent of a warm hug. Makes you feel safe and happy. Nothing threatening or corporate about it.`,
+  },
+
+  handDrawn: {
+    name: 'Hand-drawn / Sketch',
+    prompt: `Use a HAND-DRAWN / SKETCH / DOODLE style.
+- Layout: max-width 1000px, centered. Slightly informal arrangement — elements can be slightly off-grid or rotated 1-2 degrees. Hero with large illustrated-style headline. Sections separated by hand-drawn style dividers. Cards arranged casually, not in a strict grid. The layout feels human-made, not computer-perfect.
+- Colors: warm, muted palette like a sketchbook — cream paper background (#FDF9F3 or #FEFCF6), charcoal sketch lines (#333333), muted accent colors as if from colored pencils: dusty rose (#E8B4B8), sage green (#A3B18A), muted mustard (#D4A574), soft blue (#89A8B2). Colors should feel hand-applied, slightly uneven in spirit.
+- Hand-drawn effects:
+  - Borders: use SVG filters or wavy borders to look hand-drawn. Or use border-style with dashed/dotted in organic patterns
+  - Underlines: wavy SVG underlines under headings, not straight lines
+  - Boxes: slightly irregular shapes using clip-path with imperfect coordinates
+  - Decorations: squiggle lines, arrows, stars drawn in a sketchy style (describe these as SVG or unicode characters styled appropriately)
+- Typography: mix of handwriting-style font for headlines (Caveat, Patrick Hand, or Kalam) and clean readable sans-serif for body (Inter, DM Sans). The headline font should look genuinely hand-written. Body stays readable. Notes and annotations in the handwriting font.
+- Decorations: doodle-style elements — stars, arrows, underlines, circles, exclamation marks, thought bubbles. Small margin notes and annotations. Tape/sticky note effects on cards. Paper texture overlay at low opacity. Post-it note style callouts.
+- Cards: look like paper cards or sticky notes — slight rotation, subtle paper texture, maybe a "taped" corner effect using pseudo-elements. Hand-drawn border or drop shadow that looks sketched.
+- Buttons: look like drawn buttons with sketchy borders. Fill with muted color. On hover: a drawn "press" effect or scribble appears.
+- Vibe: Notion's illustrations, Dropbox Paper, Basecamp sketchy style, indie game aesthetics. Personal, approachable, creative. Feels like someone's lovingly crafted notebook. The imperfection IS the perfection — it feels human, warm, and creative.`,
+  },
+
+  memphis: {
+    name: 'Memphis',
+    prompt: `Use a MEMPHIS DESIGN style.
+- Layout: dynamic and asymmetric. Elements placed at angles, overlapping, breaking the grid intentionally. Hero with bold headline at an angle. Sections don't follow conventional top-to-bottom flow — elements float, overlap, and create visual tension. Max-width 1100px but elements break out. Deliberate visual chaos that's still navigable.
+- Colors: bold, clashing primaries and pastels — hot pink (#FF6B9D), electric blue (#0066FF), yellow (#FFE600), mint green (#98FF98), coral (#FF6F61), purple (#9B59B6), black for outlines. Colors are used in large flat blocks. Backgrounds can be different colors per section. The palette is intentionally "wrong" by traditional standards — that's the point.
+- Signature shapes: THE DEFINING ELEMENT. Geometric shapes used decoratively:
+  - Squiggly lines (wavy borders, SVG paths)
+  - Dots and circles (polka dot patterns, floating circles)
+  - Triangles scattered as decoration
+  - Lightning bolts and zigzags
+  - Terrazzo-style confetti patterns (small scattered shapes)
+  - These shapes have thick black outlines (2-3px stroke)
+- Typography: bold, chunky sans-serif for headlines (900 weight, condensed works well). Mix sizes dramatically. Text can be rotated, stacked vertically, or placed at angles. Black text or reversed out of colored blocks. Headline might be broken across multiple lines at unusual break points.
+- Patterns: terrazzo/confetti patterns (small scattered shapes on backgrounds using CSS or described as patterns). Polka dots. Stripes at angles. Grid patterns. These add texture to sections and cards.
+- Cards: solid colored backgrounds with thick black borders (3px+). Shapes decorating corners or edges. Slight rotation. Not all cards need to be rectangles — some could have an irregular edge.
+- Buttons: bold colored fills with black outlines. Thick, chunky. Text in black or white. Could be at a slight angle. Shadow offset (4px 4px 0 black) for 3D pop effect.
+- Vibe: 1980s Memphis Group, Ettore Sottsass, bowling alley carpet, 90s Nickelodeon, Saved by the Bell aesthetics. Bold, playful, deliberately "bad taste" that circles back to being iconic. Anti-minimalist. Makes you smile with its audacity.`,
+  },
+
+  scandinavian: {
+    name: 'Scandinavian / Nordic',
+    prompt: `Use a SCANDINAVIAN / NORDIC / HYGGE style.
+- Layout: clean, uncluttered, single-column dominant. Max-width 900px for text content. Generous whitespace — let elements breathe. Hero simple and centered. Sections have large padding (100px+). Content is sparse and intentional — every element earns its place. The layout feels calm and considered.
+- Colors: natural, muted, warm-neutral palette. Background: warm white (#FAFAF8) or very light warm gray (#F5F3F0). Text: warm charcoal (#3D3D3D), NOT pure black. Accent: one muted natural color — dusty sage (#A3B18A), warm terracotta (#C4A484), muted navy (#4A5568), or soft blush (#D4A5A5). The palette should feel like natural materials: wood, wool, stone, linen.
+- Natural materials feel: design should evoke wood grain, woolen textures, ceramic, plants. Use subtle texture overlays (paper grain at 2%). Warm shadows (tinted slightly brown, not pure gray). Everything feels tactile and natural, not digital.
+- Typography: elegant, readable serif for headlines (Lora, Merriweather, or Playfair Display) paired with clean sans-serif for body (Inter, DM Sans). Understated sizes — headlines 2-2.5rem, nothing oversized. Light to medium weights. Generous letter-spacing on labels. The typography is refined but not showy.
+- Decorations: minimal but meaningful. Thin hairline rules. Simple line illustrations described as minimal Scandinavian style (geometric, single-line). Plant imagery. Subtle cream/beige backgrounds for subtle section definition. NO bold graphics, NO heavy elements. Negative space is a feature.
+- Cards: clean white or very slight warm tint. Minimal or no border — just subtle shadow (warm-tinted, soft). Rounded corners but not too round (8-12px). Internal padding generous. The cards feel like paper or ceramic objects.
+- Buttons: understated. Outlined with thin warm-gray border, or subtle filled with muted accent. NOT attention-grabbing — they exist but don't shout. Text-style links preferred over chunky buttons where possible.
+- Vibe: IKEA, Muji, Kinfolk magazine, Copenhagen cafes. Calm, warm, considered. "Hygge" translated to digital — cozy, intentional, unpretentious. The design makes you want to curl up with a warm drink. Minimalist but not cold — there's warmth in every choice.`,
+  },
+
+  // ─── Additional Industry Styles ─────────────────────────────────────────────
+
+  education: {
+    name: 'Education / EdTech',
+    prompt: `Use an EDUCATION / EDTECH style.
+- Layout: max-width 1200px. Clear navigation with course categories. Hero with aspirational headline + student imagery placeholder + prominent CTA ("Start Learning", "Browse Courses"). Below: featured courses grid, learning paths section, instructor highlights, testimonials from learners, stats (students enrolled, courses, completion rate). Footer with course categories, support links.
+- Colors: trustworthy yet approachable. Primary: a learning-friendly blue (#2563EB) or teal (#0D9488) — NOT corporate navy. Secondary: encouraging green (#10B981) for progress/success, warm orange (#F97316) for CTAs and energy. Background: clean white with light blue-tinted (#F8FAFC) or warm cream (#FDF8F3) alternate sections. Text: #1E293B headings, #475569 body.
+- Typography: friendly and readable. Clean sans-serif (Inter, DM Sans, or Nunito) for everything. Headlines: 600-700 weight, 2-3rem. Body: 400 weight, 1rem, generous line-height (1.7) for readability during learning. Nothing too formal or too playful — the sweet spot of approachable expertise.
+- Course cards: image placeholder (16:9), course title, instructor name + small avatar placeholder, skill level badge (Beginner/Intermediate/Advanced), duration, rating (★ 4.8), price or "Free" badge. Hover: subtle lift + shadow. Grid of 3-4 cards per row.
+- Progress elements: progress bars for course completion, step indicators for learning paths, achievement badges, streak counters. Use green for progress fills. These make learning feel like a game.
+- Trust elements: number of students enrolled, instructor credentials, certificate mention, company logos for "Where our learners work". Testimonials with photo + name + role + company.
+- Decorations: subtle. Small icons for course topics (described as simple line icons). Illustration-style graphics in hero (described as abstract learning imagery). Progress-related iconography. Light background patterns optional.
+- Buttons: primary filled with CTA color (blue or orange), rounded-lg. "Enroll Now", "Start Learning", "View Course". Secondary: outlined. Generous sizing — these need to feel clickable.
+- Vibe: Coursera, Udemy, Khan Academy, Duolingo (but slightly more mature). Encouraging, accessible, achievement-oriented. The design says "you can do this" — learning feels attainable, not intimidating. Clear paths, visible progress, celebrating achievement.`,
+  },
+
+  restaurant: {
+    name: 'Restaurant / Food',
+    prompt: `Use a RESTAURANT / FOOD / DINING style.
+- Layout: full-width hero with large food imagery placeholder (appetizing description). Navigation: logo, menu sections (Menu, About, Reservations, Contact, Order Online). Below hero: philosophy/story section, menu highlights with food cards, location/hours, reservation CTA, Instagram-style gallery placeholder. Footer with hours, address, social links.
+- Colors: appetite-appealing palette. Background: warm cream (#FDF8F3) or clean white. Text: rich dark (#1A1A1A) for menus, warm gray (#57534E) for descriptions. Accent: choose based on cuisine type — warm red (#DC2626) for bold/Italian, forest green (#166534) for organic/farm-to-table, gold (#B8860B) for upscale, terracotta (#C2410C) for rustic. The accent appears in CTAs, highlights, and decorative elements.
+- Typography: this is KEY for restaurant personality. Headlines: elegant serif (Playfair Display, Cormorant, or Fraunces) for upscale feel, or bold sans-serif for casual. Menu items: clean serif, proper case, with prices right-aligned. Descriptions: smaller, italic or light weight. The typography sets the dining tone — formal or casual.
+- Food imagery areas: large, appetizing. Hero: full-bleed or 3/4 screen food shot placeholder (describe the mood: "steaming pasta", "fresh salad", "craft cocktail"). Menu items: smaller square images. Use warm-toned placeholder backgrounds where actual food would go.
+- Menu display: organized by category (Starters, Mains, Desserts, Drinks). Each item: name (prominent), description (1-2 lines, evocative language about ingredients), price (right-aligned, clean). Cards or simple list format depending on formality.
+- Reservation CTA: prominent section with date/time/party size selector described as form fields. "Reserve a Table" button. Phone number as alternative. This is a KEY conversion point.
+- Decorations: subtle, food-adjacent. Thin decorative dividers. Small ingredient illustrations (describe as line drawings of herbs, vegetables). Textured backgrounds suggesting paper or linen at low opacity. NO generic stock-photo feel — everything bespoke.
+- Buttons: "Reserve Now", "Order Online", "View Full Menu". Filled with accent color for primary. Styled appropriately to restaurant tier (elegant outlined for upscale, solid friendly for casual).
+- Vibe: Resy, OpenTable restaurant pages, award-winning restaurant websites. The design makes you hungry. The aesthetic matches the food — rustic for farm-to-table, sleek for modern cuisine, warm for Italian. You can almost taste it.`,
+  },
+
+  realEstate: {
+    name: 'Real Estate',
+    prompt: `Use a REAL ESTATE / PROPERTY style.
+- Layout: full-width. Hero: large search bar prominently centered ("Find your dream home"), property type tabs (Buy, Rent, Sell), location input + filters. Below: featured listings grid, neighborhood highlights, agent/team section, testimonials, market stats, contact CTA. Navigation: logo, Buy, Rent, Sell, Agents, About, Contact. Search is the HERO of the page.
+- Colors: trustworthy and premium. Background: clean white (#FFFFFF). Primary accent: real-estate blue (#1E40AF) or forest green (#166534) — colors of trust and growth. Secondary: warm gold (#B8860B) or coral (#DC7F6B) for CTAs and highlights. Text: dark (#111827) for prices and headings (these must be highly legible), gray (#6B7280) for descriptions.
+- Typography: professional and clear. Clean sans-serif (Inter, DM Sans). Prices: LARGE, semibold, tabular numerals — the most important info. Headlines: 600 weight. Addresses: medium weight, proper capitalization. Descriptions: regular weight, gray. The type hierarchy prioritizes: Price > Location > Details.
+- Property cards: THE KEY COMPONENT. Image placeholder (16:9 or 4:3), property type badge ("For Sale" / "For Rent" overlaid on image), price (large, prominent), address, beds/baths/sqft in icon row (🛏 3 | 🛁 2 | 📐 1,500 sqft), brief description or neighborhood. Cards have subtle shadow, rounded corners (12px). Hover: lift + shadow increase + subtle image zoom. Save/favorite heart icon.
+- Search/filter UI: prominent search bar with location autocomplete styling. Filter pills or dropdowns for: price range, beds, baths, property type, more filters. This UI is functional, not decorative.
+- Map placeholder: describe an interactive map area where listings would appear as pins. Map/list toggle.
+- Agent section: agent cards with photo placeholder, name, title, phone, email, and "Contact" button. Trust-building element.
+- Stats: "100+ listings", "50+ neighborhoods", "20 years experience", "1000+ homes sold". Large numbers, credibility builders.
+- Decorations: minimal. Clean lines. Home/location icons. Light gray section backgrounds for variation. NO distracting decorations — this is functional.
+- Buttons: "Search", "View Listing", "Contact Agent", "Schedule Tour". Filled primary buttons for main actions.
+- Vibe: Zillow, Redfin, Compass, Sotheby's Realty. The design is a tool first — it helps you find a home. Clean, trustworthy, search-focused. Prices and locations are immediately scannable. Makes house hunting feel organized, not overwhelming.`,
+  },
+
+  travel: {
+    name: 'Travel / Hospitality',
+    prompt: `Use a TRAVEL / HOSPITALITY / BOOKING style.
+- Layout: full-width, immersive. Hero: full-viewport stunning destination imagery placeholder with search overlay (Where to? / Check in / Check out / Guests). Navigation: logo, Stays, Experiences, Flights (if applicable). Below: trending destinations grid, featured properties, experience categories, testimonials from travelers, inspiration section. The hero sells the dream; the content helps you book it.
+- Colors: aspirational and warm. Hero: dark overlay on imagery for text readability. Body: clean white (#FFFFFF) base. Accent: sunset coral (#F97316), ocean blue (#0EA5E9), or forest green (#059669) — colors of destinations. Text: #111827 headings, #6B7280 body. Cards on white. Light warm sections (#FDF8F3) for visual breaks.
+- Typography: clean and modern with aspirational headlines. Headlines: can use a slightly more expressive font (DM Sans, Outfit) in 600-700 weight. Destination names: featured prominently. Prices: clear, with "per night" or "from $X" formatting. Body: 400 weight, readable. Hero headline: large, evocative ("Discover your next adventure", "Where to next?").
+- Search component: THE PRIMARY UI. Prominent, centered on hero. Clean white card with: destination input, date range picker (check-in/check-out), guests dropdown, search button. Well-organized, easy to use. Consider tab switching for different search types.
+- Destination/property cards: large image placeholder (16:9), destination or property name, location, rating (★ 4.9), price per night or trip price, save/wishlist heart. Images should feel aspirational. Cards have subtle hover effect. Grid of 3-4 cards.
+- Experience cards: category cards (Beach, Mountain, City, Adventure) with evocative imagery placeholders and overlaid titles.
+- Trust elements: booking count ("10,000+ travelers"), ratings, Superhost/verified badges, clear cancellation policies.
+- Decorations: let the imagery do the work. Minimal UI decorations. Subtle shadows on cards. Clean iconography for amenities (wifi, pool, etc. described as icons).
+- Buttons: "Search", "Book Now", "Explore", "View All". Primary: filled with accent color. The main CTA is SEARCH. Booking buttons are secondary.
+- Vibe: Airbnb, Booking.com, Expedia, boutique hotel sites. The design sells experiences and dreams — then makes booking frictionless. Aspirational imagery + functional booking UI. You want to go there immediately.`,
+  },
+
+  fitness: {
+    name: 'Fitness / Sports',
+    prompt: `Use a FITNESS / SPORTS / ATHLETIC style.
+- Layout: dynamic and energetic. Full-width hero with bold headline, action-oriented subtext, strong CTA ("Start Training", "Join Now"). Below: programs/classes grid, trainer profiles, membership tiers, transformation testimonials (before/after placeholder), gym amenities, app download CTA. Navigation: Programs, Classes, Trainers, Membership, Location.
+- Colors: bold and energetic. Dark backgrounds for drama — near-black (#0A0A0A) or deep charcoal (#1A1A1A) for hero and feature sections. Primary accent: energetic orange (#F97316), electric red (#EF4444), or neon green (#22C55E). Secondary: white text on dark, dark text on light sections. High contrast throughout. The palette should feel ACTIVE.
+- Typography: bold, strong, condensed. Headlines in heavy weights (800-900) — Oswald, Bebas Neue style (describe as "tall, condensed, bold"). UPPERCASE for impact headlines and section labels. Large sizes (4-6rem for hero). Body: clean sans-serif (Inter) in normal weight for readability. The typography feels powerful.
+- Imagery placeholders: describe athletic, action-oriented scenes — people mid-workout, gym equipment, dynamic poses. High contrast, dramatic lighting described. Desaturated or color-graded feel. These images sell the energy.
+- Program cards: image placeholder (athlete/exercise), program name, difficulty level, duration (6 weeks), results focus ("Build Strength", "Lose Fat"). Cards have dark backgrounds or dramatic imagery. Bold typography on cards.
+- Trainer cards: photo placeholder, name, specialty, certifications, "Book Session" CTA. Social proof element.
+- Membership/pricing: tiered cards (Basic, Pro, Elite). Dark or gradient backgrounds. Features list with checkmarks. Prominent pricing. "Most Popular" badge on middle tier.
+- Stats: impactful numbers — "10,000+ members", "500+ workouts", "50+ trainers", "24/7 access". Large, bold treatment.
+- Decorations: dynamic angles — use CSS clip-path for diagonal section cuts. Abstract geometric shapes suggesting movement. Subtle grid or line patterns. Motivational text treatments ("NO EXCUSES", "PUSH YOUR LIMITS").
+- Buttons: bold, filled, uppercase text. "JOIN NOW", "START FREE TRIAL", "BOOK CLASS". Primary in accent color. Large, impossible to miss. On hover: energetic effect (scale, glow).
+- Vibe: Nike, Under Armour, Peloton, premium gym brands. The design motivates — you feel energized just looking at it. Bold, confident, no excuses. Makes you want to start working out immediately.`,
+  },
+
+  nonprofit: {
+    name: 'Non-profit / Charity',
+    prompt: `Use a NON-PROFIT / CHARITY / CAUSE style.
+- Layout: max-width 1200px. Hero: emotional headline, impactful subtext, prominent donation CTA ("Donate Now", "Join the Cause"). Below: mission/impact section, programs overview, impact statistics with visual representation, stories/testimonials from beneficiaries, ways to help (donate, volunteer, spread word), partners/supporters logos, newsletter signup. Navigation: About, Our Work, Impact, Get Involved, Donate.
+- Colors: cause-appropriate and warm. Background: clean white or warm off-white (#FDF8F3). Primary accent based on cause: hope blue (#3B82F6) for general, green (#059669) for environmental, warm orange (#F97316) for humanitarian, purple (#7C3AED) for education/arts. The accent is used for CTAs and highlights. Text: warm dark (#1E293B), NOT harsh black. Emotional warmth in the palette.
+- Typography: approachable and earnest. Headlines: slightly expressive sans-serif or friendly serif (Source Serif, Lora) for warmth. Body: clean sans-serif (Inter, DM Sans), comfortable reading sizes. Nothing too corporate or too casual. The typography feels genuine and human.
+- Donate button: THE MOST IMPORTANT ELEMENT. Always visible — in nav, in hero, floating or repeated throughout. Filled with accent color, prominent size. "Donate", "Give Now", "Support Our Mission". Cannot be missed.
+- Impact statistics: large, visual numbers. "$2M raised", "50,000 lives changed", "100 communities served". Use icons or simple visualizations. These prove the organization's effectiveness.
+- Story/testimonial cards: beneficiary stories with photo placeholder (described warmly), name, location, their story quote. These create emotional connection. Photo-forward cards.
+- Ways to help section: multiple options — Donate (primary), Volunteer, Corporate partnerships, Spread the word. Each with icon and brief description.
+- Trust elements: annual report link, charity ratings badges, financial transparency section, partner/donor logos. Non-profits must build trust.
+- Decorations: subtle and purposeful. Soft shapes suggesting hope/growth. Photos do the emotional heavy lifting. Avoid looking too "designed" — authenticity matters.
+- Buttons: "Donate Now" is filled, prominent, repeated. Secondary CTAs: "Learn More", "Get Involved", "Volunteer" in outlined style.
+- Vibe: charity:water, Red Cross, local community foundations, environmental nonprofits. The design creates emotional connection and drives action. It's warm, trustworthy, and human. You feel good donating here. The mission is clear; the impact is visible; the ask is obvious.`,
+  },
+
+  agency: {
+    name: 'Agency / Creative',
+    prompt: `Use an AGENCY / CREATIVE STUDIO style.
+- Layout: unconventional and bold. Hero: massive headline with attitude, minimal subtext, work preview or creative visual element. NO traditional hero-features-CTA structure. Below: portfolio/work showcase (the MAIN content), about/philosophy section, client logos, team (optional), contact. Navigation: minimal — Work, About, Contact. The work is the hero of the site.
+- Colors: bold and distinctive — the agency's "signature". Options: high contrast black (#000000) and white with one bold accent; all dark with neon accent; muted sophistication with cream and charcoal. Every agency has a distinctive palette. Use it consistently and confidently. Text: high contrast, readable.
+- Typography: DISTINCTIVE — typography IS the design for creative agencies. Options: oversized display serif (6-10rem headlines), brutalist monospace, elegant thin sans-serif, or bold condensed type. The type choice defines the agency personality. Mix weights and sizes dramatically. Headlines can break conventional rules.
+- Work/portfolio showcase: THE MAIN CONTENT. Large, full-width project images or cards. Project title + client + year. Hover: project reveal, title animation, or case study preview. Grid can be bento-style, masonry, or dramatic single-column scroll. Each project should feel like a teaser for the full case study.
+- About section: short, punchy copy about the agency's philosophy. Maybe a manifesto statement. Not corporate boilerplate — actual personality. Team photos optional (some agencies prefer anonymity).
+- Client logos: shown in grayscale, subtle. Not the hero of the page — the work is the hero. But logos build credibility.
+- Contact section: minimal but prominent. Email address large. Maybe a simple contact form. Physical address optional. "Let's talk" / "Get in touch" / "Start a project" energy.
+- Decorations: depends on agency style. Could be: minimal (whitespace is the decoration), experimental (cursor effects, unusual layouts), bold (geometric shapes, strong lines), or refined (subtle typography details). The decoration style IS the portfolio.
+- Buttons: minimal — often just styled text links. "View Project →", "Say Hello →". If buttons exist, they match the agency's aesthetic. Nothing generic.
+- Interactions: this is where agencies show off. Hover effects, scroll animations, transitions, cursor changes. The interactivity demonstrates the agency's craft. But substance over flash — don't let gimmicks overshadow the work.
+- Vibe: award-winning design studios, agencies on Awwwards, creative studios with attitude. The website IS the portfolio — it demonstrates capabilities by existing. Confident, distinctive, memorable. You leave knowing exactly what this agency is about and wanting to hire them.`,
+  },
+
+  events: {
+    name: 'Events / Conference',
+    prompt: `Use an EVENTS / CONFERENCE style.
+- Layout: full-width, urgency-driven. Hero: event name (large), date (prominent), location, countdown timer, early-bird CTA ("Get Tickets", "Register Now"). Below: speaker lineup grid, schedule/agenda, venue info, sponsor logos, FAQ, ticket tiers. Navigation: Speakers, Schedule, Venue, Tickets. The date and ticket CTA must be ever-present.
+- Colors: distinctive event branding. Choose a bold primary: electric blue (#3B82F6), vibrant purple (#7C3AED), energetic coral (#F97316), or tech green (#10B981). Use it extensively — hero background, CTAs, section accents. Secondary: dark (#111827) for contrast, white for content areas. The event should feel like it has its own brand identity.
+- Typography: bold and event-specific. Large event name treatment (4-6rem, could be custom lettering described). Date and location: prominent, clear. Headlines: bold sans-serif (700-800 weight). Body: clean sans-serif. Speaker names: semibold, clear hierarchy.
+- Countdown timer: THE URGENCY ELEMENT. Days/Hours/Minutes/Seconds displayed prominently. "Event starts in..." Creates FOMO. Styled to match event branding.
+- Speaker cards: photo placeholder (square, professional), name, title/company, talk title or topic tags. Grid of 4-6 speakers featured, "View All Speakers" link. Speakers are the draw — feature them prominently.
+- Schedule/agenda: organized by day and time slot. Track differentiation if multiple tracks (color-coded tabs). Clear time stamps. Talk title, speaker, and room/location. Expandable details optional. Could be timeline or table format.
+- Ticket section: tiered cards (Early Bird, Regular, VIP). Price prominent. What's included list. "Limited availability" or "X spots left" urgency. Clear primary "Get Tickets" CTA.
+- Venue section: map placeholder, address, travel/accommodation info. Photo of venue placeholder. Practical info that helps people commit.
+- Sponsor logos: tiered (Gold, Silver, Bronze or similar). Logos displayed in grid. "Become a Sponsor" link.
+- Decorations: event-branded elements. Geometric shapes, patterns, or photo treatments that create a distinct visual identity. Could be: tech-inspired grid patterns, creative gradients, bold geometric accents. The event should feel special and worth attending.
+- Buttons: high-urgency CTAs. "Get Tickets Now", "Register", "Book Your Spot". Filled with primary color, large. Secondary: "Learn More", "View Schedule".
+- Vibe: major tech conferences (WWDC, Google I/O), design conferences (Figma Config, OFFF), professional summits. The design creates excitement and urgency. You want to be there. The speakers look great, the schedule looks valuable, and tickets feel limited. Register NOW.`,
+  },
+
+  gaming: {
+    name: 'Gaming',
+    prompt: `Use a GAMING / GAME MARKETING style.
+- Layout: full-width, immersive, cinematic. Hero: full-viewport key art placeholder with game logo, release date, and "Pre-order" or "Play Now" CTA. Below: game trailer/video placeholder, feature highlights, character/world showcase, editions/pricing, reviews/accolades, community section, platform availability. The page is an EXPERIENCE, not a brochure.
+- Colors: game-appropriate but typically dramatic. Dark backgrounds (#0A0A0F) for immersion — the game art needs to pop. Accent: neon/electric colors that match the game's palette (cyan, magenta, gold, green). High contrast. UI elements have subtle glow effects. The page should feel like an extension of the game world.
+- Typography: genre-appropriate display font. Sci-fi: futuristic, angular. Fantasy: ornate, medieval-inspired. Modern: bold, condensed. The typography contributes to world-building. Game title: can be stylized or replaced with logo. UI text: clean sans-serif for readability.
+- Hero treatment: the KEY element. Full-screen key art or video placeholder. Game logo centered or positioned dramatically. Release date prominent. Platform icons (PlayStation, Xbox, Steam, Switch described as small icons). Pre-order/Buy button with glow effect.
+- Video/trailer section: large video player placeholder. "Watch Trailer" — this is the main marketing asset.
+- Feature showcase: game features with dramatic screenshots. "Open World", "Multiplayer", "100+ Hours" type selling points. Visual, not text-heavy. Let the imagery sell.
+- Editions/pricing: Standard, Deluxe, Ultimate editions. What's included (base game, DLC, skins, etc.). Box art placeholder for each. Pre-order bonuses highlighted.
+- Reviews/accolades: "9/10 - IGN", "Game of the Year" badges. Review score prominently displayed. Press quotes.
+- Platform availability: PlayStation, Xbox, PC, Switch icons with "Available Now" or "Coming Soon" status.
+- Decorations: immersive UI elements. Subtle animated particles (described as CSS animations — floating dust, ember particles for fantasy, data streams for sci-fi). Glow effects on interactive elements. HUD-inspired UI borders. Background elements suggesting the game world.
+- Buttons: "Pre-order Now", "Buy Now", "Watch Trailer", "Join Community". Glowing, animated effects on hover. Style matches the game universe.
+- Vibe: PlayStation exclusives, AAA game launches, Steam store pages elevated. The page is a portal into the game world. Immersive, dramatic, makes you need to play this game. Every scroll reveals more of the world. You're sold before you reach the buy button.`,
+  },
+
+  legal: {
+    name: 'Legal / Professional Services',
+    prompt: `Use a LEGAL / PROFESSIONAL SERVICES style.
+- Layout: max-width 1100px, structured and trustworthy. Hero: clear value proposition headline (what they do + who they help), professional subtext, "Schedule Consultation" CTA. Below: practice areas/services grid, attorney/team profiles, case results or credentials, client testimonials, firm history/about, contact with multiple channels. Navigation: Practice Areas, Attorneys, About, Results, Contact.
+- Colors: authoritative and trustworthy. Primary: deep navy (#1E3A5F) or forest green (#1B4332) — colors of trust and stability. Background: clean white (#FFFFFF) with light gray (#F8FAFC) alternate sections. Accent: muted gold (#B8860B) or burgundy (#722F37) for subtle prestige touches. Text: dark (#111827) for maximum readability. NO bright colors, NO playful tones. Serious but not cold.
+- Typography: traditional and readable. Headlines: professional serif (Lora, Source Serif, or Merriweather) — serif conveys establishment and trust. Body: clean sans-serif (Inter, system-ui) for readability. Sizes: conservative, nothing oversized. The typography says "we've been doing this a long time."
+- Attorney/team cards: professional photo placeholder (described as formal headshot), name, title (Partner, Associate), practice areas, education/credentials, "View Profile" link. Grid of 3-4 per row. Photos should feel professional, approachable, competent.
+- Practice areas: icon (described as simple line icon) + practice area name + brief description. Cards or list format. Link to detailed practice area pages. Common areas: Corporate, Litigation, Employment, Real Estate, Estate Planning, etc.
+- Credentials/results: bar admissions, awards, case results (where appropriate), years of experience. These build trust. "AV Rated", "Super Lawyers", firm anniversaries.
+- Testimonials: client quotes with name/initial + company or "Verified Client". Focus on professionalism, outcomes, communication. Carousel or cards.
+- Contact section: multiple channels — phone (prominent), email, contact form, office address with map placeholder. "Schedule a Consultation" CTA. Office hours.
+- Decorations: minimal and dignified. Thin lines, subtle borders. Possibly subtle legal imagery (scales, columns — described appropriately). NO heavy graphics. The content builds trust, not the decoration.
+- Buttons: "Schedule Consultation", "Contact Us", "View Our Practice Areas". Filled with primary color (navy/green), professional sizing. Not flashy — reliable.
+- Vibe: established law firms, BigLaw websites, professional consultancies. The design says "we are competent, established, and trustworthy." You feel confident hiring this firm. Professional without being stuffy. Approachable without being casual. Your matter is in good hands.`,
+  },
 };
 
 // ─── Creative Variation Nudges ──────────────────────────────────────────────

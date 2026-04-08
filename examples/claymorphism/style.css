@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-peach: #FEF3E7;
+    --clay-coral: #FFB4A2;
+    --clay-lavender: #B8A9C9;
+    --clay-mint: #98D8C8;
+    --clay-yellow: #F7DC6F;
+    --clay-blue: #89CFF0;
+    --clay-white: #FFFFFF;
+    --text-dark: #2D3436;
+    --shadow-inner: inset 4px 4px 8px rgba(255, 255, 255, 0.6);
+    --shadow-outer: 12px 12px 24px rgba(0, 0, 0, 0.08);
+    --shadow-glow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+body {
+    background-color: var(--bg-peach);
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+}
+
+.clay-container {
+    max-width: 1100px;
+}
+
+.clay-base {
+    border-radius: 32px;
+    box-shadow: var(--shadow-inner), var(--shadow-outer), var(--shadow-glow);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+}
+
+.clay-card-white {
+    background-color: var(--clay-white);
+}
+
+.clay-card-coral {
+    background-color: var(--clay-coral);
+}
+
+.clay-card-lavender {
+    background-color: var(--clay-lavender);
+}
+
+.clay-card-mint {
+    background-color: var(--clay-mint);
+}
+
+.clay-card-yellow {
+    background-color: var(--clay-yellow);
+}
+
+.clay-card-blue {
+    background-color: var(--clay-blue);
+}
+
+.clay-button {
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    box-shadow: var(--shadow-inner), 6px 6px 12px rgba(0, 0, 0, 0.1), 0 0 0 2px rgba(255, 255, 255, 0.2);
+    transition: all 0.2s ease;
+}
+
+.clay-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-inner), 10px 10px 20px rgba(0, 0, 0, 0.12), 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
+
+.clay-button:active {
+    transform: translateY(1px);
+    box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.1), 2px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.blob-shape {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.clay-nav {
+    backdrop-filter: blur(8px);
+    background-color: rgba(254, 243, 231, 0.8);
+    border-radius: 0 0 24px 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.clay-progress-bar {
+    height: 12px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.05);
+    overflow: hidden;
+    box-shadow: inset 2px 2px 4px rgba(0,0,0,0.05);
+}
+
+.clay-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: var(--shadow-inner);
+}
+
+.stat-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.section-padding {
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+/* Custom spacing for the grid */
+.clay-grid {
+    display: grid;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .clay-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .clay-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

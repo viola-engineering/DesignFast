@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NORDLYS | Sustainable Scandinavian Furniture</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#3D3D3D',
+                        warmwhite: '#FAFAF8',
+                        sage: '#A3B18A',
+                        terracotta: '#C4A484',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-warmwhite text-charcoal">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-warmwhite bg-opacity-90 backdrop-blur-sm px-8 py-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="font-serif text-xl tracking-widest uppercase">Nordlys</div>
+            <div class="hidden md:flex space-x-12 text-sm uppercase letter-spacing-wide">
+                <a href="#collection" class="h-underline">Collection</a>
+                <a href="#philosophy" class="h-underline">Philosophy</a>
+                <a href="#studio" class="h-underline">The Studio</a>
+            </div>
+            <div class="text-sm uppercase letter-spacing-wide">
+                <a href="#" class="h-underline">Cart (0)</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="h-screen flex flex-col items-center justify-center text-center px-6">
+        <div class="max-content-width fade-in-up">
+            <span class="text-xs uppercase letter-spacing-wide text-sage mb-6 block">Est. 2018 — Copenhagen</span>
+            <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl mb-8 leading-tight">Furniture made for <br><i class="italic">slow living.</i></h1>
+            <p class="text-lg md:text-xl font-light mb-10 text-opacity-80 max-w-2xl mx-auto">
+                We create pieces that respect the raw materials and the people who use them. Honest craftsmanship, intended to last generations.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#collection" class="btn-nordic">Explore Collection</a>
+            </div>
+        </div>
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce opacity-40">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Collection Section -->
+    <section id="collection" class="section-spacing px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-20 text-center">
+                <h2 class="font-serif text-3xl mb-4">The core collection</h2>
+                <div class="w-12 h-px bg-charcoal mx-auto mb-6 opacity-20"></div>
+                <p class="max-w-xl mx-auto font-light">Small batch productions using certified oak, walnut, and recycled linen.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+                <!-- Product 1 -->
+                <div class="fade-in-up delay-1">
+                    <div class="product-image-container mb-6">
+                        <!-- Minimal SVG representation of a chair -->
+                        <svg class="w-24 h-24 opacity-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M7 20v-5h10v5M7 10h10V5H7v5zM5 21l2-1M19 21l-2-1M7 10V5a2 2 0 012-2h6a2 2 0 012 2v5M7 15l-2 2M17 15l2 2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">The Ask Lounge Chair</h3>
+                    <p class="text-sm uppercase letter-spacing-wide mb-3 text-opacity-60">Solid Oak / Natural Linen</p>
+                    <p class="font-light text-sm mb-6">A sculptural form designed for comfort. Hand-finished wood with traditional joinery.</p>
+                    <a href="#" class="text-sm uppercase tracking-wider h-underline">View Details</a>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="fade-in-up delay-2">
+                    <div class="product-image-container mb-6">
+                        <svg class="w-24 h-24 opacity-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <rect x="4" y="8" width="16" height="4" rx="1"/>
+                            <path d="M6 12v6M18 12v6M4 8V6a2 2 0 012-2h12a2 2 0 012 2v2"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">The Refleks Table</h3>
+                    <p class="text-sm uppercase letter-spacing-wide mb-3 text-opacity-60">Smoked Walnut</p>
+                    <p class="font-light text-sm mb-6">A gathering place for families. Minimalist lines that emphasize the natural grain.</p>
+                    <a href="#" class="text-sm uppercase tracking-wider h-underline">View Details</a>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="fade-in-up delay-3">
+                    <div class="product-image-container mb-6">
+                        <svg class="w-24 h-24 opacity-20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M4 10h16v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6z"/>
+                            <path d="M4 10V8a2 2 0 012-2h12a2 2 0 012 2v2M4 13h16"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl mb-2">The Soft Sofa</h3>
+                    <p class="text-sm uppercase letter-spacing-wide mb-3 text-opacity-60">Recycled Wool Mix</p>
+                    <p class="font-light text-sm mb-6">Modular comfort for the modern home. Deep seating and cloud-like cushions.</p>
+                    <a href="#" class="text-sm uppercase tracking-wider h-underline">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote / Philosophy -->
+    <section id="philosophy" class="bg-warmwhite py-32 px-6">
+        <div class="max-content-width mx-auto text-center">
+            <svg class="leaf-accent mx-auto mb-10" viewBox="0 0 24 24">
+                <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8.17,20C12.14,20 17,15 17,8M16,16L14,16C14,13 12,10 9,10L9,8C14,8 16,11 16,16M13,16L11,16C11,14 10,13 9,13L9,11C12,11 13,13 13,16Z"/>
+            </svg>
+            <blockquote class="font-serif text-2xl md:text-3xl italic leading-relaxed mb-10">
+                "We believe that a well-crafted object has a soul. It carries the history of the tree, the focus of the maker, and the life of the home it inhabits."
+            </blockquote>
+            <p class="uppercase letter-spacing-wide text-xs opacity-60">— Sune Nielsen, Head Craftsman</p>
+        </div>
+    </section>
+
+    <!-- Narrative Section -->
+    <section id="studio" class="section-spacing px-6 bg-white bg-opacity-40">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div class="order-2 md:order-1">
+                <div class="aspect-square bg-soft-gray flex items-center justify-center nordic-card overflow-hidden">
+                   <!-- Decorative simple line art -->
+                    <svg class="w-full h-full opacity-10" viewBox="0 0 100 100">
+                        <line x1="0" y1="20" x2="100" y2="80" stroke="currentColor" stroke-width="0.5"/>
+                        <line x1="20" y1="0" x2="80" y2="100" stroke="currentColor" stroke-width="0.5"/>
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="max-content-width order-1 md:order-2">
+                <h2 class="font-serif text-3xl mb-8">Honest Materials</h2>
+                <p class="font-light mb-6 text-lg">
+                    Sustainability isn't a marketing term for us; it's the foundation of our existence. We only use FSC-certified hardwoods from Scandinavian forests.
+                </p>
+                <p class="font-light mb-8 text-opacity-80">
+                    Each piece is treated with organic oils and natural waxes, allowing the wood to breathe and age gracefully over time. We reject the 'disposable' culture of modern furniture.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-2 h-2 rounded-full bg-sage"></div>
+                        <span class="text-sm uppercase tracking-wide">Zero-waste workshop</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-2 h-2 rounded-full bg-sage"></div>
+                        <span class="text-sm uppercase tracking-wide">Plastic-free packaging</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-2 h-2 rounded-full bg-sage"></div>
+                        <span class="text-sm uppercase tracking-wide">Lifetime repair guarantee</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journal / Newsletter -->
+    <section class="section-spacing px-6">
+        <div class="max-content-width mx-auto text-center">
+            <h2 class="font-serif text-2xl mb-6">Slow Living Journal</h2>
+            <p class="font-light mb-10 text-opacity-70">Occasional letters on interior design, craftsmanship, and the art of being present.</p>
+            <form class="flex flex-col md:flex-row gap-4 justify-center max-w-md mx-auto">
+                <input type="email" placeholder="Your email address" class="bg-transparent border-b border-charcoal border-opacity-20 px-4 py-3 focus:outline-none focus:border-opacity-100 transition-all flex-grow font-light text-sm">
+                <button type="submit" class="btn-nordic">Join</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-charcoal border-opacity-5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="md:col-span-2">
+                <div class="font-serif text-2xl tracking-widest uppercase mb-6">Nordlys</div>
+                <p class="font-light text-sm max-w-xs opacity-70">
+                    A family-owned workshop dedicated to the Nordic design tradition of simplicity, functionality, and beauty.
+                </p>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest font-semibold mb-6">Contact</h4>
+                <ul class="text-sm font-light space-y-3 opacity-70">
+                    <li>København V, Denmark</li>
+                    <li>hello@nordlys-studio.dk</li>
+                    <li>+45 20 30 40 50</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs uppercase tracking-widest font-semibold mb-6">Social</h4>
+                <ul class="text-sm font-light space-y-3 opacity-70">
+                    <li><a href="#" class="h-underline">Instagram</a></li>
+                    <li><a href="#" class="h-underline">Pinterest</a></li>
+                    <li><a href="#" class="h-underline">Journal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto mt-20 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-widest opacity-40">
+            <p>&copy; 2026 Nordlys Furniture Studio</p>
+            <div class="flex space-x-8 mt-4 md:mt-0">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Shipping</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

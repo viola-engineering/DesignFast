@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADICAL SHAPES 2026 | Design Conference</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased overflow-x-hidden">
+    <!-- Background Decor -->
+    <div class="fixed top-20 left-10 float-element hidden lg:block">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+            <polygon points="50,5 95,95 5,95" fill="#FFE600" stroke="black" stroke-width="3"/>
+        </svg>
+    </div>
+    <div class="fixed top-1/2 right-10 float-element hidden lg:block">
+        <svg width="120" height="40" viewBox="0 0 120 40">
+            <path d="M0,20 Q15,0 30,20 T60,20 T90,20 T120,20" fill="none" stroke="#FF6B9D" stroke-width="6"/>
+        </svg>
+    </div>
+    <div class="fixed bottom-20 left-20 float-element hidden lg:block">
+        <circle cx="40" cy="40" r="35" fill="#98FF98" stroke="black" stroke-width="3"/>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-50 px-6 py-8 max-w-[1200px] mx-auto flex justify-between items-center">
+        <div class="bg-memphis-yellow memphis-border memphis-shadow-sm px-4 py-2 tilted-left">
+            <span class="font-heading text-2xl">RS2026</span>
+        </div>
+        <div class="hidden md:flex gap-8 bg-white memphis-border px-8 py-3 tilted-right">
+            <a href="#about" class="nav-link font-heading text-sm">About</a>
+            <a href="#speakers" class="nav-link font-heading text-sm">Speakers</a>
+            <a href="#schedule" class="nav-link font-heading text-sm">Schedule</a>
+            <a href="#tickets" class="nav-link font-heading text-sm">Tickets</a>
+        </div>
+        <div class="bg-memphis-blue memphis-border memphis-shadow-sm px-6 py-2 cursor-pointer hover:bg-memphis-pink transition-colors">
+            <span class="text-white font-heading text-sm">Register</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative px-6 pt-20 pb-32 max-w-[1200px] mx-auto">
+        <div class="relative z-10">
+            <h1 class="hero-text tilted-left">
+                <span class="block bg-memphis-pink text-white inline-block px-4 mb-2 memphis-border">RADICAL</span><br>
+                <span class="block bg-memphis-yellow inline-block px-4 mb-2 memphis-border">SHAPES</span><br>
+                <span class="block bg-memphis-blue text-white inline-block px-4 memphis-border">2026</span>
+            </h1>
+            
+            <div class="mt-12 flex flex-col md:flex-row gap-8 items-start">
+                <div class="bg-white memphis-border memphis-shadow p-6 max-w-sm tilted-right">
+                    <p class="text-xl font-bold leading-tight">
+                        The world's most chaotic design conference returns to Milan. 3 days of breaking grids and clashing colors.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <div class="bg-memphis-green memphis-border p-4 font-heading text-lg memphis-shadow-sm">
+                        JUNE 15—17
+                    </div>
+                    <div class="bg-memphis-coral memphis-border p-4 font-heading text-lg text-white memphis-shadow-sm">
+                        MILAN, ITALY
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scattered Shapes behind hero -->
+        <div class="absolute top-0 right-0 w-1/2 h-full pattern-dots opacity-20 -z-10"></div>
+        <div class="absolute -bottom-10 right-20 bg-memphis-purple w-64 h-64 shape-blob memphis-border -z-10"></div>
+    </header>
+
+    <!-- Marquee/Ribbon -->
+    <div class="bg-black py-4 overflow-hidden whitespace-nowrap rotate-2 w-[110%] -translate-x-[5%] border-y-4 border-memphis-yellow">
+        <div class="inline-block animate-marquee">
+            <span class="text-white font-heading text-3xl mx-8">NO MINIMALISM ALLOWED • BOLD COLORS ONLY • BREAK THE GRID • NO MINIMALISM ALLOWED • BOLD COLORS ONLY • BREAK THE GRID •</span>
+            <span class="text-white font-heading text-3xl mx-8">NO MINIMALISM ALLOWED • BOLD COLORS ONLY • BREAK THE GRID • NO MINIMALISM ALLOWED • BOLD COLORS ONLY • BREAK THE GRID •</span>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-32 px-6 bg-memphis-yellow pattern-grid">
+        <div class="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-16 items-center">
+            <div class="bg-white memphis-border memphis-shadow p-10 tilted-left">
+                <h2 class="text-5xl font-heading mb-6">Why so serious?</h2>
+                <p class="text-lg mb-6 leading-relaxed">
+                    Design has become too safe. Too clean. Too predictable. Radical Shapes is here to punch a hole through the beige wall of modern web design. 
+                </p>
+                <p class="text-lg font-bold">
+                    We're bringing back the energy of the 80s, the audacity of the Memphis Group, and the pure joy of visual experimentation.
+                </p>
+            </div>
+            <div class="relative">
+                <div class="bg-memphis-blue w-full h-80 memphis-border memphis-shadow tilted-right flex items-center justify-center p-8">
+                    <div class="bg-white p-4 memphis-border rotate-12">
+                        <svg width="100" height="100" viewBox="0 0 100 100">
+                            <path d="M10,50 L30,20 L50,50 L70,80 L90,50" fill="none" stroke="black" stroke-width="8"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-10 -right-10 bg-memphis-pink w-32 h-32 rounded-full memphis-border flex items-center justify-center font-heading text-white rotate-12">
+                        WOW!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Speakers Section -->
+    <section id="speakers" class="py-32 px-6 overflow-hidden">
+        <div class="max-w-[1100px] mx-auto">
+            <h2 class="text-6xl font-heading mb-16 inline-block bg-memphis-green px-6 py-2 memphis-border tilted-left">The Visionaries</h2>
+            
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- Speaker 1 -->
+                <div class="flex flex-col group">
+                    <div class="relative bg-memphis-coral p-2 memphis-border memphis-shadow-hover transition-all duration-300 tilted-right group-hover:rotate-0">
+                        <div class="bg-white aspect-square memphis-border overflow-hidden pattern-dots">
+                             <!-- Placeholder for speaker image -->
+                             <div class="w-full h-full flex items-center justify-center text-8xl">👾</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-black text-white p-4 memphis-border self-start tilted-left">
+                        <h3 class="font-heading text-xl">Zoe Zigzag</h3>
+                        <p class="text-memphis-green font-bold">Experimental Typography</p>
+                    </div>
+                </div>
+
+                <!-- Speaker 2 -->
+                <div class="flex flex-col group mt-12">
+                    <div class="relative bg-memphis-blue p-2 memphis-border memphis-shadow-hover transition-all duration-300 tilted-left group-hover:rotate-0">
+                        <div class="bg-white aspect-square memphis-border overflow-hidden pattern-stripes">
+                             <div class="w-full h-full flex items-center justify-center text-8xl">🌀</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-memphis-yellow p-4 memphis-border self-start tilted-right">
+                        <h3 class="font-heading text-xl">Max Polka</h3>
+                        <p class="font-bold">Color Theory Anarchist</p>
+                    </div>
+                </div>
+
+                <!-- Speaker 3 -->
+                <div class="flex flex-col group">
+                    <div class="relative bg-memphis-pink p-2 memphis-border memphis-shadow-hover transition-all duration-300 tilted-right group-hover:rotate-0">
+                        <div class="bg-white aspect-square memphis-border overflow-hidden pattern-grid">
+                             <div class="w-full h-full flex items-center justify-center text-8xl">⚡</div>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-memphis-green p-4 memphis-border self-start tilted-left">
+                        <h3 class="font-heading text-xl">Dr. Squiggle</h3>
+                        <p class="font-bold">Irregular Layouts CEO</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="py-32 px-6 bg-memphis-blue pattern-dots">
+        <div class="max-w-[1100px] mx-auto">
+            <h2 class="text-6xl font-heading mb-16 text-white inline-block bg-black px-6 py-2 memphis-border tilted-right">The Chaos Plan</h2>
+            
+            <div class="space-y-8">
+                <!-- Row 1 -->
+                <div class="grid md:grid-cols-[200px_1fr] gap-4">
+                    <div class="bg-memphis-yellow p-4 memphis-border font-heading text-center tilted-left">09:00 AM</div>
+                    <div class="bg-white p-6 memphis-border memphis-shadow-sm flex justify-between items-center tilted-right">
+                        <div>
+                            <h4 class="font-heading text-2xl">Opening Ceremony</h4>
+                            <p class="font-bold text-gray-600">The Geometry of Happiness</p>
+                        </div>
+                        <div class="hidden md:block bg-memphis-pink w-12 h-12 rounded-full memphis-border"></div>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <div class="grid md:grid-cols-[200px_1fr] gap-4 translate-x-4">
+                    <div class="bg-memphis-green p-4 memphis-border font-heading text-center tilted-right">11:30 AM</div>
+                    <div class="bg-white p-6 memphis-border memphis-shadow-sm flex justify-between items-center tilted-left">
+                        <div>
+                            <h4 class="font-heading text-2xl">Killing the Grid</h4>
+                            <p class="font-bold text-gray-600">Interactive Workshop with Zoe Zigzag</p>
+                        </div>
+                        <div class="hidden md:block bg-memphis-blue w-12 h-4 memphis-border rotate-45"></div>
+                    </div>
+                </div>
+
+                <!-- Row 3 -->
+                <div class="grid md:grid-cols-[200px_1fr] gap-4">
+                    <div class="bg-memphis-coral p-4 memphis-border font-heading text-center text-white tilted-left">02:00 PM</div>
+                    <div class="bg-white p-6 memphis-border memphis-shadow-sm flex justify-between items-center tilted-right">
+                        <div>
+                            <h4 class="font-heading text-2xl">The Color War</h4>
+                            <p class="font-bold text-gray-600">Why #000 is your best friend</p>
+                        </div>
+                        <div class="hidden md:block bg-memphis-yellow w-12 h-12 memphis-border"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ticket Section -->
+    <section id="tickets" class="py-32 px-6">
+        <div class="max-w-[1100px] mx-auto text-center">
+            <h2 class="text-6xl font-heading mb-20 inline-block bg-memphis-pink text-white px-6 py-2 memphis-border tilted-left">Join the movement</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-stretch">
+                <!-- Ticket 1 -->
+                <div class="bg-white memphis-border memphis-shadow p-12 flex flex-col items-center tilted-right hover:rotate-0 transition-transform">
+                    <div class="w-24 h-24 bg-memphis-yellow rounded-full memphis-border mb-8 flex items-center justify-center font-heading text-3xl">!</div>
+                    <h3 class="text-4xl font-heading mb-2">The Squiggle</h3>
+                    <p class="text-xl font-bold mb-8">Early Bird Access</p>
+                    <div class="text-6xl font-heading mb-8">$299</div>
+                    <ul class="text-left space-y-4 mb-12 font-bold">
+                        <li>⚡ 3-Day Conference Pass</li>
+                        <li>⚡ Digital Swag Bag</li>
+                        <li>⚡ Access to all recordings</li>
+                    </ul>
+                    <a href="#" class="btn-memphis bg-memphis-green memphis-border memphis-shadow-sm w-full">Grab it now</a>
+                </div>
+
+                <!-- Ticket 2 -->
+                <div class="bg-black text-white memphis-border memphis-shadow p-12 flex flex-col items-center tilted-left hover:rotate-0 transition-transform">
+                    <div class="w-24 h-24 bg-memphis-blue rounded-full memphis-border mb-8 flex items-center justify-center font-heading text-3xl">★</div>
+                    <h3 class="text-4xl font-heading mb-2">The Zigzag</h3>
+                    <p class="text-xl font-bold mb-8 text-memphis-pink">VIP Experience</p>
+                    <div class="text-6xl font-heading mb-8">$599</div>
+                    <ul class="text-left space-y-4 mb-12 font-bold">
+                        <li>⚡ Everything in Squiggle</li>
+                        <li>⚡ Exclusive Dinner with Speakers</li>
+                        <li>⚡ Limited Edition Memphis Shirt</li>
+                    </ul>
+                    <a href="#" class="btn-memphis bg-memphis-coral text-white memphis-border memphis-shadow-sm w-full">Go Pro</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-20 px-6 border-t-8 border-memphis-green">
+        <div class="max-w-[1100px] mx-auto">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div>
+                    <h3 class="font-heading text-3xl mb-6 bg-memphis-yellow text-black inline-block px-2">RS2026</h3>
+                    <p class="font-bold opacity-80">MILAN / JUNE 15-17 / 2026</p>
+                    <p class="mt-4">Radical Shapes is a non-profit initiative dedicated to the revival of bold, expressive design languages.</p>
+                </div>
+                <div class="flex flex-col gap-4 font-heading">
+                    <a href="#" class="hover:text-memphis-pink">Instagram</a>
+                    <a href="#" class="hover:text-memphis-blue">Twitter</a>
+                    <a href="#" class="hover:text-memphis-yellow">Are.na</a>
+                    <a href="#" class="hover:text-memphis-green">Newsletter</a>
+                </div>
+                <div class="bg-white text-black p-6 memphis-border tilted-right">
+                    <h4 class="font-heading mb-4">Newsletter</h4>
+                    <div class="flex flex-col gap-2">
+                        <input type="email" placeholder="YOUR@EMAIL.COM" class="w-full p-2 border-2 border-black font-bold outline-none focus:bg-memphis-yellow">
+                        <button class="bg-black text-white p-2 font-heading text-sm memphis-shadow-sm hover:translate-y-1 hover:shadow-none transition-all">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20 pt-8 border-t border-white/20 text-center font-bold text-sm">
+                &copy; 2026 RADICAL SHAPES. NO RIGHTS RESERVED. STAY WEIRD.
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

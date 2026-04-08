@@ -2,9 +2,18 @@ import 'dotenv/config';
 import Fastify from 'fastify';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
 import multipart from '@fastify/multipart';
 
 import { allowedOrigins } from './cors.js';
+
+/**
+ * Extract the real client IP when behind Cloudflare Tunnel.
+ * Falls back to req.ip for local development.
+ */
+function getClientIp(req) {
+  return req.headers['cf-connecting-ip'] || req.ip;
+}
 
 import authRoutes from './routes/auth.js';
 import generationsRoutes from './routes/generations.js';
@@ -38,6 +47,17 @@ await app.register(cors, {
   },
   credentials: true,
 });
+
+// Rate limiting — uses CF-Connecting-IP when behind Cloudflare Tunnel
+await app.register(rateLimit, {
+  global: false, // Disable global limit, apply per-route
+  keyGenerator: getClientIp,
+  // Store in memory — for multi-instance deployments, use Redis instead
+});
+
+// Export for use in route files
+export { getClientIp };
+
 await app.register(multipart, {
   limits: {
     fileSize: 5 * 1024 * 1024, // 5 MB per file

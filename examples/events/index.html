@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS 2026 | The Future of Intelligence Summit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-mesh grid-pattern">
+
+    <!-- Navigation -->
+    <nav class="nav-blur fixed top-0 w-full z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="font-display font-bold text-xl">N</span>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-tighter">NEXUS<span class="text-purple-500">2026</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#speakers" class="text-sm font-medium hover:text-purple-400 transition-colors">Speakers</a>
+                    <a href="#schedule" class="text-sm font-medium hover:text-purple-400 transition-colors">Schedule</a>
+                    <a href="#venue" class="text-sm font-medium hover:text-purple-400 transition-colors">Venue</a>
+                    <a href="#tickets" class="btn-primary px-6 py-2 rounded-full text-sm font-bold">Register Now</a>
+                </div>
+                <div class="md:hidden">
+                    <button class="p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 mb-8 animate-float">
+                <span class="w-2 h-2 rounded-full bg-purple-500 urgency-badge"></span>
+                <span class="text-sm font-bold tracking-wide uppercase">Early Bird Registration Open</span>
+            </div>
+            
+            <h1 class="hero-title hero-text-glow text-6xl md:text-8xl lg:text-9xl font-extrabold mb-6 tracking-tighter">
+                THE FUTURE <br> OF <span class="text-purple-600">INTELLIGENCE</span>
+            </h1>
+            
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mb-12">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span class="text-xl md:text-2xl font-semibold uppercase tracking-widest">Oct 14-16, 2026</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <span class="text-xl md:text-2xl font-semibold">Moscone Center, SF</span>
+                </div>
+            </div>
+
+            <!-- Countdown -->
+            <div class="flex justify-center gap-4 mb-16" id="countdown">
+                <div class="countdown-box p-4 rounded-xl">
+                    <span class="block text-3xl md:text-5xl font-bold" id="days">124</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Days</span>
+                </div>
+                <div class="countdown-box p-4 rounded-xl">
+                    <span class="block text-3xl md:text-5xl font-bold" id="hours">18</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Hours</span>
+                </div>
+                <div class="countdown-box p-4 rounded-xl">
+                    <span class="block text-3xl md:text-5xl font-bold" id="minutes">42</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Mins</span>
+                </div>
+                <div class="countdown-box p-4 rounded-xl">
+                    <span class="block text-3xl md:text-5xl font-bold" id="seconds">09</span>
+                    <span class="text-xs uppercase tracking-widest text-gray-400">Secs</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#tickets" class="btn-primary px-10 py-5 rounded-full text-lg font-bold w-full sm:w-auto">Get Your Tickets Now</a>
+                <a href="#schedule" class="btn-outline px-10 py-5 rounded-full text-lg font-bold w-full sm:w-auto">View Full Schedule</a>
+            </div>
+        </div>
+
+        <!-- Decorative Elements -->
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-0 right-0 translate-x-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px]"></div>
+    </header>
+
+    <!-- Speakers Section -->
+    <section id="speakers" class="py-24 bg-black/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div>
+                    <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">VISIONARY <span class="text-purple-500">SPEAKERS</span></h2>
+                    <p class="text-gray-400 text-lg max-w-2xl">Hear from the pioneers shaping the future of generative AI, robotics, and neural computing.</p>
+                </div>
+                <a href="#" class="text-purple-400 font-bold hover:text-purple-300 flex items-center gap-2">
+                    View All 40+ Speakers
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Speaker 1 -->
+                <div class="speaker-card rounded-2xl overflow-hidden p-4 group">
+                    <div class="relative speaker-image-container mb-6 rounded-xl overflow-hidden aspect-square">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800" alt="Sarah Chen" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 z-10">
+                            <span class="px-3 py-1 bg-purple-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Keynote</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Sarah Chen</h3>
+                    <p class="text-purple-400 text-sm font-semibold mb-3">CEO, NeuralFlow</p>
+                    <p class="text-gray-400 text-sm line-clamp-2">"The Singularity and Beyond: Living in a Co-pilot World"</p>
+                </div>
+
+                <!-- Speaker 2 -->
+                <div class="speaker-card rounded-2xl overflow-hidden p-4 group">
+                    <div class="relative speaker-image-container mb-6 rounded-xl overflow-hidden aspect-square">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" alt="Marcus Vane" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 z-10">
+                            <span class="px-3 py-1 bg-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Robotics</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Marcus Vane</h3>
+                    <p class="text-purple-400 text-sm font-semibold mb-3">Lead Architect, Atlas AI</p>
+                    <p class="text-gray-400 text-sm line-clamp-2">"Bio-Mechanical Integration in Modern Robotics"</p>
+                </div>
+
+                <!-- Speaker 3 -->
+                <div class="speaker-card rounded-2xl overflow-hidden p-4 group">
+                    <div class="relative speaker-image-container mb-6 rounded-xl overflow-hidden aspect-square">
+                        <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=800" alt="Elena Rodriguez" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 z-10">
+                            <span class="px-3 py-1 bg-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Design</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">Elena Rodriguez</h3>
+                    <p class="text-purple-400 text-sm font-semibold mb-3">VP of Design, MetaLayers</p>
+                    <p class="text-gray-400 text-sm line-clamp-2">"Interface Paradigms for Post-GUI Era"</p>
+                </div>
+
+                <!-- Speaker 4 -->
+                <div class="speaker-card rounded-2xl overflow-hidden p-4 group">
+                    <div class="relative speaker-image-container mb-6 rounded-xl overflow-hidden aspect-square">
+                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800" alt="David Park" class="w-full h-full object-cover">
+                        <div class="absolute bottom-4 left-4 z-10">
+                            <span class="px-3 py-1 bg-orange-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Security</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">David Park</h3>
+                    <p class="text-purple-400 text-sm font-semibold mb-3">CTO, Sentinel Secure</p>
+                    <p class="text-gray-400 text-sm line-clamp-2">"Autonomous Cyber-Defense at Scale"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="py-24">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold mb-6">THE <span class="text-purple-500">AGENDA</span></h2>
+                <div class="flex justify-center gap-4">
+                    <button class="px-8 py-3 rounded-full bg-purple-600 font-bold text-sm">Day 1: Foundation</button>
+                    <button class="px-8 py-3 rounded-full bg-white/5 border border-white/10 hover:border-purple-500 transition-all font-bold text-sm">Day 2: Expansion</button>
+                    <button class="px-8 py-3 rounded-full bg-white/5 border border-white/10 hover:border-purple-500 transition-all font-bold text-sm">Day 3: Impact</button>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Session 1 -->
+                <div class="schedule-row p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <div class="w-32">
+                        <span class="text-2xl font-bold">09:00 AM</span>
+                        <span class="block text-xs text-gray-500 font-bold uppercase tracking-widest">Main Stage</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-bold mb-1">Opening Keynote: Nexus State of the Union</h4>
+                        <p class="text-gray-400">Sarah Chen • CEO, NeuralFlow</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-[10px] font-bold border border-purple-500/20">LIVE</span>
+                    </div>
+                </div>
+
+                <!-- Session 2 -->
+                <div class="schedule-row p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <div class="w-32">
+                        <span class="text-2xl font-bold">11:30 AM</span>
+                        <span class="block text-xs text-gray-500 font-bold uppercase tracking-widest">Workshop B</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-bold mb-1">LLM Infrastructure for Enterprise</h4>
+                        <p class="text-gray-400">Marcus Vane & David Park</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-[10px] font-bold border border-blue-500/20">TECHNICAL</span>
+                    </div>
+                </div>
+
+                <!-- Session 3 -->
+                <div class="schedule-row p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start md:items-center">
+                    <div class="w-32">
+                        <span class="text-2xl font-bold">02:00 PM</span>
+                        <span class="block text-xs text-gray-500 font-bold uppercase tracking-widest">Arena 1</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-xl font-bold mb-1">Ethics & Governance in Autonomous Systems</h4>
+                        <p class="text-gray-400">Panel Discussion</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">PANEL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tickets Section -->
+    <section id="tickets" class="py-24 bg-purple-600/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight">SECURE YOUR <span class="text-purple-500">SPOT</span></h2>
+                <p class="text-gray-400 text-lg">Limited Early Bird pricing available until May 1st.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Early Bird -->
+                <div class="ticket-card p-8 rounded-3xl bg-white/5 flex flex-col">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Early Bird</h3>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-5xl font-bold">$499</span>
+                            <span class="text-gray-500 line-through">$899</span>
+                        </div>
+                        <p class="text-purple-400 text-sm mt-2 font-bold uppercase tracking-widest">34 Tickets Left</p>
+                    </div>
+                    <ul class="space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Full Conference Access
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Networking Reception
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Digital Swag Bag
+                        </li>
+                    </ul>
+                    <a href="#" class="btn-outline py-4 rounded-xl text-center font-bold">Select Early Bird</a>
+                </div>
+
+                <!-- Pro -->
+                <div class="ticket-card featured p-8 rounded-3xl bg-white/10 flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-purple-600 px-6 py-2 text-[10px] font-bold uppercase tracking-[0.2em] rounded-bl-xl">Best Value</div>
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Pro Summit</h3>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-5xl font-bold">$1,299</span>
+                        </div>
+                        <p class="text-purple-400 text-sm mt-2 font-bold uppercase tracking-widest">Most Popular</p>
+                    </div>
+                    <ul class="space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-3 text-sm font-semibold">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Everything in Early Bird
+                        </li>
+                        <li class="flex items-center gap-3 text-sm font-semibold">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Hands-on Workshops
+                        </li>
+                        <li class="flex items-center gap-3 text-sm font-semibold">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Priority Workshop Booking
+                        </li>
+                        <li class="flex items-center gap-3 text-sm font-semibold">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Access to After-Party
+                        </li>
+                    </ul>
+                    <a href="#" class="btn-primary py-4 rounded-xl text-center font-bold">Register Now</a>
+                </div>
+
+                <!-- VIP -->
+                <div class="ticket-card p-8 rounded-3xl bg-white/5 flex flex-col">
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold mb-2">Executive VIP</h3>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-5xl font-bold">$2,999</span>
+                        </div>
+                        <p class="text-purple-400 text-sm mt-2 font-bold uppercase tracking-widest">Exclusive Access</p>
+                    </div>
+                    <ul class="space-y-4 mb-10 flex-grow">
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Everything in Pro
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            VIP Lounge & Concierge
+                        </li>
+                        <li class="flex items-center gap-3 text-sm">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            Private Dinner with Speakers
+                        </li>
+                    </ul>
+                    <a href="#" class="btn-outline py-4 rounded-xl text-center font-bold">Go VIP</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Venue & Sponsors -->
+    <section id="venue" class="py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-8">THE <span class="text-purple-500">VENUE</span></h2>
+                    <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                        NEXUS 2026 takes place at the world-renowned Moscone Center in the heart of San Francisco. 
+                        A space designed for innovation, featuring state-of-the-art tech facilities and panoramic views of the city.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m4 0h1m-5 10h1m4 0h1m-5-4h1m4 0h1"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Moscone Center West</h4>
+                                <p class="text-sm text-gray-500">800 Howard St, San Francisco, CA 94103</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m4 0h1m-7 4h1m4 0h1m4 0h1"></path></svg>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Official Partner Hotels</h4>
+                                <p class="text-sm text-gray-500">W San Francisco, Marriott Marquis (15% discount for attendees)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="aspect-video rounded-3xl overflow-hidden border border-white/10">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" alt="Venue" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 w-48 h-48 bg-purple-600 rounded-full blur-[80px] -z-10"></div>
+                </div>
+            </div>
+
+            <!-- Sponsors -->
+            <div class="mt-32 pt-24 border-t border-white/10">
+                <p class="text-center text-gray-500 font-bold uppercase tracking-widest text-xs mb-12">Empowering NEXUS 2026</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12 opacity-50">
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">CLOUDCORE</div>
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">DATASTREAM</div>
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">NEURALINK</div>
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">SYNC.IO</div>
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">FORGE</div>
+                    <div class="flex items-center justify-center h-12 text-2xl font-bold tracking-tighter">QUANTUM</div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="#" class="text-purple-400 font-bold text-sm border-b border-purple-400/30 pb-1 hover:border-purple-400 transition-all">Become a Sponsor</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-2">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                            <span class="font-display font-bold text-lg">N</span>
+                        </div>
+                        <span class="font-display text-xl font-bold tracking-tighter">NEXUS<span class="text-purple-500">2026</span></span>
+                    </div>
+                    <p class="text-gray-500 max-w-sm mb-6">
+                        The definitive gathering for the people building the future of intelligence. 
+                        Three days of innovation, connection, and progress.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-purple-500 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:border-purple-500 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-6h2v6zm-1-6.891c-.607 0-1.1-.493-1.1-1.109 0-.616.493-1.109 1.1-1.109s1.1.493 1.1 1.109c0 .616-.493 1.109-1.1 1.109zm8 6.891h-1.998v-2.861c0-1.881-2.002-1.722-2.002 0v2.861h-2v-6h2v1.093c.879-1.561 4-1.667 4 1.467v3.44z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">Summit</h4>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="#speakers" class="hover:text-purple-400">Speakers</a></li>
+                        <li><a href="#schedule" class="hover:text-purple-400">Schedule</a></li>
+                        <li><a href="#venue" class="hover:text-purple-400">Venue</a></li>
+                        <li><a href="#tickets" class="hover:text-purple-400">Tickets</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6">Support</h4>
+                    <ul class="space-y-4 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-purple-400">FAQ</a></li>
+                        <li><a href="#" class="hover:text-purple-400">Code of Conduct</a></li>
+                        <li><a href="#" class="hover:text-purple-400">Contact Us</a></li>
+                        <li><a href="#" class="hover:text-purple-400">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-xs text-gray-600">
+                <p>© 2026 NEXUS Summit. All rights reserved.</p>
+                <p>Designed with passion for the future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Countdown Script -->
+    <script>
+        function updateCountdown() {
+            // Target date: October 14, 2026
+            const targetDate = new Date('October 14, 2026 09:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = "<span class='text-2xl font-bold'>THE SUMMIT IS LIVE!</span>";
+            }
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>

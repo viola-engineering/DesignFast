@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Grind | Hand-Roasted Artisan Coffee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="py-8 px-4 max-w-sketch mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="text-4xl font-bold font-hand rotate-tiny-ccw">
+            <span class="text-charcoal">The Daily</span>
+            <span class="text-mustard">Grind</span>
+        </div>
+        <nav class="flex gap-8 font-hand text-xl">
+            <a href="#beans" class="hover:text-rose transition-colors">Our Beans</a>
+            <a href="#brew" class="hover:text-sage transition-colors">Brew Guides</a>
+            <a href="#subscribe" class="hover:text-blue transition-colors underline decoration-dotted">Subscribe</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="max-w-sketch mx-auto px-4 py-16 flex flex-col md:flex-row items-center gap-12">
+        <div class="md:w-1/2 space-y-6">
+            <h1 class="text-6xl md:text-7xl font-bold leading-tight">
+                Freshly Roasted, <br>
+                <span class="wavy-underline">Hand-Scribbled</span> Coffee.
+            </h1>
+            <p class="text-lg md:text-xl text-gray-700">
+                We believe coffee should feel like a warm hug from a friend. No machines, no algorithms—just us, a small roaster, and some really good beans.
+            </p>
+            <div class="pt-4">
+                <a href="#beans" class="btn-sketch btn-sketch-rose">See Today's Roast</a>
+            </div>
+        </div>
+        <div class="md:w-1/2 relative flex justify-center">
+            <div class="sketch-border p-4 bg-white rotate-med-cw relative">
+                <svg width="300" height="300" viewBox="0 0 200 200" class="animate-float">
+                    <!-- Hand-drawn coffee cup -->
+                    <path d="M50,80 Q50,150 100,150 Q150,150 150,80" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M50,80 L150,80" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M150,100 Q170,100 170,115 Q170,130 150,130" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                    <!-- Steam -->
+                    <path d="M80,60 Q85,40 80,30" fill="none" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M100,65 Q105,45 100,35" fill="none" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M120,60 Q125,40 120,30" fill="none" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <div class="absolute -bottom-6 -right-6 font-hand text-2xl text-rose bg-white px-3 py-1 sketch-border-sm rotate-med-ccw">
+                    Smells like magic!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider-sketch my-12"></div>
+
+    <!-- Beans Section -->
+    <section id="beans" class="max-w-sketch mx-auto px-4 py-12">
+        <div class="text-center mb-16">
+            <h2 class="text-5xl font-bold mb-4">Current Beans on the Table</h2>
+            <p class="font-hand text-2xl text-gray-500">Each batch is unique, just like your morning mood.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Product 1 -->
+            <div class="card-sketch sketch-border rotate-tiny-ccw taped">
+                <div class="bg-rose/20 h-48 mb-6 flex items-center justify-center sketch-border-sm">
+                    <svg width="80" height="80" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="50" rx="30" ry="40" fill="none" stroke="#333" stroke-width="3" transform="rotate(30 50 50)"/>
+                        <path d="M35,30 Q50,50 65,70" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Morning Mist</h3>
+                <p class="text-sm text-gray-600 mb-4">Light Roast • Ethiopia • Floral & Citrus</p>
+                <p class="mb-6 italic">"A gentle nudge to wake up your senses. Not quite a slap, more like a tickle."</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-xl">$18.00</span>
+                    <button class="btn-sketch text-base py-1 px-4">Bag it!</button>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="card-sketch sketch-border rotate-tiny-cw mt-4 md:mt-0">
+                <div class="bg-sage/20 h-48 mb-6 flex items-center justify-center sketch-border-sm">
+                    <svg width="80" height="80" viewBox="0 0 100 100">
+                         <ellipse cx="50" cy="50" rx="30" ry="40" fill="none" stroke="#333" stroke-width="3" transform="rotate(-15 50 50)"/>
+                         <path d="M35,30 Q50,50 65,70" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Scribble Blend</h3>
+                <p class="text-sm text-gray-600 mb-4">Medium Roast • House Blend • Nutty & Sweet</p>
+                <p class="mb-6 italic">"Our daily go-to. Balanced, reliable, and perfectly imperfect for any brewing method."</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-xl">$16.50</span>
+                    <button class="btn-sketch text-base py-1 px-4 btn-sketch-sage">Bag it!</button>
+                </div>
+                <div class="absolute -top-4 -right-4 bg-mustard text-white font-hand px-3 py-1 rotate-med-cw sketch-border-sm">
+                    Best Seller!
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="card-sketch sketch-border rotate-med-ccw mt-4 md:mt-0 taped">
+                <div class="bg-blue/20 h-48 mb-6 flex items-center justify-center sketch-border-sm">
+                    <svg width="80" height="80" viewBox="0 0 100 100">
+                        <ellipse cx="50" cy="50" rx="30" ry="40" fill="none" stroke="#333" stroke-width="3" transform="rotate(45 50 50)"/>
+                        <path d="M35,30 Q50,50 65,70" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Midnight Ink</h3>
+                <p class="text-sm text-gray-600 mb-4">Dark Roast • Sumatra • Bold & Earthy</p>
+                <p class="mb-6 italic">"For those who think sleep is just a suggestion. Deep, dark, and wonderfully heavy."</p>
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-xl">$19.50</span>
+                    <button class="btn-sketch text-base py-1 px-4">Bag it!</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider-sketch my-12"></div>
+
+    <!-- Brew Guide Section -->
+    <section id="brew" class="max-w-sketch mx-auto px-4 py-12 flex flex-col md:flex-row gap-16">
+        <div class="md:w-1/3">
+            <h2 class="text-5xl font-bold mb-8">How to brew <br>like a <span class="highlight">pro</span></h2>
+            <div class="post-it rotate-tiny-ccw">
+                <p>Quick Tip:</p>
+                <p class="mt-2">Always use filtered water. If your water tastes funny, your coffee will too! 🚰</p>
+            </div>
+            <div class="mt-12 hidden md:block">
+                <svg width="100" height="100" viewBox="0 0 100 100" class="text-blue">
+                    <path d="M20,20 Q50,10 80,20 L70,50 Q40,60 10,50 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M45,55 L55,85 M50,80 L55,85 L60,80" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <p class="font-hand text-xl mt-2">Follow the arrows!</p>
+            </div>
+        </div>
+        <div class="md:w-2/3 space-y-12">
+            <div class="flex gap-6 items-start">
+                <div class="text-4xl font-hand text-mustard font-bold">01.</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-2">The Grind Matters</h4>
+                    <p>Coarse for French Press, fine for Espresso. Think of it like sand: too coarse and the water flows too fast, too fine and it gets stuck!</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="text-4xl font-hand text-rose font-bold">02.</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-2">The Bloom</h4>
+                    <p>Wet your grounds slightly and wait 30 seconds. Watch the bubbles! That's the coffee breathing out CO2 so it can soak up the water.</p>
+                </div>
+            </div>
+            <div class="flex gap-6 items-start">
+                <div class="text-4xl font-hand text-sage font-bold">03.</div>
+                <div>
+                    <h4 class="text-2xl font-bold mb-2">Patience is Key</h4>
+                    <p>Pour in slow, concentric circles. Imagine you're drawing a spiral that never ends. Don't rush the magic.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section id="subscribe" class="bg-sage/10 py-20 px-4 mt-12">
+        <div class="max-w-sketch mx-auto sketch-border bg-white p-8 md:p-16 text-center space-y-8 rotate-tiny-cw">
+            <h2 class="text-5xl font-bold">Never Run Dry</h2>
+            <p class="text-xl max-w-xl mx-auto">
+                Join our "Bean of the Month" scribble club. We'll send you a surprise bag every 4 weeks, hand-wrapped and stamped with love.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div class="sketch-border-sm p-1 px-4 bg-white flex items-center">
+                    <input type="email" placeholder="your-email@sketch.com" class="py-2 outline-none font-hand text-xl w-64">
+                </div>
+                <button class="btn-sketch btn-sketch-sage">Sign Me Up!</button>
+            </div>
+            <p class="font-hand text-lg text-gray-500 italic">* Cancel anytime. No grumpy faces, we promise.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="max-w-sketch mx-auto px-4 py-16 text-center">
+        <div class="divider-sketch mb-12"></div>
+        <div class="flex flex-col items-center gap-6">
+            <div class="text-3xl font-hand">
+                Roasted with 🖤 in a small shed.
+            </div>
+            <div class="flex gap-8 text-sm uppercase tracking-widest text-gray-500">
+                <a href="#" class="hover:text-charcoal underline">Instagram</a>
+                <a href="#" class="hover:text-charcoal underline">Notes</a>
+                <a href="#" class="hover:text-charcoal underline">Contact</a>
+            </div>
+            <p class="text-xs text-gray-400 mt-8">
+                &copy; 2024 The Daily Grind Roastery. All scribbles reserved.
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

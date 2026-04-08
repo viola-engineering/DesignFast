@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+    --bg-cream: #FDF8F3;
+    --accent-green: #166534;
+    --accent-green-hover: #14532D;
+    --text-dark: #1A1A1A;
+    --text-muted: #57534E;
+    --border-color: #E7E0D8;
+    --paper-texture: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+}
+
+body {
+    background-color: var(--bg-cream);
+    background-image: var(--paper-texture);
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, .font-serif {
+    font-family: 'Playfair Display', serif;
+}
+
+/* Custom Decorative Elements */
+.decorative-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-color), transparent);
+    width: 100%;
+    margin: 2rem 0;
+}
+
+.linen-card {
+    background-color: white;
+    background-image: var(--paper-texture);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.hero-overlay {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+}
+
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent-green);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: var(--accent-green);
+}
+
+/* Menu Item Hover */
+.menu-item {
+    transition: transform 0.3s ease;
+}
+
+.menu-item:hover {
+    transform: translateY(-2px);
+}
+
+/* Custom Buttons */
+.btn-primary {
+    background-color: var(--accent-green);
+    color: white;
+    transition: all 0.3s ease;
+    border: 1px solid var(--accent-green);
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--accent-green);
+}
+
+.btn-outline {
+    border: 1px solid var(--accent-green);
+    color: var(--accent-green);
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--accent-green);
+    color: white;
+}
+
+/* Image Hover Effects */
+.zoom-container {
+    overflow: hidden;
+}
+
+.zoom-image {
+    transition: transform 0.8s ease;
+}
+
+.zoom-container:hover .zoom-image {
+    transform: scale(1.05);
+}
+
+/* Floating Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reveal {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Custom Inputs */
+.custom-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 0;
+    padding: 0.75rem 0;
+    transition: border-color 0.3s ease;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-bottom-color: var(--accent-green);
+}
+
+/* Placeholder replacements for realistic feel */
+.hero-image {
+    background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=2000');
+    background-size: cover;
+    background-position: center;
+}
+
+.story-image {
+    background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=1200');
+    background-size: cover;
+    background-position: center;
+}
+
+.chef-image {
+    background-image: url('https://images.unsplash.com/photo-1581299894007-aaa50297cf16?auto=format&fit=crop&q=80&w=800');
+    background-size: cover;
+    background-position: center;
+}
+
+.food-1 { background-image: url('https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&q=80&w=600'); }
+.food-2 { background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=600'); }
+.food-3 { background-image: url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=600'); }
+.food-4 { background-image: url('https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=600'); }
+
+.gallery-1 { background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&q=80&w=600'); }
+.gallery-2 { background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=600'); }
+.gallery-3 { background-image: url('https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&q=80&w=600'); }
+.gallery-4 { background-image: url('https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=600'); }
+
+/* Aspect Ratios */
+.aspect-landscape { aspect-ratio: 16/9; }
+.aspect-square { aspect-ratio: 1/1; }
+.aspect-portrait { aspect-ratio: 3/4; }
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+}

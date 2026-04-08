@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepBlue Trust | Protecting Our Oceans for Future Generations</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-blur border-b border-gray-100">
+        <div class="container-max px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2">
+                <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h.293m1.414 0l1.586 1.586m-4-1.414l1.414 1.414M11 19v.5a1.5 1.5 0 001.5 1.5h1a1.5 1.5 0 001.5-1.5V19a1.5 1.5 0 00-1.5-1.5h-1A1.5 1.5 0 0011 19z"></path></svg>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-slate-800">DeepBlue</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link font-medium text-slate-600 hover:text-blue-600">About</a>
+                <a href="#work" class="nav-link font-medium text-slate-600 hover:text-blue-600">Our Work</a>
+                <a href="#impact" class="nav-link font-medium text-slate-600 hover:text-blue-600">Impact</a>
+                <a href="#get-involved" class="nav-link font-medium text-slate-600 hover:text-blue-600">Get Involved</a>
+                <a href="#donate" class="btn-primary px-8 py-2.5 rounded-full font-bold">Donate Now</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <input type="checkbox" id="mobile-menu-toggle" class="mobile-menu-checkbox">
+            <label for="mobile-menu-toggle" class="md:hidden cursor-pointer text-slate-600">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </label>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden absolute top-20 left-0 right-0 bg-white shadow-xl flex-col p-6 space-y-4 md:hidden border-t">
+                <a href="#about" class="text-lg font-medium text-slate-600">About</a>
+                <a href="#work" class="text-lg font-medium text-slate-600">Our Work</a>
+                <a href="#impact" class="text-lg font-medium text-slate-600">Impact</a>
+                <a href="#get-involved" class="text-lg font-medium text-slate-600">Get Involved</a>
+                <a href="#donate" class="btn-primary text-center px-8 py-3 rounded-xl font-bold">Donate Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex items-center hero-gradient pt-20 overflow-hidden">
+        <div class="container-max px-6 grid md:grid-cols-2 gap-12 items-center z-10">
+            <div class="animate-fade-in-up">
+                <span class="inline-block px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-100 font-semibold text-sm mb-6 uppercase tracking-wider backdrop-blur-sm">Our Ocean Needs You</span>
+                <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
+                    A cleaner ocean starts with a <span class="text-blue-300">single choice.</span>
+                </h1>
+                <p class="text-xl text-blue-50/90 mb-10 leading-relaxed max-w-lg">
+                    We're on a mission to restore marine ecosystems, protect endangered wildlife, and eliminate plastic waste from our shores.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#donate" class="btn-primary px-10 py-4 rounded-full text-lg font-bold text-center">Donate to the Cause</a>
+                    <a href="#work" class="btn-outline border-white text-white hover:bg-white hover:text-blue-900 px-10 py-4 rounded-full text-lg font-bold text-center">Our Programs</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Wave -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg class="relative block w-full h-16 md:h-24" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.43,147.3,126,211.83,103.18c32.73-11.6,60.27-29.6,109.56-46.74Z" class="fill-[#FDF8F3]"></path>
+            </svg>
+        </div>
+    </header>
+
+    <!-- Mission Statement -->
+    <section id="about" class="py-24 bg-[#FDF8F3]">
+        <div class="container-max px-6">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl font-bold mb-8 text-slate-800">Restoring life to our blue planet.</h2>
+                <p class="text-xl text-slate-600 leading-relaxed italic">
+                    "The ocean covers 70% of our planet's surface, produces half of the oxygen we breathe, and regulates our climate. Yet, it faces unprecedented threats. At DeepBlue, we believe it's not too late to turn the tide."
+                </p>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mt-8 rounded-full"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Stats -->
+    <section id="impact" class="py-20 bg-white">
+        <div class="container-max px-6">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="flex flex-col items-center text-center">
+                    <div class="stat-circle mb-4">
+                        <span class="text-3xl md:text-4xl font-bold text-blue-600">$1.2M</span>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">Raised</span>
+                    </div>
+                    <p class="text-slate-600 font-medium">Supporting restoration projects worldwide</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="stat-circle mb-4">
+                        <span class="text-3xl md:text-4xl font-bold text-blue-600">85k</span>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">Lbs</span>
+                    </div>
+                    <p class="text-slate-600 font-medium">Plastic waste removed from coastlines</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="stat-circle mb-4">
+                        <span class="text-3xl md:text-4xl font-bold text-blue-600">12</span>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">Protected</span>
+                    </div>
+                    <p class="text-slate-600 font-medium">New marine sanctuaries established</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="stat-circle mb-4">
+                        <span class="text-3xl md:text-4xl font-bold text-blue-600">200+</span>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">Species</span>
+                    </div>
+                    <p class="text-slate-600 font-medium">At-risk species under our protection</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Programs -->
+    <section id="work" class="py-24 bg-[#FDF8F3]">
+        <div class="container-max px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">Our Core Programs</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Science-driven initiatives designed to have the most significant impact on ocean health.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Program 1 -->
+                <div class="impact-card overflow-hidden group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1546027658-e53599493e3d?auto=format&fit=crop&q=80&w=800" alt="Coral restoration" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <h3 class="absolute bottom-4 left-6 text-white text-2xl font-bold">Coral Reef Rebirth</h3>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-600 mb-6 leading-relaxed">We utilize "coral gardening" techniques to transplant resilient coral species back onto degraded reefs, restoring biodiversity and protecting coastlines.</p>
+                        <a href="#" class="text-blue-600 font-bold hover:underline">Learn more about Reefs &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Program 2 -->
+                <div class="impact-card overflow-hidden group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1621451537084-482c73073a0f?auto=format&fit=crop&q=80&w=800" alt="Ocean cleanup" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <h3 class="absolute bottom-4 left-6 text-white text-2xl font-bold">Zero Plastic Tide</h3>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-600 mb-6 leading-relaxed">Working with local communities to implement plastic interception systems in river mouths and organizing large-scale beach cleanup expeditions.</p>
+                        <a href="#" class="text-blue-600 font-bold hover:underline">Learn more about Plastic &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Program 3 -->
+                <div class="impact-card overflow-hidden group">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1484249110833-280456570954?auto=format&fit=crop&q=80&w=800" alt="Marine sanctuary" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <h3 class="absolute bottom-4 left-6 text-white text-2xl font-bold">Sanctuary Network</h3>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-600 mb-6 leading-relaxed">Advocating for government policy to establish Marine Protected Areas (MPAs) where fishing and industrial activity are strictly prohibited.</p>
+                        <a href="#" class="text-blue-600 font-bold hover:underline">Learn more about Sanctuaries &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Story -->
+    <section class="py-24 bg-white">
+        <div class="container-max px-6">
+            <div class="bg-blue-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col lg:flex-row">
+                <div class="lg:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1544924202-7d64efeead74?auto=format&fit=crop&q=80&w=1000" alt="Healthy sea turtle" class="w-full h-full object-cover">
+                </div>
+                <div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center">
+                    <div class="mb-8">
+                        <svg class="w-12 h-12 text-blue-400 mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H15.017C14.4647 8 14.017 7.55228 14.017 7V5C14.017 4.44772 14.4647 4 15.017 4H20.017C21.1216 4 22.017 4.89543 22.017 6V15C22.017 18.3137 19.3307 21 16.017 21H14.017ZM3.017 21L3.017 18C3.017 16.8954 3.91243 16 5.017 16H8.017C8.56928 16 9.017 15.5523 9.017 15V9C9.017 8.44772 8.56928 8 8.017 8H4.017C3.46472 8 3.017 7.55228 3.017 7V5C3.017 4.44772 3.46472 4 4.017 4H9.017C10.1216 4 11.017 4.89543 11.017 6V15C11.017 18.3137 8.33072 21 5.017 21H3.017Z" /></svg>
+                        <h3 class="text-3xl text-white font-bold mb-4">"They gave our bay a second chance."</h3>
+                        <p class="text-blue-100 text-lg leading-relaxed italic mb-8">
+                            "Before DeepBlue came to our coastal village, the coral was white and the fish were gone. Their team worked with us for three years, teaching us how to protect the reef. Today, the colors have returned, and so has our livelihood."
+                        </p>
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Mateo, local fisherman" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p class="text-white font-bold">Mateo Rivera</p>
+                                <p class="text-blue-300 text-sm">Coastal Community Leader, Belize</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ways to Help -->
+    <section id="get-involved" class="py-24 bg-[#FDF8F3]">
+        <div class="container-max px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-slate-800 mb-4">How You Can Help</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Every contribution, no matter how small, helps us continue our vital work for the oceans.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Donate -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-blue-50">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Donate</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Fuel our research and conservation efforts with a one-time or monthly gift.</p>
+                    <a href="#donate" class="text-blue-600 font-bold text-sm">Donate Now &rarr;</a>
+                </div>
+
+                <!-- Volunteer -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-blue-50">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Volunteer</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Join a local beach cleanup or offer your professional skills to our team.</p>
+                    <a href="#" class="text-blue-600 font-bold text-sm">Get Involved &rarr;</a>
+                </div>
+
+                <!-- Corporate -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-blue-50">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Partnerships</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Empower your business to make a difference through corporate social responsibility.</p>
+                    <a href="#" class="text-blue-600 font-bold text-sm">Learn More &rarr;</a>
+                </div>
+
+                <!-- Spread the Word -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-blue-50">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-6">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Spread Word</h3>
+                    <p class="text-slate-600 mb-6 text-sm">Share our mission with your network. Awareness is the first step to change.</p>
+                    <a href="#" class="text-blue-600 font-bold text-sm">Share Now &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Donation Section -->
+    <section id="donate" class="py-24 bg-white">
+        <div class="container-max px-6">
+            <div class="grid lg:grid-cols-2 gap-16 items-center bg-blue-50 rounded-[2rem] p-8 md:p-16">
+                <div>
+                    <h2 class="text-4xl font-bold text-slate-800 mb-6">Support Our Mission</h2>
+                    <p class="text-slate-600 text-lg mb-8">Your tax-deductible donation goes directly toward marine restoration, research, and advocacy. Together, we can ensure a vibrant future for our oceans.</p>
+                    
+                    <ul class="check-list space-y-4 mb-8">
+                        <li class="text-slate-700 font-medium">$25 plants 5 new coral colonies</li>
+                        <li class="text-slate-700 font-medium">$50 removes 20lbs of ocean plastic</li>
+                        <li class="text-slate-700 font-medium">$100 supports a day of marine research</li>
+                        <li class="text-slate-700 font-medium">$500 funds a local education workshop</li>
+                    </ul>
+
+                    <div class="flex items-center space-x-6 p-4 bg-white rounded-xl border border-blue-100">
+                        <img src="https://www.charitynavigator.org/templates/images/rating_4.svg" alt="4 Star Rating" class="h-10 opacity-70">
+                        <span class="h-8 w-px bg-slate-200"></span>
+                        <div class="text-sm font-semibold text-slate-500">92% of funds go directly to programs</div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg">
+                    <h3 class="text-2xl font-bold mb-6 text-center">Make a Gift</h3>
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <button class="py-3 px-2 border-2 border-blue-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors font-bold text-slate-700">$25</button>
+                        <button class="py-3 px-2 border-2 border-blue-500 bg-blue-50 rounded-xl font-bold text-blue-600">$50</button>
+                        <button class="py-3 px-2 border-2 border-blue-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors font-bold text-slate-700">$100</button>
+                    </div>
+                    <div class="mb-6">
+                        <input type="text" placeholder="Custom Amount" class="w-full form-input p-4 rounded-xl">
+                    </div>
+                    <div class="flex space-x-4 mb-8">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="freq" class="hidden peer" checked>
+                            <div class="p-3 text-center rounded-xl border-2 border-blue-100 peer-checked:border-blue-500 peer-checked:bg-blue-50 font-semibold text-slate-600 peer-checked:text-blue-600 transition-all">Monthly</div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="freq" class="hidden peer">
+                            <div class="p-3 text-center rounded-xl border-2 border-blue-100 peer-checked:border-blue-500 peer-checked:bg-blue-50 font-semibold text-slate-600 peer-checked:text-blue-600 transition-all">One-time</div>
+                        </label>
+                    </div>
+                    <button class="w-full btn-primary py-4 rounded-xl font-bold text-lg mb-4">Complete Donation</button>
+                    <p class="text-xs text-center text-slate-400">Secure, encrypted payment via Stripe & PayPal</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners -->
+    <section class="py-16 bg-white border-t border-gray-50">
+        <div class="container-max px-6">
+            <p class="text-center text-sm font-semibold uppercase tracking-[0.2em] text-slate-400 mb-10">Our Partners in Conservation</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all">
+                <span class="text-2xl font-black text-slate-800">ECOWAVE</span>
+                <span class="text-2xl font-black text-slate-800">MARINELIFE</span>
+                <span class="text-2xl font-black text-slate-800">BLUEPLANET</span>
+                <span class="text-2xl font-black text-slate-800">COREALLIANCE</span>
+                <span class="text-2xl font-black text-slate-800">TIIDE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="py-24 bg-blue-600 relative overflow-hidden">
+        <div class="wave-container absolute top-0 left-0 opacity-20">
+            <div class="wave"></div>
+        </div>
+        <div class="container-max px-6 relative z-10 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Stay informed.</h2>
+            <p class="text-blue-100 mb-10 max-w-xl mx-auto">Get monthly updates on our projects, impact reports, and stories from the field.</p>
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Enter your email" class="flex-1 p-4 rounded-full border-none focus:ring-4 focus:ring-blue-400 outline-none">
+                <button type="submit" class="bg-slate-900 text-white px-8 py-4 rounded-full font-bold hover:bg-slate-800 transition-colors">Join Us</button>
+            </form>
+            <p class="mt-4 text-blue-200 text-xs">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-16">
+        <div class="container-max px-6 grid md:grid-cols-4 gap-12 mb-12">
+            <div class="col-span-1 md:col-span-1">
+                <div class="flex items-center space-x-2 mb-6">
+                    <div class="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h.293m1.414 0l1.586 1.586m-4-1.414l1.414 1.414M11 19v.5a1.5 1.5 0 001.5 1.5h1a1.5 1.5 0 001.5-1.5V19a1.5 1.5 0 00-1.5-1.5h-1A1.5 1.5 0 0011 19z"></path></svg>
+                    </div>
+                    <span class="text-xl font-bold text-white">DeepBlue</span>
+                </div>
+                <p class="text-sm leading-relaxed mb-6">A registered 501(c)(3) nonprofit dedicated to the preservation of marine ecosystems worldwide through science, action, and education.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="hover:text-blue-400"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+                    <a href="#" class="hover:text-blue-400"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Quick Links</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-white transition-colors">Our Mission</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Science & Research</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Success Stories</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Transparency</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><a href="#" class="hover:text-white transition-colors">Annual Report 2025</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Financial Statements</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Tax Status</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Contact Us</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span>123 Coral Way, Blue Harbor<br>San Francisco, CA 94105</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span>hello@deepbluetrust.org</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-max px-6 pt-12 border-t border-slate-800 text-xs text-slate-500 flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2026 DeepBlue Trust. All rights reserved.</p>
+            <p class="mt-4 md:mt-0">Designed for the future of our oceans.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

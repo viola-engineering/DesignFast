@@ -12,9 +12,23 @@ const SALT_ROUNDS = 10;
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const VERIFICATION_CODE_EXPIRY_MINUTES = 10;
 
+// Rate limit configurations
+const RATE_LIMITS = {
+  // Prevent mass account creation
+  register: { max: 5, timeWindow: '1 hour' },
+  // Prevent brute-force password attacks
+  login: { max: 10, timeWindow: '15 minutes' },
+  // STRICT: 6-digit code = 1M combinations, must limit attempts severely
+  verifyEmail: { max: 5, timeWindow: '10 minutes' },
+  // Prevent email spam
+  resendVerification: { max: 3, timeWindow: '10 minutes' },
+};
+
 export default async function (app) {
   // POST /api/auth/register
-  app.post('/api/auth/register', async (req, reply) => {
+  app.post('/api/auth/register', {
+    config: { rateLimit: RATE_LIMITS.register }
+  }, async (req, reply) => {
     const { email, password, name } = req.body || {};
 
     if (!email || !EMAIL_RE.test(email)) {
@@ -72,7 +86,9 @@ export default async function (app) {
   });
 
   // POST /api/auth/login
-  app.post('/api/auth/login', async (req, reply) => {
+  app.post('/api/auth/login', {
+    config: { rateLimit: RATE_LIMITS.login }
+  }, async (req, reply) => {
     const { email, password } = req.body || {};
 
     if (!email || !password) {
@@ -127,7 +143,10 @@ export default async function (app) {
   });
 
   // POST /api/auth/verify-email
-  app.post('/api/auth/verify-email', { onRequest: authMiddleware }, async (req, reply) => {
+  app.post('/api/auth/verify-email', {
+    onRequest: authMiddleware,
+    config: { rateLimit: RATE_LIMITS.verifyEmail }
+  }, async (req, reply) => {
     const { code } = req.body || {};
 
     if (!code || typeof code !== 'string') {
@@ -173,7 +192,10 @@ export default async function (app) {
   });
 
   // POST /api/auth/resend-verification
-  app.post('/api/auth/resend-verification', { onRequest: authMiddleware }, async (req, reply) => {
+  app.post('/api/auth/resend-verification', {
+    onRequest: authMiddleware,
+    config: { rateLimit: RATE_LIMITS.resendVerification }
+  }, async (req, reply) => {
     const { rows } = await query(
       `SELECT * FROM designfast.users WHERE id = $1`,
       [req.userId]

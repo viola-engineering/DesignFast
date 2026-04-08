@@ -147,6 +147,84 @@ const STYLE_PROMPTS = {
     prompt: 'City services portal with department info, forms, and contact details',
     mode: 'landing',
   },
+
+  // ─── Additional Visual Styles ───────────────────────────────────────────────
+
+  gradient: {
+    prompt: 'Creative agency homepage showcasing design and branding services',
+    mode: 'landing',
+  },
+  claymorphism: {
+    prompt: 'Language learning app landing page with courses and progress tracking',
+    mode: 'landing',
+  },
+  vaporwave: {
+    prompt: 'Retro synthwave music artist website with albums and tour dates',
+    mode: 'landing',
+  },
+  darkTech: {
+    prompt: 'Developer tools startup landing page with API features and documentation',
+    mode: 'landing',
+  },
+  pastel: {
+    prompt: 'Self-care and journaling app landing page with features and testimonials',
+    mode: 'landing',
+  },
+  handDrawn: {
+    prompt: 'Artisan coffee roaster website with beans, brewing guides, and subscriptions',
+    mode: 'landing',
+  },
+  memphis: {
+    prompt: 'Design conference landing page with speakers, schedule, and tickets',
+    mode: 'landing',
+  },
+  scandinavian: {
+    prompt: 'Sustainable furniture brand website with product collections and philosophy',
+    mode: 'landing',
+  },
+
+  // ─── Additional Industry Styles ─────────────────────────────────────────────
+
+  education: {
+    prompt: 'Online coding bootcamp landing page with courses, instructors, and student outcomes',
+    mode: 'landing',
+  },
+  restaurant: {
+    prompt: 'Farm-to-table restaurant website with menu, reservations, and chef story',
+    mode: 'landing',
+  },
+  realEstate: {
+    prompt: 'Luxury real estate agency website with property listings and agent profiles',
+    mode: 'landing',
+  },
+  travel: {
+    prompt: 'Boutique travel agency website with curated trips and destination guides',
+    mode: 'landing',
+  },
+  fitness: {
+    prompt: 'Premium fitness studio website with classes, trainers, and membership plans',
+    mode: 'landing',
+  },
+  nonprofit: {
+    prompt: 'Ocean conservation nonprofit website with mission, impact stats, and donation',
+    mode: 'landing',
+  },
+  agency: {
+    prompt: 'Award-winning digital design studio portfolio with case studies and philosophy',
+    mode: 'landing',
+  },
+  events: {
+    prompt: 'Annual tech summit landing page with speakers, agenda, and early bird tickets',
+    mode: 'landing',
+  },
+  gaming: {
+    prompt: 'Upcoming action RPG game landing page with features, trailer, and pre-order',
+    mode: 'landing',
+  },
+  legal: {
+    prompt: 'Corporate law firm website with practice areas, attorneys, and consultations',
+    mode: 'landing',
+  },
 };
 
 // Use a dedicated "system" user for examples - create if not exists

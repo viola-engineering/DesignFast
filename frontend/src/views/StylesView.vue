@@ -66,6 +66,7 @@ function closePreview() {
 }
 
 const allStyles: StyleDefinition[] = [
+  // Visual Styles
   { key: 'minimalist', name: 'Minimalist', description: 'Whitespace as the hero. Every element earns its place. Nothing decorative, everything intentional.', categories: ['minimal', 'luxury'], tags: ['Whitespace-led', 'High contrast', 'Serif or sans'] },
   { key: 'brutalist', name: 'BRUTALIST', description: 'Raw, confrontational, unapologetic. Makes you look twice. Borders everywhere, no padding wasted on niceness.', categories: ['bold', 'editorial'], tags: ['High impact', 'Grid-forward', 'Monospace'] },
   { key: 'glassmorphism', name: 'Glassmorphism', description: 'Frosted glass surfaces. Depth without weight. Blur, translucency, and soft shadows that feel touchable.', categories: ['minimal', 'dark'], tags: ['Blur effects', 'Translucent', 'Gradient bg'] },
@@ -84,6 +85,15 @@ const allStyles: StyleDefinition[] = [
   { key: 'monochrome', name: 'Monochrome', description: 'One color, many shades. The discipline of working with constraints. Elegant when you nail it.', categories: ['minimal'], tags: ['Single hue', 'High contrast', 'Type-forward'] },
   { key: 'y2k', name: 'Y2K / 2000s', description: 'Chrome, gradients, bubble fonts. The optimistic tech aesthetic from the turn of the millennium, revived.', categories: ['retro', 'bold'], tags: ['Chrome effects', 'Bubble type', 'Gradient fills'] },
   { key: 'maximalist', name: 'MAXIMALIST', description: 'More is more. Layers, patterns, colors colliding. For brands that refuse to blend into the background.', categories: ['bold'], tags: ['Pattern heavy', 'Color clash', 'Dense layout'] },
+  { key: 'gradient', name: 'Gradient / Aurora', description: 'Flowing color meshes and aurora effects. Modern, atmospheric, premium. The aesthetic of Stripe and Linear.', categories: ['minimal', 'dark', 'luxury'], tags: ['Color mesh', 'Aurora effects', 'Atmospheric'] },
+  { key: 'claymorphism', name: 'Claymorphism', description: 'Soft 3D clay-like elements. Tactile, friendly, approachable. The pillowy aesthetic of modern mobile apps.', categories: ['minimal', 'bold'], tags: ['3D soft', 'Pastel fills', 'Tactile'] },
+  { key: 'vaporwave', name: 'Vaporwave', description: 'Neon sunsets, chrome text, 80s retrofuturism. Nostalgic for a future that never happened.', categories: ['retro', 'dark', 'bold'], tags: ['Neon pink', 'Grid horizon', 'Chrome'] },
+  { key: 'darkTech', name: 'Dark Tech', description: 'Modern dark mode done right. Clean, focused, developer-friendly. The UI you want to use at 2am.', categories: ['dark', 'technical'], tags: ['Dark mode', 'Subtle glow', 'Clean'] },
+  { key: 'pastel', name: 'Pastel / Soft', description: 'Gentle colors, rounded shapes, calming vibes. The soft aesthetic that makes you feel safe and happy.', categories: ['minimal', 'bold'], tags: ['Soft palette', 'Rounded', 'Gentle'] },
+  { key: 'handDrawn', name: 'Hand-drawn', description: 'Sketchy lines, doodle aesthetic, human imperfection. Feels like someones lovingly crafted notebook.', categories: ['editorial', 'bold'], tags: ['Sketchy', 'Doodle', 'Personal'] },
+  { key: 'memphis', name: 'Memphis', description: 'Bold 80s patterns, geometric chaos, intentional clashing. Anti-minimalist design that makes you smile.', categories: ['retro', 'bold'], tags: ['Geometric', 'Pattern heavy', '80s bold'] },
+  { key: 'scandinavian', name: 'Scandinavian', description: 'Warm minimalism, natural materials, hygge vibes. Cozy, intentional, unpretentious Nordic design.', categories: ['minimal', 'luxury'], tags: ['Warm neutral', 'Natural', 'Hygge'] },
+  // Industry Styles
   { key: 'cleanTech', name: 'Clean Tech', description: 'The aesthetic of forward-thinking tech companies. Clean, modern, with subtle technological hints.', categories: ['technical', 'minimal'], tags: ['Blue accent', 'Clean lines', 'Modern'] },
   { key: 'warmCorporate', name: 'Warm Corporate', description: 'Corporate professionalism with human warmth. Trustworthy and approachable at the same time.', categories: ['technical'], tags: ['Warm tones', 'Friendly', 'Professional'] },
   { key: 'startupBold', name: 'Startup Bold', description: 'The confident look of funded startups. Bold headlines, vibrant colors, conversion-focused layouts.', categories: ['bold'], tags: ['Bold type', 'Vibrant', 'Conversion-focused'] },
@@ -95,7 +105,17 @@ const allStyles: StyleDefinition[] = [
   { key: 'healthcare', name: 'Healthcare', description: 'Trust and professionalism for health-related products. Clean, calming, accessibility-first.', categories: ['technical'], tags: ['Calming colors', 'Accessible', 'Trust-forward'] },
   { key: 'fintech', name: 'Fintech', description: 'The look of modern financial services. Secure, sophisticated, with clear data presentation.', categories: ['technical'], tags: ['Navy/gold', 'Data tables', 'Secure feel'] },
   { key: 'media', name: 'Media', description: 'Content-first layouts for news, blogs, and media sites. Readable, scannable, engagement-focused.', categories: ['editorial'], tags: ['Content-first', 'Readable', 'Engagement'] },
-  { key: 'government', name: 'Government', description: 'Accessible, trustworthy, compliant. Clean layouts that meet accessibility standards and inspire confidence.', categories: ['technical'], tags: ['WCAG compliant', 'Trustworthy', 'Clear nav'] }
+  { key: 'government', name: 'Government', description: 'Accessible, trustworthy, compliant. Clean layouts that meet accessibility standards and inspire confidence.', categories: ['technical'], tags: ['WCAG compliant', 'Trustworthy', 'Clear nav'] },
+  { key: 'education', name: 'Education', description: 'Learning-friendly layouts that inspire. Course grids, progress tracking, achievement-oriented design.', categories: ['technical', 'bold'], tags: ['Course cards', 'Progress', 'Encouraging'] },
+  { key: 'restaurant', name: 'Restaurant', description: 'Appetite-appealing design for dining. Menu layouts, reservations, and imagery that makes you hungry.', categories: ['editorial', 'luxury'], tags: ['Menu layout', 'Food imagery', 'Reservations'] },
+  { key: 'realEstate', name: 'Real Estate', description: 'Property-focused search and listings. Map integration, filters, and layouts that sell homes.', categories: ['technical'], tags: ['Property cards', 'Search-first', 'Map-ready'] },
+  { key: 'travel', name: 'Travel', description: 'Wanderlust-inducing design. Destination showcases, booking flows, and aspirational imagery.', categories: ['editorial', 'luxury'], tags: ['Destinations', 'Booking UI', 'Aspirational'] },
+  { key: 'fitness', name: 'Fitness', description: 'Bold, energetic, motivating. Dark backgrounds, strong typography, action-oriented design.', categories: ['dark', 'bold'], tags: ['Energetic', 'Dark bg', 'Motivating'] },
+  { key: 'nonprofit', name: 'Non-profit', description: 'Cause-driven design that inspires action. Impact stats, donation flows, emotional storytelling.', categories: ['editorial'], tags: ['Impact-focused', 'Donate CTA', 'Storytelling'] },
+  { key: 'agency', name: 'Agency', description: 'Portfolio-forward with attitude. Unconventional layouts that showcase creative work and capabilities.', categories: ['bold', 'editorial'], tags: ['Portfolio', 'Creative', 'Distinctive'] },
+  { key: 'events', name: 'Events', description: 'Urgency-driven conference and event pages. Speakers, schedules, countdown timers, ticket CTAs.', categories: ['bold', 'technical'], tags: ['Countdown', 'Speakers', 'Tickets'] },
+  { key: 'gaming', name: 'Gaming', description: 'Immersive game marketing. Cinematic visuals, dark atmosphere, dramatic reveals.', categories: ['dark', 'bold'], tags: ['Cinematic', 'Immersive', 'Dark'] },
+  { key: 'legal', name: 'Legal', description: 'Authoritative and trustworthy. Professional layouts for law firms and professional services.', categories: ['technical', 'luxury'], tags: ['Trust signals', 'Professional', 'Credentials'] },
 ]
 
 const filters: { label: string; value: FilterCategory }[] = [
@@ -129,7 +149,7 @@ function setFilter(filter: FilterCategory) {
     <section class="page-hero">
       <p class="page-hero-label">Design system</p>
       <h1 class="page-hero-title">
-        30 curated styles.<br /><em>Every aesthetic.</em>
+        48 curated styles.<br /><em>Every aesthetic.</em>
       </h1>
       <p class="page-hero-sub">
         Each style is a complete design language - distinct typography,

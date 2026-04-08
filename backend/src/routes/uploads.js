@@ -194,6 +194,7 @@ export default async function (app) {
 
   // ── GET /api/uploads/:id/thumbnail ─────────────────────────────────
   // Serves the raw image for thumbnail previews in the UI.
+  // SECURITY: SVG files are sandboxed to prevent embedded script execution.
   app.get('/api/uploads/:id/thumbnail', async (req, reply) => {
     const { id } = req.params;
     if (requireUUID(id, reply)) return;
@@ -206,10 +207,19 @@ export default async function (app) {
       return reply.code(404).send({ error: 'Upload not found' });
     }
 
-    return reply
-      .header('Content-Type', rows[0].content_type)
+    const contentType = rows[0].content_type;
+
+    reply
+      .header('Content-Type', contentType)
       .header('Cache-Control', 'private, max-age=3600')
-      .send(rows[0].data);
+      .header('X-Content-Type-Options', 'nosniff');
+
+    // SVG files can contain <script> tags — sandbox them to prevent XSS
+    if (contentType === 'image/svg+xml') {
+      reply.header('Content-Security-Policy', "sandbox; default-src 'none'; style-src 'unsafe-inline'");
+    }
+
+    return reply.send(rows[0].data);
   });
 
   // ── DELETE /api/uploads/:id ────────────────────────────────────────
