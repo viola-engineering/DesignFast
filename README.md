@@ -1,19 +1,20 @@
-<p>
-  <svg viewBox="0 0 220 45" width="220" height="45" xmlns="http://www.w3.org/2000/svg">
-    <text x="0" y="35" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700">
-      <tspan fill="#100e0b">Design</tspan><tspan fill="#c45a3b">Fast</tspan>
-    </text>
-  </svg>
-</p>
+# DesignFast 
 
 AI-powered design generation for developers. Describe what you want, pick a style, and get production-quality HTML, CSS, and JS in seconds.
+
+**DesignFast is also available as a hosted service at [designfast.app](https://designfast.app).**
+
+<img src="assets/home.png" alt="DesignFast Home" width="720" />
+
+<img src="assets/generation.png" alt="DesignFast Generation" width="720" />
 
 ## What is this?
 
 DesignFast is a web application that uses LLMs (Claude and Gemini) to generate complete, styled web pages and web applications. Instead of starting from scratch or buying templates, you describe what you want and select from 30 curated design styles (minimalist, brutalist, glassmorphism, corporate, cyberpunk, etc.).
 
 **Features:**
-- 30 curated design styles with distinct typography, layout, and color systems
+- 48 curated design styles with distinct typography, layout, and color systems
+- Multiple versions generation with different theme for each style, every time
 - Landing page and multi-page webapp generation modes
 - Support for Claude (Anthropic) and Gemini (Google) models
 - BYOK (Bring Your Own Key) - users can add their own API keys

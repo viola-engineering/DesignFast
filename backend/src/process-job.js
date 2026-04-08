@@ -130,7 +130,7 @@ async function pushEvent(jobId, event) {
  */
 export async function processJob(message) {
   const job = message.data || message;
-  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, fromJobId, billingMode, creditCost, uploadIds = [] } = job;
+  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, variationNudge, fromJobId, billingMode, creditCost, uploadIds = [] } = job;
 
   let tempDir;
   let agentDb;
@@ -216,7 +216,7 @@ export async function processJob(message) {
 
     // Build the full prompt
     const fullPrompt = buildPrompt(
-      { prompt, mode, styleKey, stylePrompt, version, fromFiles,
+      { prompt, mode, styleKey, stylePrompt, version, variationNudge, fromFiles,
         hasReferenceImages: referenceImages.length > 0, assets: assetMeta },
       tempDir
     );

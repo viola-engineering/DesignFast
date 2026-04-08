@@ -400,21 +400,69 @@ const STYLES = {
   },
 };
 
-// ─── Creative Variation Nudges ──────────────────────────────────────────────
-// When generating multiple versions of the same style, each version gets a
-// different creative direction to push the LLM toward genuinely distinct outputs.
+// ─── Dynamic Variation Strategies ──────────────────────────────────────────
+// Instead of hardcoded nudges, we ask the LLM to generate context-aware
+// variation strategies tailored to the specific brief and style.
 
-const VARIATION_NUDGES = [
-  '', // v1: pure style, no nudge
-  'Take a MORE EXPERIMENTAL approach to this style. Push boundaries, be bold with unexpected choices while staying within the style family. Surprise the viewer.',
-  'Take a MORE CONSERVATIVE, REFINED approach. Classic execution, polished details, nothing risky. The "safe but perfect" version.',
-  'Emphasize TYPOGRAPHY as the hero element. Let text do the heavy lifting — oversized headlines, dramatic font pairings, typographic rhythm.',
-  'Emphasize LAYOUT and SPATIAL COMPOSITION. Unusual grid, asymmetric balance, creative use of whitespace or density. The structure itself is the design.',
-  'Emphasize COLOR and ATMOSPHERE. Let the palette and mood dominate. Rich tones, bold combos, or subtle gradients — make the viewer feel something through color alone.',
-  'Take a CONTENT-FIRST approach. The design should feel invisible — every choice in service of readability, scannability, and clear hierarchy. Function over form.',
-  'Add a sense of MOTION and ENERGY. CSS animations, transitions, hover effects, scroll-driven reveals. The page should feel alive and dynamic.',
-  'Go for MAXIMAL DETAIL and CRAFT. Micro-interactions, decorative flourishes, every pixel considered. The "artisan" version.',
-];
+async function generateVariationStrategies({ userPrompt, stylePrompt, count, model, providerName, apiKey }) {
+  const provider = createProvider({ name: providerName, apiKey });
+  const strategyDb = new DatabaseImpl();
+  const tools = createDefaultRegistry();
+
+  const agent = new AgentLoop({
+    provider,
+    tools,
+    db: strategyDb,
+    workingDir: process.cwd(),
+    maxTokens: 2048,
+    maxTurns: 1,
+    model,
+    providerName,
+    disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
+  });
+
+  const strategyPrompt = `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
+
+Each strategy must push the design in a GENUINELY DIFFERENT direction — different layout approach, different visual emphasis, different mood, or different interpretation of the brief. They must be specific to THIS project, not generic advice.
+
+WEBSITE BRIEF:
+${userPrompt}
+${stylePrompt ? `\nDESIGN STYLE:\n${stylePrompt}` : ''}
+
+RULES:
+- Produce exactly ${count} strategies, one per line
+- Each strategy should be 1-2 sentences, written as a direct instruction to a designer
+- Strategies must be meaningfully different from each other — vary across dimensions like layout structure, typography emphasis, color mood, whitespace usage, visual complexity, content hierarchy
+- ${count <= 3 ? 'With few variations, make them more polarized and distinct' : 'With many variations, cover a wide range of the design space'}
+- Do NOT include numbering, bullets, or prefixes — just the strategy text, one per line
+- Do NOT repeat the style directive — focus on what makes each version DIFFERENT`;
+
+  let result = '';
+  agent.on('event', (event) => {
+    if (event.type === 'text') {
+      result += event.text;
+    }
+  });
+
+  try {
+    await agent.run(strategyPrompt);
+  } finally {
+    strategyDb.close();
+  }
+
+  const strategies = result
+    .trim()
+    .split('\n')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .slice(0, count);
+
+  while (strategies.length < count) {
+    strategies.push('Take a distinctly different creative approach from the other versions.');
+  }
+
+  return strategies;
+}
 
 // ─── Model Presets ──────────────────────────────────────────────────────────
 
@@ -851,7 +899,7 @@ async function resolveThemeAuto(userPrompt, modelKey) {
     disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
   });
 
-  const selectorPrompt = `You are a design style selector. Given a website description and a catalog of available design styles, pick the 1-3 styles that BEST fit the described website.
+  const selectorPrompt = `You are a design style selector. Given a website description and a catalog of available design styles, pick the single BEST style that fits the described website.
 
 STYLE CATALOG:
 ${catalog}
@@ -860,10 +908,9 @@ WEBSITE DESCRIPTION:
 ${userPrompt}
 
 RULES:
-- Pick 1-3 styles. Usually 2-3 is ideal to give the user variety.
-- Pick styles that are APPROPRIATE for the content — a hospital website should NOT get "cyberpunk", a fintech app should NOT get "playful".
-- If multiple styles could work, prefer diversity (e.g., don't pick two that are very similar).
-- Respond with ONLY the style keys, comma-separated, nothing else. Example: cleanTech,warmCorporate,minimalist`;
+- Pick exactly ONE style — the single best match for this website's content and purpose.
+- Pick a style that is APPROPRIATE for the content — a hospital website should NOT get "cyberpunk", a fintech app should NOT get "playful".
+- Respond with ONLY the style key, nothing else. Example: cleanTech`;
 
   let result = '';
   agent.on('event', (event) => {
@@ -875,7 +922,7 @@ RULES:
   await agent.run(selectorPrompt);
   db.close();
 
-  // Parse response — extract valid style keys
+  // Parse response — extract the single best style key
   const keys = result
     .trim()
     .split(/[\s,]+/)
@@ -888,8 +935,8 @@ RULES:
     return [];
   }
 
-  console.log(`🎯 Selected: ${keys.map(k => STYLES[k].name).join(', ')}\n`);
-  return keys;
+  console.log(`🎯 Selected: ${STYLES[keys[0]].name}\n`);
+  return [keys[0]];
 }
 
 /**
@@ -1130,10 +1177,35 @@ async function runGenerateMode(opts) {
     styleEntries = [{ key: 'freestyle', name: 'Freestyle', prompt: null }];
   }
 
+  // Generate context-aware variation strategies if multiple versions
+  const variationStrategyMap = new Map();
+  if (opts.versions > 1) {
+    const firstModelCfg = MODELS[opts.models[0]];
+    for (const style of styleEntries) {
+      try {
+        console.log(`🎨 Generating variation strategies for "${style.name}"...`);
+        const strategies = await generateVariationStrategies({
+          userPrompt: opts.prompt,
+          stylePrompt: style.prompt || '',
+          count: opts.versions - 1,
+          model: firstModelCfg.model,
+          providerName: firstModelCfg.providerName,
+          apiKey: process.env[firstModelCfg.apiKeyEnv],
+        });
+        variationStrategyMap.set(style.key, strategies);
+        strategies.forEach((s, i) => console.log(`  v${i + 2}: ${s}`));
+      } catch (err) {
+        console.warn(`⚠️  Failed to generate strategies for "${style.name}": ${err.message}`);
+      }
+    }
+  }
+
   for (const style of styleEntries) {
+    const strategies = variationStrategyMap.get(style.key) || [];
     for (let version = 1; version <= opts.versions; version++) {
+      const variationNudge = version > 1 ? (strategies[version - 2] || '') : '';
       for (const modelKey of opts.models) {
-        jobs.push({ style, version, modelKey });
+        jobs.push({ style, version, variationNudge, modelKey });
       }
     }
   }
@@ -1258,11 +1330,9 @@ async function runGenerateMode(opts) {
       prompt += `\n\nDESIGN STYLE:\n${FREESTYLE_DIRECTION}`;
     }
 
-    // Variation nudge (skip for v1 which gets index 0 = empty string)
-    const nudgeIndex = (job.version - 1) % VARIATION_NUDGES.length;
-    const nudge = VARIATION_NUDGES[nudgeIndex];
-    if (nudge) {
-      prompt += `\n\nCREATIVE DIRECTION:\n${nudge}`;
+    // Variation nudge (dynamically generated per-project)
+    if (job.variationNudge) {
+      prompt += `\n\nCREATIVE DIRECTION:\n${job.variationNudge}`;
     }
 
     // File output instruction

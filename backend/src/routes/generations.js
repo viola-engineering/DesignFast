@@ -3,7 +3,7 @@ import { query, db } from '../db.js';
 import { authMiddleware } from '../auth.js';
 import { checkUsageLimits, hasApiKeys, CREDIT_COSTS } from '../plans.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
-import { STYLES, resolveThemeAuto, resolveThemeSynth } from '../prompt-builder.js';
+import { STYLES, resolveThemeAuto, resolveThemeSynth, generateVariationStrategies } from '../prompt-builder.js';
 import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
 import { requireUUID } from '../validation.js';
@@ -163,12 +163,40 @@ export default async function (app) {
       return reply.code(403).send({ error: limitCheck.error });
     }
 
+    // Generate context-aware variation strategies if multiple versions requested
+    // One LLM call per style produces strategies that are diverse from each other
+    const variationStrategyMap = new Map(); // styleKey → string[]
+    if (versions > 1) {
+      const firstModel = MODEL_MAP[models[0]];
+      const apiKey = await getApiKey(req.userId, firstModel.providerName);
+      if (apiKey) {
+        await Promise.all(styles.map(async (style) => {
+          try {
+            const strategies = await generateVariationStrategies({
+              userPrompt: prompt.trim(),
+              stylePrompt: style.prompt,
+              count: versions - 1,
+              model: firstModel.model,
+              providerName: firstModel.providerName,
+              apiKey,
+            });
+            variationStrategyMap.set(style.key, strategies);
+          } catch (err) {
+            req.log.warn({ err, styleKey: style.key }, 'Failed to generate variation strategies, versions will use no nudge');
+          }
+        }));
+      }
+    }
+
     // Build job matrix: styles × versions × models
     const generationId = randomUUID();
     const jobs = [];
 
     for (const style of styles) {
+      const strategies = variationStrategyMap.get(style.key) || [];
       for (let v = 1; v <= versions; v++) {
+        // v1 gets no nudge; v2+ get their generated strategy
+        const variationNudge = v > 1 ? (strategies[v - 2] || '') : '';
         for (const modelKey of models) {
           const modelCfg = MODEL_MAP[modelKey];
           jobs.push({
@@ -179,6 +207,7 @@ export default async function (app) {
             styleName: style.name,
             stylePrompt: style.prompt,
             version: v,
+            variationNudge,
             model: modelCfg.model,
             provider: modelCfg.providerName,
             prompt: prompt.trim(),
