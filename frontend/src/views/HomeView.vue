@@ -568,7 +568,7 @@ const sampleStyles = [
 }
 
 .btn-suffering:hover {
-  background-color: var(--surface);
+  background-color: #f5f0e8;
   transform: translateY(-2px);
 }
 

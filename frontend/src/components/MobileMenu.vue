@@ -1,41 +1,31 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 
-interface User {
-  id: string
-  email: string
-  name?: string | null
-}
-
 defineProps<{
   open: boolean
   isLoggedIn: boolean
-  user?: User | null
 }>()
 
 const emit = defineEmits<{
   close: []
-  logout: []
 }>()
 </script>
 
 <template>
   <div class="nav-mobile-menu" :class="{ open }" aria-label="Mobile navigation">
     <RouterLink to="/" class="nav-mobile-link" @click="emit('close')">Home</RouterLink>
-    <RouterLink to="/generate" class="nav-mobile-link" @click="emit('close')">Generate</RouterLink>
-    <RouterLink to="/styles" class="nav-mobile-link" @click="emit('close')">Styles</RouterLink>
-    <RouterLink to="/pricing" class="nav-mobile-link" @click="emit('close')">Pricing</RouterLink>
 
     <template v-if="isLoggedIn">
+      <RouterLink to="/generate" class="nav-mobile-link" @click="emit('close')">Generate</RouterLink>
       <RouterLink to="/history" class="nav-mobile-link" @click="emit('close')">History</RouterLink>
-      <RouterLink to="/account" class="nav-mobile-link" @click="emit('close')">
-        {{ user?.name || user?.email || 'Account' }}
-      </RouterLink>
-      <button class="nav-mobile-cta" @click="emit('logout')">Logout</button>
+      <RouterLink to="/styles" class="nav-mobile-link" @click="emit('close')">Styles</RouterLink>
+      <RouterLink to="/account" class="nav-mobile-link" @click="emit('close')">Account</RouterLink>
     </template>
     <template v-else>
+      <RouterLink to="/styles" class="nav-mobile-link" @click="emit('close')">Styles</RouterLink>
+      <RouterLink to="/pricing" class="nav-mobile-link" @click="emit('close')">Pricing</RouterLink>
       <RouterLink to="/login" class="nav-mobile-link" @click="emit('close')">Login</RouterLink>
-      <RouterLink to="/generate" class="nav-mobile-cta" @click="emit('close')">Start free</RouterLink>
+      <RouterLink to="/generate" class="nav-mobile-cta" @click="emit('close')">Generate</RouterLink>
     </template>
   </div>
 </template>

@@ -370,7 +370,7 @@ defineExpose({ setExamplePrompt })
                 :disabled="disabled"
                 @click="toggleUploadPurpose(u)"
               >
-                {{ u.purpose === 'reference' ? '🎨 Reference' : '📁 Asset' }}
+                {{ u.purpose === 'reference' ? 'Reference' : 'Asset' }}
               </button>
             </div>
             <button
@@ -393,13 +393,13 @@ defineExpose({ setExamplePrompt })
             @change="handleFileUpload($event)"
           />
           <span v-if="isUploading" class="upload-drop-label">Uploading…</span>
-          <span v-else-if="uploads.length === 0" class="upload-drop-label">📷 Drop images or click to browse</span>
+          <span v-else-if="uploads.length === 0" class="upload-drop-label">Drop images or click to browse</span>
           <span v-else class="upload-drop-label">+ Add more images</span>
         </label>
 
-        <p class="upload-hint">
-          <strong>🎨 Reference</strong> = AI studies the design &nbsp;
-          <strong>📁 Asset</strong> = included in website. Click to toggle.
+        <p v-if="uploads.length > 0" class="upload-hint">
+          <strong>Reference</strong> = AI studies the design &nbsp;
+          <strong>Asset</strong> = included in website. Click to toggle.
         </p>
 
         <!-- Error -->

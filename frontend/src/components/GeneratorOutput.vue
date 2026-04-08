@@ -49,6 +49,12 @@ const hasJob = computed(() => !!props.jobId)
 const isComplete = computed(() => props.status === 'done')
 const hasMultipleJobs = computed(() => (props.jobs?.length || 0) > 1)
 
+const previewRef = ref<InstanceType<typeof PreviewFrame> | null>(null)
+
+function handlePrint() {
+  previewRef.value?.print()
+}
+
 const downloadUrl = computed(() => {
   if (!props.jobId) return ''
   return getDownloadUrl(props.jobId)
@@ -177,6 +183,19 @@ function handleIterate() {
           <span class="start-new-label">New</span>
         </button>
 
+        <button
+          v-if="isComplete"
+          class="toolbar-btn"
+          title="Print / Save as PDF"
+          @click="handlePrint"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+        </button>
+
         <a
           v-if="isComplete"
           :href="downloadUrl"
@@ -224,6 +243,7 @@ function handleIterate() {
       </div>
       <PreviewFrame
         v-else
+        ref="previewRef"
         :key="`${jobId}-${revision || 0}`"
         :job-id="jobId!"
         :filename="'index.html'"

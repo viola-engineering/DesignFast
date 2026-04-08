@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import MobileMenu from './MobileMenu.vue'
 
 const route = useRoute()
-const router = useRouter()
 const authStore = useAuthStore()
 
 const mobileMenuOpen = ref(false)
 const scrolled = ref(false)
 
 const isLoggedIn = computed(() => authStore.isAuthenticated)
-const user = computed(() => authStore.user)
 
 function toggleMobileMenu() {
   mobileMenuOpen.value = !mobileMenuOpen.value
@@ -24,12 +22,6 @@ function closeMobileMenu() {
 
 function handleScroll() {
   scrolled.value = window.scrollY > 20
-}
-
-async function logout() {
-  await authStore.logout()
-  closeMobileMenu()
-  router.push('/')
 }
 
 onMounted(() => {
@@ -47,22 +39,24 @@ onUnmounted(() => {
     <RouterLink to="/" class="nav-wordmark">Design<em>Fast</em></RouterLink>
 
     <div class="nav-center">
-      <RouterLink to="/generate" class="nav-link" :class="{ active: route.path === '/generate' }">Generate</RouterLink>
-      <RouterLink to="/styles" class="nav-link" :class="{ active: route.path === '/styles' }">Styles</RouterLink>
-      <RouterLink to="/pricing" class="nav-link" :class="{ active: route.path === '/pricing' }">Pricing</RouterLink>
+      <template v-if="isLoggedIn">
+        <RouterLink to="/generate" class="nav-link" :class="{ active: route.path === '/generate' }">Generate</RouterLink>
+        <RouterLink to="/history" class="nav-link" :class="{ active: route.path === '/history' }">History</RouterLink>
+        <RouterLink to="/styles" class="nav-link" :class="{ active: route.path === '/styles' }">Styles</RouterLink>
+      </template>
+      <template v-else>
+        <RouterLink to="/styles" class="nav-link" :class="{ active: route.path === '/styles' }">Styles</RouterLink>
+        <RouterLink to="/pricing" class="nav-link" :class="{ active: route.path === '/pricing' }">Pricing</RouterLink>
+      </template>
     </div>
 
     <div class="nav-right">
       <template v-if="isLoggedIn">
-        <RouterLink to="/history" class="nav-link" :class="{ active: route.path === '/history' }">History</RouterLink>
-        <RouterLink to="/account" class="nav-link" :class="{ active: route.path === '/account' }">
-          {{ user?.name || user?.email || 'Account' }}
-        </RouterLink>
-        <button class="btn-nav" @click="logout">Logout</button>
+        <RouterLink to="/account" class="nav-link" :class="{ active: route.path === '/account' }">Account</RouterLink>
       </template>
       <template v-else>
         <RouterLink to="/login" class="nav-link">Login</RouterLink>
-        <RouterLink to="/generate" class="btn-nav">Start free</RouterLink>
+        <RouterLink to="/generate" class="btn-nav">Generate</RouterLink>
       </template>
     </div>
 
@@ -82,9 +76,7 @@ onUnmounted(() => {
   <MobileMenu
     :open="mobileMenuOpen"
     :is-logged-in="isLoggedIn"
-    :user="user"
     @close="closeMobileMenu"
-    @logout="logout"
   />
 </template>
 

@@ -10,6 +10,7 @@ const props = defineProps<{
 
 const loading = ref(true)
 const error = ref(false)
+const iframeRef = ref<HTMLIFrameElement | null>(null)
 
 const src = computed(() => getPreviewUrl(props.jobId, props.filename || 'index.html', props.revision))
 
@@ -22,6 +23,14 @@ function onError() {
   loading.value = false
   error.value = true
 }
+
+function print() {
+  if (iframeRef.value?.contentWindow) {
+    iframeRef.value.contentWindow.print()
+  }
+}
+
+defineExpose({ print })
 </script>
 
 <template>
@@ -34,10 +43,11 @@ function onError() {
       <span>Failed to load preview</span>
     </div>
     <iframe
+      ref="iframeRef"
       v-show="!loading && !error"
       :src="src"
       class="preview-iframe"
-      sandbox="allow-scripts allow-same-origin"
+      sandbox="allow-scripts allow-same-origin allow-modals"
       @load="onLoad"
       @error="onError"
     ></iframe>
