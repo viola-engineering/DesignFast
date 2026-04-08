@@ -38,7 +38,7 @@ const tiers = computed(() => [
     description: 'Buy credits, use them anytime. Full access to Claude and Gemini. No subscription.',
     features: [
       { text: 'Credits never expire', included: true },
-      { text: 'Claude (20 cr) & Gemini (1 cr)', included: true },
+      { text: 'Claude (10 cr) & Gemini (1 cr)', included: true },
       { text: 'Up to 4 styles per generation', included: true },
       { text: 'Up to 4 versions per generation', included: true },
       { text: 'Single-page & multi-page modes', included: true },
@@ -57,7 +57,7 @@ const featureTableRows = computed(() => [
   { feature: 'Usage', free: '', pro: '', isCategory: true },
   { feature: 'Pricing', free: 'Free', pro: 'Pay as you go' },
   { feature: 'Gemini cost', free: '1 generation', pro: '1 credit' },
-  { feature: 'Claude cost', free: '-', pro: '20 credits' },
+  { feature: 'Claude cost', free: '-', pro: '10 credits' },
   { feature: 'Styles per generation', free: 'Up to 2', pro: 'Up to 4' },
   { feature: 'Versions per generation', free: 'Up to 2', pro: 'Up to 4' },
   { feature: 'Credit expiry', free: '-', pro: 'Never' },
@@ -77,7 +77,7 @@ const featureTableRows = computed(() => [
 const faqs = [
   {
     question: 'How do credits work?',
-    answer: 'Buy credits once, use them anytime. Each generation costs credits based on the model: Gemini costs 1 credit, Claude costs 20 credits. Multiple styles multiply the cost. Credits never expire. When your credits run out, you can still use Gemini with up to 3 fallback generations per month.'
+    answer: 'Buy credits once, use them anytime. Each generation costs credits based on the model: Gemini costs 1 credit, Claude costs 10 credits. Multiple styles multiply the cost. Credits never expire. When your credits run out, you can still use Gemini with up to 3 fallback generations per month.'
   },
   {
     question: 'What credit packages are available?',

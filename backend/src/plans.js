@@ -29,7 +29,7 @@ export const PLANS = {
  * Credit cost per job, keyed by provider name.
  */
 export const CREDIT_COSTS = {
-  anthropic: 20,
+  anthropic: 10,
   gemini: 1,
 };
 

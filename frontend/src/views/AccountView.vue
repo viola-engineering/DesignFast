@@ -227,7 +227,7 @@ async function handleLogout() {
                 </div>
               </div>
               <p class="billing-note" style="margin-top: 0.5rem;">
-                Gemini = 1 credit &middot; Claude = 20 credits
+                Gemini = 1 credit &middot; Claude = 10 credits
               </p>
             </template>
 

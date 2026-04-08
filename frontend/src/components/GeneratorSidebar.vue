@@ -34,7 +34,7 @@ const emit = defineEmits<{
 
 const authStore = useAuthStore()
 
-const CREDIT_COSTS: Record<Model, number> = { claude: 20, gemini: 1 }
+const CREDIT_COSTS: Record<Model, number> = { claude: 10, gemini: 1 }
 
 const prompt = ref('')
 const selectedModel = ref<Model>('gemini')
