@@ -38,10 +38,40 @@ async function serveFile(req, reply, jobId, filename, revisionParam) {
   const ext = filename.slice(filename.lastIndexOf('.'));
   const contentType = MIME_TYPES[ext] || 'text/plain';
 
+  let content = rows[0].content;
+
+  // Auto-print: inject script if ?print=1 is set and file is HTML
+  if (req.query.print === '1' && ext === '.html') {
+    // Wait for everything (CSS, fonts, images) then print
+    const printScript = `<script>
+(function(){
+  function waitAndPrint(){
+    var checks=0,maxChecks=50;
+    function check(){
+      checks++;
+      var ready=document.readyState==='complete';
+      var fontsReady=!document.fonts||document.fonts.status==='loaded';
+      var imgs=document.images,imgsLoaded=true;
+      for(var i=0;i<imgs.length;i++){if(!imgs[i].complete)imgsLoaded=false;}
+      if((ready&&fontsReady&&imgsLoaded)||checks>=maxChecks){
+        setTimeout(window.print,800);
+      }else{
+        setTimeout(check,100);
+      }
+    }
+    check();
+  }
+  if(document.readyState==='complete'){setTimeout(waitAndPrint,500);}
+  else{window.addEventListener('load',function(){setTimeout(waitAndPrint,500);});}
+})()
+</script>`;
+    content = content.replace('</body>', printScript + '</body>');
+  }
+
   reply
     .header('Content-Type', contentType + '; charset=utf-8')
     .header('Cache-Control', 'no-cache')
-    .send(rows[0].content);
+    .send(content);
 }
 
 /**

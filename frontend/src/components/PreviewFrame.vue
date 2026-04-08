@@ -25,9 +25,10 @@ function onError() {
 }
 
 function print() {
-  if (iframeRef.value?.contentWindow) {
-    iframeRef.value.contentWindow.print()
-  }
+  // Open in new tab for printing (cross-origin prevents direct iframe printing)
+  // Add ?print=1 param so the preview page can auto-trigger print
+  const printUrl = src.value + (src.value.includes('?') ? '&' : '?') + 'print=1'
+  window.open(printUrl, '_blank')
 }
 
 defineExpose({ print })

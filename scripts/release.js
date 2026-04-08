@@ -43,6 +43,15 @@ function bumpVersion(current, type) {
   }
 }
 
+function tagExists(version) {
+  try {
+    execSync(`git rev-parse v${version}`, { cwd: ROOT, stdio: 'ignore' });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function main() {
   const type = process.argv[2];
   if (!type) {
@@ -53,6 +62,17 @@ function main() {
   const rootPkg = readJson('package.json');
   const currentVersion = rootPkg.version;
   const newVersion = bumpVersion(currentVersion, type);
+
+  if (currentVersion === newVersion) {
+    console.error(`Error: Version is already ${currentVersion}`);
+    console.error('Use patch/minor/major to bump, or specify a different version.');
+    process.exit(1);
+  }
+
+  if (tagExists(newVersion)) {
+    console.error(`Error: Tag v${newVersion} already exists`);
+    process.exit(1);
+  }
 
   console.log(`Bumping version: ${currentVersion} -> ${newVersion}\n`);
 
