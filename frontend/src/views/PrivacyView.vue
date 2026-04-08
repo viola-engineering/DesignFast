@@ -92,7 +92,7 @@
           <li><strong>Withdraw consent:</strong> Where processing is based on consent</li>
         </ul>
         <p>
-          To exercise these rights, email us at <strong>[your-email@example.com]</strong>.
+          To exercise these rights, email us at <strong>privacy@viola.engineering</strong>.
           We will respond within 30 days.
         </p>
         <p>
@@ -102,12 +102,11 @@
 
       <section>
         <h2>8. Cookies</h2>
-        <p>We use cookies for:</p>
-        <ul>
-          <li><strong>Essential cookies:</strong> To keep you logged in and remember your preferences</li>
-          <li><strong>Analytics cookies:</strong> To understand how the service is used (optional, with consent)</li>
-        </ul>
-        <p>You can manage cookie preferences in your browser settings.</p>
+        <p>
+          We use a single essential cookie to keep you logged in. This cookie is strictly necessary
+          for the service to function and does not require consent under GDPR.
+        </p>
+        <p>We do not use any analytics, advertising, or tracking cookies.</p>
       </section>
 
       <section>
