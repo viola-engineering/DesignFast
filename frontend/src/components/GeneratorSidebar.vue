@@ -35,6 +35,7 @@ const emit = defineEmits<{
 const authStore = useAuthStore()
 
 const CREDIT_COSTS: Record<Model, number> = { claude: 10, gemini: 1 }
+const WEBAPP_CREDIT_MULTIPLIER = 4
 
 const prompt = ref('')
 const selectedModel = ref<Model>('gemini')
@@ -259,7 +260,8 @@ const generationsRemaining = computed(() => {
 
 const estimatedCreditCost = computed(() => {
   const stylesCount = aiPick.value ? 1 : Math.max(selectedStyles.value.size, 1)
-  return CREDIT_COSTS[selectedModel.value] * stylesCount * selectedVersions.value
+  const modeMultiplier = selectedMode.value === 'webapp' ? WEBAPP_CREDIT_MULTIPLIER : 1
+  return CREDIT_COSTS[selectedModel.value] * modeMultiplier * stylesCount * selectedVersions.value
 })
 
 const usageNote = computed(() => {

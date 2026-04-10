@@ -34,20 +34,27 @@ export const CREDIT_COSTS = {
 };
 
 /**
+ * Credit cost multiplier for webapp (multi-page) mode.
+ */
+export const WEBAPP_CREDIT_MULTIPLIER = 4;
+
+/**
  * Calculate the total credit cost for a generation request.
  *
  * @param {string[]} models - Model keys (e.g. ['claude'])
  * @param {number} stylesCount - Number of styles
  * @param {number} versions - Number of versions
  * @param {object} modelMap - MODEL_MAP from models.js
+ * @param {string} [mode='landing'] - 'landing' or 'webapp'
  * @returns {number} Total credit cost
  */
-export function calculateCreditCost(models, stylesCount, versions, modelMap) {
+export function calculateCreditCost(models, stylesCount, versions, modelMap, mode = 'landing') {
+  const multiplier = mode === 'webapp' ? WEBAPP_CREDIT_MULTIPLIER : 1;
   let total = 0;
   for (const modelKey of models) {
     const cfg = modelMap[modelKey];
     if (cfg) {
-      const perJob = CREDIT_COSTS[cfg.providerName] || 0;
+      const perJob = (CREDIT_COSTS[cfg.providerName] || 0) * multiplier;
       total += perJob * stylesCount * versions;
     }
   }
@@ -104,7 +111,7 @@ export function checkUsageLimits(user, request, modelMap) {
 
   // Pro user with credits
   if (user.plan === 'pro') {
-    const creditCost = calculateCreditCost(request.models, stylesCount, request.versions, modelMap);
+    const creditCost = calculateCreditCost(request.models, stylesCount, request.versions, modelMap, request.mode);
     if (user.credits_used + creditCost <= user.credits_limit) {
       return { allowed: true, billingMode: 'credits', creditCost };
     }

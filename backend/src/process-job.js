@@ -13,7 +13,13 @@ import { PROVIDER_TO_APIKEY_PROVIDER, MODEL_MAP } from './models.js';
 import { buildPrompt } from './prompt-builder.js';
 import queen from './queen-client.js';
 
-const MAX_TURNS = 50;
+const MAX_TURNS = { landing: 50, webapp: 100 };
+
+/**
+ * Maximum USD cost per job before the agent is aborted.
+ * Prevents runaway token consumption from a single generation.
+ */
+const MAX_COST_USD = { landing: 1.0, webapp: 4.0 };
 
 /**
  * Error types that are fatal and should not be retried.
@@ -228,7 +234,7 @@ export async function processJob(message) {
       db: agentDb,
       workingDir: tempDir,
       maxTokens: 32768,
-      maxTurns: MAX_TURNS,
+      maxTurns: MAX_TURNS[mode] || MAX_TURNS.landing,
       model,
       providerName: provider, // CRITICAL: defaults to 'anthropic' if omitted
     });
@@ -253,11 +259,17 @@ export async function processJob(message) {
         case 'tool_output':
           pushEvent(jobId, { type: 'tool_output', id: event.id, is_error: event.is_error });
           break;
-        case 'usage':
+        case 'usage': {
           totalTokensIn += event.input_tokens || 0;
           totalTokensOut += event.output_tokens || 0;
           totalCostUsd += event.cost_usd || 0;
+          const costCap = MAX_COST_USD[mode] || MAX_COST_USD.landing;
+          if (totalCostUsd >= costCap) {
+            console.warn(`[process-job] Job ${jobId} hit cost cap ($${totalCostUsd.toFixed(2)} >= $${costCap}), aborting`);
+            agent.abort();
+          }
           break;
+        }
         case 'error': {
           const parsed = parseApiError(event.message);
           pushEvent(jobId, {

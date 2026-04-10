@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { query, db } from '../db.js';
 import { authMiddleware } from '../auth.js';
-import { checkUsageLimits, hasApiKeys, CREDIT_COSTS } from '../plans.js';
+import { checkUsageLimits, hasApiKeys, CREDIT_COSTS, WEBAPP_CREDIT_MULTIPLIER } from '../plans.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { STYLES, resolveThemeAuto, resolveThemeSynth, generateVariationStrategies } from '../prompt-builder.js';
 import queen from '../queen-client.js';
@@ -158,7 +158,7 @@ export default async function (app) {
     const isByok = await hasApiKeys(req.userId, providerNames);
 
     // Check limits
-    const limitCheck = checkUsageLimits(user, { models, versions, styles, isByok }, MODEL_MAP);
+    const limitCheck = checkUsageLimits(user, { models, versions, styles, isByok, mode }, MODEL_MAP);
     if (!limitCheck.allowed) {
       return reply.code(403).send({ error: limitCheck.error });
     }
@@ -215,7 +215,7 @@ export default async function (app) {
             fromJobId,
             billingMode: limitCheck.billingMode,
             creditCost: limitCheck.billingMode === 'credits'
-              ? (CREDIT_COSTS[modelCfg.providerName] || 0)
+              ? (CREDIT_COSTS[modelCfg.providerName] || 0) * (mode === 'webapp' ? WEBAPP_CREDIT_MULTIPLIER : 1)
               : 0,
             uploadIds,
           });
@@ -363,9 +363,10 @@ export default async function (app) {
 
     const jobsDone = jobs.filter(j => j.status === 'done').length;
     const jobsFailed = jobs.filter(j => j.status === 'failed').length;
+    const modeMultiplier = gen.mode === 'webapp' ? WEBAPP_CREDIT_MULTIPLIER : 1;
     const totalCredits = jobs
       .filter(j => j.status === 'done')
-      .reduce((s, j) => s + (CREDIT_COSTS[j.provider] || 0), 0);
+      .reduce((s, j) => s + (CREDIT_COSTS[j.provider] || 0) * modeMultiplier, 0);
 
     return {
       id: gen.id,
@@ -389,7 +390,7 @@ export default async function (app) {
         provider: j.provider,
         version: j.version,
         status: j.status,
-        creditCost: CREDIT_COSTS[j.provider] || 0,
+        creditCost: (CREDIT_COSTS[j.provider] || 0) * modeMultiplier,
         durationMs: j.duration_ms,
         createdAt: j.created_at,
         completedAt: j.completed_at,

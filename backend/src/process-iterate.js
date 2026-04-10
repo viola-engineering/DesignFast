@@ -11,7 +11,10 @@ import {
 import { query } from './db.js';
 import { decrypt } from './encryption.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from './models.js';
-import { CREDIT_COSTS } from './plans.js';
+import { CREDIT_COSTS, WEBAPP_CREDIT_MULTIPLIER } from './plans.js';
+
+/** Max USD cost per iterate session (cumulative across all messages). */
+const MAX_ITERATE_COST_USD = 2.0;
 import { activeSessions } from './iterate-sessions.js';
 import queen from './queen-client.js';
 
@@ -163,6 +166,10 @@ async function handleStart(task) {
         liveRef.totalTokensIn += event.input_tokens || 0;
         liveRef.totalTokensOut += event.output_tokens || 0;
         liveRef.totalCostUsd += event.cost_usd || 0;
+        if (liveRef.totalCostUsd >= MAX_ITERATE_COST_USD) {
+          console.warn(`[process-iterate] Session hit cost cap ($${liveRef.totalCostUsd.toFixed(2)}), aborting`);
+          agent.abort();
+        }
       }
       if (liveRef._collectText && event.type === 'text') {
         liveRef._assistantText += event.text;
