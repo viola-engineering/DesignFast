@@ -103,10 +103,24 @@ export default async function (app) {
       return;
     }
 
-    // Send keepalive every 30s to prevent proxy timeouts
-    const keepalive = setInterval(() => {
+    // Send keepalive every 30s to prevent proxy timeouts.
+    // Also poll DB as fallback in case the Queen done event was lost.
+    const keepalive = setInterval(async () => {
+      try {
+        const { rows } = await query(
+          `SELECT status FROM designfast.jobs WHERE id = $1`,
+          [jobId]
+        );
+        if (rows.length > 0 && (rows[0].status === 'done' || rows[0].status === 'failed')) {
+          reply.raw.write(`data: ${JSON.stringify({ jobId, type: rows[0].status, timestamp: Date.now() })}\n\n`);
+          clearInterval(keepalive);
+          bus.off(jobId, onEvent);
+          reply.raw.end();
+          return;
+        }
+      } catch { /* ignore poll errors */ }
       reply.raw.write(`: keepalive\n\n`);
-    }, 30000);
+    }, 15000);
 
     // Listen to in-memory event bus (fed by the global Queen consumer)
     const onEvent = (event) => {

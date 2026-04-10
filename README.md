@@ -4,6 +4,65 @@ AI-powered design generation for developers. Describe what you want, pick a styl
 
 **DesignFast is also available as a hosted service at [designfast.app](https://designfast.app).**
 
+## CLI (via Claude Code)
+
+Generate websites directly from your terminal using Claude Code as the LLM backend. No database, no server, no setup — just Claude Code installed and you're ready.
+
+### Requirements
+
+- Node.js 24+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
+
+### Quick Start
+
+```bash
+npm install
+node cli/index.js "A modern SaaS landing page for a project management tool"
+```
+
+### Examples
+
+```bash
+# Auto-pick the best style (default)
+node cli/index.js "A mini landing page about Trento" --style auto
+
+# Generate 4 variations with AI-picked style
+node cli/index.js "A mini landing page about Trento" -s auto -v 4
+
+# Use Opus 4.6
+node cli/index.js "A portfolio site" --model claude-opus-4-6
+
+# Use a specific style
+node cli/index.js "A law firm website" --style legal
+
+# AI-generated custom style
+node cli/index.js "An artisan coffee shop" --style synth
+
+# Multi-page webapp
+node cli/index.js "A task manager app" --mode webapp
+
+# Custom output directory
+node cli/index.js "A travel blog" -o ./my-site
+
+# Iterative refinement (after a generation, use the session ID printed)
+node cli/index.js --iterate <session-id>
+```
+
+### Options
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--style <name\|auto\|synth>` | `-s` | `auto` | Style preset, `auto` (AI picks), or `synth` (AI creates custom) |
+| `--mode <landing\|webapp>` | `-m` | `landing` | Single-page landing or multi-page webapp |
+| `--versions <n>` | `-v` | `1` | Number of variations to generate |
+| `--output <dir>` | `-o` | `./output` | Output directory |
+| `--model <model>` | | `claude-sonnet-4-6` | Claude model to use |
+| `--iterate <session-id>` | `-i` | | Resume a session for iterative refinement |
+
+48 style presets are available — run `node cli/index.js --help` to see the full list.
+
+---
+
 <img src="assets/home.png" alt="DesignFast Home" width="720" />
 
 <img src="assets/generation.png" alt="DesignFast Generation" width="720" />

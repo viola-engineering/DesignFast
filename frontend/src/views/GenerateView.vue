@@ -50,6 +50,43 @@ const statusMessage = computed(() => activeJob.value?.statusMessage)
 // SSE connections — one per job
 const eventSources = ref<Map<string, EventSource>>(new Map())
 
+// Fallback poll — catches done/failed if SSE event was missed
+let pollTimer: ReturnType<typeof setInterval> | undefined
+
+function startPoll() {
+  if (pollTimer) return
+  pollTimer = setInterval(async () => {
+    const pending = jobs.value.filter(j => j.status !== 'done' && j.status !== 'failed')
+    if (pending.length === 0) {
+      stopPoll()
+      return
+    }
+    for (const job of pending) {
+      try {
+        const fresh = await getJobById(job.id)
+        if (fresh.status === 'done') {
+          job.status = 'done'
+          job.statusMessage = 'Complete'
+          disconnectSSE(job.id)
+          checkAllDone()
+        } else if (fresh.status === 'failed') {
+          job.status = 'failed'
+          job.statusMessage = fresh.errorMessage || 'Job failed'
+          disconnectSSE(job.id)
+          checkAllDone()
+        }
+      } catch { /* ignore poll errors, SSE is primary */ }
+    }
+  }, 15_000)
+}
+
+function stopPoll() {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = undefined
+  }
+}
+
 function connectSSE(jobId: string) {
   if (eventSources.value.has(jobId)) return
 
@@ -99,6 +136,7 @@ function connectSSE(jobId: string) {
   }
 
   eventSources.value.set(jobId, es)
+  startPoll()
 }
 
 function disconnectSSE(jobId?: string) {
@@ -120,6 +158,7 @@ function disconnectSSE(jobId?: string) {
 function checkAllDone() {
   const allFinished = jobs.value.every(j => j.status === 'done' || j.status === 'failed')
   if (allFinished) {
+    stopPoll()
     isGenerating.value = false
     const doneCount = jobs.value.filter(j => j.status === 'done').length
     if (doneCount === jobs.value.length) {
@@ -167,6 +206,7 @@ onMounted(async () => {
 onUnmounted(() => {
   disconnectSSE()
   disconnectIterateSSE()
+  stopPoll()
 })
 
 async function handleGenerate(formData: CreateGenerationRequest) {

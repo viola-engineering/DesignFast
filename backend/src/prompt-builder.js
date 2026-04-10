@@ -1,9 +1,7 @@
-import {
-  AgentLoop,
-  createProvider,
-  createDefaultRegistry,
-  DatabaseImpl,
-} from '@angycode/core';
+// NOTE: @angycode/core is no longer imported here.
+// LLM calls are delegated via a queryLLM callback passed by the caller,
+// allowing both the web app (AgentLoop) and the CLI (Claude Code subprocess)
+// to reuse these functions without code duplication.
 
 // ─── Style Presets ──────────────────────────────────────────────────────────
 
@@ -698,23 +696,17 @@ export const STYLES = {
  * @param {string} opts.apiKey - API key
  * @returns {Promise<string[]>} Array of variation strategy strings (length = count)
  */
-export async function generateVariationStrategies({ userPrompt, stylePrompt, count, model, providerName, apiKey }) {
-  const provider = createProvider({ name: providerName, apiKey });
-  const agentDb = new DatabaseImpl();
-  const tools = createDefaultRegistry();
-
-  const agent = new AgentLoop({
-    provider,
-    tools,
-    db: agentDb,
-    workingDir: process.cwd(),
-    maxTokens: 2048,
-    maxTurns: 1,
-    model,
-    providerName,
-    disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
-  });
-
+/**
+ * Generate variation strategies for multi-version generation.
+ *
+ * @param {object} opts
+ * @param {string} opts.userPrompt - The user's website description
+ * @param {string} opts.stylePrompt - The resolved style directive (may be empty)
+ * @param {number} opts.count - Number of extra variations needed (versions - 1)
+ * @param {(prompt: string) => Promise<string>} opts.queryLLM - LLM query function
+ * @returns {Promise<string[]>} Array of variation strategy strings (length = count)
+ */
+export async function generateVariationStrategies({ userPrompt, stylePrompt, count, queryLLM }) {
   const strategyPrompt = `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
 
 Each strategy must push the design in a GENUINELY DIFFERENT direction — different layout approach, different visual emphasis, different mood, or different interpretation of the brief. They must be specific to THIS project, not generic advice.
@@ -731,18 +723,7 @@ RULES:
 - Do NOT include numbering, bullets, or prefixes — just the strategy text, one per line
 - Do NOT repeat the style directive — focus on what makes each version DIFFERENT`;
 
-  let result = '';
-  agent.on('event', (event) => {
-    if (event.type === 'text') {
-      result += event.text;
-    }
-  });
-
-  try {
-    await agent.run(strategyPrompt);
-  } finally {
-    agentDb.close();
-  }
+  const result = await queryLLM(strategyPrompt);
 
   const strategies = result
     .trim()
@@ -979,28 +960,15 @@ RULES for assets:
  * @param {string} apiKey - API key for the provider
  * @returns {Promise<string[]>} Array of style keys
  */
-export async function resolveThemeAuto(userPrompt, model, providerName, apiKey) {
+/**
+ * --theme-auto: Ask the LLM to pick the best style from our catalog.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
+ * @returns {Promise<string[]>} Array of style keys
+ */
+export async function resolveThemeAuto(userPrompt, queryLLM) {
   const catalog = buildStyleCatalog();
-
-  const provider = createProvider({
-    name: providerName,
-    apiKey,
-  });
-
-  const agentDb = new DatabaseImpl();
-  const tools = createDefaultRegistry();
-
-  const agent = new AgentLoop({
-    provider,
-    tools,
-    db: agentDb,
-    workingDir: process.cwd(),
-    maxTokens: 1024,
-    maxTurns: 1,
-    model,
-    providerName,
-    disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
-  });
 
   const selectorPrompt = `You are a design style selector. Given a website description and a catalog of available design styles, pick the single BEST style that fits the described website.
 
@@ -1015,18 +983,7 @@ RULES:
 - Pick a style that is APPROPRIATE for the content — a hospital website should NOT get "cyberpunk", a fintech app should NOT get "playful".
 - Respond with ONLY the style key, nothing else. Example: cleanTech`;
 
-  let result = '';
-  agent.on('event', (event) => {
-    if (event.type === 'text') {
-      result += event.text;
-    }
-  });
-
-  try {
-    await agent.run(selectorPrompt);
-  } finally {
-    agentDb.close();
-  }
+  const result = await queryLLM(selectorPrompt);
 
   // Parse response — extract the single best style key
   const keys = result
@@ -1052,27 +1009,14 @@ RULES:
  * @param {string} apiKey - API key
  * @returns {Promise<string|null>} Synthesized style brief or null
  */
-export async function resolveThemeSynth(userPrompt, model, providerName, apiKey) {
-  const provider = createProvider({
-    name: providerName,
-    apiKey,
-  });
-
-  const agentDb = new DatabaseImpl();
-  const tools = createDefaultRegistry();
-
-  const agent = new AgentLoop({
-    provider,
-    tools,
-    db: agentDb,
-    workingDir: process.cwd(),
-    maxTokens: 2048,
-    maxTurns: 1,
-    model,
-    providerName,
-    disabledTools: ['bash', 'read', 'write', 'edit', 'glob', 'grep', 'webfetch'],
-  });
-
+/**
+ * --theme-synth: Ask the LLM to generate a custom style prompt tailored to the content.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
+ * @returns {Promise<string|null>} Synthesized style brief or null
+ */
+export async function resolveThemeSynth(userPrompt, queryLLM) {
   const synthPrompt = `You are a world-class web design director. Given a website description, create a detailed design system brief that would be given to a designer to implement the site.
 
 WEBSITE DESCRIPTION:
@@ -1094,18 +1038,7 @@ RULES:
 - Use the same bullet-point format as shown above.
 - Output ONLY the design brief, no preamble, no explanation.`;
 
-  let result = '';
-  agent.on('event', (event) => {
-    if (event.type === 'text') {
-      result += event.text;
-    }
-  });
-
-  try {
-    await agent.run(synthPrompt);
-  } finally {
-    agentDb.close();
-  }
+  const result = await queryLLM(synthPrompt);
 
   const brief = result.trim();
   if (brief.length < 100) {

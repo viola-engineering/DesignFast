@@ -4,6 +4,7 @@ import { authMiddleware } from '../auth.js';
 import { checkUsageLimits, hasApiKeys, CREDIT_COSTS, WEBAPP_CREDIT_MULTIPLIER } from '../plans.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
 import { STYLES, resolveThemeAuto, resolveThemeSynth, generateVariationStrategies } from '../prompt-builder.js';
+import { createAgentLoopQueryLLM } from '../llm-agentloop.js';
 import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
 import { requireUUID } from '../validation.js';
@@ -126,7 +127,8 @@ export default async function (app) {
       if (!apiKey) {
         return reply.code(400).send({ error: `No API key available for ${firstModel.providerName}` });
       }
-      const keys = await resolveThemeAuto(prompt, firstModel.model, firstModel.providerName, apiKey);
+      const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
+      const keys = await resolveThemeAuto(prompt, queryLLM);
       if (keys.length > 0) {
         styles = keys.map(key => ({
           key,
@@ -141,7 +143,8 @@ export default async function (app) {
       if (!apiKey) {
         return reply.code(400).send({ error: `No API key available for ${firstModel.providerName}` });
       }
-      const brief = await resolveThemeSynth(prompt, firstModel.model, firstModel.providerName, apiKey);
+      const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
+      const brief = await resolveThemeSynth(prompt, queryLLM);
       if (brief) {
         synthBrief = brief;
         styles = [{ key: 'synth', name: 'Custom Style', prompt: brief }];
@@ -170,15 +173,14 @@ export default async function (app) {
       const firstModel = MODEL_MAP[models[0]];
       const apiKey = await getApiKey(req.userId, firstModel.providerName);
       if (apiKey) {
+        const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
         await Promise.all(styles.map(async (style) => {
           try {
             const strategies = await generateVariationStrategies({
               userPrompt: prompt.trim(),
               stylePrompt: style.prompt,
               count: versions - 1,
-              model: firstModel.model,
-              providerName: firstModel.providerName,
-              apiKey,
+              queryLLM,
             });
             variationStrategyMap.set(style.key, strategies);
           } catch (err) {
