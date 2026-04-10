@@ -44,8 +44,20 @@ node cli/index.js "A task manager app" --mode webapp
 # Custom output directory
 node cli/index.js "A travel blog" -o ./my-site
 
+# Reference image — AI matches the visual style of a screenshot/mockup
+node cli/index.js "A fintech dashboard" --ref screenshot.png
+
+# Asset images — included in the project for use in HTML/CSS
+node cli/index.js "Our company site" --asset logo.svg --asset hero.jpg
+
+# Combine: reference image + assets + multiple versions
+node cli/index.js "A coffee shop site" --ref mockup.png --asset logo.png --asset beans.jpg -v 3
+
 # Iterative refinement (after a generation, use the session ID printed)
 node cli/index.js --iterate <session-id>
+
+# Iterate with a new reference image
+node cli/index.js --iterate <session-id> --ref new-mockup.png
 ```
 
 ### Options
@@ -57,9 +69,23 @@ node cli/index.js --iterate <session-id>
 | `--versions <n>` | `-v` | `1` | Number of variations to generate |
 | `--output <dir>` | `-o` | `./output` | Output directory |
 | `--model <model>` | | `claude-sonnet-4-6` | Claude model to use |
+| `--ref <file>` | | | Reference image (screenshot/mockup) for AI to match visually. Repeatable. |
+| `--asset <file>` | | | Asset image to include in the project (logo, photo). Copied to `assets/`. Repeatable. |
 | `--iterate <session-id>` | `-i` | | Resume a session for iterative refinement |
 
 48 style presets are available — run `node cli/index.js --help` to see the full list.
+
+### Reference Images vs Assets
+
+The CLI supports two types of image inputs that serve different purposes:
+
+**Reference images** (`--ref`) are screenshots, mockups, or design files that the AI sees via vision but does **not** include in the output. The AI analyzes the visual style — colors, layout, typography, spacing — and recreates it in code. When a reference image is provided, it overrides the `--style` flag and becomes the primary design directive.
+
+**Assets** (`--asset`) are image files (logos, photos, icons) that get **copied into the project** under an `assets/` folder. The AI knows they exist and uses them in the generated HTML/CSS with correct relative paths (e.g. `<img src="assets/logo.png">`). Assets are real files that ship with the output.
+
+You can combine both: provide a mockup as `--ref` to set the visual direction, and your actual logo/photos as `--asset` so they appear in the final site.
+
+Supported formats: PNG, JPG, GIF, WebP, SVG.
 
 ---
 

@@ -12,9 +12,10 @@
  *
  * All output goes to ./output/ (or --output <dir>).
  */
-import { mkdirSync, readdirSync, readFileSync } from 'node:fs';
-import { resolve, basename } from 'node:path';
+import { mkdirSync, readdirSync, readFileSync, existsSync, copyFileSync, statSync } from 'node:fs';
+import { resolve, basename, extname, join } from 'node:path';
 import { parseArgs } from 'node:util';
+import imageSize from 'image-size';
 import { createClaudeCodeQueryLLM, runGeneration, continueSession } from './claude-code.js';
 import {
   STYLES,
@@ -34,6 +35,8 @@ const { values: flags, positionals } = parseArgs({
     model: { type: 'string', default: 'claude-sonnet-4-6' },
     versions: { type: 'string', short: 'v', default: '1' },
     output: { type: 'string', short: 'o', default: './output' },
+    ref: { type: 'string', multiple: true, default: [] },
+    asset: { type: 'string', multiple: true, default: [] },
     iterate: { type: 'string', short: 'i' },
     help: { type: 'boolean', short: 'h', default: false },
   },
@@ -50,6 +53,8 @@ Usage:
   designfast "<prompt>" --style auto           Let AI pick the best style (default)
   designfast "<prompt>" --style synth          Let AI create a custom style
   designfast "<prompt>" --versions 2           Generate multiple variations
+  designfast "<prompt>" --ref screenshot.png   Use a reference image for style
+  designfast "<prompt>" --asset logo.png       Include asset images in the project
   designfast --iterate <session-id>            Continue refining a design
 
 Options:
@@ -58,6 +63,10 @@ Options:
   -v, --versions <n>              Number of variations (default: 1)
   -o, --output <dir>              Output directory (default: ./output)
   --model <model>                 Claude model (default: claude-sonnet-4-6)
+  --ref <file>                    Reference image (screenshot/mockup) for AI to match visually
+                                  Can be specified multiple times: --ref a.png --ref b.jpg
+  --asset <file>                  Asset image to include in the project (logo, photo, etc.)
+                                  Can be specified multiple times: --asset logo.svg --asset hero.jpg
   --iterate <session-id>          Resume session for iterative refinement
   -h, --help                      Show this help
 
@@ -80,6 +89,87 @@ function logDim(msg) {
   process.stderr.write(`\x1b[90m${msg}\x1b[0m\n`);
 }
 
+// ── Image helpers ────────────────────────────────────────────────────────
+
+const MIME_TYPES = {
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.svg': 'image/svg+xml',
+};
+
+/**
+ * Load reference images from file paths into base64 vision inputs.
+ * @param {string[]} paths
+ * @returns {Array<{data: string, mimeType: string}>}
+ */
+function loadReferenceImages(paths) {
+  const images = [];
+  for (const p of paths) {
+    const filePath = resolve(p);
+    if (!existsSync(filePath)) {
+      console.error(`Error: Reference image not found: ${p}`);
+      process.exit(1);
+    }
+    const ext = extname(filePath).toLowerCase();
+    const mimeType = MIME_TYPES[ext];
+    if (!mimeType) {
+      console.error(`Error: Unsupported image format "${ext}" for reference image: ${p}`);
+      console.error(`  Supported: ${Object.keys(MIME_TYPES).join(', ')}`);
+      process.exit(1);
+    }
+    const data = readFileSync(filePath).toString('base64');
+    images.push({ data, mimeType });
+  }
+  return images;
+}
+
+/**
+ * Load asset metadata and return info needed for prompt builder.
+ * Does NOT copy files yet — that happens per output dir.
+ * @param {string[]} paths
+ * @returns {Array<{filePath: string, filename: string, width: number|null, height: number|null, sizeBytes: number}>}
+ */
+function loadAssetMeta(paths) {
+  const assets = [];
+  for (const p of paths) {
+    const filePath = resolve(p);
+    if (!existsSync(filePath)) {
+      console.error(`Error: Asset file not found: ${p}`);
+      process.exit(1);
+    }
+    const filename = basename(filePath);
+    const sizeBytes = statSync(filePath).size;
+
+    let width = null;
+    let height = null;
+    try {
+      const dims = imageSize(filePath);
+      width = dims.width || null;
+      height = dims.height || null;
+    } catch { /* not a raster image (e.g. SVG), skip dimensions */ }
+
+    assets.push({ filePath, filename, width, height, sizeBytes });
+  }
+  return assets;
+}
+
+/**
+ * Copy asset files into the output directory's assets/ subfolder.
+ * @param {Array<{filePath: string, filename: string}>} assets
+ * @param {string} outputDir
+ */
+function copyAssetsToDir(assets, outputDir) {
+  if (assets.length === 0) return;
+  const assetsDir = join(outputDir, 'assets');
+  mkdirSync(assetsDir, { recursive: true });
+  for (const a of assets) {
+    copyFileSync(a.filePath, join(assetsDir, a.filename));
+  }
+}
+
 async function main() {
   // ── Iterate mode ─────────────────────────────────────────────────────
   if (flags.iterate) {
@@ -97,6 +187,21 @@ async function main() {
   if (!['landing', 'webapp'].includes(mode)) {
     console.error(`Error: Invalid mode "${mode}". Use "landing" or "webapp".`);
     process.exit(1);
+  }
+
+  // ── Load reference images and assets ────────────────────────────────
+  const referenceImages = loadReferenceImages(flags.ref);
+  const assetsMeta = loadAssetMeta(flags.asset);
+
+  if (referenceImages.length > 0) {
+    log(`Loaded ${referenceImages.length} reference image${referenceImages.length > 1 ? 's' : ''} for visual matching`);
+  }
+  if (assetsMeta.length > 0) {
+    log(`Loaded ${assetsMeta.length} asset${assetsMeta.length > 1 ? 's' : ''}:`);
+    for (const a of assetsMeta) {
+      const dims = a.width && a.height ? ` (${a.width}x${a.height}px)` : '';
+      logDim(`  ${a.filename}${dims} — ${(a.sizeBytes / 1024).toFixed(1)} KB`);
+    }
   }
 
   const queryLLM = createClaudeCodeQueryLLM({ model: flags.model });
@@ -157,10 +262,21 @@ async function main() {
   // ── Generate versions (up to 4 in parallel) ────────────────────────
   const CONCURRENCY = 4;
 
+  // Build asset metadata for prompt builder (same shape as web app)
+  const promptAssets = assetsMeta.map(a => ({
+    filename: a.filename,
+    width: a.width,
+    height: a.height,
+    sizeBytes: a.sizeBytes,
+  }));
+
   const jobs = [];
   for (let v = 1; v <= versions; v++) {
     const outputDir = versions > 1 ? resolve(outputBase, `v${v}`) : outputBase;
     mkdirSync(outputDir, { recursive: true });
+
+    // Copy assets into each version's output dir
+    copyAssetsToDir(assetsMeta, outputDir);
 
     const variationNudge = v > 1 ? (variationStrategies[v - 2] || '') : '';
     const fullPrompt = buildPrompt(
@@ -172,8 +288,8 @@ async function main() {
         version: v,
         variationNudge,
         fromFiles: null,
-        hasReferenceImages: false,
-        assets: [],
+        hasReferenceImages: referenceImages.length > 0,
+        assets: promptAssets,
       },
       outputDir,
     );
@@ -195,6 +311,7 @@ async function main() {
         prompt: job.fullPrompt,
         workingDir: job.outputDir,
         model: flags.model,
+        images: referenceImages.length > 0 ? referenceImages : undefined,
       });
 
       const files = readdirSync(job.outputDir).filter(f => /\.(html|css|js)$/.test(f));
@@ -224,6 +341,12 @@ async function main() {
 // ── Iterate mode ─────────────────────────────────────────────────────────
 
 async function handleIterate(sessionId) {
+  // Load reference images if provided (useful for showing the AI a new target)
+  const iterateRefImages = loadReferenceImages(flags.ref);
+  if (iterateRefImages.length > 0) {
+    log(`Loaded ${iterateRefImages.length} reference image${iterateRefImages.length > 1 ? 's' : ''}`);
+  }
+
   const readline = await import('node:readline');
   const rl = readline.createInterface({
     input: process.stdin,
@@ -254,6 +377,7 @@ async function handleIterate(sessionId) {
         message: message.trim(),
         workingDir: outputBase,
         model: flags.model,
+        images: iterateRefImages.length > 0 ? iterateRefImages : undefined,
         onText: (text) => process.stderr.write(text),
       });
 

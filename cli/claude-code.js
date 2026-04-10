@@ -76,6 +76,7 @@ function buildEnhancedPath() {
  * @param {string} [opts.resumeSessionId] - Resume an existing session
  * @param {string[]} [opts.tools] - Tool whitelist (e.g. ['Read','Glob','Grep'])
  * @param {boolean} [opts.toolsOnly=false] - If true, restrict to read-only tools (for queries)
+ * @param {Array<{data: string, mimeType: string}>} [opts.images] - Base64-encoded images for vision
  * @param {(event: object) => void} [opts.onEvent] - Stream event callback
  * @returns {Promise<{ text: string, sessionId: string, costUsd: number }>}
  */
@@ -236,8 +237,21 @@ export function spawnClaude(opts) {
       reject(new Error(`Failed to start claude: ${err.message}. Is it installed?`));
     });
 
-    // Send the message via stdin
-    const contentArray = [{ type: 'text', text: opts.prompt }];
+    // Send the message via stdin (images first, then text — same as Angy)
+    const contentArray = [];
+    if (opts.images && opts.images.length > 0) {
+      for (const img of opts.images) {
+        contentArray.push({
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: img.mimeType,
+            data: img.data,
+          },
+        });
+      }
+    }
+    contentArray.push({ type: 'text', text: opts.prompt });
     const envelope = {
       type: 'user',
       message: { role: 'user', content: contentArray },
@@ -288,6 +302,7 @@ export function createClaudeCodeQueryLLM(opts = {}) {
  * @param {string} [opts.systemPrompt] - System prompt
  * @param {string} [opts.sessionId] - Session ID for new session
  * @param {string} [opts.resumeSessionId] - Resume existing session
+ * @param {Array<{data: string, mimeType: string}>} [opts.images] - Reference images for vision
  * @param {(text: string) => void} [opts.onText] - Text streaming callback
  * @param {(event: object) => void} [opts.onEvent] - Raw event callback
  * @returns {Promise<{ sessionId: string, costUsd: number }>}
@@ -300,6 +315,7 @@ export async function runGeneration(opts) {
     workingDir: opts.workingDir,
     sessionId: opts.sessionId,
     resumeSessionId: opts.resumeSessionId,
+    images: opts.images,
     tools: ['Bash', 'Read', 'Edit', 'Write', 'Glob', 'Grep'],
     onText: opts.onText,
     onEvent: opts.onEvent,
@@ -315,6 +331,7 @@ export async function runGeneration(opts) {
  * @param {string} opts.message - User message
  * @param {string} opts.workingDir - Working directory
  * @param {string} [opts.model] - Model override
+ * @param {Array<{data: string, mimeType: string}>} [opts.images] - Reference images for vision
  * @param {(text: string) => void} [opts.onText] - Text streaming callback
  * @returns {Promise<{ text: string, costUsd: number }>}
  */
@@ -324,6 +341,7 @@ export async function continueSession(opts) {
     model: opts.model,
     workingDir: opts.workingDir,
     resumeSessionId: opts.sessionId,
+    images: opts.images,
     tools: ['Bash', 'Read', 'Edit', 'Write', 'Glob', 'Grep'],
     onText: opts.onText,
   });
