@@ -221,16 +221,8 @@ async function main() {
       log('Could not auto-select style, using freestyle');
     }
   } else if (flags.style === 'synth') {
-    log('Generating custom style...');
-    const brief = await resolveThemeSynth(prompt, queryLLM);
-    if (brief) {
-      styleKey = 'synth';
-      stylePrompt = brief;
-      log('Custom style generated');
-      logDim(brief.substring(0, 200) + (brief.length > 200 ? '...' : ''));
-    } else {
-      log('Style synthesis failed, using freestyle');
-    }
+    styleKey = 'synth';
+    // Synth results are generated per-version below (each version gets its own concept + config)
   } else if (flags.style !== 'freestyle' && STYLES[flags.style]) {
     styleKey = flags.style;
     stylePrompt = STYLES[styleKey].prompt;
@@ -240,9 +232,34 @@ async function main() {
     process.exit(1);
   }
 
-  // ── Variation strategies ───────────────────────────────────────────
+  // ── Synth: generate N unique styles in one call ─────────────────────
+  let synthStyles = []; // array of { tailwindConfig, prompt } per version
+  if (styleKey === 'synth') {
+    log(`Generating ${versions} unique design style${versions > 1 ? 's' : ''}...`);
+    try {
+      synthStyles = await resolveThemeSynth(prompt, queryLLM, versions);
+      for (let i = 0; i < synthStyles.length; i++) {
+        const s = synthStyles[i];
+        const colors = s.tailwindConfig?.theme?.extend?.colors;
+        const colorKeys = colors ? Object.keys(colors) : [];
+        const fonts = s.tailwindConfig?.theme?.extend?.fontFamily;
+        const fontNames = fonts ? Object.values(fonts).map(f => f[0]).join(', ') : 'none';
+        log(`  v${i + 1}: ${colorKeys.length} colors [${colorKeys.slice(0, 5).join(', ')}${colorKeys.length > 5 ? '...' : ''}] | fonts: ${fontNames}`);
+        logDim(`  v${i + 1} prompt:\n${s.prompt}`);
+      }
+    } catch (err) {
+      log(`Style synthesis failed: ${err.message}`);
+    }
+
+    if (synthStyles.length === 0) {
+      log('Style synthesis failed, using freestyle');
+      styleKey = null;
+    }
+  }
+
+  // ── Variation strategies (for non-synth multi-version) ────────────
   let variationStrategies = [];
-  if (versions > 1) {
+  if (versions > 1 && styleKey !== 'synth') {
     log(`Generating ${versions - 1} variation strategies...`);
     try {
       variationStrategies = await generateVariationStrategies({
@@ -278,13 +295,22 @@ async function main() {
     // Copy assets into each version's output dir
     copyAssetsToDir(assetsMeta, outputDir);
 
-    const variationNudge = v > 1 ? (variationStrategies[v - 2] || '') : '';
+    // For synth: each version has its own style (config + prompt) from the single synth call
+    // For presets/freestyle: shared style + variation nudge
+    const synthStyle = styleKey === 'synth' ? synthStyles[v - 1] : null;
+    const versionStylePrompt = synthStyle ? synthStyle.prompt : stylePrompt;
+    const versionTailwindConfig = synthStyle
+      ? (synthStyle.tailwindConfig || null)
+      : ((styleKey && STYLES[styleKey]?.tailwindConfig) || null);
+    const variationNudge = (!synthStyle && v > 1) ? (variationStrategies[v - 2] || '') : '';
+
     const fullPrompt = buildPrompt(
       {
         prompt,
         mode,
         styleKey,
-        stylePrompt,
+        stylePrompt: versionStylePrompt,
+        tailwindConfig: versionTailwindConfig,
         version: v,
         variationNudge,
         fromFiles: null,

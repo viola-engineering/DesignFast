@@ -89,6 +89,7 @@ export function spawnClaude(opts) {
       '--input-format', 'stream-json',
       '--output-format', 'stream-json',
       '--verbose',
+      '--effort', 'high',
     ];
 
     if (opts.model) {

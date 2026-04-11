@@ -3,679 +3,1971 @@
 // allowing both the web app (AgentLoop) and the CLI (Claude Code subprocess)
 // to reuse these functions without code duplication.
 
+
 // ─── Style Presets ──────────────────────────────────────────────────────────
 
 export const STYLES = {
   minimalist: {
     name: 'Minimalist',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FAFAF9',
+            heading: '#2D2D2D',
+            body: '#6B6B6B',
+            accent: '#8B9A7B',
+            muted: '#D4D0CB',
+          },
+          fontFamily: {
+            body: ['"Cormorant Garamond"', 'serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use a MINIMALIST style.
-- Layout: single-column, max-width 720px, centered. NO multi-column grids. NO card grids. NO sidebars.
-- Colors: muted palette only — off-white (#FAFAF9), warm grays, one single subtle accent color (muted sage or soft clay). NO vibrant colors. NO gradients.
-- Typography: thin/light weight fonts (200–400). Large line-height (1.8+). Generous letter-spacing. One serif OR one clean sans-serif — never both.
-- Spacing: extreme whitespace. Sections separated by 120px+ vertical space. Padding generous everywhere.
-- Decorations: NONE. No icons, no emoji, no illustrations, no shadows, no borders, no rounded corners, no background shapes. Use only thin hairline <hr> dividers if needed.
-- Buttons: text-only or minimal outlined. No filled buttons. No hover effects beyond subtle opacity change.
-- Vibe: Dieter Rams. Japanese zen. "Less, but better." Every element must earn its place.`,
+- Layout: single-column, \`max-w-3xl mx-auto\` — a single river of content flowing down the page, nothing else. NO multi-column grids. NO card grids. NO sidebars. Think of a single sheet of handmade paper with words placed carefully upon it.
+- Colors: \`bg-surface\` — a warm, lived-in off-white like aged Japanese paper. \`text-heading\` — deep charcoal, not quite black, like sumi ink that's been diluted once. \`text-body\` — a quiet mid-gray that recedes behind the content. \`text-accent\` only for one subtle interactive element, like a single pressed wildflower marking a page. \`border-muted\` for hairline dividers so thin they feel like pencil lines.
+- Typography: use \`font-body\` everywhere (Cormorant Garamond — a single elegant serif that reads like a letter from a thoughtful friend). Light weights (\`font-light\`) so the letterforms feel drawn, not stamped. Large line-height (\`leading-relaxed\` or \`leading-loose\`) — let the words breathe like haiku. Generous letter-spacing (\`tracking-wide\`).
+- Spacing: extreme whitespace — silence is the design. \`py-32\` or more between sections, each one a quiet room you walk into. \`px-6\` generous padding everywhere. The margins are as important as the text.
+- Decorations: NONE. No icons, no emoji, no illustrations, no shadows, no borders, no rounded corners, no background shapes. Use only thin hairline \`<hr class="border-muted">\` dividers if needed — these should feel like the faintest crease in folded paper.
+- Buttons: text-only or minimal outlined with \`border-muted\`. No filled buttons. Whisper-quiet interactions.
+- style.css: subtle fade-in animations on sections (opacity 0 to 1 over 600ms with a slight 10px upward translate for a gentle rising-into-view effect), smooth 200ms ease transitions on all interactive elements, a delicate 1px bottom-border on links that fades to transparent at the edges using a linear-gradient border-image. Add a gentle letter-spacing transition on hover for navigation items (tracking-wide to tracking-wider over 300ms).
+- Vibe: Dieter Rams. Japanese zen. "Less, but better." Every element must earn its place. The page should feel like stepping into a quiet temple — you notice the absence of noise before you notice anything else.`,
   },
 
   brutalist: {
     name: 'Brutalist',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000',
+            surface: '#FFFFFF',
+            accent: '#FF0000',
+            heading: '#000000',
+            body: '#000000',
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+            brutal: '4px 4px 0px #000000',
+          },
+        },
+      },
+    },
     prompt: `Use a BRUTALIST style.
-- Layout: asymmetric, intentionally "broken" grid. Overlapping elements. Off-center positioning. Use CSS Grid with unusual column spans. NO symmetry. NO conventional hero-features-pricing structure.
-- Colors: stark black and white as base. ONE raw accent color (electric red, acid yellow, or cyan). High contrast. NO pastels. NO gradients.
-- Typography: monospace font only (Courier, JetBrains Mono, or Space Mono). MASSIVE headlines (6rem+). Mix uppercase and lowercase deliberately. Tight letter-spacing on headers, wide on body.
-- Borders: thick 3px+ solid black borders on everything. NO rounded corners anywhere (border-radius: 0). Visible box model.
-- Decorations: raw, exposed structure. Show the grid. Use visible border outlines. Text can be rotated or positioned unusually.
-- Buttons: rectangular, thick-bordered, monospace text. No hover animations — just invert colors on hover.
-- Vibe: raw concrete, exposed pipes, 1990s web meets punk zine. Intentionally rough. Anti-design is the design.`,
+- Layout: asymmetric, intentionally "broken" grid — elements shoved to the edges, overlapping like posters wheat-pasted on a concrete wall. Off-center positioning that makes you feel slightly uneasy. Use CSS Grid with unusual column spans (a 5-column grid where content sits in columns 2-4, then suddenly bleeds into column 5). NO symmetry. NO conventional hero-features-pricing structure. The layout itself should feel like a statement against polish.
+- Colors: \`bg-surface\` (stark white, like bare drywall) and \`bg-primary\` (pure black, like wet asphalt) as the only base. ONE raw \`text-accent\` or \`bg-accent\` (angry red, like a fire alarm) used sparingly — maybe just a single word or a thick underline. High contrast that hurts a little.
+- Typography: \`font-mono\` (JetBrains Mono) for everything — monospace is honest, it doesn't pretend. MASSIVE headlines (\`text-7xl\` to \`text-9xl\`, big enough to feel confrontational). Mix uppercase and lowercase deliberately — "HELLO world" not "Hello World". \`tracking-tight\` on headers (cramped, claustrophobic), \`tracking-widest\` on body (sparse, clinical).
+- Borders: thick \`border-4 border-primary\` on everything — every element announces its box model like an exposed I-beam. \`rounded-card\` (0px) — NO rounded corners anywhere. The box is a box.
+- Decorations: raw, exposed structure. Show the grid. Use visible border outlines on empty divs to reveal the skeleton. Text can be rotated via style.css transforms. Elements should feel like they were placed by hand and taped down.
+- Buttons: \`rounded-card border-4 border-primary font-mono\`. No hover animations — just \`hover:bg-primary hover:text-surface\` instant color invert. Blunt, like a light switch.
+- style.css: CSS transforms for text rotation (rotate -3deg to 5deg on headlines and pull-quotes), z-index stacking to create deliberate overlaps between sections, negative margins (-2rem to -4rem) to make elements collide into each other, a mix-blend-mode: difference on one accent element for visual disruption, thick 4px dashed outlines on focus states. Add a subtle screen-flicker animation (opacity 1 to 0.97 and back over 4s infinite) on the page load.
+- Vibe: raw concrete, exposed pipes, 1990s web meets punk zine. Intentionally rough. Anti-design is the design. This page should feel like someone built it angry — and that anger is the aesthetic.`,
   },
 
   glassmorphism: {
     name: 'Glassmorphism',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#1a0533',
+            heading: '#FFFFFF',
+            body: '#E2E8F0',
+            accent: '#A855F7',
+            glass: 'rgba(255,255,255,0.12)',
+            'glass-border': 'rgba(255,255,255,0.2)',
+          },
+          fontFamily: {
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '24px',
+          },
+          boxShadow: {
+            card: '0 8px 32px rgba(0,0,0,0.3)',
+            glow: '0 0 30px rgba(168,85,247,0.3)',
+          },
+        },
+      },
+    },
     prompt: `Use a GLASSMORPHISM style.
-- Layout: centered, layered card panels floating over a colorful background. Content lives inside frosted glass containers. Max 2 columns. Overlapping layers create depth.
-- Background: rich gradient mesh or blurred color blobs (use large CSS gradients with multiple color stops — purples, blues, pinks). This is the canvas behind the glass.
-- Glass panels: background rgba(255,255,255,0.12), backdrop-filter: blur(16px), border: 1px solid rgba(255,255,255,0.2), subtle box-shadow. Semi-transparent cards floating over the colorful bg.
-- Colors: white text on glass panels over dark/colorful backgrounds. Accent colors come from the background gradient bleeding through the glass.
-- Typography: clean sans-serif (Inter, SF Pro style). Medium weight. High contrast white text.
-- Spacing: generous padding inside glass panels (32px+). Cards have noticeable gaps between them.
-- Decorations: floating blurred color orbs in the background. Subtle border glow on glass edges. NO sharp borders. Everything feels ethereal.
-- Vibe: iOS/macOS frosted glass. Premium, layered, atmospheric. Depth through translucency.`,
+- Layout: centered, layered card panels floating over a colorful background like frosted windows suspended in a nebula. Content lives inside frosted glass containers. Max 2 columns via \`grid grid-cols-1 md:grid-cols-2\`. Overlapping layers create depth — cards should stack and slightly overlap (use negative margins or translate) so you feel the z-axis.
+- Background: \`bg-surface\` — a deep, inky violet-black (#1a0533) as the dark base. In style.css, define a rich gradient mesh layered on top: use multiple radial-gradient layers (e.g., radial-gradient(ellipse at 20% 50%, rgba(120,0,255,0.4), transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,0,150,0.3), transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(0,100,255,0.3), transparent 50%)) to create a swirling cosmic backdrop.
+- Glass panels: use \`bg-glass border border-glass-border rounded-card shadow-card\` and add \`backdrop-blur-xl\` — the cards should look like frosted bathroom glass, translucent and milky with the background colors bleeding through softly. The rgba(255,255,255,0.12) background creates that characteristic "breathed-on window" look. Add an inset box-shadow (inset 0 1px 0 rgba(255,255,255,0.1)) for a top-edge light refraction.
+- Colors: \`text-heading\` (pure white, crisp against the frost). \`text-body\` (soft blue-gray, like moonlit fog). \`text-accent\` (electric purple) for highlights that glow like neon through mist.
+- Typography: \`font-body\` (Inter — clean sans-serif that disappears and lets the glass do the talking). \`font-medium\`. High contrast white text that pops against the translucency.
+- Spacing: generous \`p-8\` inside glass panels — content needs room to breathe inside its glass house. Cards have \`gap-6\` between them.
+- Decorations: floating blurred color orbs in the background (define in style.css as absolutely positioned divs with radial-gradient fills, 300-500px wide, border-radius: 50%, filter: blur(80px), animated with a slow 15s ease-in-out infinite alternate translateY float). \`shadow-glow\` on glass edges. NO sharp borders. Everything feels ethereal and weightless.
+- style.css: gradient mesh background with 3+ radial-gradient layers, floating color orbs that drift slowly (keyframes: translateY(-20px) to translateY(20px) over 15s), a subtle shimmer on glass borders (border-color cycling from rgba(255,255,255,0.15) to rgba(255,255,255,0.3) over 3s), backdrop-filter fallbacks for older browsers, and hover transitions (transform: translateY(-4px) and shadow-glow intensification on card hover over 300ms).
+- Vibe: iOS/macOS frosted glass, but more atmospheric — like looking through a rain-streaked window at a neon city. Premium, layered, dreamlike. Depth through translucency. The page should feel like it exists in three dimensions.`,
   },
 
   corporate: {
     name: 'Corporate',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A5F',
+            accent: '#D97706',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFC',
+            heading: '#0F172A',
+            body: '#475569',
+            muted: '#94A3B8',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.1)',
+            hover: '0 4px 12px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use a CORPORATE / PROFESSIONAL style.
-- Layout: structured 12-column grid. Clear visual hierarchy. Standard sections: nav, hero, features grid, social proof, CTA, footer. Predictable, trustworthy layout. Max-width 1200px.
-- Colors: navy blue (#1E3A5F) as primary. White backgrounds. Light gray (#F8FAFC) alternate sections. One warm accent for CTAs (amber or green). NO neon. NO playful colors.
-- Typography: professional sans-serif only (Inter, IBM Plex Sans, or similar). Weight 400 for body, 600-700 for headings. Standard sizes, nothing oversized.
-- Grid: 2 or 3 column grids for features. Equal spacing. Aligned. Balanced. Everything on the grid.
-- Elements: subtle shadows (shadow-sm). Rounded corners but conservative (rounded-lg max). Professional icons (describe them, use unicode symbols). Stat numbers with labels.
-- Buttons: solid filled primary buttons (navy blue). White text. Standard sizing. Ghost/outlined secondary buttons.
-- Trust signals: fake logos bar ("Trusted by"), testimonial cards with role/company, metric counters.
-- Vibe: McKinsey, Stripe, enterprise SaaS. Inspires confidence. No personality — all professionalism.`,
+- Layout: structured \`max-w-7xl mx-auto\` — the kind of clean, predictable grid that makes a Fortune 500 CFO feel safe. Clear visual hierarchy. Standard sections: nav, hero, features grid, social proof, CTA, footer. Every section exactly where you expect it, like a well-organized boardroom.
+- Colors: \`bg-primary\` — a deep, authoritative navy (#1E3A5F) like a banker's suit — for nav/footer/CTAs. \`bg-surface\` (crisp white, freshly pressed) and \`bg-surface-alt\` (cool blue-gray, like morning fog on glass) alternating sections. \`text-heading\` (near-black, ink-dark) for titles. \`text-body\` (slate gray, measured and calm) for paragraphs. \`bg-accent\` / \`text-accent\` — warm amber/gold that says "click here, this is important" without shouting.
+- Typography: \`font-heading\` and \`font-body\` (both Inter — the Helvetica of our era, quietly professional). \`font-normal\` for body, \`font-semibold\` to \`font-bold\` for headings. Standard sizes — nothing flashy, because the content does the talking.
+- Grid: 2 or 3 column grids for features using \`grid grid-cols-1 md:grid-cols-3 gap-8\`. Equal spacing. Aligned. Balanced. Every card the same height like soldiers in formation.
+- Elements: \`shadow-card\` on cards (subtle, just enough depth to lift them off the page). \`rounded-card\` (12px — professional curves, not playful). Professional icons (use unicode symbols). Stat numbers in \`text-4xl font-bold\` with small \`text-muted\` labels beneath.
+- Buttons: \`bg-primary text-white rounded-button\` for primary — solid, confident. \`border border-primary text-primary\` for secondary — understated but present.
+- Trust signals: fake logos bar ("Trusted by"), testimonial cards with role/company, metric counters. The social proof section should feel like walking past a wall of framed credentials.
+- style.css: smooth 200ms ease-out hover transitions on cards (translateY(-2px) and shadow-hover elevation), subtle background-color transitions on buttons, a thin animated underline on nav links (width 0 to 100% on hover via ::after pseudo-element), and a gentle gradient overlay on the hero section (linear-gradient from rgba(30,58,95,0.9) to rgba(30,58,95,0.7)) to add depth.
+- Vibe: McKinsey, Stripe, enterprise SaaS. Inspires confidence. No personality — all professionalism. The design equivalent of a firm handshake.`,
   },
 
   playful: {
     name: 'Playful',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF6B6B',
+            secondary: '#FFD93D',
+            tertiary: '#06D6A0',
+            quaternary: '#4CC9F0',
+            surface: '#FFF8EE',
+            heading: '#2D2235',
+            body: '#4A4458',
+            accent: '#7B2FBE',
+          },
+          fontFamily: {
+            heading: ['"Fredoka"', 'sans-serif'],
+            body: ['"Nunito"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '1.5rem',
+            pill: '9999px',
+            button: '9999px',
+          },
+          boxShadow: {
+            card: '0 4px 0 rgba(0,0,0,0.1)',
+            button: '0 4px 0 rgba(0,0,0,0.2)',
+            hover: '0 6px 0 rgba(0,0,0,0.15)',
+          },
+        },
+      },
+    },
     prompt: `Use a PLAYFUL and COLORFUL style.
-- Layout: irregular/asymmetric grid. Cards at slightly different sizes. Sections that break the grid intentionally. Bento-style layouts with mixed column spans. NOT a standard top-to-bottom flow.
-- Colors: vibrant saturated palette — sunny yellow (#FFD93D), coral (#FF6B6B), mint (#06D6A0), sky blue (#4CC9F0), bubblegum pink (#FF70A6), grape purple (#7B2FBE). Use 4+ colors. Warm cream background (#FFF8EE).
-- Typography: display font (Fredoka One, Baloo, or Poppins Black) for headings. Rounded body font (Nunito, Quicksand). Oversized headings (5rem+). Bold weights everywhere (700-900).
-- Corners: extra rounded (border-radius 1.5rem–3rem). Pill-shaped buttons and tags.
-- Decorations: floating emoji, animated elements (wiggle, bounce, float keyframes). Doodle-style squiggle underlines via SVG. Blob shapes in background. Stickers/badges aesthetic.
-- Buttons: chunky 3D buttons with box-shadow press effect. Filled with bold colors. Large (py-4 px-8+).
-- Interactions: hover lifts, card pop-in animations, bouncing icons.
-- Vibe: Duolingo, Notion marketing site, kindergarten teacher meets modern web. Joyful, energetic, makes you smile.`,
+- Layout: irregular/asymmetric grid — a bento box of delights where every cell is a different surprise. Cards at slightly different sizes, like scattered playing cards on a table. Sections that break the grid intentionally. Mixed column spans (one big card next to two small ones, then three equal ones). NOT a standard top-to-bottom flow — it should feel like exploring, not scrolling.
+- Colors: a candy store palette — use \`bg-primary\` (coral, like a ripe grapefruit), \`bg-secondary\` (sunshine yellow, warm and loud), \`bg-tertiary\` (mint green, fresh as bubblegum), \`bg-quaternary\` (sky blue, cartoon-cloud bright), \`bg-accent\` (grape purple, playful royalty). Use 4+ colors boldly. \`bg-surface\` (warm cream, like vanilla ice cream) as page background.
+- Typography: \`font-heading\` (Fredoka — bubbly, rounded display font that looks like it's smiling at you) for headings. \`font-body\` (Nunito — soft, friendly, the round sans-serif equivalent of a hug) for body. Oversized headings (\`text-6xl\`+) that demand attention. Bold weights everywhere (\`font-bold\` to \`font-black\`).
+- Corners: \`rounded-card\` (1.5rem) on cards — soft, squeezable. \`rounded-pill\` on buttons and tags — like jellybean shapes.
+- Decorations: floating emoji scattered as decoration, animated elements that bring the page to life. Doodle-style squiggle underlines via inline SVG. Blob shapes in the background peeking out from behind cards.
+- Buttons: chunky 3D buttons with \`shadow-button\` (4px solid shadow beneath, like a physical button you want to push). \`rounded-button\` pill shape. Large (\`py-4 px-8\`+). When pressed, the shadow should collapse (translateY(4px) and shadow to 0) — satisfying tactile click feeling.
+- style.css: wiggle animation (rotate -3deg to 3deg, 0.3s, infinite for decorative emoji), bounce animation (translateY(-6px) to 0, 0.6s ease, infinite alternate for floating elements), gentle float animation (translateY(-10px) to translateY(10px), 3s ease-in-out infinite alternate), squiggle underline SVG as background-image on highlighted text, blob shapes via border-radius animations that morph between organic forms (60% 40% 55% 45% / 50% 60% 40% 50% shifting over 8s), confetti-like scattered dots via radial-gradient background pattern.
+- Vibe: Duolingo, Notion marketing site, kindergarten teacher meets modern web. Joyful, energetic, makes you smile — and then makes you click things just to see what happens.`,
   },
 
   darkLuxury: {
     name: 'Dark Luxury',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#0A0A0A',
+            primary: '#C9A84C',
+            heading: '#F5F0E8',
+            body: '#B8B0A0',
+            muted: '#3A3530',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use a DARK LUXURY style.
-- Layout: full-width, full-bleed sections. NO max-width container — content goes edge to edge. Large hero taking 100vh. Generous vertical rhythm (100px+ between sections). Fewer sections, each with more breathing room.
-- Colors: deep black background (#0A0A0A or #111111). Gold (#C9A84C) or champagne (#D4AF37) as accent. Cream/off-white (#F5F0E8) for body text. NO bright colors. NO blues. NO gradients unless very subtle dark-to-darker.
-- Typography: elegant serif for headlines (Playfair Display, Cormorant Garamond). Thin sans-serif for body (200-300 weight). Large tracking on headings (letter-spacing: 0.15em+). UPPERCASE headings with extreme letter-spacing.
-- Spacing: extravagant whitespace. Let content breathe. Single elements centered on screen with massive margins.
-- Decorations: thin gold hairline dividers. Subtle gold borders (1px). NO shadows. NO blobs. NO emoji. Minimal — luxury is restraint.
-- Images: large, cinematic aspect ratios. Dark overlays on any image areas.
-- Buttons: outlined with gold border. Thin text. Uppercase. Wide letter-spacing. NO filled buttons.
-- Vibe: Rolex, Aesop, luxury hotel website. Whispers, doesn't shout. Every pixel exudes premium.`,
+- Layout: full-width, full-bleed sections — content stretches edge to edge like a black velvet tablecloth. NO max-width container. Large hero taking \`min-h-screen\` — a single powerful statement centered in a sea of darkness. Generous vertical rhythm (\`py-24\` to \`py-32\` between sections). Fewer sections, each with the breathing room of a five-star hotel lobby.
+- Colors: \`bg-surface\` — the deepest black (#0A0A0A), not gray, not charcoal, black like the inside of a grand piano. \`text-primary\` — old gold/champagne (#C9A84C), the color of light catching a watch face. \`text-heading\` — warm cream (#F5F0E8), like candlelight on parchment. \`text-body\` — muted taupe (#B8B0A0), quiet and receding. \`border-primary\` for thin gold lines that gleam like wire in a jeweler's display. \`border-muted\` for the subtlest of dividers, barely there.
+- Typography: \`font-heading\` (Playfair Display — an elegant serif that looks like it was engraved, not typed) for headlines. \`font-body\` with \`font-extralight\` for body text — so thin the letters almost dissolve, like whispered words. \`uppercase tracking-[0.2em]\` on headings — spaced out, unhurried, the way luxury takes its time.
+- Spacing: extravagant whitespace — the most expensive thing on this page is what's NOT there. Single elements centered on screen with massive margins. Let every word sit in silence.
+- Decorations: thin gold hairline dividers (\`border-t border-primary\`). NO shadows. NO blobs. NO emoji. Minimal — luxury is restraint. A single thin gold line says more than a hundred gradients.
+- Buttons: \`border border-primary text-primary uppercase tracking-widest\`. Thin text, thin border. NO filled buttons — filling them would be vulgar. The restraint IS the design.
+- style.css: elegant fade-in animations on scroll (opacity 0 to 1 with translateY(20px) to translateY(0) over 800ms ease-out), a radial gradient glow behind the hero headline at 5% opacity (radial-gradient(ellipse, rgba(201,168,76,0.05), transparent 70%)), subtle gold shimmer animation on dividers (background-position shift on a linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent) over 3s), smooth 300ms transitions on all hover states, and letter-spacing that subtly expands on heading hover (tracking-[0.2em] to tracking-[0.25em]).
+- Vibe: Rolex, Aesop, luxury hotel website. Whispers, doesn't shout. Every pixel exudes premium. The page should feel like being escorted to a private room — understated, intentional, and unforgettable.`,
   },
 
   editorial: {
     name: 'Editorial',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000',
+            accent: '#C41E3A',
+            surface: '#FFFFFF',
+            heading: '#000000',
+            body: '#333333',
+            muted: '#999999',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use an EDITORIAL / MAGAZINE style.
-- Layout: asymmetric multi-column grid inspired by print magazines. Mix wide and narrow columns. Pull quotes that break the grid. Full-bleed image areas next to narrow text columns. NOT a standard web layout.
-- Colors: mostly black and white with ONE strong editorial accent (deep red #C41E3A, or electric blue #0057FF). Large areas of solid white or solid black.
-- Typography: BOLD typographic hierarchy is the main design element. Huge serif headlines (Playfair Display, DM Serif, or Georgia) at 5-8rem. Small sans-serif body text. Mix italic and roman. Pull quotes in oversized italic serif.
-- Grid: CSS Grid with deliberate asymmetry. 2-column layouts where text column is 1fr and image/accent column is 2fr or vice versa. Break the grid with full-width elements.
-- Decorations: large typographic numbers for section numbering. Thin rule lines. Drop caps on paragraphs. NO icons. NO emoji. Let typography do the work.
-- Whitespace: dramatic — large gaps between elements. Short text blocks with generous margins.
-- Vibe: The New York Times Magazine, Bloomberg Businessweek, Monocle. Content-first, type-driven, sophisticated. The text IS the design.`,
+- Layout: asymmetric multi-column grid inspired by the art directors of print magazines — the kind of spread that makes you pause and study the composition. Mix wide and narrow columns via \`grid grid-cols-3\` with varying spans. Pull quotes that break the grid and demand attention. Full-bleed accent areas next to narrow text columns. NOT a standard web layout — it should feel like opening a beautifully designed magazine to a feature spread.
+- Colors: mostly \`bg-primary\` (ink black, dense and authoritative) and \`bg-surface\` (pure white, the blank canvas) with ONE strong \`text-accent\` / \`bg-accent\` (deep crimson red #C41E3A — like a lipstick mark on a manuscript). Large areas of solid white or solid black — dramatic contrast is the palette.
+- Typography: BOLD typographic hierarchy IS the design — this is a style where the typeface does all the heavy lifting. \`font-heading\` (Playfair Display, a serif with dramatic thick/thin strokes) at \`text-7xl\` to \`text-9xl\` — letters so large they become abstract shapes. Small \`font-body\` (Inter, crisp sans-serif) for body text at a humble text-base. Mix italic and roman deliberately — an italic pull quote next to roman body text creates visual music. Pull quotes in oversized italic serif that feel like someone underlined a passage in a book.
+- Grid: CSS Grid with deliberate asymmetry. 2-column layouts where text column is \`col-span-1\` and accent column is \`col-span-2\` or vice versa — the tension between narrow and wide is the composition. Break the grid with full-width elements that span all columns.
+- Decorations: large typographic numbers for section numbering (\`text-8xl font-heading text-muted\` — ghostly numerals anchoring each section). Thin rule lines (\`border-t border-primary\`) used like a designer's straightedge. Drop caps on opening paragraphs. NO icons. NO emoji. Let typography do the work — it's been doing it for 500 years.
+- Whitespace: dramatic — large gaps between elements, like the silence between movements in a symphony. Short text blocks with generous margins. The white space is as composed as the content.
+- style.css: drop cap styling via \`::first-letter\` (font-size: 4em, float: left, line-height: 0.8, Playfair Display, margin-right: 0.1em), pull quote positioning with large italic text and thin top/bottom borders, section numbers positioned absolutely at negative offsets so they peek out from behind content, a subtle text-indent on body paragraphs for a print feel, smooth 200ms opacity transitions on grid items, and a thin animated underline on links using ::after with scaleX(0) to scaleX(1).
+- Vibe: The New York Times Magazine, Bloomberg Businessweek, Monocle. Content-first, type-driven, sophisticated. The page should look like it was art-directed, not just coded.`,
   },
 
   retro: {
     name: 'Retro',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#606C38',
+            accent: '#DDA15E',
+            surface: '#FEFAE0',
+            heading: '#283D3B',
+            body: '#4A4A3A',
+            rose: '#D4A59A',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Libre Baskerville"', 'serif'],
+          },
+          borderRadius: {
+            card: '4px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use a RETRO / VINTAGE style.
-- Layout: centered, max-width 960px. Stacked sections with decorative borders between them. Symmetrical, deliberate, slightly formal like a vintage poster.
-- Colors: muted vintage palette — dusty rose (#D4A59A), olive green (#606C38), mustard (#DDA15E), faded navy (#283D3B), cream (#FEFAE0). NO neon. NO pure white — use cream/off-white.
-- Typography: serif fonts for everything (Libre Baskerville, Lora, or Merriweather). Decorative display font for main headline only (Playfair Display or similar). Small caps for subheadings. Classic typographic details.
-- Borders: decorative double-line borders. Ornamental dividers (use CSS border-style: double, or repeating patterns). Subtle texture feeling.
-- Decorations: badge/emblem style elements (rounded bordered containers with text inside like "EST. 2024" or "★ PREMIUM ★"). Vintage label aesthetic. NO modern icons — use typographic symbols (★, •, ✦, ※).
-- Buttons: bordered, uppercase, letter-spaced. Vintage label feel. Muted colors, not bold.
-- Vibe: vintage apothecary label, 1960s magazine ad, letterpress print shop. Warm, nostalgic, crafted.`,
+- Layout: centered, \`max-w-5xl mx-auto\`. Stacked sections with decorative borders between them like chapters in an old book. Symmetrical, deliberate, slightly formal — the kind of layout you'd see on a vintage apothecary label or a hand-set letterpress poster.
+- Colors: a muted, sun-faded palette — \`text-rose\` (dusty pink, like dried flowers pressed between pages), \`text-primary\` (olive green, like aged copper patina), \`text-accent\` (mustard gold, warm as candlelight on brass), \`text-heading\` (faded deep teal, like old sea-worn paint). \`bg-surface\` (cream — not white, never white — the warm yellow-cream of aged paper). NO neon. NO pure white. Everything should look like it's been sitting in a sun-drenched shop window.
+- Typography: \`font-body\` (Libre Baskerville — a proper serif with old-world gravitas) for everything. \`font-heading\` (Playfair Display — a display serif with the drama of a Victorian broadsheet) for main headline only. Small caps for subheadings (\`uppercase tracking-widest text-sm\`) — the way they used to do it. Classic typographic details: thin rules above and below section headers.
+- Borders: decorative double-line borders (\`border-double border-4 border-heading\`) — the kind you'd see framing a certificate of authenticity. Ornamental dividers between sections that feel hand-drawn.
+- Decorations: badge/emblem style elements — bordered containers with text inside like "EST. 2024" or "HANDCRAFTED" or "PREMIUM QUALITY". Vintage label aesthetic — every element should feel like it could be a sticker on an old steamer trunk. NO modern icons — use typographic symbols (stars, bullets, decorative marks) as ornaments.
+- Buttons: bordered, \`uppercase tracking-widest\`. \`border border-heading\`. Muted colors. They should feel like labels on apothecary jars.
+- style.css: decorative border patterns using border-image with repeating-linear-gradient for a hatched/engraved border effect, ornamental divider styling using ::before/::after with centered decorative characters between thin rules, a subtle paper texture via a faint repeating noise background-image (CSS radial-gradient dots at 2% opacity), vignette effect on the page edges (box-shadow: inset 0 0 100px rgba(0,0,0,0.06)), gentle sepia-toned hover transitions (filter: sepia(0.1) on hover over 300ms), and typographic flourishes on headings via ::before/::after pseudo-elements.
+- Vibe: vintage apothecary label, 1960s magazine ad, letterpress print shop. Warm, nostalgic, crafted — like something you'd find in a leather-bound journal or pinned to a corkboard in a Parisian bookshop.`,
   },
 
   neobrutalism: {
     name: 'Neobrutalism',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000',
+            accent: '#FF5ABE',
+            blue: '#3B82F6',
+            lime: '#B8FF29',
+            orange: '#FF7F11',
+            surface: '#FFFFFF',
+            heading: '#000000',
+            body: '#000000',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+          },
+          boxShadow: {
+            brutal: '4px 4px 0px #000000',
+            'brutal-hover': '0px 0px 0px #000000',
+          },
+        },
+      },
+    },
     prompt: `Use a NEOBRUTALISM style.
-- Layout: blocky, grid-based. Large chunky cards with hard borders. Slightly chaotic but intentional arrangement. Cards can be slightly rotated (1-2deg). Mix of sizes.
-- Colors: bright saturated primaries — hot pink (#FF5ABE), electric blue (#3B82F6), acid lime (#B8FF29), bright orange (#FF7F11), pure white, pure black. NO pastels. NO muted tones. High contrast combos.
-- Borders: thick black borders (3-4px) on EVERYTHING. Hard box shadows (offset 4px 4px 0px #000 — no blur). Every element looks like a sticker or cutout.
-- Typography: bold sans-serif (900 weight). Large chunky text. Mix of sizes for visual rhythm. Can use a playful display font for headlines.
-- Corners: small rounded corners (8px max) or none. NOT pill-shaped. Chunky, not smooth.
-- Decorations: colored blocks as backgrounds. Elements look like physical stickers/stamps. Thick underlines. Star/asterisk decorations.
-- Buttons: thick bordered, offset shadow, bold text. Bright colored fill. On hover: shadow disappears and button shifts down/right (press effect).
-- Vibe: Figma marketing, Gumroad, modern zine aesthetic. Bold, in-your-face, unapologetic. Looks like a collage of colored paper cutouts.`,
+- Layout: blocky, grid-based — like a scrapbook page where someone pasted chunky stickers with joyful abandon. Large cards with hard borders. Slightly chaotic but intentional arrangement (a 3-column grid where one card spans 2 columns, another is rotated 1-2deg). Cards can be slightly rotated via style.css. Mix of sizes — some big, some small, creating visual rhythm like a drum beat.
+- Colors: bright, saturated, unapologetic — \`bg-accent\` (hot pink #FF5ABE, like a highlighter streak), \`bg-blue\` (electric blue, straight from the tube), \`bg-lime\` (acid green #B8FF29, almost radioactive), \`bg-orange\` (tangerine #FF7F11, warm and loud), \`bg-surface\` (clean white, the paper beneath the stickers), \`bg-primary\` (jet black for borders and text). High contrast combos — pink card with black text, lime badge on blue background. Nothing is subtle.
+- Borders: thick \`border-4 border-primary\` on EVERYTHING — the black outline is the signature of this style, like every element was cut out with scissors. Hard \`shadow-brutal\` (4px 4px 0px #000000) on every element — a solid offset shadow with zero blur. Every card, button, and badge looks like a physical sticker or fridge magnet.
+- Typography: \`font-heading\` at \`font-black\` weight — big, chunky, unapologetic. Large headings that fill their containers. Mix of sizes for visual rhythm — a \`text-6xl\` headline next to \`text-sm\` labels.
+- Corners: \`rounded-card\` (8px max) — just enough softness to feel friendly, NOT pill-shaped. Chunky, not smooth. The geometry is deliberate.
+- Decorations: colored blocks as backgrounds behind text. Elements look like physical stickers/stamps — think bumper stickers, festival wristbands, zine cutouts. Thick 4px underlines on important text. Star and asterisk decorations scattered like confetti.
+- Buttons: thick bordered, \`shadow-brutal\`, \`font-bold\` text. Bright colored fill (each button a different color). On hover: shadow disappears (\`hover:shadow-brutal-hover\` = 0px 0px 0px) and button shifts down/right (translateX(4px) translateY(4px)) — like physically pressing a 3D sticker flat.
+- style.css: card rotation transforms (rotate(-1deg) to rotate(2deg) on alternating cards via :nth-child), hover shadow transitions (shadow and transform over 150ms ease — snappy, not floaty), a subtle hover scale(1.02) on cards, thick wavy underlines via text-decoration-style: wavy on accent links, and a playful entrance animation where cards slide in from slightly rotated positions (rotate(3deg) translateY(20px) to rotate(0) translateY(0) over 400ms).
+- Vibe: Figma marketing, Gumroad, modern zine aesthetic. Bold, in-your-face, unapologetic. This page should feel like it's having the time of its life — loud, colorful, and impossible to ignore.`,
   },
 
   organic: {
     name: 'Organic',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2D5016',
+            accent: '#C67B4B',
+            surface: '#FAF6F0',
+            'surface-alt': '#E8DCC8',
+            heading: '#3E2723',
+            body: '#5C4A3A',
+            sage: '#A8B5A2',
+          },
+          fontFamily: {
+            heading: ['"Lora"', 'serif'],
+            body: ['"Lato"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '16px',
+            organic: '60% 40% 55% 45% / 50% 60% 40% 50%',
+          },
+          boxShadow: {
+            card: '0 8px 30px rgba(0,0,0,0.08)',
+            hover: '0 12px 40px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
     prompt: `Use an ORGANIC / NATURAL style.
-- Layout: flowing, single-column with occasional 2-column splits. Sections have soft wave or curve dividers (SVG curves between sections). Content feels like it flows downward naturally. Max-width 1000px.
-- Colors: earth tones — warm sand (#E8DCC8), forest green (#2D5016), terracotta (#C67B4B), deep soil (#3E2723), soft sage (#A8B5A2), cream white (#FAF6F0). NO digital/tech colors. NO blues.
-- Typography: humanist sans-serif (Lato, Nunito) or warm serif (Merriweather, Lora). Comfortable reading sizes. Medium weight. Generous line-height (1.7+). Text should feel hand-set, natural.
-- Shapes: organic rounded shapes — asymmetric border-radius (60% 40% 55% 45% / 50% 60% 40% 50%). No sharp geometric shapes. Blobs, ovals, pebble shapes.
-- Decorations: subtle leaf or branch SVG accents (described, use simple CSS shapes). Soft shadows (large blur, low opacity). Wave section dividers. NO hard lines.
-- Spacing: comfortable, generous but not extreme. Feels like a well-designed book page.
-- Buttons: soft rounded, earth-toned fills. Gentle hover transitions (0.3s ease). Warm, inviting.
-- Vibe: Aesop, organic food brand, wellness spa. Calm, grounded, connected to nature. Makes you take a deep breath.`,
+- Layout: flowing, single-column with occasional 2-column splits — like a gentle stream winding through a meadow. \`max-w-5xl mx-auto\`. Content feels like it flows downward naturally, each section growing organically from the last. No hard breaks between sections — use wave dividers and curved edges so sections melt into each other.
+- Colors: earth tones pulled straight from a forest floor — \`bg-surface\` (warm cream #FAF6F0, like unbleached linen), \`bg-surface-alt\` (sand #E8DCC8, sun-warmed and soft). \`text-primary\` (forest green #2D5016, deep as moss on a stone), \`text-accent\` (terracotta #C67B4B, the warm clay of a handmade pot), \`text-heading\` (deep soil brown #3E2723, rich as turned earth), \`text-body\` (warm walnut #5C4A3A, gentle on the eyes). \`bg-sage\` — a muted sage green like dried herbs hanging in a kitchen window.
+- Typography: \`font-heading\` (Lora — a warm serif with gentle curves, like handwriting that's been refined) and \`font-body\` (Lato — humanist sans-serif, friendly and readable as a conversation). Comfortable reading sizes. \`font-normal\` weight. \`leading-relaxed\` (1.7+) — let the text breathe like air between leaves.
+- Shapes: organic rounded shapes — \`rounded-card\` (16px, soft without being cartoonish) for standard elements, \`rounded-organic\` (60% 40% 55% 45% / 50% 60% 40% 50%) for asymmetric blob-like shapes that feel grown, not drawn. No sharp geometric shapes anywhere — nature doesn't do right angles.
+- Decorations: wave section dividers (SVG curves in style.css — gentle sine-wave paths, not jagged). \`shadow-card\` (soft, large blur radius of 30px, very low opacity — shadows that feel like the shade under a tree). NO hard lines. Everything soft, rounded, breathing.
+- Spacing: comfortable, generous — \`py-16 px-6\`. Feels like a well-designed book page you'd read with a cup of tea. Sections have room to exist, like plants given enough space to grow.
+- Buttons: \`rounded-card bg-primary text-surface\`. Gentle \`transition-all duration-300\` hover — buttons that warm when you approach them (hover: slightly darker bg, subtle translateY(-2px) lift, shadow-hover expansion).
+- style.css: wave/curve SVG section dividers using inline SVG with fill matching the next section's background color, organic shape clip-paths on accent images (clip-path: ellipse or custom polygon), subtle leaf-sway animation on decorative elements (rotate(-2deg) to rotate(2deg) over 4s ease-in-out infinite), soft parallax-like effect on background elements (background-attachment: fixed on texture overlays), a whisper-thin grain texture overlay at 3% opacity via a CSS noise pattern, and smooth color transitions on links (color change over 300ms).
+- Vibe: Aesop, organic food brand, wellness spa. Calm, grounded, connected to nature. The page should feel like stepping barefoot onto warm grass — everything soft, natural, and alive.`,
   },
 
   cyberpunk: {
     name: 'Cyberpunk',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#0A0A0F',
+            primary: '#00F0FF',
+            accent: '#FF00FF',
+            green: '#39FF14',
+            pink: '#FF2D6B',
+            heading: '#FFFFFF',
+            body: '#A0AEC0',
+            panel: '#111125',
+          },
+          fontFamily: {
+            heading: ['"Orbitron"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '4px',
+          },
+          boxShadow: {
+            neon: '0 0 15px rgba(0,240,255,0.5), 0 0 40px rgba(0,240,255,0.2)',
+            'neon-pink': '0 0 15px rgba(255,0,255,0.5), 0 0 40px rgba(255,0,255,0.2)',
+          },
+        },
+      },
+    },
     prompt: `Use a CYBERPUNK / NEON style.
-- Layout: dashboard-like grid panels with thick borders and gaps. Asymmetric, dense, information-heavy. Mix wide and narrow panels. Some sections styled as "terminal windows" with title bars. NO conventional hero-features-pricing flow — make it feel like a HUD interface.
-- Colors: deep dark background (#0A0A0F or #0D0221). Neon accent colors: cyan (#00F0FF), hot magenta (#FF00FF), electric green (#39FF14), neon pink (#FF2D6B). Use neon glow effects (box-shadow: 0 0 15px, 0 0 40px with neon colors). NO warm colors. NO pastels.
-- Typography: monospace for UI labels (JetBrains Mono, Fira Code). Futuristic sans-serif for headlines (Orbitron, Rajdhani, or Exo 2). ALL CAPS for labels and section headers. Tight letter-spacing on body, wide on labels.
-- Borders: 1px solid neon color borders on panels. Glowing border effect on hover. Corner accents (small L-shaped marks in corners of panels via ::before/::after).
-- Decorations: scanline overlay (repeating-linear-gradient with thin semi-transparent lines). Animated glitch effect on hero text. Blinking cursor. Faux terminal prompts ("> system.ready"). Grid background pattern (subtle grid lines).
-- Buttons: outlined with neon glow. On hover: background fills with neon color, glow intensifies. Monospace text. Uppercase.
-- Vibe: Blade Runner, Cyberpunk 2077, hacker terminal meets neon Tokyo. Dark, electric, futuristic. The screen itself feels alive.`,
+- Layout: dashboard-like grid panels with thick borders and gaps — the screen should look like the cockpit of a spacecraft or a hacker's multi-monitor setup. Asymmetric, dense, information-heavy. Mix wide and narrow panels. Some sections styled as "terminal windows" with colored title bars (a thin bar at the top with a blinking dot and window title in monospace). NO conventional hero-features-pricing flow — make it feel like a HUD interface. Data readouts, status indicators, system panels.
+- Colors: \`bg-surface\` — the void (#0A0A0F), deep enough to make the neons burn. Neon accents that sear: \`text-primary\` (electric cyan #00F0FF, like liquid electricity), \`text-accent\` (hot magenta #FF00FF, ultraviolet glare), \`text-green\` (matrix green #39FF14, toxic and alive), \`text-pink\` (neon pink #FF2D6B, like a sign in a rain-soaked alley). \`bg-panel\` (#111125, dark blue-black for card backgrounds — just light enough to see the edges). \`shadow-neon\` and \`shadow-neon-pink\` for glow effects that bleed light into the darkness.
+- Typography: \`font-mono\` (JetBrains Mono) for UI labels and body text — everything reads like terminal output. \`font-heading\` (Orbitron — geometric, futuristic, the typeface of a heads-up display) for headlines. \`uppercase tracking-widest\` for labels and section headers — cold, clinical, systematic.
+- Borders: \`border border-primary\` on panels — cyan wire-frame edges that define each module. On hover, the border should glow (box-shadow expanding). Corner accents in style.css — L-shaped bracket marks (10px x 10px) via ::before/::after on each corner of panels, like targeting reticles.
+- Decorations: scanline overlay across the entire page (repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px) — CRT monitor texture). Animated glitch effect on the hero text (random translateX jitters and clip-path slicing via keyframes). Blinking cursor animation after terminal text. Faux terminal prompts ("> system.ready", ">> initializing..."). Grid background pattern on the body (1px lines at 40px intervals in rgba(0,240,255,0.05)).
+- Buttons: \`border border-primary text-primary\` with \`shadow-neon\`. On hover: background fills with neon cyan, text goes black, glow intensifies (shadow blur doubles) — like a switch being thrown.
+- style.css: scanline overlay as a fixed pseudo-element covering the viewport, glitch animation keyframes (3 stages: translateX(-2px) with clip-path inset, translateX(2px) with different clip-path, back to normal — 0.3s triggered on hover or looping every 5s), L-shaped corner accents via ::before/::after with border-top + border-left (10px solid cyan) positioned absolutely, grid background pattern on body, neon glow pulse animation (shadow-neon expanding and contracting over 2s infinite), a typing animation for terminal prompts (width 0 to 100% with steps()), chromatic aberration text-shadow on headings (1px 0 rgba(0,240,255,0.7), -1px 0 rgba(255,0,255,0.7)).
+- Vibe: Blade Runner, Cyberpunk 2077, hacker terminal meets neon Tokyo at 2AM in the rain. Dark, electric, futuristic. The page should feel like it's alive — humming with electricity, glitching at the edges, running on something dangerous.`,
   },
 
   swiss: {
     name: 'Swiss / Bauhaus',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF0000',
+            blue: '#0000FF',
+            yellow: '#FFD700',
+            surface: '#FFFFFF',
+            heading: '#000000',
+            body: '#000000',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'Helvetica', 'sans-serif'],
+            body: ['"Inter"', 'Helvetica', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use a SWISS / BAUHAUS / INTERNATIONAL TYPOGRAPHIC style.
-- Layout: strict modular grid system. Use CSS Grid with precise mathematical columns (e.g., 12-column with content snapping to 4/8/12 spans). Asymmetric but CALCULATED balance — every element placed with mathematical intention. White background. Content blocks align to a visible underlying grid logic.
-- Colors: PRIMARY colors only — red (#FF0000), blue (#0000FF), yellow (#FFD700), black (#000000), white (#FFFFFF). Use them sparingly and deliberately. Large blocks of solid primary color as section backgrounds. NO gradients. NO pastels. NO tertiary colors.
-- Typography: Helvetica, Inter, or similar geometric sans-serif ONLY. Headlines in bold/black weight. Body in regular/light. Use a strict type scale (e.g., 12, 16, 24, 36, 48, 72px — nothing in between). NO serif fonts. NO decorative fonts.
-- Grid: content MUST feel like it sits on a precise grid. Use visible structural elements — thin black rules, alignment guides. Asymmetric layouts where text occupies 1/3 and whitespace 2/3, or vice versa.
-- Decorations: geometric shapes ONLY — circles, rectangles, lines. Used as compositional elements, not decoration. A large red circle. A yellow rectangle. A black diagonal line. These are structural, not ornamental.
-- Buttons: rectangular, black background, white text. No rounded corners. No shadows. Just geometry.
-- Vibe: Josef Müller-Brockmann, Jan Tschichold, Bauhaus school. Mathematical precision. The grid IS the design. Form follows function with zero ornamentation. Cold, precise, beautiful.`,
+- Layout: strict modular grid system — every element placed with the precision of a blueprint. Use CSS Grid with exact mathematical columns (\`grid grid-cols-12\` with content snapping to 4/8/12 spans). Asymmetric but CALCULATED balance — the kind of composition where you could draw diagonal lines connecting every element and they'd all align. \`bg-surface\` (white) background. Content blocks align to a visible underlying grid logic. The negative space is as deliberate as the content.
+- Colors: PRIMARY colors only — \`bg-primary\` (pure red #FF0000, Mondrian red, the red of a stop sign), \`bg-blue\` (pure blue #0000FF, Klein blue, a blue that vibrates), \`bg-yellow\` (warm gold #FFD700, the yellow of a Bauhaus poster), \`bg-heading\` (absolute black), \`bg-surface\` (pure white). Use them sparingly and deliberately — a single red block says everything. Large areas of solid primary color as section backgrounds. NO gradients — gradients are imprecise. Only flat, absolute color.
+- Typography: \`font-heading\` / \`font-body\` (Inter/Helvetica — the geometric sans-serif that defined an era). Headlines in \`font-bold\` to \`font-black\` — typography as architecture. Body in \`font-normal\` to \`font-light\` — clean, functional, invisible. Use a strict mathematical type scale (each size exactly 1.25x the last). NO serif fonts — serifs are decorative, and decoration is dishonest.
+- Grid: content MUST feel like it sits on a precise grid — you should almost be able to see the underlying structure. Use visible structural elements — thin black rules (\`border-t border-heading\`) that serve as both design and organization. Asymmetric layouts where text occupies 1/3 and whitespace 2/3. The grid is not hidden — it IS the design.
+- Decorations: geometric shapes ONLY — circles, rectangles, lines. Used as compositional elements, not decoration — a large red circle anchoring the top-right corner, a yellow rectangle creating visual weight at the bottom-left, a black diagonal line connecting two compositional points. Every shape is structural, purposeful, load-bearing. Think Kandinsky's "Composition VIII."
+- Buttons: \`bg-heading text-surface rounded-card\` (0px radius — pure rectangle). No shadows. No gradients. Just geometry. The button is a black rectangle with white text because that's all it needs to be.
+- style.css: geometric shapes positioned absolutely (circles via border-radius: 50% with solid primary-color backgrounds, rectangles as plain divs, diagonal lines via a thin black div rotated with transform: rotate(45deg)), compositional layout overrides, a subtle grid-reveal animation on page load where content fades in along the grid lines (staggered opacity transitions by column), thin animated rules that extend from 0 to full width on scroll (width transition over 600ms), and mathematical spacing using CSS custom properties for consistent rhythm (--grid-unit: 8px, all spacing as multiples).
+- Vibe: Josef Muller-Brockmann, Jan Tschichold, Bauhaus school. Mathematical precision. The grid IS the design. Every pixel is accountable. This page should look like it was composed, not designed — the way a mathematician solves an equation.`,
   },
 
   artDeco: {
     name: 'Art Deco',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#D4AF37',
+            surface: '#FAF3E0',
+            'surface-dark': '#1A1A1A',
+            heading: '#1A1A1A',
+            body: '#3A3A3A',
+            emerald: '#1B4332',
+          },
+          fontFamily: {
+            heading: ['"Cinzel"', 'serif'],
+            body: ['"Cormorant Garamond"', 'serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use an ART DECO style.
-- Layout: centered and SYMMETRICAL. Content is framed within decorative borders. Tall, vertical proportions. Sections stacked with ornamental dividers between them. Max-width 1000px. Everything centered on a strong vertical axis.
-- Colors: black (#1A1A1A) and gold (#D4AF37 or #C9A961) as primary combination. Cream (#FAF3E0) as background. Deep emerald (#1B4332) or navy (#1B2838) as occasional accent. NO bright or saturated modern colors.
-- Typography: tall, condensed serif or display font for headlines (Playfair Display, Poiret One, or Cinzel). UPPERCASE with extreme letter-spacing (0.2em+) for headings. Art Deco is about VERTICAL letterforms — tall, narrow, elegant. Body text in clean serif (Cormorant, EB Garamond).
-- Borders: thin gold lines used extensively. Double-line borders. Geometric border patterns (repeating lines, stepped patterns). Create decorative frames around sections using CSS borders and pseudo-elements.
-- Decorations: fan/sunburst shapes (CSS conic-gradient or border tricks). Geometric patterns — chevrons, zigzags, stepped pyramids. Ornamental dividers between sections (horizontal rules with geometric centerpieces). Corner ornaments on cards.
-- Buttons: outlined with gold border. Uppercase, wide letter-spacing. Thin, elegant. Gold fill on hover. NO rounded corners — sharp or slightly chamfered.
-- Vibe: The Great Gatsby, 1920s Manhattan, Chrysler Building lobby. Geometric luxury. Ornamental but structured. Every decorative element follows geometric rules — no organic curves, no randomness.`,
+- Layout: centered and SYMMETRICAL — every element anchored to a strong vertical axis like the spire of the Chrysler Building. Content framed within decorative borders. \`max-w-5xl mx-auto\`. Sections separated by ornamental dividers that feel etched in brass.
+- Colors: \`bg-surface-dark\` — deep black like polished obsidian — paired with \`text-primary\` / \`border-primary\` — warm gold that catches light like hammered bullion. \`bg-surface\` (ivory cream, aged parchment warmth) as background. \`text-emerald\` as a jewel-like accent, deep forest green of a velvet lounge.
+- Typography: \`font-heading\` (Cinzel, tall condensed serif) for headlines — letters that stand like columns. \`uppercase tracking-[0.2em]\` for all headings — Art Deco is about VERTICAL letterforms that tower. \`font-body\` (Cormorant Garamond) for body text — elegant, ink-on-linen readability.
+- Borders: thin gold lines (\`border border-primary\`) used extensively like gilded picture frames. Double-line borders (\`border-double border-4 border-primary\`). Geometric border patterns via style.css.
+- Decorations: fan/sunburst shapes (CSS conic-gradient in style.css). Geometric patterns — chevrons, zigzags, stepped pyramids. Ornamental dividers between sections. Corner ornaments on cards.
+- Buttons: \`border border-primary text-primary uppercase tracking-widest\`. Gold fill on hover with a smooth 0.3s transition that feels like a light turning on. NO rounded corners — sharp as a tuxedo lapel.
+- style.css: radiating sunburst/fan shapes via conic-gradient behind hero sections, geometric repeating patterns using clip-path polygons, corner ornament pseudo-elements with gold borders that frame cards like gallery pieces, decorative dividers with layered border-image gradients, gold shimmer hover effect using background-position animation on linear-gradient, stepped pyramid shapes via nested box-shadows.
+- Vibe: The Great Gatsby, 1920s Manhattan, Chrysler Building lobby. Geometric luxury dripping with intention.`,
   },
 
   newspaper: {
     name: 'Newspaper',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#F5F2EB',
+            heading: '#000000',
+            body: '#1A1A1A',
+            accent: '#8B0000',
+            muted: '#666666',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Source Serif 4"', 'serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use a NEWSPAPER / BROADSHEET style.
-- Layout: USE CSS COLUMNS (column-count, column-gap, column-rule) for body text sections — real multi-column text flow like a newspaper. Mix 2-column and 3-column sections. Hero area should be a massive headline spanning full width, then content drops into columns below. Completely different from standard web layouts.
-- Colors: almost entirely black text on off-white/newsprint background (#F5F2EB or #FFFDF7). One spot color used very sparingly (deep red #8B0000 for the masthead or a single accent). NO colorful sections. NO colored backgrounds. Just ink on paper.
-- Typography: newspaper hierarchy is EVERYTHING. Masthead: large serif display (Playfair Display, DM Serif Display) at 4-6rem. Main headline: bold serif at 3-4rem. Deck (subheadline): italic serif at 1.2rem. Byline: small caps, light weight. Body: serif at ~15px with 1.6 line-height for readability in columns. Section headers: bold, all-caps, small size with rules above/below.
-- Column layout specifics: use column-rule (thin solid lines between columns). Use break-inside: avoid on cards/elements. Pull quotes should use column-span: all to break across columns dramatically.
-- Decorations: thin horizontal rules (1px solid black) EVERYWHERE — above/below headlines, between sections, between articles. Drop caps on first paragraphs (::first-letter styled large). Section labels like "TECHNOLOGY" or "FEATURES" in small caps above articles. Dateline and issue number in the masthead.
-- Buttons: text links styled as underlined serif text. NO filled buttons. NO rounded buttons. Just text with underlines, like newspaper references.
-- Vibe: The New York Times front page, The Guardian, Financial Times. Content-first. Typography IS the design. The layout itself tells you this is serious, credible, authoritative journalism.`,
+- Layout: USE CSS COLUMNS in style.css (column-count, column-gap, column-rule) for body text — real multi-column text flow like spreading open a broadsheet on a Sunday morning. Hero area should be a massive headline spanning full width like a front-page banner, then content drops into columns below.
+- Colors: almost entirely \`text-heading\` — ink-black, dense and authoritative — on \`bg-surface\` — warm newsprint, the color of paper that has lived a day. One \`text-accent\` / \`bg-accent\` — deep crimson red, the urgency of a breaking headline — for the masthead only. NO colorful sections — restraint is credibility.
+- Typography: newspaper hierarchy is EVERYTHING — this is a design made entirely of WORDS. Masthead: \`font-heading text-6xl\` — commanding, the name of an institution. Main headline: \`font-heading font-bold text-4xl\` — the kind of headline that stops someone mid-stride at a newsstand. Deck (subheadline): \`font-body italic text-xl\` — the elegant pull into the story. Byline: \`uppercase tracking-widest text-sm font-light\` — quiet authority. Body: \`font-body text-base leading-relaxed\` — comfortable long-reading serif.
+- Column layout: use style.css for column-rule (thin, faint, like pencil lines on the page), break-inside: avoid, column-span: all for pull quotes that break across columns like a shout.
+- Decorations: thin horizontal rules (\`border-t border-heading\`) EVERYWHERE — these hairlines are the skeleton of the layout. Drop caps on first paragraphs (style.css ::first-letter — large, 3-line tall, serif, floated). Section labels like "TECHNOLOGY" in \`uppercase tracking-widest text-xs font-bold\`.
+- Buttons: text links styled as underlined serif text. NO filled buttons. NO rounded buttons. Links are the only navigation — like a real paper.
+- style.css: CSS columns with column-count 2-3 and thin column-rule borders, elegant drop cap ::first-letter with float and font-size 3.5em, pull quote styling with large italic text and top/bottom double borders, dateline styling with small-caps, masthead underline using a thick-then-thin double border effect, justified text with hyphens:auto for authentic column wrapping.
+- Vibe: The New York Times front page, The Guardian, Financial Times. Typography IS the design — every pixel of whitespace earned.`,
   },
 
   neumorphism: {
     name: 'Neumorphism',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#E0E5EC',
+            heading: '#4A5060',
+            body: '#5A6170',
+            accent: '#6C8EBF',
+          },
+          fontFamily: {
+            body: ['"Nunito"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '20px',
+            pill: '9999px',
+          },
+          boxShadow: {
+            raised: '8px 8px 16px #b8bec7, -8px -8px 16px #ffffff',
+            pressed: 'inset 5px 5px 10px #b8bec7, inset -5px -5px 10px #ffffff',
+          },
+        },
+      },
+    },
     prompt: `Use a NEUMORPHISM / SOFT UI style.
-- Layout: centered, card-based. Single column or simple 2-column grid. Max-width 960px. Clean, Apple-like simplicity. Cards and buttons appear to be physically embossed or debossed from the background surface. Everything lives on one continuous surface.
-- Background: ONE single background color everywhere — light gray (#E0E5EC). The ENTIRE page is this color. No section color changes. No dark sections. No white sections. Just one continuous gray surface.
-- Shadows: THIS IS THE CORE TECHNIQUE. Every element uses DUAL shadows:
-  - Raised/embossed: box-shadow: 8px 8px 16px #b8bec7, -8px -8px 16px #ffffff;
-  - Pressed/debossed: box-shadow: inset 5px 5px 10px #b8bec7, inset -5px -5px 10px #ffffff;
-  - Use raised for cards, containers, inactive buttons
-  - Use pressed/inset for input fields, active buttons, pressed states
-- Colors: NO vibrant colors. Muted and subtle only. One soft accent color (muted blue #6C8EBF or soft purple #8B7EC8) used only for small interactive elements and text accents. The design is about SHAPE and SHADOW, not color.
-- Typography: clean, rounded sans-serif (Nunito, Rubik, Quicksand). Medium weight for body, semibold for headings. Muted text color (#5A6170). NOT black text — everything slightly muted to match the soft aesthetic.
-- Borders: NO borders. NO outlines. All depth comes ONLY from shadows. border: none on everything. Border-radius: 16-24px (soft, pillowy corners).
-- Buttons: raised with dual shadow. On hover: subtle lift (shadow spreads). On active/click: switch to inset shadow (pressed look). Transition: 0.2s ease.
-- Vibe: early 2020s Dribbble trend, calculator apps, smart home UIs. Tactile, physical, like pressing buttons on a real device. Everything looks sculpted from the same piece of clay.`,
+- Layout: centered, card-based. Single column or simple 2-column grid. \`max-w-5xl mx-auto\`. Clean, Apple-like simplicity. Everything lives on one continuous surface — imagine a single slab of soft clay where elements are gently pushed in or raised out.
+- Background: ONE single \`bg-surface\` color everywhere — a cool, matte gray like fog on brushed aluminum. The ENTIRE page is this color. No section color changes. Just one continuous surface, unbroken.
+- Shadows: THIS IS THE CORE TECHNIQUE. Every element uses DUAL shadows that create the illusion of physical depth:
+  - Raised: \`shadow-raised\` for cards, containers, inactive buttons — elements feel like they float just above the surface, catching light from the top-left
+  - Pressed: \`shadow-pressed\` for input fields, active buttons — dimpled inward, like a thumbprint in wet clay
+- Colors: NO vibrant colors. \`text-accent\` — muted blue, like twilight — used only for small interactive elements. \`text-heading\` and \`text-body\` — NOT black, slightly muted, like pencil on gray paper.
+- Typography: \`font-body\` (Nunito, rounded sans-serif — letters as soft as the UI). \`font-medium\` for body, \`font-semibold\` for headings. Muted text colors that never shout.
+- Borders: NO borders. NO outlines. All depth comes ONLY from shadows. \`rounded-card\` — pillowy 20px corners that make everything feel soft enough to touch.
+- Buttons: \`shadow-raised rounded-card\`. On hover: subtle lift. On active/click: switch to \`shadow-pressed\` — the satisfying click of a physical button.
+- style.css: smooth transition effects (0.2s ease) for shadow swapping on hover/active/click states so raised elements depress smoothly, circular progress indicators with inset shadows, toggle switches that physically slide between raised/pressed states, concentric shadow rings on focused inputs creating a soft glow, icon containers with inner shadow creating recessed wells.
+- Vibe: early 2020s Dribbble trend, calculator apps, smart home UIs. Tactile, physical, sculpted from clay — you want to reach out and press it.`,
   },
 
   monochrome: {
     name: 'Monochrome',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            'mono-50': '#EBF0F5',
+            'mono-100': '#D0DBE5',
+            'mono-200': '#A8BCCF',
+            'mono-300': '#7D9AB5',
+            'mono-500': '#4A6F8F',
+            'mono-700': '#2A4560',
+            'mono-900': '#142030',
+            surface: '#EBF0F5',
+            heading: '#142030',
+            body: '#2A4560',
+            accent: '#4A6F8F',
+          },
+          fontFamily: {
+            heading: ['"DM Serif Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(20,32,48,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use a MONOCHROME style.
-- STRICT RULE: Use ONLY ONE HUE in the entire design. Pick a single color (e.g., blue, or warm gray, or green) and use ONLY shades, tints, and tones of that one color. The background is the lightest tint. Text is the darkest shade. Accents are mid-tones. ZERO other colors. Not even black — use the darkest shade of your chosen hue.
-- Layout: clean, structured. Two-column asymmetric layout (narrow sidebar + wide content area, or label column + content column). Max-width 1100px. The lack of color forces the design to rely ENTIRELY on typography, spacing, and value contrast.
-- Typography: this is the primary design tool since color is absent. Strong contrast between heading size and body size (headlines 3-4× larger than body). Mix a serif for headlines (DM Serif Display) with a sans-serif for body (Inter) — the font pairing creates visual variety that color normally provides. Use weight variation (200, 400, 700) to create hierarchy.
-- Value range: use the FULL spectrum from almost-white to almost-black within your single hue. At least 6-7 distinct value steps. Alternate between light and dark sections to create rhythm — a dark section followed by a light section.
-- Decorations: minimal. Thin rules. Subtle tone shifts between sections. NO icons, NO emoji, NO illustrations. Let the monochrome palette speak. If you need visual interest, use large typographic elements or geometric shapes in different values of the same hue.
-- Buttons: outlined in a mid-tone. Fill on hover with a darker shade. Text-only secondary buttons.
-- Vibe: high-end photography portfolio, architectural monograph, sophisticated restraint. The constraint IS the beauty. When you remove color, everything else has to work harder — and it shows.`,
+- STRICT RULE: Use ONLY ONE HUE (blue-gray) — like a photograph printed in cyanotype, every shade drawn from the same cold ocean. The full spectrum from \`bg-mono-50\` (pale morning mist) to \`bg-mono-900\` (deep midnight ink) is defined in the config. ZERO other colors.
+- Layout: clean, structured. Two-column asymmetric layout. \`max-w-6xl mx-auto\`. The lack of color forces the design to rely ENTIRELY on typography, spacing, and value contrast — and that constraint becomes its superpower.
+- Typography: \`font-heading\` (DM Serif Display, stately and sharp) for headlines, \`font-body\` (Inter, crisp and modern) for body — the font pairing creates the visual variety that color normally provides. Use weight variation (\`font-extralight\` whisper-thin, \`font-normal\`, \`font-bold\` commanding) to create rhythm.
+- Value range: use the FULL spectrum like a painter working in ink wash. \`bg-mono-900\` (near-black, dramatic) and \`bg-mono-50\` (barely-there gray) alternate between sections. At least 6-7 distinct value steps — each one deliberate.
+- Decorations: minimal. Thin rules (\`border-t border-mono-200\`) — delicate as a pencil line. NO icons, NO emoji. Let the monochrome palette speak in its quiet authority.
+- Buttons: \`border border-accent text-accent\`. Fill on hover with darker shade — like ink saturating paper. Text-only secondary buttons.
+- style.css: subtle hover transitions that shift between value steps (0.3s ease), elegant underline animations on links using background-size transforms, section dividers with gradient fades from mono-200 to transparent, large pull-quote text with semi-transparent mono-300 color that layers beautifully over dark backgrounds, smooth opacity transitions on scroll for a photographic fade-in feel.
+- Vibe: high-end photography portfolio, architectural monograph, Ansel Adams gallery. The constraint IS the beauty — every shade earned.`,
   },
 
   y2k: {
     name: 'Y2K / 2000s',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FF69B4',
+            secondary: '#00CED1',
+            lime: '#00FF66',
+            purple: '#9B30FF',
+            surface: '#E6E0FA',
+            heading: '#4B0082',
+            body: '#333366',
+            chrome: '#C0C0C0',
+          },
+          fontFamily: {
+            heading: ['"Fredoka"', 'sans-serif'],
+            body: ['"Baloo 2"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '16px',
+            pill: '9999px',
+            bubble: '50%',
+          },
+          boxShadow: {
+            bevel: 'inset 2px 2px 0 #fff, inset -2px -2px 0 #999',
+            card: '4px 4px 0 rgba(0,0,0,0.2)',
+          },
+        },
+      },
+    },
     prompt: `Use a Y2K / EARLY 2000s WEB style.
-- Layout: centered with max-width 900px. Sections have visible borders and backgrounds that are DIFFERENT from each other (each section its own little world). Mix of centered content and asymmetric floating elements. Starburst/badge shapes overlaying content at angles (use CSS transforms rotate).
-- Colors: candy gradients — hot pink (#FF69B4) to cyan (#00CED1), lime (#00FF66) to yellow (#FFE600), purple (#9B30FF) to blue (#1E90FF). Use CSS linear-gradient backgrounds on sections and cards. Chrome/silver (#C0C0C0) accents. Backgrounds can be lavender (#E6E0FA) or soft blue (#E0F0FF). LOUD and SHINY.
-- Typography: rounded, bubbly fonts (Fredoka, Baloo 2, or Comic Neue). For "chrome" headings use background: linear-gradient(180deg, #fff 0%, #999 40%, #fff 50%, #666 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; to simulate metallic text effect. Mixed sizes, some text rotated slightly.
-- Decorations: starburst/badge shapes (use CSS clip-path: polygon() to create star shapes, or pseudo-elements). Sparkle/star characters (✦ ★ ✧ ·:*¨¨*:·) scattered as decorative text. Bubble-like border-radius (50% on some elements). Shiny beveled borders (use inset box-shadows to simulate 3D beveled edges). "NEW!" badges rotated at -15deg.
-- Borders: visible, thick, often multiple borders or beveled edges. Use box-shadow: inset 2px 2px 0 #fff, inset -2px -2px 0 #999 for a Windows-style raised bevel effect.
-- Buttons: gradient-filled, beveled 3D look (inset shadows for highlights/shadows), rounded. "Click Here!" and "Enter Site" energy. Bold text.
-- Vibe: early 2000s personal web, Neopets, GeoCities but stylish, Polly Pocket website, iMac G3 era. Nostalgic digital maximalism. Shiny, bubbly, unapologetically internet. Makes millennials tear up.`,
+- Layout: centered \`max-w-4xl mx-auto\`. Sections have visible borders and backgrounds that are DIFFERENT from each other — every section its own little world. Mix of centered content and asymmetric floating elements. Starburst/badge shapes overlaying content at angles like stickers slapped on a laptop.
+- Colors: candy gradients (define in style.css) — \`bg-primary\` (hot pink, bubblegum electric) to \`bg-secondary\` (cyan, swimming-pool blue), \`bg-lime\` (radioactive green) to yellow, \`bg-purple\` (grape soda) to blue. \`text-chrome\` — silver like a CD-ROM catching light. \`bg-surface\` (lavender, cotton candy clouds). LOUD and SHINY — this is maximalism with a sugar rush.
+- Typography: \`font-heading\` and \`font-body\` (rounded, bubbly fonts — letters that bounce). "Chrome" headings via gradient text effect in style.css. Mixed sizes, some text rotated slightly — nothing sits perfectly straight.
+- Decorations: starburst shapes (style.css clip-path). Sparkle characters (✦ ★ ✧) scattered like confetti. \`rounded-bubble\` on some elements. \`shadow-bevel\` for Windows-style raised bevel effect that screams 2002. "NEW!" badges rotated at -15deg.
+- Borders: visible, thick, \`shadow-bevel\` for beveled edges — everything has that chunky plastic feel.
+- Buttons: gradient-filled (style.css), beveled 3D look (\`shadow-bevel\`), \`rounded-card\`. "Click Here!" energy — unapologetically eager.
+- style.css: candy gradients cycling pink-to-cyan and lime-to-yellow, chrome text effect using background-clip text with metallic linear-gradient, starburst clip-path polygons with 12+ points, rotation transforms (tilted badges at -15deg, slightly askew cards at 1-2deg), bevel shadow effects with white inset top-left and dark inset bottom-right, animated sparkle using keyframe opacity and scale pulses, scrolling marquee-style ticker text, iridescent hover effects shifting gradient angle on mouseover.
+- Vibe: early 2000s personal web, Neopets, GeoCities stylish. Nostalgic digital maximalism — the internet when it was weird and wonderful.`,
   },
 
   maximalist: {
     name: 'Maximalist',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            ruby: '#9B111E',
+            emerald: '#046307',
+            sapphire: '#0F52BA',
+            amethyst: '#6B3FA0',
+            amber: '#FF8F00',
+            surface: '#FDF5E6',
+            heading: '#1A0A00',
+            body: '#2D1A0D',
+            gold: '#C9A84C',
+          },
+          fontFamily: {
+            display: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+            quote: ['"Cormorant Garamond"', 'serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '8px',
+          },
+          boxShadow: {
+            card: '0 4px 12px rgba(0,0,0,0.15)',
+          },
+        },
+      },
+    },
     prompt: `Use a MAXIMALIST style.
-- CORE PRINCIPLE: Fill every surface. No empty space. Every area has pattern, texture, color, or decoration. The opposite of minimalism — MORE is more. But it must be intentional, not chaotic. Think "curated abundance."
-- Layout: dense, layered, overlapping. Use CSS Grid with overlapping elements (negative margins, grid-row overlaps). Multiple font sizes in the same section. Sidebar + main + callout boxes. Pull quotes overlapping section boundaries. Max-width 1200px but content fills it densely.
-- Colors: RICH and MANY. Deep jewel tones — ruby (#9B111E), emerald (#046307), sapphire (#0F52BA), amethyst (#6B3FA0), amber (#FF8F00). Cream and gold accents. 4+ colors used throughout. Each section can have its own color palette. Pattern backgrounds (CSS repeating patterns — stripes, dots, diamonds using repeating-linear-gradient).
-- Typography: use 3 OR MORE font families deliberately. A decorative serif for display headlines (Playfair Display). An italic serif for pull quotes (Cormorant Garamond Italic). A clean sans-serif for body (Inter). A monospace for labels (JetBrains Mono). MIX sizes dramatically — a 6rem headline next to 0.7rem labels. Layered, rich typographic texture.
-- Borders: decorative borders on everything. Double borders, dashed borders, dotted borders, mixed border styles on different sides of the same element. Ornamental corner pieces.
-- Decorations: pattern backgrounds on sections (CSS repeating-linear-gradient for stripes, dots, checkerboard). Decorative dividers between sections. Pull quotes in large italic overlapping other content. Small detail labels and annotations. Ornamental typographic elements (❧ ✦ ❋ ◆ ❖). Background shapes partially visible behind content.
-- Buttons: filled, decorated, possibly with borders + shadows + icons. No two button styles need to be identical. Rich, detailed, touchable.
-- Vibe: Wes Anderson film sets, William Morris wallpaper, Indian textile design, baroque architecture. Every surface curated. Rich but not messy — a maximalist knows what they're doing. The eye always has somewhere new to travel.`,
+- CORE PRINCIPLE: Fill every surface. Every area has pattern, texture, color, or decoration. MORE is more. Like walking into a curiosity cabinet where every shelf overflows with treasure — intentional abundance, not chaos.
+- Layout: dense, layered, overlapping. Use CSS Grid with overlapping elements (grid-row/grid-column overlap). Multiple font sizes in same section. Pull quotes overlapping section boundaries like they burst out of their frames. \`max-w-7xl mx-auto\` but fills densely — no empty space goes unadorned.
+- Colors: RICH jewel tones — \`bg-ruby\` (deep garnet, wine-stain red), \`bg-emerald\` (forest canopy green), \`bg-sapphire\` (cathedral-window blue), \`bg-amethyst\` (twilight purple), \`bg-amber\` (liquid honey). \`bg-surface\` (antique cream, old book pages) and \`text-gold\` accents that catch the eye like gilded lettering. 4+ colors throughout. Each section can have its own palette. Pattern backgrounds (style.css).
+- Typography: use 3+ font families — the variety IS the point. \`font-display\` for headlines — massive, commanding. \`font-quote italic\` for pull quotes — elegant, whispered asides. \`font-body\` for body. \`font-mono\` for labels — technical, precise. MIX sizes dramatically — \`text-8xl\` next to \`text-xs\` creates visual thunder.
+- Borders: decorative borders on everything. \`border-double\`, \`border-dashed\`, mixed styles — each border a deliberate frame.
+- Decorations: pattern backgrounds (style.css repeating-linear-gradient for stripes, dots). Decorative dividers that feel hand-drawn. Ornamental typographic elements (❧ ✦ ❋ ◆ ❖) as section punctuation.
+- Buttons: filled, decorated, possibly with borders + shadows. Rich, detailed, touchable — buttons that feel like embossed leather.
+- style.css: intricate pattern backgrounds using repeating-linear-gradient (diagonal stripes, polka dots, cross-hatching), overlapping CSS grid positioning with negative margins and z-index layering, ornate border-image gradients, pull quotes with large decorative quotation marks via ::before pseudo-elements, section backgrounds with layered radial-gradients creating depth, animated hover effects that reveal hidden pattern layers, drop-shadow text on dark sections for a letterpress feel.
+- Vibe: Wes Anderson, William Morris wallpaper, baroque architecture. Every surface curated — a feast for the eyes.`,
   },
-
-  // ─── Industry & Functional Styles ───────────────────────────────────────────
 
   cleanTech: {
     name: 'Clean Tech',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            surface: '#FFFFFF',
+            'surface-alt': '#FAFBFC',
+            heading: '#111827',
+            body: '#4B5563',
+            muted: '#9CA3AF',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '10px',
+            pill: '9999px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+            hover: '0 4px 12px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use a CLEAN TECH / MODERN SaaS style.
-- Layout: max-width 1200px, centered. Clear visual hierarchy: nav → hero → features → social proof → CTA → footer. Generous vertical spacing between sections (80-100px). Content blocks alternate between full-width and contained. Subtle asymmetry — hero text left-aligned with right-side visual/mockup area.
-- Colors: light background (#FFFFFF or #FAFBFC). ONE primary accent — a refined blue (#3B82F6), violet (#7C3AED), or teal (#0EA5E9). Use it sparingly — buttons, links, highlight pills, accent borders. Gray scale for text hierarchy: #111827 headings, #4B5563 body, #9CA3AF captions. NO dark sections unless a single pre-footer CTA band.
-- Typography: one modern geometric sans-serif for everything (Inter, Geist, or DM Sans). Weight 500-700 for headings, 400 for body. Headings 2.5-3.5rem, body 1rem-1.125rem. Tight line-height on headings (1.1-1.2), comfortable on body (1.6-1.7).
-- Decorations: SUBTLE. Tiny gradient mesh blobs in hero background (very faded, 5-10% opacity). Thin 1px borders (#E5E7EB) on cards. Small rounded corners (8-12px). Soft shadows (shadow-sm or shadow-md). Pill-shaped badges/tags for categories. NO heavy decorations.
-- Grid: 2 or 3 column feature grids with icon + title + description cards. Cards with light border, subtle hover lift (translateY -2px + shadow increase). Clean spacing between cards (24-32px gap).
-- Buttons: primary filled with accent color + white text, rounded-lg. Secondary outlined or ghost. Small, refined — not oversized. Subtle hover transition (darken 10%).
-- Vibe: Vercel, Linear, Supabase, Resend. Quietly confident. The design feels effortless — nothing trying too hard. Every pixel is intentional but invisible. "It just works" energy.`,
+- Layout: \`max-w-7xl mx-auto\`. Clear visual hierarchy: nav → hero → features → social proof → CTA → footer. Generous vertical spacing (\`py-20\` to \`py-24\`) — the whitespace breathes confidence, like a gallery with perfectly hung pieces.
+- Colors: \`bg-surface\` (white, clean as a fresh canvas) and \`bg-surface-alt\` (whisper-light gray) alternating. ONE \`bg-primary\` / \`text-primary\` accent — a precise, electric blue that draws the eye like a beacon — used sparingly on buttons, links, highlight pills. \`text-heading\` (near-black, authoritative), \`text-body\` (medium gray, easy on the eyes), \`text-muted\` (light, receding). \`border-border\` for card borders — barely there, like pencil lines.
+- Typography: \`font-heading\` and \`font-body\` (Inter — the typeface of quiet competence). \`font-medium\` to \`font-semibold\` for headings, \`font-normal\` for body. \`text-3xl\` to \`text-4xl\` headings, \`text-base\` to \`text-lg\` body.
+- Decorations: SUBTLE. \`border border-border\` on cards. \`rounded-card\`. \`shadow-card\` — barely perceptible, like a card resting on glass. Pill-shaped badges (\`rounded-pill\`).
+- Grid: \`grid grid-cols-1 md:grid-cols-3 gap-8\` for features. Cards with hover lift (\`hover:-translate-y-0.5 hover:shadow-hover\` transition) — a micro-interaction that rewards curiosity.
+- Buttons: \`bg-primary text-white rounded-button\` primary. \`border border-border text-body\` secondary.
+- style.css: subtle gradient mesh blobs (radial-gradient with primary color at 3-5% opacity) floating in hero background creating an ambient glow, smooth hover transitions (0.2s ease) on all interactive elements, delicate border-bottom animation on nav links using transform scaleX, feature cards that lift with transition transform and box-shadow simultaneously, a faint dot-grid background pattern in surface-alt sections using radial-gradient repeating at 24px intervals.
+- Vibe: Vercel, Linear, Supabase. Quietly confident — every pixel considered, nothing wasted. "It just works" energy.`,
   },
 
   warmCorporate: {
     name: 'Warm Corporate',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0B8A8A',
+            accent: '#D97706',
+            surface: '#FEFDFB',
+            'surface-alt': '#F5F3EF',
+            heading: '#1C1917',
+            body: '#57534E',
+            muted: '#A8A29E',
+            border: '#E7E5E4',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '14px',
+            button: '12px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.06)',
+            hover: '0 4px 12px rgba(0,0,0,0.08)',
+          },
+        },
+      },
+    },
     prompt: `Use a WARM CORPORATE / EUROPEAN TECH style.
-- Layout: max-width 1200px. Clean, structured but not rigid. Hero with large headline + subtitle + CTA + optional product image/mockup. Feature sections with generous whitespace. Alternating left-right content blocks (text + visual). Footer with multi-column links.
-- Colors: warm white background (#FEFDFB or #F9F8F6). Primary accent: a warm teal (#0B8A8A), muted blue (#2563A0), or forest green (#166534) — trustworthy but not cold. Secondary warm accent: amber (#D97706) or terracotta (#C2410C) for CTAs and highlights. Text: warm dark (#1C1917) for headings, warm gray (#57534E) for body. Sections can alternate between warm white and light warm gray (#F5F3EF).
-- Typography: pair a clean humanist sans-serif for headings (DM Sans, Outfit, or Plus Jakarta Sans, weight 600-700) with a readable sans-serif for body (Inter or Source Sans 3, weight 400). Headings 2.5-3rem, body 1rem. Generous line-height on body (1.7). Feels professional but approachable — NOT geometric/cold.
-- Elements: rounded corners (12-16px) — softer than corporate, not as round as playful. Cards with very subtle shadows + 1px warm gray border. Stats/numbers in large semibold type. Client logos row in grayscale. Testimonial cards with photo + name + role + company.
-- Decorations: minimal but warm. Thin accent-colored top borders on cards. Small rounded rectangles as section labels. Subtle background patterns (very faint dot grid at 3% opacity). NO heavy gradients, NO glows, NO dark sections.
-- Buttons: primary filled with warm accent + white text, rounded-xl. Comfortable padding (12px 28px). Secondary: outlined with accent border. Friendly hover state (lighten background slightly).
-- Vibe: Smartness, Bosch, Philips, Siemens, Miele. European quality — confident but not flashy. Trustworthy and modern. You'd trust this company with your building, your health, your money. Warm enough to feel human, polished enough to feel enterprise-grade.`,
+- Layout: \`max-w-7xl mx-auto\`. Clean, structured — the visual equivalent of a firm handshake. Hero with large headline + subtitle + CTA. Alternating left-right content blocks. \`bg-surface\` and \`bg-surface-alt\` alternating sections like pages of a well-designed annual report.
+- Colors: \`bg-surface\` — warm white, the color of Italian marble with a hint of cream. \`bg-primary\` / \`text-primary\` — warm teal, trustworthy as deep water but not cold, think Mediterranean not Arctic. \`bg-accent\` / \`text-accent\` — amber like polished brass, for CTAs that feel valuable. \`text-heading\` (warm dark, espresso-toned), \`text-body\` (warm gray, stone). \`border-border\` — soft, warm edges.
+- Typography: \`font-heading\` (DM Sans, 600-700 — geometric but friendly) paired with \`font-body\` (Inter, 400 — crisp and neutral). Feels professional but approachable — like a well-dressed person who smiles easily.
+- Elements: \`rounded-card\` (14px — softer than typical corporate, more human). \`shadow-card\` + \`border border-border\`. Stats in large \`font-semibold\` — numbers that command attention. Client logos in grayscale.
+- Decorations: minimal. Thin accent-colored top borders on cards (\`border-t-2 border-primary\`) — a subtle signature stripe. NO heavy gradients.
+- Buttons: \`bg-accent text-white rounded-button px-7 py-3\` — warm, inviting amber. Secondary: \`border border-primary text-primary\`.
+- style.css: smooth hover transitions (0.25s ease) on cards and buttons, accent top-border that grows from center outward on card hover using transform scaleX, stat counters with tabular-nums for aligned digits, client logo strip with gentle grayscale-to-color transition on hover, subtle warm radial-gradient behind hero headline at very low opacity creating a welcoming glow, card hover that lifts with shadow-hover creating a picked-up feeling.
+- Vibe: Smartness, Bosch, Miele. European quality — trustworthy, modern, and warm. The kind of design that builds confidence.`,
   },
 
   startupBold: {
     name: 'Startup Bold',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#7C3AED',
+            surface: '#FFFFFF',
+            'surface-alt': '#FAFAFA',
+            heading: '#0F172A',
+            body: '#64748B',
+            'primary-light': '#EDE9FE',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '16px',
+            button: '14px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+            hover: '0 8px 24px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
     prompt: `Use a STARTUP BOLD style.
-- Layout: max-width 1100px, centered. Hero is dominant — massive headline (4-5rem), punchy subheadline, prominent CTA buttons side by side (primary + secondary). Feature sections use bento-style mixed grids (some cards 2x wide, some 1x). Sections are visual and scannable, not text-heavy. Use screenshots/mockup placeholders as colored rectangles with rounded corners.
-- Colors: light background (white or #FAFAFA). ONE bold accent color used generously — electric violet (#7C3AED), hot coral (#F43F5E), or bright blue (#2563EB). Use it for buttons, headings, highlighted text spans (with light tinted background), icon backgrounds, and section accents. Everything else is black (#0F172A) and gray (#64748B). The accent should feel like a brand signature — 30% of the visual weight.
-- Typography: one bold sans-serif for everything. Headings in 700-800 weight (Inter, Sora, or General Sans). Oversized hero headline. Body in 400 weight, 1rem-1.125rem. Use colored <mark> or background-highlighted text spans in headlines for emphasis ("The way teams _actually_ work").
-- Decorations: colored pills/badges ("New", "Popular", "Beta") with tinted backgrounds. Announcement banner at top of page. Emoji in feature cards for personality. Subtle background grid or dot pattern in hero (5% opacity). Rounded screenshots with subtle shadow as feature visuals.
-- Grid: bento-style — CSS Grid with mixed spans (some features get 2 columns, some get 1). Cards with light border, accent-colored icon containers (40px rounded squares with tinted background + accent icon).
-- Buttons: large, rounded-xl, filled with accent color. Bold text. Side-by-side hero CTAs (filled primary + ghost secondary). Hover: slight scale(1.02) + shadow increase.
-- Vibe: Notion, Arc, Loom, Cal.com, Raycast. Young, ambitious, opinionated. The design has personality — it's not trying to please everyone. One color, used with conviction. Makes you want to sign up immediately.`,
+- Layout: \`max-w-6xl mx-auto\`. Hero is dominant — massive headline (\`text-5xl\` to \`text-6xl\`) that hits you like a billboard, punchy subheadline, prominent CTA buttons side by side. Bento-style mixed grids for features — the layout itself says "we think different."
+- Colors: \`bg-surface\` (white, clean slate). ONE bold \`bg-primary\` / \`text-primary\` — vibrant violet, confident and unapologetic, the color of ambition — used generously on buttons, headings, highlighted text spans (with \`bg-primary-light\` — soft lilac wash), icon backgrounds. \`text-heading\` (near-black, definitive) and \`text-body\` (gray, relaxed).
+- Typography: \`font-heading\` in \`font-bold\` to \`font-extrabold\` — letters that lean forward with energy. Oversized hero headline. Highlighted text spans in headlines with \`bg-primary-light rounded px-2\` — like someone took a highlighter to the important parts.
+- Decorations: colored pills/badges (\`bg-primary-light text-primary rounded-full px-3 py-1 text-sm\`) — like status indicators from the future. Emoji in feature cards adding personality. Rounded screenshots with \`shadow-card\` as feature visuals.
+- Grid: bento-style — CSS Grid with mixed spans (\`col-span-2\` and \`col-span-1\`), the asymmetry creates visual energy. Cards with \`border border-gray-200\`, accent-colored icon containers.
+- Buttons: large \`rounded-button bg-primary text-white font-semibold px-8 py-3\` — chunky, satisfying, impossible to miss. Side-by-side hero CTAs.
+- style.css: subtle dot grid background pattern in hero using radial-gradient repeating at 20px intervals with primary color at 5% opacity, bento card hover effects with smooth translate-y and shadow transitions (0.2s ease), highlighted text spans with animated gradient background-position shift on hover, pill badges with subtle scale bounce on scroll-into-view, hero headline with gradient text effect (primary to primary-light) using background-clip text for extra punch.
+- Vibe: Notion, Arc, Loom, Raycast. Young, ambitious, opinionated — the design equivalent of leaning forward in your chair.`,
   },
 
   saasMarketing: {
     name: 'SaaS Marketing',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFF',
+            dark: '#0F172A',
+            heading: '#0F172A',
+            body: '#475569',
+            muted: '#94A3B8',
+            border: '#E2E8F0',
+            code: '#1E293B',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+            code: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '12px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+            hover: '0 4px 12px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use a SaaS MARKETING / DEVELOPER-FACING style.
-- Layout: max-width 1200px. Clean and spacious. Hero: left-aligned headline + subtitle + CTA + right-side code snippet or terminal mockup. Below: logo bar ("Trusted by"). Features in alternating rows (text left / visual right, then flip). Comparison table section. FAQ accordion. Pricing cards. Dark or gradient pre-footer CTA band.
-- Colors: white (#FFFFFF) base with ONE dark accent section (deep navy #0F172A or near-black #111827) for the pre-footer CTA or hero background variant. Primary accent: blue (#3B82F6) or violet (#8B5CF6). Use subtle tinted backgrounds for feature sections (#F8FAFF or #F5F3FF). Code blocks in dark (#1E293B) with syntax-colored text.
-- Typography: system-native feel — Inter or Geist for body, JetBrains Mono or Fira Code for code snippets. Clean weights (400 body, 600 headings). Medium-sized headings (2-3rem). Code blocks in 14px monospace with proper syntax highlighting colors.
-- Code/Terminal elements: styled terminal windows with title bar dots (red/yellow/green), dark background, monospace text. Inline code in tinted pill backgrounds. API endpoint examples in feature sections. These establish technical credibility.
-- Grid: feature sections alternate between 2-column (text + code/visual) and 3-column icon grids. Pricing section: 3 cards side by side, middle one highlighted (popular). FAQ as accordion with clean expand/collapse.
-- Decorations: subtle grid background pattern (CSS grid lines at 2-3% opacity). Tiny gradient orbs behind hero text (15-20% opacity). Badge pills for feature labels. Check marks in feature comparison lists. NO heavy decorations — the code blocks ARE the decoration.
-- Buttons: filled primary, rounded-lg. "Get Started" / "View Docs" pattern (filled + ghost). Comfortable but not oversized.
-- Vibe: Clerk, Resend, Neon, PlanetScale, Vercel. Developer-trusted, technically credible. The site respects your intelligence — no fluff, no marketing buzzwords. Clean, fast, shows you the product. "I'd actually use this" energy.`,
+- Layout: \`max-w-7xl mx-auto\`. Hero: left-aligned headline + CTA + right-side code snippet or terminal mockup — the code IS the hero image. Logo bar. Features in alternating rows. FAQ accordion. Pricing cards. Dark pre-footer CTA band (\`bg-dark\`) — a dramatic mood shift that says "this is serious."
+- Colors: \`bg-surface\` (white, clinical clean) base. ONE \`bg-dark\` section — deep navy like a terminal at 2am — for pre-footer. \`text-primary\` / \`bg-primary\` — precise blue, the color of trust in tech. \`bg-surface-alt\` for feature sections — barely tinted, like IDE background. \`bg-code\` — near-black with a hint of blue, the color of a warm terminal — for code blocks with syntax-colored text.
+- Typography: \`font-heading\` and \`font-body\` (Inter — developer-approved, no-nonsense). \`font-code\` (JetBrains Mono — the monospace font that says you know what you are doing). Clean weights (\`font-normal\` body, \`font-semibold\` headings).
+- Code/Terminal: styled terminal windows with title bar dots (red/yellow/green circles), \`bg-code rounded-card\`, \`font-code text-sm\`. Inline code in tinted pill backgrounds — like VS Code token highlighting.
+- Grid: features alternate 2-column (text + code) and 3-column icon grids. Pricing: 3 cards, middle highlighted with a ring of primary color.
+- Decorations: subtle grid background pattern (style.css). Badge pills. Check marks in comparison lists — green for included, muted for excluded.
+- Buttons: \`bg-primary text-white rounded-button\`. "Get Started" / "View Docs" pattern — always two CTAs, technical and non-technical.
+- style.css: fine-line grid background pattern using repeating-linear-gradient at 1px width with 5% opacity, terminal window title bar with flexbox dots (8px circles in red/amber/green), syntax highlighting with distinct colors for strings/keywords/comments/functions, code block line numbers in muted color with left border, pricing card highlight using box-shadow ring (0 0 0 2px primary), FAQ accordion with smooth max-height transitions and rotating chevron, dark section with radial-gradient spotlight effect behind CTA text.
+- Vibe: Clerk, Resend, Neon, PlanetScale. Developer-trusted, technically credible — the design equivalent of clean documentation.`,
   },
 
   dashboardUI: {
     name: 'Dashboard UI',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#6366F1',
+            sidebar: '#111827',
+            surface: '#F9FAFB',
+            card: '#FFFFFF',
+            heading: '#111827',
+            body: '#4B5563',
+            muted: '#9CA3AF',
+            border: '#E5E7EB',
+            success: '#10B981',
+            warning: '#F59E0B',
+            danger: '#EF4444',
+          },
+          fontFamily: {
+            body: ['"Inter"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '8px',
+            button: '6px',
+          },
+          boxShadow: {
+            card: '0 1px 2px rgba(0,0,0,0.05)',
+          },
+        },
+      },
+    },
     prompt: `Use a DASHBOARD / ADMIN UI style.
-- Layout: fixed left sidebar (240-280px, dark or tinted) + top header bar + scrollable main content area. Sidebar: logo at top, grouped nav sections with icons + labels, user avatar at bottom. Main content: page title + breadcrumbs at top, then card grid below. Full-width, no max-width constraint — uses all available space.
-- Colors: sidebar dark (#111827 or #1E1B4B) with light text. Main content area light (#F9FAFB or #F1F5F9). Cards on white. One primary accent for active states and primary actions (blue #3B82F6 or indigo #6366F1). Status colors: green (#10B981) success, amber (#F59E0B) warning, red (#EF4444) error, gray (#6B7280) neutral. Use these consistently in badges, dots, and charts.
-- Typography: one clean sans-serif (Inter, system-ui). Small-medium sizes — body 14px, labels 12px, headings 18-24px. Semibold for headings and stat numbers, regular for body. Monospace for data values and IDs. Dense but readable — dashboards need information density.
-- Components: stat cards (icon + number + label + change percentage with up/down arrow). Data tables with alternating row backgrounds, sortable column headers, status badge column. Charts as colored placeholder bars or simple CSS bar charts. Activity feed / timeline. Dropdown selects with borders. Search input in header.
-- Cards: white background, 1px border (#E5E7EB), rounded-lg, subtle shadow-sm. Consistent 16-24px internal padding. 16-24px gap between cards. Cards arranged in 2-4 column responsive grid.
-- Decorations: MINIMAL. No gradients, no glows, no decorative elements. The data is the decoration. Clean divider lines. Subtle hover states on table rows and nav items (background tint). Active nav item: accent background pill or left border accent.
-- Buttons: small, refined. Primary: filled accent, rounded-md. Secondary: outlined or ghost. Destructive: red outlined. Icon buttons (24-32px). Button groups for filters/view toggles.
-- Vibe: Stripe Dashboard, Linear app, Vercel Dashboard, Grafana. Professional tool aesthetic. Every pixel serves a function. Dense but not cluttered — the whitespace is intentional. You spend 8 hours a day looking at this and it never gets tiring.`,
+- Layout: fixed left sidebar (\`w-64 bg-sidebar\`) + top header bar + scrollable main content area — the classic cockpit layout where everything is within reach. Sidebar: logo at top, grouped nav with icons, user avatar at bottom. Main: page title + breadcrumbs, then card grid. Full-width, no max-width — uses every pixel.
+- Colors: \`bg-sidebar\` — dark charcoal, like a control panel bezel — with \`text-white\`. \`bg-surface\` — cool light gray, easy on the eyes for hours of use. \`bg-card\` (white) for cards that pop forward. \`text-primary\` / \`bg-primary\` — indigo, calm but noticeable — for active states. Status colors that communicate instantly: \`text-success\` (green, all clear), \`text-warning\` (amber, attention needed), \`text-danger\` (red, act now). \`border-border\` for card edges — barely visible structure.
+- Typography: \`font-body\` (Inter — born for UI). Small-medium sizing: body \`text-sm\`, labels \`text-xs\`, headings \`text-lg\`. \`font-mono\` for data values — numbers that snap to a grid. Dense but readable — information-rich without feeling cramped.
+- Components: stat cards (icon + number + label + trend arrow — a story in 4 elements). Data tables with \`even:bg-gray-50\` zebra striping. Status badges (\`rounded-full px-2 py-0.5 text-xs\`) — little traffic lights. Activity feed with timestamps.
+- Cards: \`bg-card border border-border rounded-card shadow-card p-4\`. \`gap-4\` between cards. 2-4 column responsive grid.
+- Decorations: MINIMAL — in a dashboard, clarity IS the decoration. Clean dividers. Subtle hover on table rows and nav items. Active nav: \`bg-primary/10 text-primary\` pill or left border accent.
+- Buttons: small, \`bg-primary text-white rounded-button\`. Secondary: \`border border-border\`. Destructive: \`text-danger border-danger\`.
+- style.css: subtle gradient glow behind stat cards using box-shadow with primary color at 5% opacity, animated progress bars with cubic-bezier(0.4, 0, 0.2, 1) easing that feel alive, pulsing status indicators with expanding box-shadow animation (green ring ripple for active, amber pulse for warnings), sidebar gradient from bg-sidebar to slightly darker creating depth, custom scrollbar styling (::-webkit-scrollbar with 6px width, rounded thumb in muted color), table row hover with smooth background-color transition, smooth sidebar nav item transitions with left-border that slides in, sparkline-style mini charts in stat cards using CSS gradients.
+- Vibe: Stripe Dashboard, Linear app, Vercel Dashboard. Professional tool aesthetic — the design disappears and the data speaks.`,
   },
 
   ecommerce: {
     name: 'E-commerce',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#111111',
+            accent: '#E84D3D',
+            surface: '#FFFFFF',
+            'surface-alt': '#FDF8F3',
+            heading: '#111111',
+            body: '#555555',
+            muted: '#999999',
+            border: '#EEEEEE',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+            hover: '0 8px 24px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use an E-COMMERCE / PRODUCT style.
-- Layout: full-width. Sticky top nav with logo, search bar (prominent, centered), cart icon with badge count. Hero: full-width product showcase or promotional banner. Below: product category grid, featured products grid, testimonials, newsletter signup, footer with multi-column links and payment icons.
-- Colors: clean white (#FFFFFF) base. One refined accent for CTAs and pricing: warm coral (#E84D3D), forest green (#166534), or classic black. Text: near-black (#111111) for prices and headings, gray (#555555) for descriptions. Occasional warm tinted section backgrounds (#FDF8F3 or #F7F5F2). Price text always prominent and dark.
-- Typography: clean sans-serif for UI (Inter, Helvetica Neue). Prices: tabular numerals, semibold, slightly larger than body. Product names: medium weight, 1-1.125rem. Category headers: bold, uppercase, letter-spaced. Body/descriptions: regular weight, warm gray. Optional: elegant serif for brand tagline or hero headline only.
-- Product cards: white background, minimal border or borderless with subtle shadow on hover. Product image area (4:5 or 1:1 aspect ratio, light gray placeholder background). Product name, short description, price, and "Add to Cart" button below. Hover: image slight zoom (scale 1.03), shadow increase, button appears or becomes more prominent.
-- Navigation: multi-level — main categories in nav bar. Sticky on scroll. Search bar is a first-class element (not hidden). Cart icon always visible with item count badge. Breadcrumbs on product pages.
-- Grid: products in 3 or 4 column grid with consistent gaps (24-32px). Category sections with horizontal scroll or grid. "Shop by category" with image + label cards.
-- Decorations: minimal — let the products breathe. Thin dividers between sections. Trust badges near cart/checkout areas (shipping, returns, secure payment). Star ratings below product names. "Sale" or "New" badges positioned absolutely on product cards.
-- Buttons: "Add to Cart" is the primary CTA — filled, accent-colored, rounded, clear. "Buy Now" secondary. Quantity selectors with +/- buttons. Size/variant selectors as bordered toggles.
-- Vibe: Apple Store, Aesop, Everlane, COS. The product is the hero — the design is invisible. Clean, trustworthy, makes you want to buy. No friction between seeing and purchasing.`,
+- Layout: full-width. Sticky top nav: logo, search bar (prominent, centered — the storefront window), cart icon with badge. Hero: full-width promotional banner — cinematic, editorial, the product as art. Below: categories grid, featured products grid, testimonials, newsletter, footer.
+- Colors: \`bg-surface\` (white, gallery-wall clean) base. \`text-primary\` / \`bg-primary\` — near-black, the authority of a price tag — for prices/headings. \`bg-accent\` / \`text-accent\` — warm coral, inviting as a come-in sign — for CTAs. \`text-body\` for descriptions. \`bg-surface-alt\` — warm cream like unbleached linen — for warm sections. \`border-border\` — whisper-thin, never competing with the product.
+- Typography: \`font-heading\` for UI. Prices: \`font-semibold text-lg\` tabular numerals — numbers that snap into neat columns. Category headers: \`uppercase tracking-widest\` — labels in a boutique. Body: \`font-normal text-body\` — descriptions that let the product speak.
+- Product cards: \`bg-surface rounded-card shadow-card\` with hover \`shadow-hover\`. Product image area (generous, let the product breathe), name, short description, price, "Add to Cart" button. Hover: image scale 1.03 — a gentle lean-in, like picking something up off a shelf.
+- Navigation: sticky, search bar first-class. Cart icon with item count badge — a subtle reminder of intent. Breadcrumbs for wayfinding.
+- Grid: \`grid grid-cols-2 md:grid-cols-4 gap-6\`. "Shop by category" image + label cards.
+- Decorations: minimal — the products ARE the decoration. Trust badges. Star ratings in amber. "Sale" / "New" badges positioned absolutely.
+- Buttons: "Add to Cart" \`bg-accent text-white rounded-button\` — warm, inviting, the most important button on the page. Quantity +/- buttons.
+- style.css: product image hover zoom with overflow hidden and transform scale transition (0.4s cubic-bezier), sticky nav with backdrop-filter blur and subtle bottom shadow that appears on scroll, Sale badge with slight rotation (-3deg) and bold background, product card hover that lifts with simultaneous shadow-hover and translateY transition, search bar with expanding width on focus using transition, cart badge with scale bounce animation on item add, image skeleton loading placeholder using animated linear-gradient shimmer, smooth category card overlay text with text-shadow for readability over images.
+- Vibe: Apple Store, Aesop, Everlane. Product is the hero — design is invisible, but the craft is everywhere.`,
   },
 
   portfolio: {
     name: 'Portfolio',
-    prompt: `Use a PORTFOLIO / PERSONAL SHOWCASE style.
-- Layout: single-column primary flow, max-width 900-1000px, centered. Minimal nav (name/logo left, 3-4 text links right). Hero: large name/title, one-line description, no image. Below: selected work as large case study cards (full-width, stacked). About section. Contact section. Footer minimal.
-- Colors: off-white (#FAFAF8) or pure white background. Near-black (#1A1A1A) for text. ONE subtle accent — muted blue (#4A6FA5), warm gray (#8B7E6A), or olive (#5C6B4F) — used only for links and hover states. NO bright colors. The work/portfolio images provide all the color. High contrast text on clean backgrounds.
-- Typography: carefully paired fonts — a display serif for name/headings (Fraunces, Instrument Serif, or DM Serif Display, weight 500-700) and a clean sans-serif for body/nav (Inter, DM Sans, weight 400). Large headings (3-4rem for name, 2rem for section titles). Body text 1rem-1.125rem with generous line-height (1.7-1.8). Letter-spacing on section labels (uppercase, small, spaced).
-- Case study cards: full-width, stacked vertically. Each card: large image/thumbnail area (16:9 or 3:2 aspect ratio, light gray placeholder with project name), project title, one-line role/description, year. Cards separated by generous whitespace (80px+). Hover: subtle image shift or overlay. Link to case study detail.
-- Spacing: extreme — the portfolio breathes. 120px+ between sections. 80px between case study cards. Large margins on body text. The whitespace communicates confidence and selectivity.
-- Decorations: ALMOST NONE. Thin hairline rules to divide sections. Small "01, 02, 03" section numbers in muted text. Subtle transition animations on scroll (fade-in, 0.3s). NO icons, NO emoji, NO illustrations. Let the work speak.
-- Navigation: sticky, minimal. Name left, 3-4 links right. On scroll: subtle background tint and shadow. Mobile: hamburger to slide-out menu.
-- Buttons: text links with subtle underline animation (border-bottom expand on hover). "View project →" as text link, not a button. Contact section can have one outlined button.
-- Vibe: award-winning designer portfolio, Awwwards featured. Confidence through restraint. Every project is carefully curated — quality over quantity. The person behind this site is very good at what they do, and the design proves it without saying a word.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FAFAF8',
+            heading: '#1A1A1A',
+            body: '#555555',
+            accent: '#4A6FA5',
+            muted: '#BBBBBB',
+          },
+          fontFamily: {
+            heading: ['"Instrument Serif"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '6px',
+          },
+          boxShadow: {
+            card: 'none',
+            hover: '0 8px 30px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
+    prompt: `Use a PORTFOLIO / PERSONAL SHOWCASE style — the kind of site that wins Awwwards. It should feel like walking through a quiet, impeccably curated gallery: hushed, confident, every element placed with deliberate intention.
+- Layout: single-column, \`max-w-4xl mx-auto\`. Minimal nav (name left, 3-4 text links right). Hero: large name, one-line description. Below: selected work as large case study cards (full-width, stacked). About. Contact. Minimal footer.
+- Colors: \`bg-surface\` (off-white, like heavy uncoated stock paper). \`text-heading\` (near-black) for text. \`text-accent\` only for links and hover states — used sparingly like a single accent wall in a white room. \`text-muted\` for secondary info.
+- Typography: \`font-heading\` (Instrument Serif, display serif) for name/headings — elegant, editorial, the typographic equivalent of a firm handshake. \`font-body\` (Inter, sans-serif) for body/nav. Large headings (\`text-4xl\` for name). \`leading-relaxed\` body. \`uppercase tracking-widest text-xs\` for section labels that whisper rather than shout.
+- Case study cards: full-width, stacked vertically. Large image area, project title, one-line role, year. \`py-20\`+ between cards. Hover: subtle \`shadow-hover\`.
+- Spacing: extreme — \`py-32\`+ between sections. \`py-20\` between cards. The whitespace communicates confidence. Let the work breathe like art in a museum.
+- Decorations: ALMOST NONE. Thin \`border-t border-muted\`. Small "01, 02, 03" section numbers in \`text-muted\`. NO icons, NO emoji.
+- Buttons: text links with \`hover:border-b border-accent\` underline animation. "View project →" as text link.
+- style.css should be RICH and creative: smooth scroll-triggered fade-in and slide-up animations on case study cards using @keyframes with opacity and translateY, underline expand transition that grows from left to right on hover using ::after pseudo-element with scaleX transform, subtle parallax depth on hero name with a faint text-shadow that shifts on scroll, image reveal animations where project images clip-path from 0% to full on scroll, custom cursor style that changes to a soft circle on hoverable elements, smooth 300ms cubic-bezier transitions on all interactive elements for that buttery gallery feel.
+- Vibe: Awwwards featured, award-winning designer portfolio. Confidence through restraint. The design equivalent of a perfectly tailored black suit.`,
   },
 
   documentation: {
     name: 'Documentation',
-    prompt: `Use a DOCUMENTATION / KNOWLEDGE BASE style.
-- Layout: three-panel — left sidebar nav (240px, fixed), center content area (max-width 720px), right sidebar table of contents (200px, sticky). On mobile: sidebar becomes hamburger dropdown, TOC hidden. The center content area is king — optimized for reading.
-- Sidebar: grouped navigation sections with collapsible categories. Section headers in small bold uppercase. Active page highlighted with accent background. Search input at top of sidebar. Nested items indented with thin left border.
-- Colors: white (#FFFFFF) content area. Sidebar light gray (#F8FAFC). Subtle accent: blue (#3B82F6) or violet (#7C3AED) for links, active states, and inline code highlights. Code blocks: dark (#1E293B) background with syntax colors. Callout boxes: tinted backgrounds — blue (#EFF6FF) for info, amber (#FFFBEB) for warning, red (#FEF2F2) for danger, green (#F0FDF4) for success. Text: #111827 body, #6B7280 secondary.
-- Typography: body optimized for reading — 16px, line-height 1.75, max-width 65ch. Inter or system sans-serif for UI. Code: JetBrains Mono or Fira Code at 14px. Headings: semibold, 1.5-2rem, with anchor links (# icon on hover). Clear typographic hierarchy: h1 > h2 > h3 with decreasing size and increasing margin.
-- Content elements: code blocks with copy button and language label. Inline code in tinted pill background (accent-tinted, rounded-md, px-1.5 py-0.5). Callout/admonition boxes with left accent border (4px) and icon. Tables with header row background and alternating rows. Ordered/unordered lists with comfortable spacing. Blockquotes with left border.
-- Table of contents (right sidebar): tracks current section on scroll (highlight active heading). Thin left border with accent dot on active item. Small text (13-14px), muted color, accent on active.
-- Navigation features: breadcrumbs at top. Previous/Next page links at bottom. "Edit this page" link to source. Last updated timestamp.
-- Decorations: NONE. Zero decorative elements. The content IS the design. Clean dividers between sections. Subtle border on sidebar. Focus entirely on readability and navigation.
-- Buttons: minimal — "Copy" button on code blocks (small, ghost). Pagination (outlined, previous/next). Sidebar toggle on mobile.
-- Vibe: Stripe Docs, Tailwind CSS Docs, Next.js Docs, MDN. The gold standard of developer docs. You forget you're looking at a website — you're just absorbing information. Fast, scannable, never lost.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            surface: '#FFFFFF',
+            sidebar: '#F8FAFC',
+            heading: '#111827',
+            body: '#374151',
+            muted: '#6B7280',
+            border: '#E5E7EB',
+            code: '#1E293B',
+            'info-bg': '#EFF6FF',
+            'warn-bg': '#FFFBEB',
+            'danger-bg': '#FEF2F2',
+            'success-bg': '#F0FDF4',
+          },
+          fontFamily: {
+            body: ['"Inter"', 'system-ui', 'sans-serif'],
+            code: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '8px',
+            code: '6px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
+    prompt: `Use a DOCUMENTATION / KNOWLEDGE BASE style — the kind of docs developers actually enjoy reading. It should feel like a well-organized workshop: everything has its place, tools are within reach, and the craftsmanship is evident in every detail.
+- Layout: three-panel — left sidebar nav (\`w-60 bg-sidebar\` fixed), center content (\`max-w-prose\`), right TOC sidebar (\`w-48\` sticky). On mobile: sidebar becomes hamburger, TOC hidden.
+- Sidebar: grouped nav sections. Section headers \`uppercase text-xs font-bold tracking-wider\`. Active page: \`bg-primary/10 text-primary\`. Search input at top with a focused glow.
+- Colors: \`bg-surface\` content area (clean, paper-white). \`bg-sidebar\` for nav (a whisper of cool gray). \`text-primary\` for links and active states — the guiding thread through the content. \`bg-code\` for code blocks (deep, like a terminal at midnight). Callout boxes: \`bg-info-bg\`, \`bg-warn-bg\`, \`bg-danger-bg\`, \`bg-success-bg\` with left \`border-l-4\` — color-coded signals that catch the eye without breaking flow.
+- Typography: body \`text-base leading-relaxed\` \`max-w-prose\` — readable for hours without fatigue. \`font-code text-sm\` for code. Headings \`font-semibold\` with anchor links.
+- Content: code blocks with copy button and language label on \`bg-code rounded-code\`. Inline code \`bg-primary/10 rounded px-1.5 py-0.5 text-sm font-code\`. Callout boxes. Tables. Lists with comfortable spacing.
+- TOC (right): tracks current section. \`text-sm text-muted\`, \`text-primary\` on active.
+- Navigation: breadcrumbs. Previous/Next links at bottom.
+- Decorations: NONE. Content IS the design. The polish is in the micro-interactions.
+- style.css should be RICH and creative: sidebar fixed positioning with smooth scroll behavior, TOC active section tracking with a sliding left-border indicator that animates between items using translateY transitions, code blocks with syntax highlighting and a subtle inner glow on hover, smooth copy-button feedback animation with a checkmark that fades in and scales, search input with an expanding focus ring using box-shadow transition, custom scrollbar with thin track and primary-colored thumb for the sidebar, callout boxes with a subtle left-border color pulse animation on first appearance.
+- Vibe: Stripe Docs, Tailwind CSS Docs, Next.js Docs. Gold standard developer docs — where reading documentation feels like a pleasure, not a chore.`,
   },
 
   healthcare: {
     name: 'Healthcare',
-    prompt: `Use a HEALTHCARE / WELLNESS style.
-- Layout: max-width 1200px, centered. Clean and calming. Hero: reassuring headline, warm subtext, clear primary CTA ("Book Appointment" / "Get Started"), optional hero image area (soft, human). Below: services/features in clean grid. Trust section (certifications, doctor profiles). Testimonials. FAQ. Contact/location. Footer.
-- Colors: soft, calming, trust-building. White (#FFFFFF) base. Primary: calming teal (#0D9488) or medical blue (#0284C7) — NOT corporate navy, softer and friendlier. Secondary: warm coral (#F97316) or soft rose (#E11D48) for CTAs — warm and approachable. Backgrounds alternate between white and very soft tint (#F0FDFA for teal, #EFF6FF for blue). Text: warm dark (#1E293B), warm gray (#64748B) for secondary. NO harsh blacks.
-- Typography: friendly humanist sans-serif — Nunito, DM Sans, or Plus Jakarta Sans. Weight 600-700 for headings (warm, not heavy). Weight 400 for body at 1rem-1.125rem. Generous line-height (1.7+). Headings 2-3rem. Everything feels approachable and readable — elderly patients and young parents both feel comfortable.
-- Trust elements: doctor/staff cards with photo placeholder, name, specialty, credentials. Certification badges and accreditation logos. Star ratings. Patient count ("10,000+ patients served"). Insurance accepted logos. HIPAA/privacy badges near forms.
-- Cards: soft rounded corners (16px). Light shadow + very subtle border. Internal padding 24-32px. Service cards with icon (soft-colored circle background + line icon described in text) + title + description + "Learn more" link.
-- Decorations: soft, organic. Subtle curved section dividers (gentle wave SVG between sections). Soft gradient blobs in background at 5% opacity. Rounded pill shapes for tags and badges. NO sharp edges, NO dark areas, NO aggressive elements. Everything says "safe."
-- Buttons: primary filled with rounded-xl, soft shadow. Comfortable size (14px 32px padding). "Book Now" / "Schedule Visit" language. Secondary: outlined, same rounded. Hover: slight lift + warmer shadow.
-- Vibe: One Medical, Hims, Headspace, Calm, modern dental practice. You feel better just looking at the site. Clean, trustworthy, human. The design says "we care about you" without being clinical or cold. A nervous patient feels reassured; a busy parent feels this will be easy.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0D9488',
+            accent: '#F97316',
+            surface: '#FFFFFF',
+            'surface-alt': '#F0FDFA',
+            heading: '#1E293B',
+            body: '#64748B',
+            muted: '#94A3B8',
+            border: '#E2E8F0',
+          },
+          fontFamily: {
+            heading: ['"Nunito"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '16px',
+            button: '12px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+            hover: '0 6px 20px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
+    prompt: `Use a HEALTHCARE / WELLNESS style — the kind of site that lowers your blood pressure just by looking at it. It should feel like stepping into a modern clinic with natural light pouring through floor-to-ceiling windows: calm, warm, immediately reassuring.
+- Layout: \`max-w-7xl mx-auto\`. Clean and calming. Hero: reassuring headline, warm subtext, clear CTA ("Book Appointment"). Services grid. Trust section. Testimonials. FAQ. Contact.
+- Colors: \`bg-surface\` (white, airy) and \`bg-surface-alt\` (soft teal tint, like sea glass held to light) alternating. \`bg-primary\` / \`text-primary\` (calming teal — think ocean at dawn). \`bg-accent\` (warm coral) for CTAs that feel inviting, not urgent. \`text-heading\` (warm dark), \`text-body\` (warm gray).
+- Typography: \`font-heading\` (Nunito, friendly — every letterform has soft, rounded terminals that feel approachable). \`font-body\` (DM Sans, approachable). \`font-semibold\` to \`font-bold\` for headings. \`leading-relaxed\`.
+- Trust: doctor cards with photo placeholder, name, specialty. Certification badges. Patient count. Insurance logos.
+- Cards: \`rounded-card shadow-card border border-border p-6\`. Service cards with icon (soft circle background) + title + description. Cards should feel like smooth river stones — rounded, warm, comfortable to hold.
+- Decorations: soft curved section dividers (SVG wave in style.css). \`rounded-card\` everywhere. Everything says "safe."
+- Buttons: \`bg-primary text-white rounded-button shadow-card\`. "Book Now" language. Hover: \`shadow-hover\`.
+- style.css should be RICH and creative: organic SVG wave section dividers that flow like gentle breathing between content areas, soft radial gradient blobs in teal and coral at 8-12% opacity floating behind hero and trust sections, gentle pulse animation on the primary CTA button using box-shadow that expands and fades like a heartbeat, smooth 250ms ease transitions on all cards with a slight upward float on hover, decorative ::before pseudo-elements on service cards creating a soft gradient arc above each icon, custom scrollbar with rounded teal thumb on white track, loading skeleton shimmer animation with a warm teal-to-white gradient sweep.
+- Vibe: One Medical, Hims, Headspace. Clean, trustworthy, human. The digital equivalent of a reassuring hand on your shoulder.`,
   },
 
   fintech: {
     name: 'Fintech',
-    prompt: `Use a FINTECH / FINANCIAL style.
-- Layout: max-width 1200px. Hero: strong headline about control/visibility/money, app screenshot or card visual mockup (use colored rounded rectangles with fake card numbers/graphs as placeholders). Below: feature highlights with data visuals. Security/trust section. Pricing/comparison. Testimonials from business users. CTA. Footer.
-- Colors: deep but modern. Dark navy (#0C1222) or near-black (#0A0A0F) hero/accent sections. White (#FFFFFF) and light gray (#F8FAFC) content sections. Primary accent: fintech green (#10B981) or electric blue (#3B82F6). Use the accent for positive numbers, CTAs, and highlights. Red (#EF4444) for negative/loss indicators. Subtle gradients on card mockups (dark navy → dark blue).
-- Typography: precise and trustworthy. Inter, Söhne, or SF Pro style sans-serif. Tabular numerals for all numbers and financial figures (font-variant-numeric: tabular-nums). Weight 600-700 for headings, 400 for body. Numbers and monetary values: larger, semibold, monospace-like alignment. Headings 2.5-3rem. Body 1rem.
-- Data elements: transaction list rows (icon + merchant name + date + amount, right-aligned). Balance cards with large number + currency + percentage change with up/down arrow. Simple bar/line charts as CSS-drawn elements (colored bars in flex containers). Card mockup: rounded dark rectangle with card number dots, cardholder name, Visa/MC symbol placeholder.
-- Cards: clean white with subtle shadow-sm or 1px border. Rounded-xl (16px). Internal padding 24px. Some cards with dark gradient background for "premium" feel (dark section feature cards).
-- Security/trust: shield icons described as unicode, encryption badge, regulatory compliance labels (described as text in badges: "Bank-level security", "256-bit encrypted", "FDIC insured"). Partner bank logos in grayscale.
-- Decorations: subtle. Thin gradient lines as accents. Small dots or connection lines between feature sections suggesting network/flow. NO playful elements, NO emoji (except lock), NO heavy decorations. Clean, precise, trustworthy.
-- Buttons: filled accent, rounded-lg, medium size. "Get Started Free" / "Open Account" pattern. White text on accent. Secondary: ghost or outlined. One strong CTA per section.
-- Vibe: Mercury, Wise, Revolut, Brex, Ramp. Your money is safe here. The design is so clean it feels like your account already has more money in it. Precision, clarity, control. Every pixel says "we take this seriously."`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#10B981',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFC',
+            dark: '#0C1222',
+            heading: '#0F172A',
+            body: '#475569',
+            muted: '#94A3B8',
+            border: '#E2E8F0',
+            danger: '#EF4444',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card: '16px',
+            button: '10px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+            hover: '0 8px 24px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
+    prompt: `Use a FINTECH / FINANCIAL style — the kind of site that makes you feel smarter about money just by visiting. It should feel like the cockpit of a precision instrument: every number perfectly aligned, every interaction crisp and confident, data presented with the clarity of a Swiss watch face.
+- Layout: \`max-w-7xl mx-auto\`. Hero: headline about control/money, app screenshot mockup. Features with data visuals. Security section. Pricing. Testimonials. \`bg-dark\` hero/accent sections.
+- Colors: \`bg-dark\` (deep navy, like a banker's suit at dusk) hero. \`bg-surface\` and \`bg-surface-alt\` for content. \`text-primary\` / \`bg-primary\` (fintech green — the color of growth, optimism, positive returns) for positive numbers and CTAs. \`text-danger\` for negative. \`border-border\`.
+- Typography: \`font-heading\` and \`font-body\` (Inter — chosen for its exceptional tabular figures and neutral authority). Tabular numerals (\`tabular-nums\` via style.css). \`font-mono\` for amounts that need to feel data-driven. \`font-semibold\` to \`font-bold\` for headings.
+- Data elements: transaction rows with alternating subtle backgrounds. Balance cards with large number + trend arrow. Simple CSS bar charts. Card mockup: \`bg-dark rounded-card\` with card details.
+- Cards: \`bg-surface shadow-card border border-border rounded-card p-6\`. Some \`bg-dark\` cards for premium feel.
+- Security: shield icons, encryption badges, "Bank-level security" in badge pills.
+- Buttons: \`bg-primary text-white rounded-button\`. "Get Started Free" / "Open Account".
+- style.css should be RICH and creative: tabular-nums font-variant for perfectly aligned columns of numbers, animated gradient line accents that shimmer subtly across card tops like a holographic credit card, trend arrows with smooth count-up number animations using @keyframes, a faint radial gradient glow of primary green behind the hero balance display, transaction rows with staggered slide-in animations on scroll, card mockup with a floating 3D tilt effect using perspective and rotateY on hover, subtle dot-grid background pattern at 3% opacity on dark sections, progress bars that fill with a smooth cubic-bezier easing.
+- Vibe: Mercury, Wise, Revolut, Brex. Precision, clarity, control. Every pixel earns trust.`,
   },
 
   media: {
     name: 'Media',
-    prompt: `Use a MEDIA / CONTENT PLATFORM style.
-- Layout: full-width. Top nav: logo, category links, search, sign-in. Hero: featured content card (large, 16:9 image area with gradient overlay + title + category badge + read time). Below: content grid — mixed sizes (1 large + 2 small per row, or masonry-style). Category filter bar (horizontal scrolling pills). Trending/popular sidebar on wider screens. Newsletter signup section. Footer.
-- Colors: clean white (#FFFFFF) or very light gray (#FAFAFA) base. Text: near-black (#111111) for titles (high contrast for readability), medium gray (#555555) for metadata (author, date, read time). Category badges in soft tinted colors (each category gets its own: tech = blue tint, design = purple tint, culture = coral tint, etc.). Optional dark mode variant: #111111 background, #F5F5F5 text.
-- Typography: this style is TYPOGRAPHY-FORWARD. Headlines: bold serif (Playfair Display, Lora, or Charter) at 1.5-2.5rem — editorial authority. Body text: clean sans-serif (Inter, system-ui) at 16px with 1.7 line-height — optimized for reading. Metadata: small sans-serif (12-13px), uppercase, letter-spaced, muted color. Author names: medium weight sans-serif. Mix of serif and sans-serif creates visual texture.
-- Content cards: image area (placeholder with gradient background) with category badge overlaid at top-left. Below image: category label (small, colored, uppercase), headline (serif, bold), excerpt (2 lines, truncated), author + date + read time row (small, muted). Cards have subtle hover: shadow increase + slight lift. Border-radius 8-12px.
-- Grid: responsive — 1 column mobile, 2 columns tablet, 3 columns desktop. Featured/hero card spans 2 columns. Consistent gap (24-32px). Cards vary in size for visual rhythm.
-- Decorations: minimal — the content images provide all visual interest. Thin dividers between sections. Category pills with tinted backgrounds. Author avatar circles (small, 24-32px). Bookmark/save icon on cards. Share button.
-- Buttons: mostly text links and ghost buttons. "Read more" as text link with arrow. Newsletter signup: email input + filled button side by side. Category filters as pill toggles (active: filled, inactive: outlined).
-- Vibe: Medium, Substack, The Verge, Spotify editorial. Content is the product — the design serves it. Scannable, inviting, you always know what to read next. The layout itself tells you what's important.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#111111',
+            accent: '#E84D3D',
+            surface: '#FFFFFF',
+            'surface-alt': '#FAFAFA',
+            heading: '#111111',
+            body: '#555555',
+            muted: '#999999',
+            border: '#EEEEEE',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '10px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.06)',
+            hover: '0 6px 20px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
+    prompt: `Use a MEDIA / CONTENT PLATFORM style — the kind of site where you lose an hour reading and don't regret it. It should feel like a beautifully typeset magazine that happens to be digital: the typography draws you in, the layout guides your eye, and every piece of content feels curated and worth your time.
+- Layout: full-width. Top nav: logo, category links, search, sign-in. Hero: featured content card (large image area with gradient overlay + title + badge). Below: content grid, category filter pills, trending sidebar. Newsletter signup.
+- Colors: \`bg-surface\` (white) or \`bg-surface-alt\`. \`text-primary\` / \`text-heading\` (near-black) for titles. \`text-body\` for metadata. Category badges in soft tinted colors. \`text-accent\` for highlights.
+- Typography: TYPOGRAPHY-FORWARD — this is where the design lives. Headlines: \`font-heading\` (Playfair Display, serif, bold — each headline should feel like a newspaper masthead, commanding attention with elegant authority). Body: \`font-body\` (Inter) \`text-base leading-relaxed\`. Metadata: \`text-xs uppercase tracking-widest text-muted\` — quiet, deferential to the content.
+- Content cards: image area with category badge overlaid. \`font-heading font-bold\` headline, excerpt, author + date + read time. \`rounded-card shadow-card hover:shadow-hover\`.
+- Grid: \`grid grid-cols-1 md:grid-cols-3 gap-6\`. Featured card \`md:col-span-2\`.
+- Decorations: minimal. Category pills (\`rounded-full px-3 py-1 text-sm\`). Author avatar circles. Bookmark icon.
+- Buttons: mostly text links. Newsletter: email input + filled button.
+- style.css should be RICH and creative: gradient overlay on hero images using a multi-stop linear-gradient from transparent to deep black for dramatic text legibility, category badge tinted backgrounds with subtle backdrop-blur for a frosted pill effect, content cards with a smooth image zoom transition (scale 1.03) on hover contained by overflow-hidden, reading progress bar fixed at top of viewport that fills with accent color as user scrolls, ::after pseudo-element on featured card creating a subtle vignette shadow around the image edges, smooth staggered fade-in animations on the content grid using animation-delay, bookmark icon with a satisfying fill animation on click using @keyframes.
+- Vibe: Medium, Substack, The Verge. Content is the product. The design is invisible until you notice how good everything feels.`,
   },
 
   government: {
     name: 'Government',
-    prompt: `Use a GOVERNMENT / INSTITUTIONAL / ACCESSIBLE style.
-- Layout: max-width 960px, centered. Simple, predictable structure. Top: banner with institution name + official badge. Nav: horizontal, text-only, clear labels. Hero: clear headline describing the service, brief description, prominent action buttons. Below: task-based cards ("Apply for...", "Find your...", "Check your..."). Information sections with clear headings. Footer: multi-column with required legal links, accessibility statement, language selector.
-- Colors: high-contrast, accessible. White (#FFFFFF) background. Dark text (#1D1D1D) — true black for body, NOT gray. One institutional accent: government blue (#1D70B8), civic green (#00703C), or deep red (#D4351C). Use accent ONLY for links, buttons, and focus states. Light tinted backgrounds (#F3F2F1) for alternate sections. EVERY color combination must pass WCAG AAA contrast (7:1 minimum). NO decorative color use.
-- Typography: highly readable system font stack or government-standard sans-serif (GDS Transport, Roboto, or Noto Sans). Body: 19px minimum (NOT 16px — accessibility requirement). Line-height: 1.6-1.7. Headings: bold, clear hierarchy (h1: 2rem, h2: 1.5rem, h3: 1.25rem). NO light font weights (never below 400). NO italics for body text. NO justified text. Left-aligned everything.
-- Accessibility: CRITICAL. All interactive elements have visible focus outlines (3px solid accent, 2px offset). Skip-to-content link as first element. All form fields have visible labels (NOT placeholder-only). Error messages in red with error icon, associated with field via aria. Buttons have clear text labels (NO icon-only buttons). Link text is descriptive (NO "click here"). Minimum touch target 44x44px.
-- Task cards: white background, 1px border (#B1B4B6), small rounded corners (4px max — NOT overly rounded). Clear title, one-line description, right-pointing arrow or chevron. Prominent, easy to tap. Organized by user need, not by department.
-- Forms: if present — large input fields (48px height), visible labels above, clear validation messages, step indicators for multi-step processes. One question per page pattern.
-- Decorations: NONE. Zero decorative elements. No icons unless they serve a genuine informational purpose. No images unless directly relevant to content. No animations. No hover effects beyond standard underline/focus changes. Every element earns its place through function.
-- Buttons: filled with accent color, white text. Large (48px height, 24px horizontal padding). Clear text ("Start now", "Continue", "Sign in"). NO ghost buttons, NO subtle buttons — every button must be obviously a button. Green for positive primary actions, standard accent for secondary.
-- Vibe: GOV.UK, USDS, service.nsw.gov.au, Canada.ca. Radically simple. Aggressively clear. Designed for EVERYONE — the 80-year-old, the screen reader user, the person with slow internet, the non-native speaker. Not beautiful in a design award way — beautiful in a "7 million people used this today and nobody got confused" way. Form follows function, fully.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1D70B8',
+            surface: '#FFFFFF',
+            'surface-alt': '#F3F2F1',
+            heading: '#1D1D1D',
+            body: '#1D1D1D',
+            muted: '#505A5F',
+            border: '#B1B4B6',
+          },
+          fontFamily: {
+            body: ['"Noto Sans"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '4px',
+            button: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
+    prompt: `Use a GOVERNMENT / INSTITUTIONAL / ACCESSIBLE style — the kind of site that treats every single visitor with dignity and respect. It should feel like a well-run public library: welcoming to everyone regardless of ability, immediately useful, with no barriers between people and the information they need.
+- Layout: \`max-w-4xl mx-auto\`. Simple, predictable. Top: banner with institution name. Nav: horizontal, text-only. Hero: clear headline, brief description, prominent action buttons. Task cards ("Apply for...", "Find your..."). Footer: legal links, accessibility statement.
+- Colors: high-contrast WCAG AAA — no one should ever have to squint. \`bg-surface\` (white). \`text-heading\` / \`text-body\` (true black). \`bg-primary\` / \`text-primary\` for links, buttons, focus — the civic blue of trust and authority. \`bg-surface-alt\` for alternate sections. \`border-border\`.
+- Typography: \`font-body\` (Noto Sans). Body: \`text-lg\` minimum (accessibility). \`leading-relaxed\`. Headings: \`font-bold\`. NO light weights (never below \`font-normal\`). NO italics for body. Left-aligned.
+- Accessibility: CRITICAL. Visible \`focus:ring-4 focus:ring-primary\` on all interactive elements. Skip-to-content link. All form fields have visible labels. Error messages with icon. Descriptive link text. \`min-h-[44px] min-w-[44px]\` touch targets.
+- Task cards: \`bg-surface border border-border rounded-card p-4\`. Clear title, description, right arrow. Organized by user need.
+- Decorations: NONE. No icons unless informational. No animations. Every element earns its place.
+- Buttons: \`bg-primary text-white rounded-button min-h-[48px] px-6 font-bold\`. NO ghost buttons — every button must be obviously a button.
+- style.css should be RICH and purposeful (creativity serves accessibility here): bold focus ring styling with 3px offset outline in primary blue so keyboard users always know exactly where they are, skip-to-content link that smoothly slides down from the top when focused, comprehensive print styles that reformat layout to single-column and show URLs after links, form validation states with clear color-coded left borders and icon indicators, smooth 150ms transitions on button hover states for responsive feedback without disorienting motion, high-contrast selection/highlight colors using ::selection, reduced-motion media query that disables all transitions for users who prefer reduced motion.
+- Vibe: GOV.UK, USDS. Radically simple. Aggressively clear. Designed for EVERYONE. The beauty is in the unwavering commitment to inclusion.`,
   },
-
-  // ─── Additional Visual Styles ───────────────────────────────────────────────
 
   gradient: {
     name: 'Gradient / Aurora',
-    prompt: `Use a GRADIENT / AURORA style.
-- Layout: max-width 1200px, centered. Spacious sections with generous padding (100px+ vertical). Hero takes full viewport height with centered content. Sections flow smoothly with gradient backgrounds that shift between them. NO harsh section boundaries.
-- Colors: rich, flowing gradient backgrounds are THE defining feature. Use multi-stop gradients: purple (#8B5CF6) → pink (#EC4899) → orange (#F97316), or blue (#3B82F6) → cyan (#06B6D4) → green (#10B981). Background gradients should be large-scale (covering entire sections or the full page). Mesh gradients via layered radial-gradients for organic blob effects. Text: white on dark gradient areas, dark (#111827) on light areas.
-- Gradient techniques: use CSS conic-gradient, radial-gradient, and linear-gradient layered together. Animate gradients subtly with @keyframes (background-position shift). Add noise texture overlay at 3-5% opacity for depth. Gradient borders using background-clip tricks.
-- Typography: clean, modern sans-serif (Inter, DM Sans, or Satoshi). White or very dark text depending on background luminosity. Headlines 3-4rem, semibold. Let the gradients be the star — typography is clean and secondary.
-- Cards: glassmorphism-style cards floating over gradient backgrounds — semi-transparent white (rgba(255,255,255,0.1)), backdrop-filter: blur(12px), subtle white border. Cards create contrast against the flowing colors beneath.
-- Decorations: floating gradient orbs (large radial-gradients positioned absolutely). Subtle grain texture overlay. Soft glow effects around key elements (box-shadow with gradient colors). NO hard edges, NO borders (except on glass cards). Everything flows.
-- Buttons: semi-transparent white or filled with a gradient. Rounded-full or rounded-xl. Glow effect on hover (box-shadow expands).
-- Vibe: Stripe's gradient backgrounds, Linear's color washes, Vercel's aurora effects. Modern, premium, atmospheric. The color itself creates emotion — the gradients ARE the design. Feels like looking at the northern lights through frosted glass.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#111827',
+            heading: '#FFFFFF',
+            body: '#D1D5DB',
+            accent: '#8B5CF6',
+            glass: 'rgba(255,255,255,0.1)',
+            'glass-border': 'rgba(255,255,255,0.15)',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '20px',
+            pill: '9999px',
+          },
+          boxShadow: {
+            card: '0 8px 32px rgba(0,0,0,0.2)',
+            glow: '0 0 40px rgba(139,92,246,0.3)',
+          },
+        },
+      },
+    },
+    prompt: `Use a GRADIENT / AURORA style — the kind of site that makes you feel like you're floating through the northern lights. It should feel like liquid color in motion: ethereal, luminous, mesmerizing. Every section transition should feel like wading deeper into a pool of light.
+- Layout: \`max-w-7xl mx-auto\`. Spacious sections (\`py-24\`+). Hero takes full viewport with centered content. NO harsh section boundaries — gradient backgrounds flow between sections.
+- Colors: rich gradient backgrounds are THE defining feature — they should feel alive, like bioluminescent deep-sea creatures or ink dropped in water. Define multi-stop gradient classes in style.css (purple → pink → orange, or blue → cyan → green). \`text-heading\` (white) on dark gradients. \`text-body\` on lighter areas.
+- Gradient techniques (ALL in style.css): layered conic-gradient, radial-gradient, linear-gradient. Animate subtly with @keyframes. Add noise texture overlay at 3-5% opacity.
+- Typography: \`font-heading\` and \`font-body\` (Inter, clean sans-serif). \`text-heading\` or \`text-body\` depending on background. Headlines \`text-4xl font-semibold\`. Let gradients be the star.
+- Cards: glassmorphism over gradients — \`bg-glass border border-glass-border rounded-card shadow-card backdrop-blur-xl\`.
+- Decorations: floating gradient orbs (positioned radial-gradients in style.css). Grain texture overlay. \`shadow-glow\` on key elements.
+- Buttons: semi-transparent white or gradient-filled. \`rounded-pill\`. Glow on hover.
+- style.css should be RICH and creative — this is THE style where CSS does the heavy lifting: layered multi-stop gradient backgrounds using stacked linear-gradient and radial-gradient with 4-5 color stops each, floating gradient orbs as positioned absolute pseudo-elements with large radial-gradients that slowly drift using @keyframes translateX/translateY animation over 15-20s, SVG noise/grain texture overlay at 3-5% opacity for organic depth, gradient border trick using background-clip with padding-box and border-box on a gradient background, smooth gradient color-shift animations using @keyframes that rotate hue over 8-12s, glassmorphism cards with backdrop-filter blur and subtle inner glow using inset box-shadow, conic-gradient decorative elements that slowly rotate.
+- Vibe: Stripe's gradients, Linear's color washes, Vercel's aurora. Modern, premium, atmospheric. The kind of site people screenshot and share because the colors alone are breathtaking.`,
   },
 
   claymorphism: {
     name: 'Claymorphism',
-    prompt: `Use a CLAYMORPHISM / 3D CLAY style.
-- Layout: centered, max-width 1100px. Card-based with generous spacing (32px gaps). Hero with large 3D-style illustration area placeholder. Feature cards in 2-3 column grid. Sections have comfortable padding (80px vertical). Everything feels like physical objects sitting on a surface.
-- Background: soft, warm pastel background — light peach (#FEF3E7), soft lavender (#F3E8FF), or pale mint (#ECFDF5). The background is a flat, soft color — NOT white. This creates the "surface" the clay objects sit on.
-- 3D Clay effect: THE KEY TECHNIQUE. Every card/element uses:
-  - Rounded corners: border-radius 24-32px (very soft, pillowy)
-  - Soft inner shadow at top-left: box-shadow: inset 4px 4px 8px rgba(255,255,255,0.6)
-  - Soft outer shadow at bottom-right: box-shadow: 12px 12px 24px rgba(0,0,0,0.1)
-  - Slight outer glow: add a third shadow layer with the element's color tinted lighter
-  - Combine: box-shadow: inset 4px 4px 8px rgba(255,255,255,0.6), 12px 12px 24px rgba(0,0,0,0.1), 0 0 0 4px rgba(255,255,255,0.3);
-- Colors: soft, matte pastels for card backgrounds — coral (#FFB4A2), lavender (#B8A9C9), mint (#98D8C8), butter yellow (#F7DC6F), soft blue (#89CFF0). Each card can be a different pastel. Text: warm dark (#2D3436) for readability. NO vibrant or saturated colors — everything matte and soft.
-- Typography: rounded, friendly sans-serif (Nunito, Quicksand, or Poppins). Medium to bold weights. Comfortable sizes. The type should feel soft and approachable, matching the clay aesthetic.
-- Icons/graphics: describe simple blob shapes or rounded icons that look like clay sculptures. Soft, organic shapes with the same shadow treatment. NO sharp geometric icons.
-- Buttons: same clay treatment — soft pastel fill, rounded-2xl, inset highlight shadow + outer drop shadow. On hover: slight translateY(-2px) lift with shadow growing. Feels like pressing a soft rubber button.
-- Vibe: children's educational app, friendly SaaS, iOS 16+ design language. Soft, tactile, approachable. Everything looks like it was sculpted from soft clay or marshmallow. You want to reach out and squish the interface.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FEF3E7',
+            coral: '#FFB4A2',
+            lavender: '#B8A9C9',
+            mint: '#98D8C8',
+            butter: '#F7DC6F',
+            sky: '#89CFF0',
+            heading: '#2D3436',
+            body: '#4A4A4A',
+          },
+          fontFamily: {
+            heading: ['"Nunito"', 'sans-serif'],
+            body: ['"Quicksand"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '28px',
+          },
+          boxShadow: {
+            clay: 'inset 4px 4px 8px rgba(255,255,255,0.6), 12px 12px 24px rgba(0,0,0,0.1), 0 0 0 4px rgba(255,255,255,0.3)',
+            'clay-hover': 'inset 4px 4px 8px rgba(255,255,255,0.6), 16px 16px 32px rgba(0,0,0,0.12), 0 0 0 4px rgba(255,255,255,0.3)',
+          },
+        },
+      },
+    },
+    prompt: `Use a CLAYMORPHISM / 3D CLAY style — the kind of interface that looks like it was sculpted from soft modeling clay and placed on a warm peach table. It should feel irresistibly tactile: every element looks like you could reach into the screen and squish it between your fingers. Playful, dimensional, delightful.
+- Layout: centered, \`max-w-6xl mx-auto\`. Card-based with generous \`gap-8\`. Hero with large illustration area. Feature cards in \`grid grid-cols-1 md:grid-cols-3\`.
+- Background: soft warm \`bg-surface\` (peach, like a potter's workbench dusted with terracotta). NOT white. This creates the "surface" the clay objects sit on.
+- 3D Clay effect: THE KEY TECHNIQUE. Every card uses \`shadow-clay rounded-card\`. On hover: \`shadow-clay-hover\` with slight \`hover:-translate-y-1\`.
+- Colors: soft matte pastels for card backgrounds — \`bg-coral\`, \`bg-lavender\`, \`bg-mint\`, \`bg-butter\`, \`bg-sky\` — like a handful of pastel-colored Play-Doh. Each card a different pastel. \`text-heading\` for readability.
+- Typography: \`font-heading\` and \`font-body\` (Nunito/Quicksand, rounded friendly). \`font-medium\` to \`font-bold\`.
+- Icons/graphics: describe blob shapes or rounded icons that look clay-sculpted. Apply same \`shadow-clay\` treatment.
+- Buttons: \`rounded-card shadow-clay\` with soft pastel fill. Hover: \`hover:-translate-y-0.5 hover:shadow-clay-hover\`. Feels like pressing soft rubber.
+- style.css should be RICH and creative: smooth 300ms cubic-bezier bounce transitions on all hover states so cards feel like they spring back when released, subtle wobble @keyframes animation on hero illustration elements that makes them feel alive and jiggly, ::before pseudo-elements on cards creating a soft inner highlight gradient from top-left (white at 15% opacity) to simulate the rounded clay light reflection, button press effect using translateY(2px) and reduced shadow on :active to feel like pushing into soft material, floating blob background shapes using large border-radius with 8 values for organic forms that slowly morph using @keyframes, soft pastel gradient backgrounds on section transitions, card entrance animations with a gentle scale-up and fade-in from 0.9 to 1.0.
+- Vibe: children's educational app, friendly SaaS, iOS 16+. Soft, tactile, approachable. You want to squish the interface. The design equivalent of a warm, friendly hug.`,
   },
 
   vaporwave: {
     name: 'Vaporwave / Synthwave',
-    prompt: `Use a VAPORWAVE / SYNTHWAVE / 80s RETRO-FUTURISM style.
-- Layout: full-width with dramatic sections. Hero spans full viewport with centered content over the signature grid/sunset. Sections alternate between dark and gradient areas. Max-width 1100px for text content but backgrounds bleed edge to edge. Asymmetric element placement — some elements float off-grid.
-- Colors: the SIGNATURE palette. Background: deep dark purple (#1a0a2e) or dark blue (#0d0221). Accent gradients: hot pink (#ff006e) → orange (#ff8c00) → yellow (#ffbe0b), or cyan (#00ffff) → magenta (#ff00ff). Neon pink and cyan are mandatory. Sunset gradient (pink → orange → yellow) for hero backgrounds. Chrome/silver (#c0c0c0) accents.
-- Signature elements:
-  - Perspective grid: CSS grid lines receding to horizon using perspective and rotateX transforms, or repeating-linear-gradient creating a grid pattern that fades with a gradient mask
-  - Sunset: large radial-gradient (yellow center → orange → pink → purple) as background, positioned at bottom-center
-  - Neon glow: text-shadow and box-shadow with multiple layers of pink/cyan at increasing blur (0 0 10px, 0 0 20px, 0 0 40px)
-  - Chrome text: linear-gradient text with metallic colors (white → gray → white) using background-clip
-- Typography: retro display fonts — use script/cursive for main headlines (described as "neon sign script"), geometric sans-serif (Orbitron, Exo 2) for body. Neon glow effect on headlines. Text can be LARGE (5-6rem for hero).
-- Decorations: palm tree silhouettes (describe as dark shapes), Greek/Roman statue busts as imagery placeholders (the aesthetic signature), retro car silhouettes, geometric triangles and lines, scanlines overlay (repeating-linear-gradient). VHS tracking artifacts as CSS noise.
-- Buttons: outlined with neon glow, or filled with gradient. Hover: glow intensifies dramatically. Retro feel — could say "ENTER" or have 80s-style text.
-- Vibe: 1980s retrofuturism, Miami Vice, Blade Runner sunsets, vaporwave album covers, a e s t h e t i c. Nostalgic for a future that never happened. Makes you hear synthesizers just looking at it.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#1a0a2e',
+            primary: '#ff006e',
+            accent: '#00ffff',
+            yellow: '#ffbe0b',
+            orange: '#ff8c00',
+            heading: '#FFFFFF',
+            body: '#D4A0FF',
+            chrome: '#c0c0c0',
+          },
+          fontFamily: {
+            heading: ['"Orbitron"', 'sans-serif'],
+            body: ['"Exo 2"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '4px',
+          },
+          boxShadow: {
+            neon: '0 0 10px #ff006e, 0 0 20px #ff006e, 0 0 40px #ff006e',
+            'neon-cyan': '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff',
+          },
+        },
+      },
+    },
+    prompt: `Use a VAPORWAVE / SYNTHWAVE / 80s RETRO-FUTURISM style — the kind of site that feels like driving a DeLorean through a neon-drenched Miami sunset while synthwave pulses through the speakers. It should feel electric, nostalgic, and impossibly cool: chrome reflections, hot pink neon bleeding into the night, a perspective grid stretching to infinity beneath a gradient sky.
+- Layout: full-width with dramatic sections. Hero spans full viewport centered over the signature grid/sunset. \`max-w-6xl mx-auto\` for text.
+- Colors: \`bg-surface\` (deep dark purple, the color of a twilight sky just before the stars appear). Accent gradients in style.css: \`text-primary\` (hot pink that burns like neon tubes) → \`text-orange\` → \`text-yellow\`. \`text-accent\` (electric cyan, crackling with energy). \`text-chrome\` (silver, like polished metal catching light).
+- Signature elements (ALL in style.css):
+  - Perspective grid receding to horizon (perspective + rotateX transforms, repeating-linear-gradient)
+  - Sunset: large radial-gradient (yellow → orange → pink → purple)
+  - Neon glow: \`shadow-neon\` and \`shadow-neon-cyan\` for text and boxes
+  - Chrome text: linear-gradient with metallic colors + background-clip
+- Typography: \`font-heading\` (Orbitron, retro display) for headlines with \`shadow-neon\`. \`font-body\` (Exo 2, geometric) for body. Large hero text (\`text-6xl\`+).
+- Decorations: palm tree silhouettes (dark shapes), geometric triangles, scanlines overlay (style.css repeating-linear-gradient).
+- Buttons: \`border border-accent text-accent shadow-neon-cyan\`. Hover: glow intensifies. Retro feel.
+- style.css should be RICH and creative — go ALL OUT here: perspective grid floor using repeating-linear-gradient with perspective and rotateX transforms that feels like it stretches to the horizon, large sunset radial-gradient (yellow center → orange → hot pink → deep purple edges) as the hero backdrop, neon glow @keyframes that pulse and flicker subtly like real neon tubes using alternating box-shadow intensities, chrome text effect using linear-gradient with silver/white/gray metallic stops and background-clip text, scanline overlay using repeating-linear-gradient with 2px transparent/1px rgba lines at 5% opacity, palm tree silhouette shapes as ::before pseudo-elements, neon border animations that chase around card edges using @keyframes with background-position on gradient borders, text flicker animation that briefly dims opacity to simulate old CRT monitors.
+- Vibe: 1980s retrofuturism, Miami Vice, Blade Runner sunsets, a e s t h e t i c. The internet's coolest fever dream.`,
   },
 
   darkTech: {
     name: 'Dark Tech',
-    prompt: `Use a DARK TECH / MODERN DARK MODE style.
-- Layout: max-width 1200px, centered. Clean and spacious. Hero with left-aligned headline + right-side visual/mockup area. Features in clean grid. Generous vertical rhythm (80-100px between sections). The layout itself is conventional — it's the dark treatment that defines this style. Full-width dark sections, no alternating light/dark.
-- Colors: dark background throughout — NOT pure black. Use very dark gray (#0A0A0B), dark navy (#0F1419), or near-black with slight warmth (#111113). This is softer than pure #000000. Text: off-white (#E5E7EB) for body, bright white (#FFFFFF) for headlines. ONE accent color used sparingly: electric blue (#3B82F6), purple (#8B5CF6), green (#10B981), or cyan (#06B6D4). Use accent ONLY for interactive elements, highlights, and key CTAs.
-- Subtle lighting effects: very subtle gradients that suggest light sources — a faint radial gradient of the accent color at 5% opacity behind hero text. Thin accent-colored borders (1px) on cards. Subtle glow (box-shadow: 0 0 20px accent at 10% opacity) on hover states. The page should feel like a dark room with soft accent lighting.
-- Typography: clean sans-serif (Inter, SF Pro, system-ui). White headlines (600-700 weight), gray body text (#9CA3AF for secondary, #E5E7EB for primary). Standard sizes — nothing oversized. The typography is functional, not decorative.
-- Cards: dark card backgrounds (#18181B or #1F2937) on the slightly lighter page background. Very subtle border (#27272A). Minimal shadow (shadows don't work well on dark backgrounds). Hover: border lightens or gains accent tint, subtle background lighten.
-- Decorations: minimal. Thin lines (accent-colored or gray). Subtle dot grid pattern in hero at 3% opacity. Code blocks with syntax highlighting (actual dark theme colors). NO gradients except very subtle lighting effects. NO glows except on hover states.
-- Buttons: primary filled with accent color + white text, rounded-lg. Secondary: outlined with gray border or ghost with hover fill. Small and refined — not chunky.
-- Vibe: GitHub dark mode, Discord, Spotify, Linear app. Professional dark UI that you'd use for 10 hours and never get tired. The dark mode that developers actually want to use. Functional, calm, focused. Nothing flashy — just good.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#0A0A0B',
+            card: '#18181B',
+            primary: '#3B82F6',
+            heading: '#FFFFFF',
+            body: '#9CA3AF',
+            'body-bright': '#E5E7EB',
+            muted: '#4B5563',
+            border: '#27272A',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'system-ui', 'sans-serif'],
+            body: ['"Inter"', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: 'none',
+            glow: '0 0 20px rgba(59,130,246,0.1)',
+          },
+        },
+      },
+    },
+    prompt: `Use a DARK TECH / MODERN DARK MODE style — the kind of interface you'd happily stare at for a 12-hour coding session. It should feel like a command center at 2 AM: dark, focused, with just enough light to guide your eye. The darkness isn't empty — it's alive with subtle depth, faint glows, and precision-placed accents that make information effortlessly scannable.
+- Layout: \`max-w-7xl mx-auto\`. Clean and spacious. Hero with left-aligned headline + right-side visual. Features in clean grid. Generous \`py-20\` to \`py-24\` between sections. Full-width dark, no alternating.
+- Colors: \`bg-surface\` (dark gray, NOT pure black — pure black feels like staring into a void, this should feel like brushed graphite) throughout. \`bg-card\` for card backgrounds (one shade lighter, creating subtle layers of depth). \`text-heading\` (white) for headlines. \`text-body\` (gray) for secondary. \`text-body-bright\` for primary body. ONE \`text-primary\` / \`bg-primary\` accent (blue — a single point of living color in a monochrome world) for interactive elements only. \`border-border\`.
+- Subtle lighting: faint radial gradient of \`bg-primary\` at 5% opacity behind hero (style.css). \`border border-border\` on cards. \`shadow-glow\` on hover.
+- Typography: \`font-heading\` and \`font-body\` (Inter). \`text-heading font-semibold\` to \`font-bold\` for headlines. \`text-body\` for secondary.
+- Cards: \`bg-card border border-border rounded-card\`. Hover: \`hover:border-primary/30 hover:shadow-glow\` transition.
+- Decorations: minimal. Thin lines. Subtle dot grid in hero (style.css, 3% opacity). Code blocks with syntax highlighting.
+- Buttons: \`bg-primary text-white rounded-button\`. Secondary: \`border border-border text-body hover:bg-card\`.
+- style.css should be RICH and creative: subtle radial gradient light source behind the hero in primary blue at 5-8% opacity that creates a sense of depth like moonlight through fog, dot grid background pattern using radial-gradient with 1px dots at 3% opacity for texture, code blocks with syntax highlighting and a faint top-border gradient accent in primary blue, card hover transitions with border-color shifting to primary/30 and a soft blue glow box-shadow that fades in over 200ms, smooth ::after pseudo-element on cards creating a subtle gradient sheen on hover that sweeps across the surface, custom dark scrollbar with rounded thumb matching border color, section dividers using a faint horizontal gradient line that fades from transparent to border color and back, focus ring styling with primary blue glow for keyboard navigation.
+- Vibe: GitHub dark mode, Discord, Spotify, Linear. Professional dark UI for 10-hour sessions. The kind of interface that makes you feel like a hacker in the best possible way.`,
   },
 
   pastel: {
     name: 'Pastel / Soft',
-    prompt: `Use a PASTEL / SOFT / GEN-Z style.
-- Layout: max-width 1100px, centered with generous margins. Rounded everything. Cards arranged in soft grids with large gaps (32px). Sections have very comfortable padding (100px vertical). Hero centered with soft, approachable headline. The layout feels gentle and breathable — nothing packed or dense.
-- Colors: soft, desaturated pastels — baby pink (#FFC0CB, but softer: #FFE4E9), lavender (#E6E0F8), mint (#C7F0DB), butter cream (#FFF8E7), sky (#D4EAFF), peach (#FFE5D9). Background: very soft off-white (#FEFEFE) or the palest tint of your main pastel. Text: soft charcoal (#444444, NOT black) for body, slightly darker for headings. Avoid high contrast — everything should feel gentle.
-- Rounded shapes: border-radius 20-30px on cards. Pill shapes (border-radius: 9999px) for buttons and tags. Blob-shaped decorative elements using border-radius with 8 values for organic shapes. NO sharp corners anywhere in the design.
-- Typography: rounded, friendly fonts (Nunito, Quicksand, Poppins, or DM Sans). Medium weights (500-600 for headings, 400 for body). Nothing bold or heavy. Generous line-height (1.7+). The type feels soft and approachable.
-- Decorations: floating blob shapes in soft pastels as background decorations. Subtle grain texture at 2-3% opacity. Small decorative elements: stars, hearts, sparkles (✦ ★ ♡) used sparingly. Soft shadows (large blur, low opacity, tinted with the element's color). Wavy section dividers using SVG or clip-path.
-- Cards: soft pastel background (each card can be a different pastel), extra-rounded corners, soft colored shadow (not gray — tint the shadow with the card's color). On hover: gentle lift with shadow spread.
-- Buttons: pill-shaped, soft pastel fill with slightly darker text. On hover: slight darkening or gentle scale. NO harsh hover states. Secondary: outlined with rounded border.
-- Vibe: Notion's softer pages, Glossier, modern Gen-Z brands, wellness apps, stationery aesthetics. Soft, approachable, calming. The design equivalent of a warm hug. Makes you feel safe and happy. Nothing threatening or corporate about it.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            pink: '#FFE4E9',
+            lavender: '#E6E0F8',
+            mint: '#C7F0DB',
+            butter: '#FFF8E7',
+            sky: '#D4EAFF',
+            peach: '#FFE5D9',
+            surface: '#FEFEFE',
+            heading: '#444444',
+            body: '#666666',
+          },
+          fontFamily: {
+            heading: ['"Nunito"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '24px',
+            pill: '9999px',
+          },
+          boxShadow: {
+            card: '0 4px 16px rgba(200,180,220,0.2)',
+            hover: '0 8px 24px rgba(200,180,220,0.3)',
+          },
+        },
+      },
+    },
+    prompt: `Use a PASTEL / SOFT / GEN-Z style — the kind of site that feels like sinking into a cloud made of cotton candy. It should feel dreamy, gentle, and endlessly cozy: soft edges everywhere, colors that look like they were mixed with cream, and an overall warmth that wraps around you like a cashmere blanket.
+- Layout: \`max-w-6xl mx-auto\`. Rounded everything. Cards in \`gap-8\`. Sections with \`py-24\`. Hero centered. Gentle and breathable.
+- Colors: soft pastels — \`bg-pink\`, \`bg-lavender\`, \`bg-mint\`, \`bg-butter\`, \`bg-sky\`, \`bg-peach\` — like a watercolor palette left out in the sun, each hue faded to its sweetest, most delicate version. \`bg-surface\` (soft white). \`text-heading\` (soft charcoal, NOT black — black would feel harsh here, like shouting in a library). \`text-body\` (gentle gray). Low contrast — everything gentle.
+- Rounded shapes: \`rounded-card\` (24px) on cards. \`rounded-pill\` for buttons and tags. Define blob shapes via style.css border-radius with 8 values. NO sharp corners.
+- Typography: \`font-heading\` and \`font-body\` (Nunito/DM Sans, rounded friendly). \`font-medium\` for headings, \`font-normal\` for body. \`leading-relaxed\`.
+- Decorations: floating blob shapes in pastels (style.css). Grain texture at 2-3% opacity. Small stars/sparkles (✦ ★ ♡) sparingly. \`shadow-card\` (tinted, not gray). Wavy section dividers.
+- Cards: each a different pastel background (\`bg-pink\`, \`bg-lavender\`, etc.). \`rounded-card shadow-card\`. Hover: \`hover:shadow-hover hover:-translate-y-1\`.
+- Buttons: \`rounded-pill\`, soft pastel fill with darker text. Gentle hover.
+- style.css should be RICH and creative: floating blob decorations using large border-radius with 8 asymmetric values that slowly morph shape using @keyframes over 10-15s creating a lava-lamp effect, wavy SVG section dividers between content areas in alternating pastel colors, grain texture overlay at 2-3% opacity for analog warmth, card hover animations with a gentle -translate-y-1 float and shadow expansion over 300ms ease-out, ::before pseudo-elements on cards adding a soft pastel gradient glow at the top edge, sparkle/star decorative elements that gently pulse opacity using @keyframes, custom scrollbar with a rounded pastel-pink thumb on a lavender track, smooth background-color transitions on buttons that feel like watercolors bleeding together.
+- Vibe: Notion's softer pages, Glossier, Gen-Z brands. The design equivalent of a warm hug. Everything should feel like it was designed while listening to lo-fi beats.`,
   },
 
   handDrawn: {
     name: 'Hand-drawn / Sketch',
-    prompt: `Use a HAND-DRAWN / SKETCH / DOODLE style.
-- Layout: max-width 1000px, centered. Slightly informal arrangement — elements can be slightly off-grid or rotated 1-2 degrees. Hero with large illustrated-style headline. Sections separated by hand-drawn style dividers. Cards arranged casually, not in a strict grid. The layout feels human-made, not computer-perfect.
-- Colors: warm, muted palette like a sketchbook — cream paper background (#FDF9F3 or #FEFCF6), charcoal sketch lines (#333333), muted accent colors as if from colored pencils: dusty rose (#E8B4B8), sage green (#A3B18A), muted mustard (#D4A574), soft blue (#89A8B2). Colors should feel hand-applied, slightly uneven in spirit.
-- Hand-drawn effects:
-  - Borders: use SVG filters or wavy borders to look hand-drawn. Or use border-style with dashed/dotted in organic patterns
-  - Underlines: wavy SVG underlines under headings, not straight lines
-  - Boxes: slightly irregular shapes using clip-path with imperfect coordinates
-  - Decorations: squiggle lines, arrows, stars drawn in a sketchy style (describe these as SVG or unicode characters styled appropriately)
-- Typography: mix of handwriting-style font for headlines (Caveat, Patrick Hand, or Kalam) and clean readable sans-serif for body (Inter, DM Sans). The headline font should look genuinely hand-written. Body stays readable. Notes and annotations in the handwriting font.
-- Decorations: doodle-style elements — stars, arrows, underlines, circles, exclamation marks, thought bubbles. Small margin notes and annotations. Tape/sticky note effects on cards. Paper texture overlay at low opacity. Post-it note style callouts.
-- Cards: look like paper cards or sticky notes — slight rotation, subtle paper texture, maybe a "taped" corner effect using pseudo-elements. Hand-drawn border or drop shadow that looks sketched.
-- Buttons: look like drawn buttons with sketchy borders. Fill with muted color. On hover: a drawn "press" effect or scribble appears.
-- Vibe: Notion's illustrations, Dropbox Paper, Basecamp sketchy style, indie game aesthetics. Personal, approachable, creative. Feels like someone's lovingly crafted notebook. The imperfection IS the perfection — it feels human, warm, and creative.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FDF9F3',
+            heading: '#333333',
+            body: '#555555',
+            rose: '#E8B4B8',
+            sage: '#A3B18A',
+            mustard: '#D4A574',
+            blue: '#89A8B2',
+          },
+          fontFamily: {
+            heading: ['"Caveat"', 'cursive'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+          },
+          boxShadow: {
+            card: '3px 3px 0 rgba(0,0,0,0.08)',
+          },
+        },
+      },
+    },
+    prompt: `Use a HAND-DRAWN / SKETCH / DOODLE style — the kind of site that feels like opening someone's beloved Moleskine notebook. It should feel human, imperfect, and charming: like a creative friend sketched the whole design during a coffee shop afternoon, complete with little doodles in the margins and notes pinned at slightly crooked angles.
+- Layout: \`max-w-5xl mx-auto\`. Slightly informal — elements can be rotated 1-2 degrees (style.css transforms). Hero with large illustrated-style headline. Cards arranged casually. Feels human-made.
+- Colors: warm sketchbook palette — \`bg-surface\` (cream paper, like a page from a well-loved journal). \`text-heading\` (charcoal, like a soft pencil mark). Accent colors like colored pencils: \`bg-rose\`, \`bg-sage\`, \`bg-mustard\`, \`bg-blue\` — each one looking like it was carefully shaded in by hand, slightly uneven and all the more beautiful for it.
+- Hand-drawn effects (in style.css):
+  - Borders: wavy/irregular via SVG filter or dashed in organic patterns
+  - Underlines: wavy SVG underlines under headings
+  - Boxes: slightly irregular clip-path with imperfect coordinates
+  - Decorations: squiggle lines, arrows, stars
+- Typography: \`font-heading\` (Caveat, handwriting) for headlines — looks genuinely hand-written, like someone scrawled it with a felt-tip pen. \`font-body\` (Inter) stays readable for longer text. Annotations in \`font-heading\` scattered like margin notes.
+- Decorations: doodle elements — stars, arrows, underlines, circles. Tape/sticky note effects on cards (style.css pseudo-elements). Paper texture overlay.
+- Cards: look like paper cards — slight rotation, \`shadow-card\`, maybe "taped" corner via pseudo-element. \`bg-surface\` or pastel fills.
+- Buttons: sketchy borders (style.css), muted color fill, drawn press effect on hover.
+- style.css should be RICH and creative: wavy/irregular borders using SVG filters or dashed border patterns that feel hand-drawn, wavy SVG underlines under headings that wiggle like someone drew them freehand, card slight rotation transforms (rotate 1-2deg alternating) with transition back to 0 on hover for a playful "picked up" feeling, tape/sticky-note corner effects using ::before pseudo-elements with small rotated rectangles in a translucent tan color, paper grain texture overlay at 4-5% opacity using a noise SVG filter, irregular clip-path on image containers with slightly imperfect coordinates, button hover effect that adds a sketchy double-border and slight wiggle animation, pencil-stroke underline animation that draws itself from left to right on headings entering viewport.
+- Vibe: Notion illustrations, Dropbox Paper, indie game aesthetics. Personal, warm, creative. The site should feel like it was made by a human, for humans, with visible love in every detail.`,
   },
 
   memphis: {
     name: 'Memphis',
-    prompt: `Use a MEMPHIS DESIGN style.
-- Layout: dynamic and asymmetric. Elements placed at angles, overlapping, breaking the grid intentionally. Hero with bold headline at an angle. Sections don't follow conventional top-to-bottom flow — elements float, overlap, and create visual tension. Max-width 1100px but elements break out. Deliberate visual chaos that's still navigable.
-- Colors: bold, clashing primaries and pastels — hot pink (#FF6B9D), electric blue (#0066FF), yellow (#FFE600), mint green (#98FF98), coral (#FF6F61), purple (#9B59B6), black for outlines. Colors are used in large flat blocks. Backgrounds can be different colors per section. The palette is intentionally "wrong" by traditional standards — that's the point.
-- Signature shapes: THE DEFINING ELEMENT. Geometric shapes used decoratively:
-  - Squiggly lines (wavy borders, SVG paths)
-  - Dots and circles (polka dot patterns, floating circles)
-  - Triangles scattered as decoration
-  - Lightning bolts and zigzags
-  - Terrazzo-style confetti patterns (small scattered shapes)
-  - These shapes have thick black outlines (2-3px stroke)
-- Typography: bold, chunky sans-serif for headlines (900 weight, condensed works well). Mix sizes dramatically. Text can be rotated, stacked vertically, or placed at angles. Black text or reversed out of colored blocks. Headline might be broken across multiple lines at unusual break points.
-- Patterns: terrazzo/confetti patterns (small scattered shapes on backgrounds using CSS or described as patterns). Polka dots. Stripes at angles. Grid patterns. These add texture to sections and cards.
-- Cards: solid colored backgrounds with thick black borders (3px+). Shapes decorating corners or edges. Slight rotation. Not all cards need to be rectangles — some could have an irregular edge.
-- Buttons: bold colored fills with black outlines. Thick, chunky. Text in black or white. Could be at a slight angle. Shadow offset (4px 4px 0 black) for 3D pop effect.
-- Vibe: 1980s Memphis Group, Ettore Sottsass, bowling alley carpet, 90s Nickelodeon, Saved by the Bell aesthetics. Bold, playful, deliberately "bad taste" that circles back to being iconic. Anti-minimalist. Makes you smile with its audacity.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            pink: '#FF6B9D',
+            blue: '#0066FF',
+            yellow: '#FFE600',
+            mint: '#98FF98',
+            coral: '#FF6F61',
+            purple: '#9B59B6',
+            surface: '#FFFFFF',
+            heading: '#000000',
+            body: '#333333',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            brutal: '4px 4px 0 #000000',
+          },
+        },
+      },
+    },
+    prompt: `Use a MEMPHIS DESIGN style — loud, irreverent, a sugar rush of geometry and color that feels like a 1980s Italian design collective raided a candy store and redesigned the internet.
+- Layout: dynamic and asymmetric. Elements at angles, overlapping, breaking the grid deliberately. Hero with a bold headline tilted at a cocky angle. Deliberate visual chaos that's still navigable — like a well-organized party. \`max-w-6xl mx-auto\` but elements break out and spill past boundaries. Every section should feel like it's vibrating with playful energy.
+- Colors: bold, clashing, unapologetically joyful — \`bg-pink\`, \`bg-blue\`, \`bg-yellow\`, \`bg-mint\`, \`bg-coral\`, \`bg-purple\`, \`bg-heading\` (black for outlines). Large flat color blocks that collide and overlap. Backgrounds differ per section. The palette feels intentionally "wrong" in the best way — like mixing every crayon in the box.
+- Signature shapes (style.css): squiggly lines (wavy SVG paths), dots/circles (polka dots), triangles, lightning bolts, terrazzo confetti patterns. ALL shapes have thick black outlines (2-3px stroke). These shapes aren't decoration — they ARE the design language.
+- Typography: \`font-heading font-black\` for headlines. Mix sizes dramatically — whisper-to-shout scale. Text can be rotated, stacked vertically, reversed out of colored blocks. \`text-heading\` on bright backgrounds. Headlines should feel like they're shouting from a billboard.
+- Patterns (style.css): terrazzo/confetti scattered shapes. Polka dots. Stripes at jaunty angles. Layer them — patterns on patterns.
+- Cards: solid colored backgrounds with \`border-4 border-heading\`. Geometric shapes peeking from corners. Slight rotation (2-3deg). \`shadow-brutal\` for that chunky, punchy pop.
+- Buttons: bold colored fills with \`border-4 border-heading shadow-brutal\`. Text in black or white. Buttons should feel like candy you want to press.
+- style.css should be WILD: terrazzo confetti backgrounds using radial-gradient scatter and repeating patterns, polka dot overlays via radial-gradient, CSS rotation transforms on cards and headings (rotate 1-3deg), squiggly animated SVG line borders, geometric ::before/::after pseudo-elements (triangles, circles) positioned at card corners, hover animations that bounce elements with cubic-bezier(0.68, -0.55, 0.265, 1.55), thick black outline hover glow effects.
+- Vibe: 1980s Memphis Group, Ettore Sottsass, bowling alley carpet, Saved by the Bell. Bold, playful, maximalist — the opposite of minimalism and proud of it.`,
   },
 
   scandinavian: {
     name: 'Scandinavian / Nordic',
-    prompt: `Use a SCANDINAVIAN / NORDIC / HYGGE style.
-- Layout: clean, uncluttered, single-column dominant. Max-width 900px for text content. Generous whitespace — let elements breathe. Hero simple and centered. Sections have large padding (100px+). Content is sparse and intentional — every element earns its place. The layout feels calm and considered.
-- Colors: natural, muted, warm-neutral palette. Background: warm white (#FAFAF8) or very light warm gray (#F5F3F0). Text: warm charcoal (#3D3D3D), NOT pure black. Accent: one muted natural color — dusty sage (#A3B18A), warm terracotta (#C4A484), muted navy (#4A5568), or soft blush (#D4A5A5). The palette should feel like natural materials: wood, wool, stone, linen.
-- Natural materials feel: design should evoke wood grain, woolen textures, ceramic, plants. Use subtle texture overlays (paper grain at 2%). Warm shadows (tinted slightly brown, not pure gray). Everything feels tactile and natural, not digital.
-- Typography: elegant, readable serif for headlines (Lora, Merriweather, or Playfair Display) paired with clean sans-serif for body (Inter, DM Sans). Understated sizes — headlines 2-2.5rem, nothing oversized. Light to medium weights. Generous letter-spacing on labels. The typography is refined but not showy.
-- Decorations: minimal but meaningful. Thin hairline rules. Simple line illustrations described as minimal Scandinavian style (geometric, single-line). Plant imagery. Subtle cream/beige backgrounds for subtle section definition. NO bold graphics, NO heavy elements. Negative space is a feature.
-- Cards: clean white or very slight warm tint. Minimal or no border — just subtle shadow (warm-tinted, soft). Rounded corners but not too round (8-12px). Internal padding generous. The cards feel like paper or ceramic objects.
-- Buttons: understated. Outlined with thin warm-gray border, or subtle filled with muted accent. NOT attention-grabbing — they exist but don't shout. Text-style links preferred over chunky buttons where possible.
-- Vibe: IKEA, Muji, Kinfolk magazine, Copenhagen cafes. Calm, warm, considered. "Hygge" translated to digital — cozy, intentional, unpretentious. The design makes you want to curl up with a warm drink. Minimalist but not cold — there's warmth in every choice.`,
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#FAFAF8',
+            'surface-alt': '#F5F3F0',
+            heading: '#3D3D3D',
+            body: '#666666',
+            accent: '#A3B18A',
+            muted: '#C4BFB6',
+          },
+          fontFamily: {
+            heading: ['"Lora"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '10px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(60,50,40,0.06)',
+          },
+        },
+      },
+    },
+    prompt: `Use a SCANDINAVIAN / NORDIC / HYGGE style — the digital equivalent of a sunlit room with pale birch floors, a wool throw draped over a linen sofa, and a ceramic mug of coffee steaming beside a single sprig of eucalyptus. Every pixel should breathe.
+- Layout: clean, uncluttered, single-column dominant. \`max-w-4xl mx-auto\` for text. Generous whitespace — the silence between notes that makes the music. Sparse and intentional. Calm, considered. Each element placed with the deliberation of a curator arranging a gallery.
+- Colors: natural, warm-neutral. \`bg-surface\` (warm white). \`text-heading\` (warm charcoal, NOT pure black). \`text-accent\` (dusty sage) for links/accents. \`bg-surface-alt\` for subtle section variety. \`border-muted\`.
+- Natural materials feel: design evokes wood, wool, ceramic. Paper grain texture overlay (style.css, 2%). Warm shadows (\`shadow-card\` tinted brown). Tactile, natural.
+- Typography: \`font-heading\` (Lora, elegant serif) for headlines. \`font-body\` (Inter, clean sans-serif) for body. Understated sizes (\`text-2xl\` to \`text-3xl\` headings). \`font-light\` to \`font-normal\`. \`tracking-wide\` on labels.
+- Decorations: minimal but meaningful. Thin \`border-t border-muted\` rules. Negative space is a feature.
+- Cards: \`bg-surface rounded-card shadow-card\`. Minimal or no border. Generous padding. Feel like paper or ceramic.
+- Buttons: understated. \`border border-muted text-heading\` outlined. NOT attention-grabbing. Text links preferred.
+- style.css should be SUBTLE but TEXTURED: paper grain noise texture overlay (subtle background-image SVG noise at 2-3% opacity), warm-tinted box-shadows using rgba with brown/amber base (never pure grey), gentle fade-in transitions on scroll (opacity + translateY with 0.6s ease), soft hover state transitions (0.3s ease color shifts, not abrupt), thin decorative ::after border lines on sections using border-image with subtle gradient, custom selection color in warm muted tones (::selection background).
+- Vibe: IKEA showroom, Muji storefront, Kinfolk magazine spread, a Copenhagen cafe at golden hour. Calm, warm, "hygge" translated to digital. Cozy, intentional, quietly beautiful.`,
   },
-
-  // ─── Additional Industry Styles ─────────────────────────────────────────────
 
   education: {
     name: 'Education / EdTech',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563EB',
+            accent: '#F97316',
+            success: '#10B981',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFC',
+            heading: '#1E293B',
+            body: '#475569',
+            muted: '#94A3B8',
+            border: '#E2E8F0',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            pill: '9999px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+            hover: '0 6px 20px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use an EDUCATION / EDTECH style.
-- Layout: max-width 1200px. Clear navigation with course categories. Hero with aspirational headline + student imagery placeholder + prominent CTA ("Start Learning", "Browse Courses"). Below: featured courses grid, learning paths section, instructor highlights, testimonials from learners, stats (students enrolled, courses, completion rate). Footer with course categories, support links.
-- Colors: trustworthy yet approachable. Primary: a learning-friendly blue (#2563EB) or teal (#0D9488) — NOT corporate navy. Secondary: encouraging green (#10B981) for progress/success, warm orange (#F97316) for CTAs and energy. Background: clean white with light blue-tinted (#F8FAFC) or warm cream (#FDF8F3) alternate sections. Text: #1E293B headings, #475569 body.
-- Typography: friendly and readable. Clean sans-serif (Inter, DM Sans, or Nunito) for everything. Headlines: 600-700 weight, 2-3rem. Body: 400 weight, 1rem, generous line-height (1.7) for readability during learning. Nothing too formal or too playful — the sweet spot of approachable expertise.
-- Course cards: image placeholder (16:9), course title, instructor name + small avatar placeholder, skill level badge (Beginner/Intermediate/Advanced), duration, rating (★ 4.8), price or "Free" badge. Hover: subtle lift + shadow. Grid of 3-4 cards per row.
-- Progress elements: progress bars for course completion, step indicators for learning paths, achievement badges, streak counters. Use green for progress fills. These make learning feel like a game.
-- Trust elements: number of students enrolled, instructor credentials, certificate mention, company logos for "Where our learners work". Testimonials with photo + name + role + company.
-- Decorations: subtle. Small icons for course topics (described as simple line icons). Illustration-style graphics in hero (described as abstract learning imagery). Progress-related iconography. Light background patterns optional.
-- Buttons: primary filled with CTA color (blue or orange), rounded-lg. "Enroll Now", "Start Learning", "View Course". Secondary: outlined. Generous sizing — these need to feel clickable.
-- Vibe: Coursera, Udemy, Khan Academy, Duolingo (but slightly more mature). Encouraging, accessible, achievement-oriented. The design says "you can do this" — learning feels attainable, not intimidating. Clear paths, visible progress, celebrating achievement.`,
+- Layout: \`max-w-7xl mx-auto\`. Clear nav with categories. Hero: aspirational headline + CTA ("Start Learning"). Featured courses grid, learning paths, instructor highlights, testimonials, stats.
+- Colors: \`bg-surface\` and \`bg-surface-alt\` alternating. \`bg-primary\` / \`text-primary\` (blue) — friendly, not corporate. \`text-success\` / \`bg-success\` for progress. \`bg-accent\` / \`text-accent\` (orange) for CTAs. \`text-heading\`, \`text-body\`.
+- Typography: \`font-heading\` (DM Sans) and \`font-body\` (Inter). Friendly and readable. \`font-semibold\` headings. \`leading-relaxed\`.
+- Course cards: image placeholder, title, instructor + avatar, skill badge (\`rounded-pill bg-primary/10 text-primary text-xs\`), duration, rating (★), price. \`rounded-card shadow-card hover:shadow-hover\`. Grid of 3-4.
+- Progress: progress bars (\`bg-success\` fill), step indicators, achievement badges.
+- Trust: student count, instructor credentials, company logos.
+- Buttons: \`bg-primary text-white rounded-button\` or \`bg-accent text-white\`. "Enroll Now", "Start Learning".
+- style.css: progress bar animations, course card hover effects.
+- Vibe: Coursera, Udemy, Khan Academy. Encouraging, accessible, achievement-oriented.`,
   },
 
   restaurant: {
     name: 'Restaurant / Food',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#DC2626',
+            accent: '#B8860B',
+            surface: '#FDF8F3',
+            heading: '#1A1A1A',
+            body: '#57534E',
+            muted: '#A8A29E',
+            border: '#E7E5E4',
+          },
+          fontFamily: {
+            heading: ['"Playfair Display"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+          },
+        },
+      },
+    },
     prompt: `Use a RESTAURANT / FOOD / DINING style.
-- Layout: full-width hero with large food imagery placeholder (appetizing description). Navigation: logo, menu sections (Menu, About, Reservations, Contact, Order Online). Below hero: philosophy/story section, menu highlights with food cards, location/hours, reservation CTA, Instagram-style gallery placeholder. Footer with hours, address, social links.
-- Colors: appetite-appealing palette. Background: warm cream (#FDF8F3) or clean white. Text: rich dark (#1A1A1A) for menus, warm gray (#57534E) for descriptions. Accent: choose based on cuisine type — warm red (#DC2626) for bold/Italian, forest green (#166534) for organic/farm-to-table, gold (#B8860B) for upscale, terracotta (#C2410C) for rustic. The accent appears in CTAs, highlights, and decorative elements.
-- Typography: this is KEY for restaurant personality. Headlines: elegant serif (Playfair Display, Cormorant, or Fraunces) for upscale feel, or bold sans-serif for casual. Menu items: clean serif, proper case, with prices right-aligned. Descriptions: smaller, italic or light weight. The typography sets the dining tone — formal or casual.
-- Food imagery areas: large, appetizing. Hero: full-bleed or 3/4 screen food shot placeholder (describe the mood: "steaming pasta", "fresh salad", "craft cocktail"). Menu items: smaller square images. Use warm-toned placeholder backgrounds where actual food would go.
-- Menu display: organized by category (Starters, Mains, Desserts, Drinks). Each item: name (prominent), description (1-2 lines, evocative language about ingredients), price (right-aligned, clean). Cards or simple list format depending on formality.
-- Reservation CTA: prominent section with date/time/party size selector described as form fields. "Reserve a Table" button. Phone number as alternative. This is a KEY conversion point.
-- Decorations: subtle, food-adjacent. Thin decorative dividers. Small ingredient illustrations (describe as line drawings of herbs, vegetables). Textured backgrounds suggesting paper or linen at low opacity. NO generic stock-photo feel — everything bespoke.
-- Buttons: "Reserve Now", "Order Online", "View Full Menu". Filled with accent color for primary. Styled appropriately to restaurant tier (elegant outlined for upscale, solid friendly for casual).
-- Vibe: Resy, OpenTable restaurant pages, award-winning restaurant websites. The design makes you hungry. The aesthetic matches the food — rustic for farm-to-table, sleek for modern cuisine, warm for Italian. You can almost taste it.`,
+- Layout: full-width hero with large food imagery placeholder. Nav: logo, Menu, About, Reservations, Contact. Below: philosophy, menu highlights, location/hours, reservation CTA, gallery. Footer with hours, address.
+- Colors: \`bg-surface\` (warm cream). \`text-heading\` (rich dark) for menus. \`text-primary\` / \`bg-primary\` (warm red) for bold accents. \`text-accent\` / \`border-accent\` (gold) for upscale touches. \`text-body\`, \`text-muted\`.
+- Typography: KEY for personality. \`font-heading\` (Playfair Display, elegant serif) for headlines and menu item names. \`font-body\` for descriptions. Menu items: prices right-aligned via \`flex justify-between\`. Descriptions: \`italic font-light text-sm\`.
+- Food imagery: large, full-bleed hero. Warm-toned placeholder backgrounds.
+- Menu display: organized by category. Each item: name (\`font-heading font-semibold\`), description, price (right-aligned). Cards or list format.
+- Reservation CTA: prominent section with "Reserve a Table" button.
+- Decorations: subtle. Thin \`border-t border-border\` dividers. NO generic feel — bespoke.
+- Buttons: "Reserve Now" \`bg-primary text-white rounded-card\`. "Order Online" secondary.
+- style.css: hero image overlay gradient, menu layout fine-tuning.
+- Vibe: Resy, award-winning restaurant websites. Design makes you hungry.`,
   },
 
   realEstate: {
     name: 'Real Estate',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E40AF',
+            accent: '#DC7F6B',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFC',
+            heading: '#111827',
+            body: '#6B7280',
+            muted: '#9CA3AF',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+            hover: '0 8px 24px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
     prompt: `Use a REAL ESTATE / PROPERTY style.
-- Layout: full-width. Hero: large search bar prominently centered ("Find your dream home"), property type tabs (Buy, Rent, Sell), location input + filters. Below: featured listings grid, neighborhood highlights, agent/team section, testimonials, market stats, contact CTA. Navigation: logo, Buy, Rent, Sell, Agents, About, Contact. Search is the HERO of the page.
-- Colors: trustworthy and premium. Background: clean white (#FFFFFF). Primary accent: real-estate blue (#1E40AF) or forest green (#166534) — colors of trust and growth. Secondary: warm gold (#B8860B) or coral (#DC7F6B) for CTAs and highlights. Text: dark (#111827) for prices and headings (these must be highly legible), gray (#6B7280) for descriptions.
-- Typography: professional and clear. Clean sans-serif (Inter, DM Sans). Prices: LARGE, semibold, tabular numerals — the most important info. Headlines: 600 weight. Addresses: medium weight, proper capitalization. Descriptions: regular weight, gray. The type hierarchy prioritizes: Price > Location > Details.
-- Property cards: THE KEY COMPONENT. Image placeholder (16:9 or 4:3), property type badge ("For Sale" / "For Rent" overlaid on image), price (large, prominent), address, beds/baths/sqft in icon row (🛏 3 | 🛁 2 | 📐 1,500 sqft), brief description or neighborhood. Cards have subtle shadow, rounded corners (12px). Hover: lift + shadow increase + subtle image zoom. Save/favorite heart icon.
-- Search/filter UI: prominent search bar with location autocomplete styling. Filter pills or dropdowns for: price range, beds, baths, property type, more filters. This UI is functional, not decorative.
-- Map placeholder: describe an interactive map area where listings would appear as pins. Map/list toggle.
-- Agent section: agent cards with photo placeholder, name, title, phone, email, and "Contact" button. Trust-building element.
-- Stats: "100+ listings", "50+ neighborhoods", "20 years experience", "1000+ homes sold". Large numbers, credibility builders.
-- Decorations: minimal. Clean lines. Home/location icons. Light gray section backgrounds for variation. NO distracting decorations — this is functional.
-- Buttons: "Search", "View Listing", "Contact Agent", "Schedule Tour". Filled primary buttons for main actions.
-- Vibe: Zillow, Redfin, Compass, Sotheby's Realty. The design is a tool first — it helps you find a home. Clean, trustworthy, search-focused. Prices and locations are immediately scannable. Makes house hunting feel organized, not overwhelming.`,
+- Layout: full-width. Hero: large search bar centered ("Find your dream home"), property type tabs. Below: featured listings grid, neighborhoods, agents, testimonials, market stats. Search is the HERO.
+- Colors: \`bg-surface\` (white). \`bg-primary\` / \`text-primary\` (trust blue). \`bg-accent\` / \`text-accent\` (warm coral) for CTAs. \`text-heading\` for prices (highly legible). \`text-body\`, \`border-border\`.
+- Typography: \`font-heading\` and \`font-body\` (clean sans-serif). Prices: \`text-xl font-bold tabular-nums\` — most important info. Addresses: \`font-medium\`. Descriptions: \`font-normal text-body\`.
+- Property cards: image placeholder, type badge (\`absolute top-2 left-2 bg-primary text-white rounded-full px-3 py-1 text-xs\`), price (\`text-lg font-bold\`), address, beds/baths/sqft row. \`rounded-card shadow-card hover:shadow-hover\`.
+- Search UI: prominent search bar with filter pills/dropdowns.
+- Agent cards: photo placeholder, name, title, phone, "Contact" button.
+- Stats: "100+ listings" — large numbers for credibility.
+- Buttons: "Search" \`bg-primary text-white rounded-button\`. "View Listing" secondary.
+- style.css: tabular-nums font-variant, search bar styling, badge positioning.
+- Vibe: Zillow, Redfin, Compass. Design is a tool — search-focused, trustworthy.`,
   },
 
   travel: {
     name: 'Travel / Hospitality',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#F97316',
+            accent: '#0EA5E9',
+            surface: '#FFFFFF',
+            'surface-alt': '#FDF8F3',
+            heading: '#111827',
+            body: '#6B7280',
+            muted: '#9CA3AF',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            heading: ['"DM Sans"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '14px',
+            button: '10px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+            hover: '0 8px 24px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
     prompt: `Use a TRAVEL / HOSPITALITY / BOOKING style.
-- Layout: full-width, immersive. Hero: full-viewport stunning destination imagery placeholder with search overlay (Where to? / Check in / Check out / Guests). Navigation: logo, Stays, Experiences, Flights (if applicable). Below: trending destinations grid, featured properties, experience categories, testimonials from travelers, inspiration section. The hero sells the dream; the content helps you book it.
-- Colors: aspirational and warm. Hero: dark overlay on imagery for text readability. Body: clean white (#FFFFFF) base. Accent: sunset coral (#F97316), ocean blue (#0EA5E9), or forest green (#059669) — colors of destinations. Text: #111827 headings, #6B7280 body. Cards on white. Light warm sections (#FDF8F3) for visual breaks.
-- Typography: clean and modern with aspirational headlines. Headlines: can use a slightly more expressive font (DM Sans, Outfit) in 600-700 weight. Destination names: featured prominently. Prices: clear, with "per night" or "from $X" formatting. Body: 400 weight, readable. Hero headline: large, evocative ("Discover your next adventure", "Where to next?").
-- Search component: THE PRIMARY UI. Prominent, centered on hero. Clean white card with: destination input, date range picker (check-in/check-out), guests dropdown, search button. Well-organized, easy to use. Consider tab switching for different search types.
-- Destination/property cards: large image placeholder (16:9), destination or property name, location, rating (★ 4.9), price per night or trip price, save/wishlist heart. Images should feel aspirational. Cards have subtle hover effect. Grid of 3-4 cards.
-- Experience cards: category cards (Beach, Mountain, City, Adventure) with evocative imagery placeholders and overlaid titles.
-- Trust elements: booking count ("10,000+ travelers"), ratings, Superhost/verified badges, clear cancellation policies.
-- Decorations: let the imagery do the work. Minimal UI decorations. Subtle shadows on cards. Clean iconography for amenities (wifi, pool, etc. described as icons).
-- Buttons: "Search", "Book Now", "Explore", "View All". Primary: filled with accent color. The main CTA is SEARCH. Booking buttons are secondary.
-- Vibe: Airbnb, Booking.com, Expedia, boutique hotel sites. The design sells experiences and dreams — then makes booking frictionless. Aspirational imagery + functional booking UI. You want to go there immediately.`,
+- Layout: full-width, immersive. Hero: full-viewport destination imagery placeholder with search overlay. Nav: Stays, Experiences. Below: trending destinations, featured properties, categories, testimonials.
+- Colors: hero: dark overlay on imagery (\`bg-black/50\` via style.css). \`bg-surface\` (white) body. \`bg-primary\` / \`text-primary\` (sunset coral) for CTAs. \`text-accent\` (ocean blue). \`bg-surface-alt\` (warm) for visual breaks.
+- Typography: \`font-heading\` (DM Sans, aspirational) \`font-semibold\`. Destination names prominent. Prices: "per night" formatting. Hero headline: large, evocative.
+- Search: THE PRIMARY UI. Prominent on hero. White card with: destination input, date picker, guests, search button. Tab switching for types.
+- Destination cards: large image placeholder, name, location, rating (★), price, save heart. \`rounded-card shadow-card hover:shadow-hover\`. Grid of 3-4.
+- Experience cards: category cards with overlaid titles.
+- Trust: booking count, ratings, verified badges.
+- Buttons: "Search" \`bg-primary text-white rounded-button\`. "Book Now" secondary.
+- style.css: hero image overlay, search card styling, image hover effects.
+- Vibe: Airbnb, Booking.com. Aspirational imagery + functional booking. You want to go there.`,
   },
 
   fitness: {
     name: 'Fitness / Sports',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#F97316',
+            surface: '#0A0A0A',
+            'surface-light': '#FFFFFF',
+            heading: '#FFFFFF',
+            'heading-dark': '#0A0A0A',
+            body: '#D1D5DB',
+            'body-dark': '#4B5563',
+            accent: '#22C55E',
+          },
+          fontFamily: {
+            heading: ['"Oswald"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+            button: '6px',
+          },
+          boxShadow: {
+            card: '0 4px 16px rgba(0,0,0,0.3)',
+          },
+        },
+      },
+    },
     prompt: `Use a FITNESS / SPORTS / ATHLETIC style.
-- Layout: dynamic and energetic. Full-width hero with bold headline, action-oriented subtext, strong CTA ("Start Training", "Join Now"). Below: programs/classes grid, trainer profiles, membership tiers, transformation testimonials (before/after placeholder), gym amenities, app download CTA. Navigation: Programs, Classes, Trainers, Membership, Location.
-- Colors: bold and energetic. Dark backgrounds for drama — near-black (#0A0A0A) or deep charcoal (#1A1A1A) for hero and feature sections. Primary accent: energetic orange (#F97316), electric red (#EF4444), or neon green (#22C55E). Secondary: white text on dark, dark text on light sections. High contrast throughout. The palette should feel ACTIVE.
-- Typography: bold, strong, condensed. Headlines in heavy weights (800-900) — Oswald, Bebas Neue style (describe as "tall, condensed, bold"). UPPERCASE for impact headlines and section labels. Large sizes (4-6rem for hero). Body: clean sans-serif (Inter) in normal weight for readability. The typography feels powerful.
-- Imagery placeholders: describe athletic, action-oriented scenes — people mid-workout, gym equipment, dynamic poses. High contrast, dramatic lighting described. Desaturated or color-graded feel. These images sell the energy.
-- Program cards: image placeholder (athlete/exercise), program name, difficulty level, duration (6 weeks), results focus ("Build Strength", "Lose Fat"). Cards have dark backgrounds or dramatic imagery. Bold typography on cards.
-- Trainer cards: photo placeholder, name, specialty, certifications, "Book Session" CTA. Social proof element.
-- Membership/pricing: tiered cards (Basic, Pro, Elite). Dark or gradient backgrounds. Features list with checkmarks. Prominent pricing. "Most Popular" badge on middle tier.
-- Stats: impactful numbers — "10,000+ members", "500+ workouts", "50+ trainers", "24/7 access". Large, bold treatment.
-- Decorations: dynamic angles — use CSS clip-path for diagonal section cuts. Abstract geometric shapes suggesting movement. Subtle grid or line patterns. Motivational text treatments ("NO EXCUSES", "PUSH YOUR LIMITS").
-- Buttons: bold, filled, uppercase text. "JOIN NOW", "START FREE TRIAL", "BOOK CLASS". Primary in accent color. Large, impossible to miss. On hover: energetic effect (scale, glow).
-- Vibe: Nike, Under Armour, Peloton, premium gym brands. The design motivates — you feel energized just looking at it. Bold, confident, no excuses. Makes you want to start working out immediately.`,
+- Layout: dynamic and energetic. Full-width hero with bold headline, strong CTA ("Start Training"). Programs grid. Trainer profiles. Membership tiers. Testimonials. App download CTA.
+- Colors: dark backgrounds for drama — \`bg-surface\` (near-black) for hero and feature sections. \`bg-primary\` / \`text-primary\` (energetic orange) as main accent. \`bg-surface-light\` for alternate sections. \`text-heading\` (white on dark), \`text-heading-dark\` (black on light). High contrast.
+- Typography: \`font-heading\` (Oswald, bold condensed) in \`font-bold\` to \`font-black\`. \`uppercase\` for impact headlines. Large sizes (\`text-5xl\` to \`text-7xl\` hero). \`font-body\` (Inter) for readability.
+- Program cards: image placeholder, name, difficulty, duration. Dark backgrounds. Bold type.
+- Trainer cards: photo placeholder, name, specialty, certifications, "Book Session" CTA.
+- Membership: tiered cards (Basic, Pro, Elite). "Most Popular" badge.
+- Decorations: dynamic angles (style.css clip-path for diagonal section cuts). Motivational text treatments.
+- Buttons: bold \`bg-primary text-white uppercase font-bold rounded-button\`. "JOIN NOW". Large. Hover: scale/glow (style.css).
+- style.css: diagonal clip-path sections, hover scale animations, dynamic background effects.
+- Vibe: Nike, Under Armour, Peloton. Bold, confident. Makes you want to work out.`,
   },
 
   nonprofit: {
     name: 'Non-profit / Charity',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#059669',
+            accent: '#F97316',
+            surface: '#FFFFFF',
+            'surface-alt': '#FDF8F3',
+            heading: '#1E293B',
+            body: '#475569',
+            muted: '#94A3B8',
+            border: '#E2E8F0',
+          },
+          fontFamily: {
+            heading: ['"Source Serif 4"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            pill: '9999px',
+            button: '10px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.06)',
+            hover: '0 6px 20px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    },
     prompt: `Use a NON-PROFIT / CHARITY / CAUSE style.
-- Layout: max-width 1200px. Hero: emotional headline, impactful subtext, prominent donation CTA ("Donate Now", "Join the Cause"). Below: mission/impact section, programs overview, impact statistics with visual representation, stories/testimonials from beneficiaries, ways to help (donate, volunteer, spread word), partners/supporters logos, newsletter signup. Navigation: About, Our Work, Impact, Get Involved, Donate.
-- Colors: cause-appropriate and warm. Background: clean white or warm off-white (#FDF8F3). Primary accent based on cause: hope blue (#3B82F6) for general, green (#059669) for environmental, warm orange (#F97316) for humanitarian, purple (#7C3AED) for education/arts. The accent is used for CTAs and highlights. Text: warm dark (#1E293B), NOT harsh black. Emotional warmth in the palette.
-- Typography: approachable and earnest. Headlines: slightly expressive sans-serif or friendly serif (Source Serif, Lora) for warmth. Body: clean sans-serif (Inter, DM Sans), comfortable reading sizes. Nothing too corporate or too casual. The typography feels genuine and human.
-- Donate button: THE MOST IMPORTANT ELEMENT. Always visible — in nav, in hero, floating or repeated throughout. Filled with accent color, prominent size. "Donate", "Give Now", "Support Our Mission". Cannot be missed.
-- Impact statistics: large, visual numbers. "$2M raised", "50,000 lives changed", "100 communities served". Use icons or simple visualizations. These prove the organization's effectiveness.
-- Story/testimonial cards: beneficiary stories with photo placeholder (described warmly), name, location, their story quote. These create emotional connection. Photo-forward cards.
-- Ways to help section: multiple options — Donate (primary), Volunteer, Corporate partnerships, Spread the word. Each with icon and brief description.
-- Trust elements: annual report link, charity ratings badges, financial transparency section, partner/donor logos. Non-profits must build trust.
-- Decorations: subtle and purposeful. Soft shapes suggesting hope/growth. Photos do the emotional heavy lifting. Avoid looking too "designed" — authenticity matters.
-- Buttons: "Donate Now" is filled, prominent, repeated. Secondary CTAs: "Learn More", "Get Involved", "Volunteer" in outlined style.
-- Vibe: charity:water, Red Cross, local community foundations, environmental nonprofits. The design creates emotional connection and drives action. It's warm, trustworthy, and human. You feel good donating here. The mission is clear; the impact is visible; the ask is obvious.`,
+- Layout: \`max-w-7xl mx-auto\`. Hero: emotional headline, impactful subtext, prominent donation CTA. Mission/impact, programs, statistics, beneficiary stories, ways to help, partners, newsletter.
+- Colors: \`bg-surface\` (white) or \`bg-surface-alt\` (warm). \`bg-primary\` / \`text-primary\` (hope green) for accents. \`bg-accent\` (warm orange) for donate CTAs. \`text-heading\` (warm dark). Emotional warmth.
+- Typography: \`font-heading\` (Source Serif, warm serif) for headlines. \`font-body\` (Inter) for body. Earnest, genuine.
+- Donate button: THE MOST IMPORTANT. Always visible — nav, hero, repeated. \`bg-accent text-white font-bold rounded-button px-8 py-3\`. Cannot be missed.
+- Impact stats: \`text-4xl font-bold text-primary\` numbers. "$2M raised", "50,000 lives changed".
+- Story cards: beneficiary photo placeholder, name, location, quote. Emotional connection.
+- Ways to help: Donate (primary), Volunteer, Corporate, Spread the word.
+- Trust: annual report link, charity ratings, partner logos.
+- Buttons: "Donate Now" prominent \`bg-accent\`. Secondary: \`border border-primary text-primary\`.
+- style.css: minimal — hover effects, subtle animation.
+- Vibe: charity:water, Red Cross. Warm, trustworthy, human. Mission clear, impact visible.`,
   },
 
   agency: {
     name: 'Agency / Creative',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#000000',
+            accent: '#FF4500',
+            surface: '#FFFFFF',
+            heading: '#000000',
+            body: '#333333',
+            muted: '#999999',
+          },
+          fontFamily: {
+            heading: ['"Instrument Serif"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '0px',
+          },
+          boxShadow: {
+            card: 'none',
+          },
+        },
+      },
+    },
     prompt: `Use an AGENCY / CREATIVE STUDIO style.
-- Layout: unconventional and bold. Hero: massive headline with attitude, minimal subtext, work preview or creative visual element. NO traditional hero-features-CTA structure. Below: portfolio/work showcase (the MAIN content), about/philosophy section, client logos, team (optional), contact. Navigation: minimal — Work, About, Contact. The work is the hero of the site.
-- Colors: bold and distinctive — the agency's "signature". Options: high contrast black (#000000) and white with one bold accent; all dark with neon accent; muted sophistication with cream and charcoal. Every agency has a distinctive palette. Use it consistently and confidently. Text: high contrast, readable.
-- Typography: DISTINCTIVE — typography IS the design for creative agencies. Options: oversized display serif (6-10rem headlines), brutalist monospace, elegant thin sans-serif, or bold condensed type. The type choice defines the agency personality. Mix weights and sizes dramatically. Headlines can break conventional rules.
-- Work/portfolio showcase: THE MAIN CONTENT. Large, full-width project images or cards. Project title + client + year. Hover: project reveal, title animation, or case study preview. Grid can be bento-style, masonry, or dramatic single-column scroll. Each project should feel like a teaser for the full case study.
-- About section: short, punchy copy about the agency's philosophy. Maybe a manifesto statement. Not corporate boilerplate — actual personality. Team photos optional (some agencies prefer anonymity).
-- Client logos: shown in grayscale, subtle. Not the hero of the page — the work is the hero. But logos build credibility.
-- Contact section: minimal but prominent. Email address large. Maybe a simple contact form. Physical address optional. "Let's talk" / "Get in touch" / "Start a project" energy.
-- Decorations: depends on agency style. Could be: minimal (whitespace is the decoration), experimental (cursor effects, unusual layouts), bold (geometric shapes, strong lines), or refined (subtle typography details). The decoration style IS the portfolio.
-- Buttons: minimal — often just styled text links. "View Project →", "Say Hello →". If buttons exist, they match the agency's aesthetic. Nothing generic.
-- Interactions: this is where agencies show off. Hover effects, scroll animations, transitions, cursor changes. The interactivity demonstrates the agency's craft. But substance over flash — don't let gimmicks overshadow the work.
-- Vibe: award-winning design studios, agencies on Awwwards, creative studios with attitude. The website IS the portfolio — it demonstrates capabilities by existing. Confident, distinctive, memorable. You leave knowing exactly what this agency is about and wanting to hire them.`,
+- Layout: unconventional and bold. Hero: massive headline with attitude, minimal subtext. NO traditional hero-features-CTA. Below: portfolio showcase (the MAIN content), about/philosophy, client logos, contact. Nav: minimal — Work, About, Contact.
+- Colors: high contrast — \`bg-primary\` (black) and \`bg-surface\` (white) with one bold \`text-accent\` / \`bg-accent\` (electric orange). Every choice confident.
+- Typography: DISTINCTIVE — typography IS the design. \`font-heading\` (Instrument Serif) at \`text-7xl\` to \`text-9xl\` for headlines. \`font-body\` for everything else. Mix weights and sizes dramatically.
+- Work showcase: THE MAIN CONTENT. Large, full-width project cards. Project title + client + year. Hover: title animation or case study preview (style.css). Bento-style or dramatic single-column.
+- About: short, punchy philosophy copy. Not boilerplate — actual personality.
+- Client logos: grayscale, subtle. Work is the hero.
+- Contact: minimal. Email large. "Let's talk" energy.
+- Buttons: mostly styled text links. "View Project →". Nothing generic.
+- style.css: hover effects on portfolio items, scroll animations, cursor changes, typography effects.
+- Vibe: Awwwards featured studios. The website IS the portfolio. Confident, distinctive, memorable.`,
   },
 
   events: {
     name: 'Events / Conference',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#7C3AED',
+            accent: '#F97316',
+            surface: '#FFFFFF',
+            'surface-alt': '#F5F3FF',
+            dark: '#111827',
+            heading: '#111827',
+            'heading-light': '#FFFFFF',
+            body: '#4B5563',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            heading: ['"Inter"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '12px',
+            pill: '9999px',
+            button: '8px',
+          },
+          boxShadow: {
+            card: '0 2px 8px rgba(0,0,0,0.08)',
+            hover: '0 8px 24px rgba(0,0,0,0.12)',
+          },
+        },
+      },
+    },
     prompt: `Use an EVENTS / CONFERENCE style.
-- Layout: full-width, urgency-driven. Hero: event name (large), date (prominent), location, countdown timer, early-bird CTA ("Get Tickets", "Register Now"). Below: speaker lineup grid, schedule/agenda, venue info, sponsor logos, FAQ, ticket tiers. Navigation: Speakers, Schedule, Venue, Tickets. The date and ticket CTA must be ever-present.
-- Colors: distinctive event branding. Choose a bold primary: electric blue (#3B82F6), vibrant purple (#7C3AED), energetic coral (#F97316), or tech green (#10B981). Use it extensively — hero background, CTAs, section accents. Secondary: dark (#111827) for contrast, white for content areas. The event should feel like it has its own brand identity.
-- Typography: bold and event-specific. Large event name treatment (4-6rem, could be custom lettering described). Date and location: prominent, clear. Headlines: bold sans-serif (700-800 weight). Body: clean sans-serif. Speaker names: semibold, clear hierarchy.
-- Countdown timer: THE URGENCY ELEMENT. Days/Hours/Minutes/Seconds displayed prominently. "Event starts in..." Creates FOMO. Styled to match event branding.
-- Speaker cards: photo placeholder (square, professional), name, title/company, talk title or topic tags. Grid of 4-6 speakers featured, "View All Speakers" link. Speakers are the draw — feature them prominently.
-- Schedule/agenda: organized by day and time slot. Track differentiation if multiple tracks (color-coded tabs). Clear time stamps. Talk title, speaker, and room/location. Expandable details optional. Could be timeline or table format.
-- Ticket section: tiered cards (Early Bird, Regular, VIP). Price prominent. What's included list. "Limited availability" or "X spots left" urgency. Clear primary "Get Tickets" CTA.
-- Venue section: map placeholder, address, travel/accommodation info. Photo of venue placeholder. Practical info that helps people commit.
-- Sponsor logos: tiered (Gold, Silver, Bronze or similar). Logos displayed in grid. "Become a Sponsor" link.
-- Decorations: event-branded elements. Geometric shapes, patterns, or photo treatments that create a distinct visual identity. Could be: tech-inspired grid patterns, creative gradients, bold geometric accents. The event should feel special and worth attending.
-- Buttons: high-urgency CTAs. "Get Tickets Now", "Register", "Book Your Spot". Filled with primary color, large. Secondary: "Learn More", "View Schedule".
-- Vibe: major tech conferences (WWDC, Google I/O), design conferences (Figma Config, OFFF), professional summits. The design creates excitement and urgency. You want to be there. The speakers look great, the schedule looks valuable, and tickets feel limited. Register NOW.`,
+- Layout: full-width, urgency-driven. Hero: event name (\`text-5xl font-bold\`), date, location, countdown timer, CTA ("Get Tickets"). Speakers grid, schedule, venue info, sponsors, FAQ, tickets.
+- Colors: distinctive event branding. \`bg-primary\` / \`text-primary\` (vibrant purple) used extensively — hero, CTAs, section accents. \`bg-dark\` for contrast. \`bg-surface\` and \`bg-surface-alt\` for content.
+- Typography: \`font-heading font-bold\` large event name (\`text-5xl\` to \`text-7xl\`). Date and location: prominent. Speakers: \`font-semibold\`.
+- Countdown timer: prominently styled with \`text-4xl font-bold\` Days/Hours/Minutes/Seconds. FOMO creator.
+- Speaker cards: photo placeholder (square, \`rounded-card\`), name, title/company, topic tags. Grid of 4-6. "View All Speakers" link.
+- Schedule: organized by day, color-coded tracks. Clear timestamps. Expandable details.
+- Tickets: tiered cards (Early Bird, Regular, VIP). Price prominent. "Limited" urgency. \`bg-primary\` for featured tier.
+- Sponsors: tiered logo grid.
+- Buttons: \`bg-primary text-white rounded-button font-semibold\`. "Get Tickets Now". Large, urgent.
+- style.css: countdown timer animation, schedule accordion, speaker card hover effects.
+- Vibe: major tech conferences (WWDC, Figma Config). Excitement and urgency. Register NOW.`,
   },
 
   gaming: {
     name: 'Gaming',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#0A0A0F',
+            primary: '#00D4FF',
+            accent: '#FF00AA',
+            gold: '#FFD700',
+            heading: '#FFFFFF',
+            body: '#A0AEC0',
+            panel: '#151520',
+          },
+          fontFamily: {
+            heading: ['"Rajdhani"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+          },
+          boxShadow: {
+            glow: '0 0 20px rgba(0,212,255,0.3)',
+            'glow-accent': '0 0 20px rgba(255,0,170,0.3)',
+          },
+        },
+      },
+    },
     prompt: `Use a GAMING / GAME MARKETING style.
-- Layout: full-width, immersive, cinematic. Hero: full-viewport key art placeholder with game logo, release date, and "Pre-order" or "Play Now" CTA. Below: game trailer/video placeholder, feature highlights, character/world showcase, editions/pricing, reviews/accolades, community section, platform availability. The page is an EXPERIENCE, not a brochure.
-- Colors: game-appropriate but typically dramatic. Dark backgrounds (#0A0A0F) for immersion — the game art needs to pop. Accent: neon/electric colors that match the game's palette (cyan, magenta, gold, green). High contrast. UI elements have subtle glow effects. The page should feel like an extension of the game world.
-- Typography: genre-appropriate display font. Sci-fi: futuristic, angular. Fantasy: ornate, medieval-inspired. Modern: bold, condensed. The typography contributes to world-building. Game title: can be stylized or replaced with logo. UI text: clean sans-serif for readability.
-- Hero treatment: the KEY element. Full-screen key art or video placeholder. Game logo centered or positioned dramatically. Release date prominent. Platform icons (PlayStation, Xbox, Steam, Switch described as small icons). Pre-order/Buy button with glow effect.
-- Video/trailer section: large video player placeholder. "Watch Trailer" — this is the main marketing asset.
-- Feature showcase: game features with dramatic screenshots. "Open World", "Multiplayer", "100+ Hours" type selling points. Visual, not text-heavy. Let the imagery sell.
-- Editions/pricing: Standard, Deluxe, Ultimate editions. What's included (base game, DLC, skins, etc.). Box art placeholder for each. Pre-order bonuses highlighted.
-- Reviews/accolades: "9/10 - IGN", "Game of the Year" badges. Review score prominently displayed. Press quotes.
-- Platform availability: PlayStation, Xbox, PC, Switch icons with "Available Now" or "Coming Soon" status.
-- Decorations: immersive UI elements. Subtle animated particles (described as CSS animations — floating dust, ember particles for fantasy, data streams for sci-fi). Glow effects on interactive elements. HUD-inspired UI borders. Background elements suggesting the game world.
-- Buttons: "Pre-order Now", "Buy Now", "Watch Trailer", "Join Community". Glowing, animated effects on hover. Style matches the game universe.
-- Vibe: PlayStation exclusives, AAA game launches, Steam store pages elevated. The page is a portal into the game world. Immersive, dramatic, makes you need to play this game. Every scroll reveals more of the world. You're sold before you reach the buy button.`,
+- Layout: full-width, immersive, cinematic. Hero: full-viewport key art placeholder, game logo, release date, "Pre-order" CTA. Trailer placeholder, feature highlights, character showcase, editions, reviews, platforms. Page is an EXPERIENCE.
+- Colors: \`bg-surface\` (dark) for immersion. \`text-primary\` / \`border-primary\` (neon cyan) and \`text-accent\` (magenta) for electric accents. \`text-gold\` for premium elements. \`bg-panel\` for cards. \`shadow-glow\` and \`shadow-glow-accent\` for neon effects.
+- Typography: \`font-heading\` (Rajdhani, futuristic angular). \`font-body\` (Inter) for readability. Headlines: \`text-heading font-bold\`. UI text clean.
+- Hero: full-screen key art. Game logo centered. Release date. Platform icons. Pre-order button with \`shadow-glow\`.
+- Video section: large player placeholder. "Watch Trailer".
+- Editions: Standard/Deluxe/Ultimate. What's included. Pre-order bonuses.
+- Reviews: "9/10 - IGN" badges. Press quotes.
+- Decorations: subtle animated particles (style.css), glow effects on interactive elements, HUD-inspired borders.
+- Buttons: "Pre-order Now" \`bg-primary text-surface font-bold rounded-card shadow-glow\`. Animated hover.
+- style.css: particle animations, neon glow keyframes, HUD border effects, hero key art overlay.
+- Vibe: AAA game launches, PlayStation exclusives. Immersive, dramatic. Portal into the game world.`,
   },
 
   legal: {
     name: 'Legal / Professional Services',
+    tailwindConfig: {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1E3A5F',
+            accent: '#B8860B',
+            surface: '#FFFFFF',
+            'surface-alt': '#F8FAFC',
+            heading: '#111827',
+            body: '#4B5563',
+            muted: '#9CA3AF',
+            border: '#E5E7EB',
+          },
+          fontFamily: {
+            heading: ['"Lora"', 'serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            card: '8px',
+            button: '6px',
+          },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,0.08)',
+          },
+        },
+      },
+    },
     prompt: `Use a LEGAL / PROFESSIONAL SERVICES style.
-- Layout: max-width 1100px, structured and trustworthy. Hero: clear value proposition headline (what they do + who they help), professional subtext, "Schedule Consultation" CTA. Below: practice areas/services grid, attorney/team profiles, case results or credentials, client testimonials, firm history/about, contact with multiple channels. Navigation: Practice Areas, Attorneys, About, Results, Contact.
-- Colors: authoritative and trustworthy. Primary: deep navy (#1E3A5F) or forest green (#1B4332) — colors of trust and stability. Background: clean white (#FFFFFF) with light gray (#F8FAFC) alternate sections. Accent: muted gold (#B8860B) or burgundy (#722F37) for subtle prestige touches. Text: dark (#111827) for maximum readability. NO bright colors, NO playful tones. Serious but not cold.
-- Typography: traditional and readable. Headlines: professional serif (Lora, Source Serif, or Merriweather) — serif conveys establishment and trust. Body: clean sans-serif (Inter, system-ui) for readability. Sizes: conservative, nothing oversized. The typography says "we've been doing this a long time."
-- Attorney/team cards: professional photo placeholder (described as formal headshot), name, title (Partner, Associate), practice areas, education/credentials, "View Profile" link. Grid of 3-4 per row. Photos should feel professional, approachable, competent.
-- Practice areas: icon (described as simple line icon) + practice area name + brief description. Cards or list format. Link to detailed practice area pages. Common areas: Corporate, Litigation, Employment, Real Estate, Estate Planning, etc.
-- Credentials/results: bar admissions, awards, case results (where appropriate), years of experience. These build trust. "AV Rated", "Super Lawyers", firm anniversaries.
-- Testimonials: client quotes with name/initial + company or "Verified Client". Focus on professionalism, outcomes, communication. Carousel or cards.
-- Contact section: multiple channels — phone (prominent), email, contact form, office address with map placeholder. "Schedule a Consultation" CTA. Office hours.
-- Decorations: minimal and dignified. Thin lines, subtle borders. Possibly subtle legal imagery (scales, columns — described appropriately). NO heavy graphics. The content builds trust, not the decoration.
-- Buttons: "Schedule Consultation", "Contact Us", "View Our Practice Areas". Filled with primary color (navy/green), professional sizing. Not flashy — reliable.
-- Vibe: established law firms, BigLaw websites, professional consultancies. The design says "we are competent, established, and trustworthy." You feel confident hiring this firm. Professional without being stuffy. Approachable without being casual. Your matter is in good hands.`,
+- Layout: \`max-w-6xl mx-auto\`, structured and trustworthy. Hero: clear value proposition, "Schedule Consultation" CTA. Practice areas grid, attorney profiles, credentials, testimonials, firm history, contact.
+- Colors: authoritative. \`bg-primary\` / \`text-primary\` (deep navy). \`bg-surface\` and \`bg-surface-alt\` alternating. \`text-accent\` / \`border-accent\` (muted gold) for prestige touches. \`text-heading\`, \`text-body\`.
+- Typography: \`font-heading\` (Lora, serif) — conveys establishment and trust. \`font-body\` (Inter) for readability. Conservative sizes.
+- Attorney cards: photo placeholder, name, title, practice areas, credentials, "View Profile" link. \`rounded-card shadow-card\`. Grid of 3-4.
+- Practice areas: icon + name + description. Cards or list format.
+- Credentials: bar admissions, awards ("AV Rated", "Super Lawyers"), firm anniversaries.
+- Testimonials: client quotes with name + "Verified Client".
+- Contact: phone (prominent), email, form, address + map placeholder. "Schedule a Consultation".
+- Decorations: minimal and dignified. Thin lines, subtle borders.
+- Buttons: "Schedule Consultation" \`bg-primary text-white rounded-button\`. Professional, reliable.
+- style.css: minimal — hover effects, contact form styling.
+- Vibe: established law firms, professional consultancies. Competent, trustworthy. Your matter is in good hands.`,
   },
 };
 
@@ -742,33 +2034,34 @@ RULES:
 
 // ─── Base Instructions ──────────────────────────────────────────────────────
 
-export const LANDING_INSTRUCTIONS = `You are a world-class web designer. Your job is to create a beautiful, complete, single-page website.
+export const LANDING_INSTRUCTIONS = `You are a world-class web designer. Your job is to create a beautiful, complete, single-page website that feels like a real product — not a template.
 
 RULES:
 1. Create exactly TWO files:
-   - style.css — ALL custom CSS goes here: custom properties, animations, keyframes, transitions, hover effects, media queries, decorative styles, any non-Tailwind styles
-   - index.html — the complete HTML page, using Tailwind CSS via CDN AND linking to style.css
+   - style.css — Your creative playground for everything that makes this design DISTINCTIVE: @keyframes animations, micro-interactions, custom gradients (radial glows, mesh gradients, aurora effects), backdrop-filter, pseudo-element decorations (::before/::after), clip-path shapes, custom scrollbars, layered box-shadows with rgba, subtle hover transitions, and any CSS that gives the design its unique personality. A great style.css is 100-400 lines of purposeful, creative CSS.
+   - index.html — the complete HTML page with inline Tailwind config and all content
 
-2. In index.html:
-   - Include <script src="https://cdn.tailwindcss.com"></script> for Tailwind
-   - Include <link rel="stylesheet" href="style.css"> for your custom styles
-   - Use Tailwind utility classes for layout, spacing, typography basics
-   - Use style.css classes for animations, custom effects, decorative elements, and anything Tailwind can't do
-   - Include any Google Fonts via <link> in the <head>
+2. TAILWIND + CREATIVE CSS approach:
+   - Include the Tailwind CDN script with an inline config that defines the core design tokens:
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script>tailwind.config = { theme: { extend: { colors: {...}, fontFamily: {...}, borderRadius: {...}, boxShadow: {...} } } }</script>
+   - Use Tailwind utility classes for layout structure, spacing, typography basics, and your defined design tokens (bg-primary, text-accent, etc.)
+   - The Tailwind config should be RICH — not just 6 colors. Include shades (primary-light, primary-dark), tinted backgrounds (accent/10, accent/20 via Tailwind opacity syntax), multiple shadow depths (shadow-sm, shadow-card, shadow-lg, shadow-glow), and any tokens the design needs.
+   - EXTEND the provided config freely — add more colors, shadows, and tokens as the design demands. The config is a starting point, not a ceiling.
+   - Use style.css for the creative layer: gradient backgrounds, glow effects, shimmer animations, decorative pseudo-elements, hover state transitions, and anything that gives the design soul and personality.
 
 3. ZERO inline styles:
-   - NEVER use style="..." attributes in HTML. Not even once. Not for "just one property."
-   - ALL styling must go through either Tailwind utility classes OR custom classes defined in style.css.
-   - If you need a one-off visual tweak, create a CSS class for it in style.css.
+   - NEVER use style="..." attributes in HTML. Not even once.
+   - If you need a gradient background, define a class in style.css. If you need a specific color, add it to the Tailwind config.
    - This is a hard rule — the output will be automatically rejected if any style= attributes are found in the HTML.
 
 4. The site must be:
    - Fully self-contained (no external assets except CDN fonts and Tailwind)
    - Responsive (mobile-first, works on all screen sizes)
    - Complete with real-looking content (not lorem ipsum — write realistic copy for the described website)
-   - Visually polished and production-quality
+   - Visually polished and production-quality — it should feel like a REAL product, not a generic template
 
-5. Write style.css FIRST, then index.html.
+5. Write style.css FIRST, then index.html. The CSS sets the creative tone; the HTML brings it to life.
 
 6. If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it BEFORE designing.
    Study the page content, structure, copy, branding, and layout. Use what you learn to inform the design.
@@ -776,20 +2069,24 @@ RULES:
 
 7. DO NOT explain anything. Just create the files.`;
 
-export const WEBAPP_INSTRUCTIONS = `You are a world-class web designer and frontend developer. Your job is to create a beautiful, complete, multi-page web application prototype.
+export const WEBAPP_INSTRUCTIONS = `You are a world-class web designer and frontend developer. Your job is to create a beautiful, complete, multi-page web application prototype that feels like a real product — not a template.
 
 RULES:
 1. Create these files:
-   - style.css — ALL shared custom CSS: custom properties, animations, keyframes, transitions, hover effects, media queries, component styles, any non-Tailwind styles
+   - style.css — Your creative playground for everything that makes this design DISTINCTIVE: @keyframes animations, micro-interactions, custom gradients (radial glows, sidebar gradients, shimmer effects), backdrop-filter, pseudo-element decorations, clip-path shapes, custom scrollbars, layered rgba shadows, hover transitions, pulsing status indicators, and any CSS that gives the app its unique personality. A great style.css is 100-500 lines of purposeful, creative CSS.
    - app.js — Shared JavaScript: navigation highlighting, interactive components, any client-side logic. NO frameworks — vanilla JS only.
    - index.html — the main/home page
    - Additional .html pages as needed for the described webapp (e.g., dashboard.html, settings.html, tasks.html)
 
-2. In EVERY .html page:
-   - Include <script src="https://cdn.tailwindcss.com"></script> for Tailwind
-   - Include <link rel="stylesheet" href="style.css"> for your custom styles
-   - Include <script src="app.js" defer></script> for shared JavaScript
-   - Include any Google Fonts via <link> in the <head>
+2. TAILWIND + CREATIVE CSS approach:
+   - In EVERY .html page, include the Tailwind CDN script with an inline config:
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script>tailwind.config = { theme: { extend: { colors: {...}, fontFamily: {...}, borderRadius: {...}, boxShadow: {...} } } }</script>
+   - The Tailwind config MUST be identical across all pages (copy-paste the same config block).
+   - Use Tailwind utility classes for layout structure, spacing, typography basics, and your defined design tokens.
+   - The Tailwind config should be RICH — include color shades (primary-light, primary-dark), tinted backgrounds, multiple shadow depths, and all tokens the design needs.
+   - EXTEND the provided config freely — add more colors, shadows, and tokens as the design demands. The config is a starting point, not a ceiling.
+   - Use style.css for the creative layer: gradient backgrounds, glow effects, animated status indicators, decorative pseudo-elements, hover transitions, custom scrollbars, and everything that makes the app feel alive and distinctive.
 
 3. Navigation:
    - Every page MUST have a consistent nav bar/sidebar linking to ALL other pages
@@ -797,9 +2094,8 @@ RULES:
    - Highlight the current page in the navigation
 
 4. ZERO inline styles:
-   - NEVER use style="..." attributes in HTML. Not even once. Not for "just one property."
-   - ALL styling must go through either Tailwind utility classes OR custom classes defined in style.css.
-   - If you need a one-off visual tweak, create a CSS class for it in style.css.
+   - NEVER use style="..." attributes in HTML. Not even once.
+   - If you need a gradient background, define a class in style.css. If you need a specific color, add it to the Tailwind config.
    - This is a hard rule — the output will be automatically rejected if any style= attributes are found in the HTML.
 
 5. The webapp must be:
@@ -809,7 +2105,7 @@ RULES:
    - Each page should feel like a real, functional app screen (even though backend logic is simulated)
    - Visually consistent across all pages (same header, same colors, same component styles)
 
-6. Write style.css FIRST, then app.js, then each HTML page starting with index.html.
+6. Write style.css FIRST, then app.js, then each HTML page starting with index.html. The CSS sets the creative tone.
 
 7. If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it BEFORE designing.
    Study the page content, structure, copy, branding, and layout. Use what you learn to inform the design.
@@ -870,20 +2166,26 @@ Recreate everything from scratch using code.
     // Technical rules only (no design guidance)
     if (isWebapp) {
       prompt += `TECHNICAL RULES:
-1. Create these files: style.css (all custom CSS), app.js (shared JS), index.html (main page), and additional .html pages as needed.
-2. Every .html page must include: <script src="https://cdn.tailwindcss.com"></script>, <link rel="stylesheet" href="style.css">, <script src="app.js" defer></script>.
+1. Create these files: style.css (only for animations/keyframes/pseudo-elements/backdrop-filter), app.js (shared JS), index.html (main page), and additional .html pages as needed.
+2. TAILWIND-FIRST: In every .html page, include:
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>tailwind.config = { theme: { extend: { colors: { /* extract from reference image */ }, fontFamily: { /* match reference fonts */ }, borderRadius: {...}, boxShadow: {...} } } }</script>
+   Extract the design tokens (colors, fonts, shadows, radii) from the reference image and put them in the Tailwind config. Use those custom classes everywhere.
 3. Every page must have consistent navigation linking to all other pages.
-4. NEVER use style="..." attributes — use Tailwind classes or custom classes in style.css.
+4. NEVER use style="..." attributes — use Tailwind classes or define a class in style.css for animations/gradients only.
 5. Include Google Fonts via <link> if the reference uses web fonts.
 6. Make it responsive and self-contained.\n\n`;
     } else {
       prompt += `TECHNICAL RULES:
-1. Create exactly TWO files: style.css (all custom CSS) and index.html (the complete page).
-2. index.html must include: <script src="https://cdn.tailwindcss.com"></script> and <link rel="stylesheet" href="style.css">.
-3. NEVER use style="..." attributes — use Tailwind classes or custom classes in style.css.
+1. Create exactly TWO files: style.css (only for animations/keyframes/pseudo-elements/backdrop-filter) and index.html (the complete page).
+2. TAILWIND-FIRST: In index.html, include:
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>tailwind.config = { theme: { extend: { colors: { /* extract from reference image */ }, fontFamily: { /* match reference fonts */ }, borderRadius: {...}, boxShadow: {...} } } }</script>
+   Extract the design tokens (colors, fonts, shadows, radii) from the reference image and put them in the Tailwind config. Use those custom classes everywhere.
+3. NEVER use style="..." attributes — use Tailwind classes or define a class in style.css for animations/gradients only.
 4. Include Google Fonts via <link> if the reference uses web fonts.
 5. Make it responsive and self-contained.
-6. Write style.css FIRST, then index.html.\n\n`;
+6. Write style.css FIRST (if needed), then index.html.\n\n`;
     }
 
     prompt += `If the user's prompt contains a URL (https://...), use your WebFetch tool to visit it FIRST.
@@ -894,6 +2196,15 @@ Combined with the reference image, produce a faithful recreation.\n\n`;
     // ── Standard flow: no reference image ──────────────────────────────────
     const baseInstructions = isWebapp ? WEBAPP_INSTRUCTIONS : LANDING_INSTRUCTIONS;
     prompt += baseInstructions + '\n\n';
+
+    // Tailwind config from the style preset (injected as starting point)
+    if (job.tailwindConfig) {
+      const configJson = JSON.stringify(job.tailwindConfig, null, 2);
+      prompt += `TAILWIND CONFIG — start from this config and EXTEND it as your design needs:
+${configJson}
+
+This is your starting palette. Use these tokens (bg-primary, text-accent, rounded-card, shadow-card, font-heading, font-body) as the foundation, but freely ADD more colors, shadows, and tokens to the config as the design demands — additional shades, glow shadows, tinted backgrounds, status colors, gradient-ready color stops. A rich config with 15-25 color tokens and 3-5 shadow levels makes a better design than a minimal one. The config should grow to match your creative vision.\n\n`;
+    }
 
     // Style directive
     if (job.stylePrompt) {
@@ -1016,34 +2327,80 @@ RULES:
  * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
  * @returns {Promise<string|null>} Synthesized style brief or null
  */
-export async function resolveThemeSynth(userPrompt, queryLLM) {
-  const synthPrompt = `You are a world-class web design director. Given a website description, create a detailed design system brief that would be given to a designer to implement the site.
+export async function resolveThemeSynth(userPrompt, queryLLM, count = 1) {
+  const synthPrompt = `You are a world-class web design director. Given a website description, create ${count} design ${count > 1 ? 'styles' : 'style'} for it.
 
 WEBSITE DESCRIPTION:
 ${userPrompt}
 
-Write a design system brief covering these aspects (be specific — include exact hex colors, font names, pixel values):
-- Layout: structure, max-width, grid approach, section flow
-- Colors: exact hex values for background, text, primary accent, secondary accent, section alternates
-- Typography: specific Google Font names, weights for headings vs body, sizes, line-heights
-- Spacing: section gaps, card padding, overall density
-- Cards/Components: border radius, shadows, borders, hover states
-- Decorations: what decorative elements to use (or not), animation style
-- Buttons: primary and secondary styles, sizing, border radius
-- Vibe: 2-3 real-world reference websites this should feel like
+${count > 1 ? `Generate ${count} GENUINELY DIFFERENT styles — different color palettes, different typography, different mood. They should look like they were designed by different designers.\n` : ''}OUTPUT FORMAT — for each style, output exactly:
+---STYLE---
+CONFIG: {a JSON object on ONE line, no markdown fencing, with this structure: {"theme":{"extend":{"colors":{...},"fontFamily":{...},"borderRadius":{...},"boxShadow":{...}}}}}
+PROMPT: {the style directive — see structure below}
+
+CONFIG must include:
+- colors: 6-10 semantic tokens (surface, panel, primary, accent, heading, body, muted, plus any others) as hex values
+- fontFamily: heading and body arrays with real Google Font names as first entry
+- borderRadius: card, pill, button
+- boxShadow: card, hover, plus any style-specific shadows
+
+PROMPT must cover these sections:
+- Layout: grid structure, spacing approach, sidebar/topbar/content organization, density
+- Colors: describe each color token with its role AND its visual character (not just the hex — say what it feels like, what it evokes)
+- Typography: font choices, weight hierarchy, how headings vs body vs data/labels are styled, Tailwind classes
+- style.css: 4-8 SPECIFIC CSS effects this style needs — name the technique, describe the visual result, say where it applies (e.g., "a subtle radial gradient glow behind the sidebar logo", "progress bar fill with a shimmer animation via @keyframes", "table row left-border that scales up on hover via transform scaleY")
+- Vibe: 1-2 sentences capturing the overall feeling
 
 RULES:
-- Be SPECIFIC and OPINIONATED. No "you could use blue or green" — pick ONE and commit.
-- The style must be APPROPRIATE for the described website. A children's app gets different treatment than a law firm.
-- Use the same bullet-point format as shown above.
-- Output ONLY the design brief, no preamble, no explanation.`;
+- Design for the PRODUCT and its USERS. Think about who uses this and what makes the interface excellent for them.
+- Be specific and opinionated — commit to clear design choices.
+- The styles must feel appropriate and usable for the described website.
+- Output ONLY the styles in the format above. No preamble, no commentary.`;
 
   const result = await queryLLM(synthPrompt);
-
-  const brief = result.trim();
-  if (brief.length < 100) {
-    return null;
+  const text = result.trim();
+  if (text.length < 100) {
+    return [];
   }
 
-  return brief;
+  // Parse multiple styles separated by ---STYLE---
+  const styleBlocks = text.split(/---STYLE---/).filter(b => b.trim().length > 50);
+  const styles = [];
+
+  for (const block of styleBlocks) {
+    const trimmed = block.trim();
+
+    // Extract CONFIG JSON
+    let tailwindConfig = null;
+    const configMatch = trimmed.match(/CONFIG:\s*(\{[\s\S]*?\})\s*\n\s*PROMPT:/);
+    if (configMatch) {
+      try {
+        tailwindConfig = JSON.parse(configMatch[1]);
+      } catch {
+        // Try to find any JSON object in the config line
+        const jsonMatch = trimmed.match(/CONFIG:\s*(\{.*\})/);
+        if (jsonMatch) {
+          try { tailwindConfig = JSON.parse(jsonMatch[1]); } catch { /* skip */ }
+        }
+      }
+    }
+
+    // Extract PROMPT text
+    let prompt = '';
+    const promptMatch = trimmed.match(/PROMPT:\s*([\s\S]+)/);
+    if (promptMatch) {
+      prompt = promptMatch[1].trim();
+    }
+
+    if (prompt.length > 50) {
+      styles.push({ tailwindConfig, prompt });
+    }
+  }
+
+  // Pad if fewer styles were returned than requested
+  while (styles.length < count && styles.length > 0) {
+    styles.push(styles[0]);
+  }
+
+  return styles;
 }

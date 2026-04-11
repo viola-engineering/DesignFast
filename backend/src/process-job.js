@@ -10,7 +10,7 @@ import {
 import { query } from './db.js';
 import { decrypt } from './encryption.js';
 import { PROVIDER_TO_APIKEY_PROVIDER, MODEL_MAP } from './models.js';
-import { buildPrompt } from './prompt-builder.js';
+import { buildPrompt, STYLES } from './prompt-builder.js';
 import queen from './queen-client.js';
 
 const MAX_TURNS = { landing: 50, webapp: 100 };
@@ -136,7 +136,7 @@ async function pushEvent(jobId, event) {
  */
 export async function processJob(message) {
   const job = message.data || message;
-  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, variationNudge, fromJobId, billingMode, creditCost, uploadIds = [] } = job;
+  const { id: jobId, userId, provider, model, prompt, mode, styleKey, stylePrompt, version, variationNudge, fromJobId, billingMode, creditCost, uploadIds = [], tailwindConfig: jobTailwindConfig } = job;
 
   let tempDir;
   let agentDb;
@@ -220,9 +220,10 @@ export async function processJob(message) {
 
     const tools = createDefaultRegistry();
 
-    // Build the full prompt
+    // Build the full prompt — resolve tailwindConfig from preset or job data (synth)
+    const tailwindConfig = (styleKey && STYLES[styleKey]?.tailwindConfig) || jobTailwindConfig || null;
     const fullPrompt = buildPrompt(
-      { prompt, mode, styleKey, stylePrompt, version, variationNudge, fromFiles,
+      { prompt, mode, styleKey, stylePrompt, tailwindConfig, version, variationNudge, fromFiles,
         hasReferenceImages: referenceImages.length > 0, assets: assetMeta },
       tempDir
     );

@@ -119,6 +119,7 @@ export default async function (app) {
         key,
         name: STYLES[key].name,
         prompt: STYLES[key].prompt,
+        tailwindConfig: STYLES[key].tailwindConfig || null,
       }));
     } else if (themeMode === 'auto') {
       // Use first model's provider for the auto-selector
@@ -134,6 +135,7 @@ export default async function (app) {
           key,
           name: STYLES[key].name,
           prompt: STYLES[key].prompt,
+          tailwindConfig: STYLES[key].tailwindConfig || null,
         }));
         autoSelected = keys;
       }
@@ -144,10 +146,16 @@ export default async function (app) {
         return reply.code(400).send({ error: `No API key available for ${firstModel.providerName}` });
       }
       const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
-      const brief = await resolveThemeSynth(prompt, queryLLM);
-      if (brief) {
-        synthBrief = brief;
-        styles = [{ key: 'synth', name: 'Custom Style', prompt: brief }];
+
+      // Generate N unique styles in one call (each version gets its own config + prompt)
+      try {
+        const synthStyles = await resolveThemeSynth(prompt, queryLLM, versions);
+        if (synthStyles.length > 0) {
+          synthBrief = synthStyles[0].prompt; // store first style's prompt for DB
+          styles = [{ key: 'synth', name: 'Custom Style', prompt: '', _synthStyles: synthStyles }];
+        }
+      } catch (err) {
+        req.log.warn({ err }, 'Synth generation failed');
       }
     }
 
@@ -167,26 +175,29 @@ export default async function (app) {
     }
 
     // Generate context-aware variation strategies if multiple versions requested
-    // One LLM call per style produces strategies that are diverse from each other
+    // Only for non-synth styles (synth versions are already fully independent)
     const variationStrategyMap = new Map(); // styleKey → string[]
     if (versions > 1) {
-      const firstModel = MODEL_MAP[models[0]];
-      const apiKey = await getApiKey(req.userId, firstModel.providerName);
-      if (apiKey) {
-        const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
-        await Promise.all(styles.map(async (style) => {
-          try {
-            const strategies = await generateVariationStrategies({
-              userPrompt: prompt.trim(),
-              stylePrompt: style.prompt,
-              count: versions - 1,
-              queryLLM,
-            });
-            variationStrategyMap.set(style.key, strategies);
-          } catch (err) {
-            req.log.warn({ err, styleKey: style.key }, 'Failed to generate variation strategies, versions will use no nudge');
-          }
-        }));
+      const nonSynthStyles = styles.filter(s => s.key !== 'synth');
+      if (nonSynthStyles.length > 0) {
+        const firstModel = MODEL_MAP[models[0]];
+        const apiKey = await getApiKey(req.userId, firstModel.providerName);
+        if (apiKey) {
+          const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
+          await Promise.all(nonSynthStyles.map(async (style) => {
+            try {
+              const strategies = await generateVariationStrategies({
+                userPrompt: prompt.trim(),
+                stylePrompt: style.prompt,
+                count: versions - 1,
+                queryLLM,
+              });
+              variationStrategyMap.set(style.key, strategies);
+            } catch (err) {
+              req.log.warn({ err, styleKey: style.key }, 'Failed to generate variation strategies, versions will use no nudge');
+            }
+          }));
+        }
       }
     }
 
@@ -195,10 +206,15 @@ export default async function (app) {
     const jobs = [];
 
     for (const style of styles) {
+      const isSynth = style.key === 'synth' && style._synthStyles;
       const strategies = variationStrategyMap.get(style.key) || [];
       for (let v = 1; v <= versions; v++) {
-        // v1 gets no nudge; v2+ get their generated strategy
-        const variationNudge = v > 1 ? (strategies[v - 2] || '') : '';
+        // For synth: each version gets its own style (config + prompt) from the single synth call
+        // For presets: v1 gets no nudge, v2+ get variation strategies
+        const synthStyle = isSynth ? style._synthStyles[v - 1] : null;
+        const versionStylePrompt = synthStyle ? synthStyle.prompt : style.prompt;
+        const versionTailwindConfig = synthStyle ? (synthStyle.tailwindConfig || null) : (style.tailwindConfig || null);
+        const variationNudge = (!isSynth && v > 1) ? (strategies[v - 2] || '') : '';
         for (const modelKey of models) {
           const modelCfg = MODEL_MAP[modelKey];
           jobs.push({
@@ -207,7 +223,8 @@ export default async function (app) {
             userId: req.userId,
             styleKey: style.key,
             styleName: style.name,
-            stylePrompt: style.prompt,
+            stylePrompt: versionStylePrompt,
+            tailwindConfig: versionTailwindConfig,
             version: v,
             variationNudge,
             model: modelCfg.model,
