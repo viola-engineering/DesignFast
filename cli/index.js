@@ -24,6 +24,7 @@ import {
   resolveThemeSynthClassic,
   resolveThemeSynthMulti,
   generateVariationStrategies,
+  pickBestVariation,
   SYNTH_MODE,
 } from '../backend/src/prompt-builder.js';
 
@@ -237,9 +238,82 @@ async function main() {
   // ── Synth style generation ──────────────────────────────────────────
   let synthClassicResult = null;  // for 'classic' mode: { tailwindConfig, brief }
   let synthStyles = [];           // for 'multi' mode: [{ tailwindConfig, prompt }, ...]
+  let bestofResults = [];         // for 'bestof' mode: [{ tailwindConfig, prompt, variationNudge }, ...]
 
   if (styleKey === 'synth') {
-    if (SYNTH_MODE === 'classic') {
+    if (SYNTH_MODE === 'bestof') {
+      // Bestof: N independent designs (separate calls) → N×N variation strategies → pick best per design
+      log(`Generating ${versions} independent designs (${versions} separate calls)...`);
+      try {
+        const designResults = await Promise.all(
+          Array.from({ length: versions }, (_, i) =>
+            resolveThemeSynthMulti(prompt, queryLLM, 1).then(arr => {
+              const s = arr[0] || null;
+              if (s) {
+                const colors = s.tailwindConfig?.theme?.extend?.colors;
+                const colorKeys = colors ? Object.keys(colors) : [];
+                const fonts = s.tailwindConfig?.theme?.extend?.fontFamily;
+                const fontNames = fonts ? Object.values(fonts).map(f => f[0]).join(', ') : 'none';
+                log(`  design ${i + 1}: ${colorKeys.length} colors [${colorKeys.slice(0, 5).join(', ')}${colorKeys.length > 5 ? '...' : ''}] | fonts: ${fontNames}`);
+                logDim(`  design ${i + 1} prompt:\n${s.prompt}`);
+              } else {
+                log(`  design ${i + 1}: failed`);
+              }
+              return s;
+            }).catch(err => {
+              log(`  design ${i + 1}: failed (${err.message})`);
+              return null;
+            })
+          )
+        );
+        synthStyles = designResults.filter(s => s !== null);
+      } catch (err) {
+        log(`Style synthesis failed: ${err.message}`);
+      }
+      if (synthStyles.length === 0) {
+        log('Style synthesis failed, using freestyle');
+        styleKey = null;
+      } else {
+        // For each design, generate N variation strategies and pick the best
+        log(`Generating ${versions} variation strategies per design and picking best...`);
+        bestofResults = await Promise.all(synthStyles.map(async (design, i) => {
+          try {
+            const strategies = await generateVariationStrategies({
+              userPrompt: prompt,
+              stylePrompt: design.prompt,
+              count: versions,
+              queryLLM,
+              refinementMode: true,
+            });
+            logDim(`  design ${i + 1} strategies:`);
+            for (let j = 0; j < strategies.length; j++) {
+              logDim(`    ${j + 1}. ${strategies[j].substring(0, 120)}`);
+            }
+
+            const bestIdx = await pickBestVariation({
+              userPrompt: prompt,
+              designPrompt: design.prompt,
+              strategies,
+              queryLLM,
+            });
+            log(`  design ${i + 1} → picked strategy ${bestIdx + 1}`);
+
+            return {
+              tailwindConfig: design.tailwindConfig,
+              prompt: design.prompt,
+              variationNudge: strategies[bestIdx],
+            };
+          } catch (err) {
+            log(`  design ${i + 1} variation selection failed: ${err.message}`);
+            return {
+              tailwindConfig: design.tailwindConfig,
+              prompt: design.prompt,
+              variationNudge: '',
+            };
+          }
+        }));
+      }
+    } else if (SYNTH_MODE === 'classic') {
       // Classic (queen-04): one shared design system, variation strategies handle differences
       log('Generating custom style (classic)...');
       try {
@@ -284,7 +358,7 @@ async function main() {
     }
   }
 
-  // ── Variation strategies (for classic synth + presets, NOT multi synth) ──
+  // ── Variation strategies (for classic synth + presets, NOT multi/bestof synth) ──
   let variationStrategies = [];
   const needsVariations = versions > 1 && (styleKey !== 'synth' || SYNTH_MODE === 'classic');
   if (needsVariations) {
@@ -325,7 +399,14 @@ async function main() {
 
     let versionStylePrompt, versionTailwindConfig, variationNudge;
 
-    if (styleKey === 'synth' && SYNTH_MODE === 'multi') {
+    if (styleKey === 'synth' && SYNTH_MODE === 'bestof') {
+      // Bestof: each version has its own design + best variation strategy
+      const bestof = bestofResults[v - 1];
+      versionStylePrompt = bestof ? bestof.prompt : stylePrompt;
+      versionTailwindConfig = bestof ? (bestof.tailwindConfig || null) : null;
+      variationNudge = bestof ? (bestof.variationNudge || '') : '';
+      log(`  v${v} tailwindConfig: ${versionTailwindConfig ? 'yes (' + Object.keys(versionTailwindConfig.theme?.extend?.colors || {}).length + ' colors)' : 'NULL'} | nudge: ${variationNudge ? variationNudge.substring(0, 80) + '...' : 'none'}`);
+    } else if (styleKey === 'synth' && SYNTH_MODE === 'multi') {
       // Multi: each version has its own independent style
       const synthStyle = synthStyles[v - 1];
       versionStylePrompt = synthStyle ? synthStyle.prompt : stylePrompt;

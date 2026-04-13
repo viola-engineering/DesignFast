@@ -1998,8 +1998,29 @@ export const STYLES = {
  * @param {(prompt: string) => Promise<string>} opts.queryLLM - LLM query function
  * @returns {Promise<string[]>} Array of variation strategy strings (length = count)
  */
-export async function generateVariationStrategies({ userPrompt, stylePrompt, count, queryLLM }) {
-  const strategyPrompt = `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
+export async function generateVariationStrategies({ userPrompt, stylePrompt, count, queryLLM, refinementMode = false }) {
+  const strategyPrompt = refinementMode
+    ? `You are a world-class web design director. Given a design system and website brief, propose ${count} refinement strategies that enhance and polish the design while keeping its core identity intact.
+
+WEBSITE BRIEF:
+${userPrompt}
+${stylePrompt ? `\nDESIGN STYLE:\n${stylePrompt}` : ''}
+
+Each strategy should refine HOW the design is executed — not change WHAT it is. Think:
+- Density and spacing adjustments (compact data-dense vs airy editorial)
+- Visual weight distribution (heavy headers vs lightweight labels, bold metrics vs subtle)
+- Component styling choices (sharp vs rounded, bordered vs shadow, flat vs layered)
+- Interaction and motion personality (snappy vs smooth, subtle vs expressive)
+- Content hierarchy emphasis (which data gets the most visual prominence)
+
+RULES:
+- Produce exactly ${count} strategies, one per line
+- Each strategy should be 1-2 sentences, written as a direct instruction to a designer
+- Do NOT change the layout structure (sidebar/topbar/grid), color palette, or typography choices
+- Do NOT suggest gimmicks, themes, or metaphors (no "terminal style", no "retro", no "space cockpit")
+- Keep the same design system — refine the execution, not the identity
+- Do NOT include numbering, bullets, or prefixes — just the strategy text, one per line`
+    : `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
 
 Each strategy must push the design in a GENUINELY DIFFERENT direction — different layout approach, different visual emphasis, different mood, or different interpretation of the brief. They must be specific to THIS project, not generic advice.
 
@@ -2329,7 +2350,7 @@ RULES:
  */
 // ── Synth mode: 'classic' (queen-04 style) or 'multi' (independent styles) ──
 // Switch this to experiment:
-export const SYNTH_MODE = 'classic'; // 'classic' | 'multi'
+export const SYNTH_MODE = 'bestof'; // 'classic' | 'multi' | 'bestof'
 
 /**
  * Classic synth (queen-04 pipeline): one LLM call → one shared { tailwindConfig, brief }.
@@ -2388,6 +2409,48 @@ RULES:
 }
 
 /**
+ * Pick the best variation strategy for a given synth design.
+ * The LLM evaluates each strategy against the design system and user brief,
+ * returning the index of the best one.
+ *
+ * @param {object} opts
+ * @param {string} opts.userPrompt - Original website description
+ * @param {string} opts.designPrompt - The synth design's style prompt/brief
+ * @param {string[]} opts.strategies - Array of variation strategy candidates
+ * @param {(prompt: string) => Promise<string>} opts.queryLLM - LLM query function
+ * @returns {Promise<number>} Index (0-based) of the best strategy
+ */
+export async function pickBestVariation({ userPrompt, designPrompt, strategies, queryLLM }) {
+  const numbered = strategies.map((s, i) => `${i + 1}. ${s}`).join('\n');
+
+  const pickPrompt = `You are a senior design director selecting the best creative direction for a website project.
+
+WEBSITE BRIEF:
+${userPrompt}
+
+DESIGN SYSTEM DIRECTION:
+${designPrompt}
+
+CANDIDATE STRATEGIES:
+${numbered}
+
+Pick the ONE strategy that will produce the most polished, professional, and usable result when combined with this design system. The winning strategy should:
+- Work naturally with the design system's colors, typography, and mood
+- Be appropriate for the described product — not gimmicky, not themed
+- Push the design in an interesting direction while remaining practical
+- Result in something a real user would want to use daily
+
+Output ONLY the number (1-${strategies.length}) of the best strategy. Nothing else.`;
+
+  const result = await queryLLM(pickPrompt);
+  const num = parseInt(result.trim(), 10);
+  if (num >= 1 && num <= strategies.length) {
+    return num - 1; // 0-based
+  }
+  return 0; // fallback to first
+}
+
+/**
  * Multi synth (queen-10 pipeline): one LLM call → N independent styles.
  * Each version gets its own { tailwindConfig, prompt }. No variation strategies needed.
  */
@@ -2434,17 +2497,22 @@ RULES:
   for (const block of styleBlocks) {
     const trimmed = block.trim();
 
-    // Extract CONFIG JSON
+    // Extract CONFIG JSON — use brace counting to handle nested objects
     let tailwindConfig = null;
-    const configMatch = trimmed.match(/CONFIG:\s*(\{[\s\S]*?\})\s*\n\s*PROMPT:/);
-    if (configMatch) {
-      try {
-        tailwindConfig = JSON.parse(configMatch[1]);
-      } catch {
-        // Try to find any JSON object in the config line
-        const jsonMatch = trimmed.match(/CONFIG:\s*(\{.*\})/);
-        if (jsonMatch) {
-          try { tailwindConfig = JSON.parse(jsonMatch[1]); } catch { /* skip */ }
+    const configStart = trimmed.indexOf('CONFIG:');
+    if (configStart >= 0) {
+      const afterConfig = trimmed.slice(configStart + 7);
+      const braceStart = afterConfig.indexOf('{');
+      if (braceStart >= 0) {
+        let depth = 0;
+        let braceEnd = -1;
+        for (let ci = braceStart; ci < afterConfig.length; ci++) {
+          if (afterConfig[ci] === '{') depth++;
+          else if (afterConfig[ci] === '}') { depth--; if (depth === 0) { braceEnd = ci; break; } }
+        }
+        if (braceEnd > braceStart) {
+          const jsonStr = afterConfig.slice(braceStart, braceEnd + 1);
+          try { tailwindConfig = JSON.parse(jsonStr); } catch { /* skip */ }
         }
       }
     }

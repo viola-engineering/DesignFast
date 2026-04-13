@@ -3,7 +3,7 @@ import { query, db } from '../db.js';
 import { authMiddleware } from '../auth.js';
 import { checkUsageLimits, hasApiKeys, CREDIT_COSTS, WEBAPP_CREDIT_MULTIPLIER } from '../plans.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
-import { STYLES, resolveThemeAuto, resolveThemeSynthClassic, resolveThemeSynthMulti, generateVariationStrategies, SYNTH_MODE } from '../prompt-builder.js';
+import { STYLES, resolveThemeAuto, resolveThemeSynthClassic, resolveThemeSynthMulti, generateVariationStrategies, pickBestVariation, SYNTH_MODE } from '../prompt-builder.js';
 import { createAgentLoopQueryLLM } from '../llm-agentloop.js';
 import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
@@ -148,7 +148,43 @@ export default async function (app) {
       const queryLLM = createAgentLoopQueryLLM({ model: firstModel.model, providerName: firstModel.providerName, apiKey });
 
       try {
-        if (SYNTH_MODE === 'classic') {
+        if (SYNTH_MODE === 'bestof') {
+          // Bestof: N independent designs (separate calls) → variations per design → pick best
+          const designResults = await Promise.all(
+            Array.from({ length: versions }, () =>
+              resolveThemeSynthMulti(prompt, queryLLM, 1).then(arr => arr[0] || null).catch(() => null)
+            )
+          );
+          const synthStyles = designResults.filter(s => s !== null);
+          if (synthStyles.length > 0) {
+            synthBrief = synthStyles[0].prompt;
+            const bestofResults = await Promise.all(synthStyles.map(async (design) => {
+              try {
+                const strategies = await generateVariationStrategies({
+                  userPrompt: prompt.trim(),
+                  stylePrompt: design.prompt,
+                  count: versions,
+                  queryLLM,
+                  refinementMode: true,
+                });
+                const bestIdx = await pickBestVariation({
+                  userPrompt: prompt.trim(),
+                  designPrompt: design.prompt,
+                  strategies,
+                  queryLLM,
+                });
+                return {
+                  tailwindConfig: design.tailwindConfig,
+                  prompt: design.prompt,
+                  variationNudge: strategies[bestIdx],
+                };
+              } catch {
+                return { tailwindConfig: design.tailwindConfig, prompt: design.prompt, variationNudge: '' };
+              }
+            }));
+            styles = [{ key: 'synth', name: 'Custom Style', prompt: '', _bestofResults: bestofResults }];
+          }
+        } else if (SYNTH_MODE === 'classic') {
           // Classic: one shared design system
           const synthResult = await resolveThemeSynthClassic(prompt, queryLLM);
           if (synthResult) {
@@ -184,7 +220,7 @@ export default async function (app) {
     }
 
     // Generate context-aware variation strategies if multiple versions requested
-    // For classic synth + presets (NOT multi synth — those are already independent)
+    // For classic synth + presets (NOT multi/bestof synth — those handle variations differently)
     const variationStrategyMap = new Map(); // styleKey → string[]
     if (versions > 1) {
       const stylesNeedingVariations = styles.filter(s => s.key !== 'synth' || SYNTH_MODE === 'classic');
@@ -216,12 +252,25 @@ export default async function (app) {
 
     for (const style of styles) {
       const isSynthMulti = style.key === 'synth' && style._synthStyles && SYNTH_MODE === 'multi';
+      const isBestof = style.key === 'synth' && style._bestofResults && SYNTH_MODE === 'bestof';
       const strategies = variationStrategyMap.get(style.key) || [];
       for (let v = 1; v <= versions; v++) {
-        const synthStyle = isSynthMulti ? style._synthStyles[v - 1] : null;
-        const versionStylePrompt = synthStyle ? synthStyle.prompt : style.prompt;
-        const versionTailwindConfig = synthStyle ? (synthStyle.tailwindConfig || null) : (style.tailwindConfig || null);
-        const variationNudge = (!isSynthMulti && v > 1) ? (strategies[v - 2] || '') : '';
+        let versionStylePrompt, versionTailwindConfig, variationNudge;
+        if (isBestof) {
+          const bestof = style._bestofResults[v - 1];
+          versionStylePrompt = bestof ? bestof.prompt : style.prompt;
+          versionTailwindConfig = bestof ? (bestof.tailwindConfig || null) : null;
+          variationNudge = bestof ? (bestof.variationNudge || '') : '';
+        } else if (isSynthMulti) {
+          const synthStyle = style._synthStyles[v - 1];
+          versionStylePrompt = synthStyle ? synthStyle.prompt : style.prompt;
+          versionTailwindConfig = synthStyle ? (synthStyle.tailwindConfig || null) : null;
+          variationNudge = '';
+        } else {
+          versionStylePrompt = style.prompt;
+          versionTailwindConfig = style.tailwindConfig || null;
+          variationNudge = (v > 1) ? (strategies[v - 2] || '') : '';
+        }
         for (const modelKey of models) {
           const modelCfg = MODEL_MAP[modelKey];
           jobs.push({
