@@ -2203,7 +2203,7 @@ Combined with the reference image, produce a faithful recreation.\n\n`;
       prompt += `TAILWIND CONFIG — start from this config and EXTEND it as your design needs:
 ${configJson}
 
-This is your starting palette. Use these tokens (bg-primary, text-accent, rounded-card, shadow-card, font-heading, font-body) as the foundation, but freely ADD more colors, shadows, and tokens to the config as the design demands — additional shades, glow shadows, tinted backgrounds, status colors, gradient-ready color stops. A rich config with 15-25 color tokens and 3-5 shadow levels makes a better design than a minimal one. The config should grow to match your creative vision.\n\n`;
+This is your starting palette. Use these tokens (bg-primary, text-accent, rounded-card, shadow-card, font-heading, font-body) as the foundation, but freely ADD more colors, shadows, and tokens to the config as the design demands. Do not remove existing tokens — only add.\n\n`;
     }
 
     // Style directive
@@ -2327,7 +2327,71 @@ RULES:
  * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
  * @returns {Promise<string|null>} Synthesized style brief or null
  */
-export async function resolveThemeSynth(userPrompt, queryLLM, count = 1) {
+// ── Synth mode: 'classic' (queen-04 style) or 'multi' (independent styles) ──
+// Switch this to experiment:
+export const SYNTH_MODE = 'classic'; // 'classic' | 'multi'
+
+/**
+ * Classic synth (queen-04 pipeline): one LLM call → one shared { tailwindConfig, brief }.
+ * All versions share the same design system. Variation comes from generateVariationStrategies.
+ */
+export async function resolveThemeSynthClassic(userPrompt, queryLLM) {
+  const synthPrompt = `You are a world-class web design director. Given a website description, create a Tailwind-first design system with both a config object and a design brief.
+
+WEBSITE DESCRIPTION:
+${userPrompt}
+
+OUTPUT FORMAT — you must output EXACTLY two sections:
+
+SECTION 1: A JSON object (on one line, no markdown fencing) for the Tailwind CDN inline config. It should define theme.extend with:
+- colors: semantic names (primary, accent, surface, muted, heading, body) mapped to hex values
+- fontFamily: heading and body font stacks with Google Font names
+- borderRadius: card, pill, button — named sizes
+- boxShadow: card, hover — named shadows
+
+Example: {"theme":{"extend":{"colors":{"primary":"#1E3A5F","accent":"#D97706","surface":"#F8FAFC","muted":"#94A3B8","heading":"#0F172A","body":"#475569"},"fontFamily":{"heading":["Inter","sans-serif"],"body":["Inter","sans-serif"]},"borderRadius":{"card":"12px","pill":"9999px"},"boxShadow":{"card":"0 1px 3px rgba(0,0,0,0.1)","hover":"0 4px 12px rgba(0,0,0,0.15)"}}}}
+
+SECTION 2: A design brief using Tailwind vocabulary (reference the custom tokens like bg-primary, text-accent, font-heading, rounded-card, shadow-card). Cover:
+- Layout: structure, grid approach, section flow (use Tailwind terms: max-w-6xl, mx-auto, grid-cols-3, gap-8)
+- Styling: how to apply the tokens — which bg-* for sections, text-* for hierarchy, etc.
+- Components: cards, buttons, decorations — all described in Tailwind classes
+- style.css guidance: creative CSS that elevates the design — animations, gradients, pseudo-elements, transitions, glows, hover effects
+- Vibe: 2-3 real-world reference websites this should feel like
+
+RULES:
+- Be SPECIFIC and OPINIONATED. Pick one direction and commit.
+- The style must be APPROPRIATE for the described website.
+- Separate the two sections with a blank line.
+- Output ONLY the JSON and brief, no preamble.`;
+
+  const result = await queryLLM(synthPrompt);
+
+  const text = result.trim();
+  if (text.length < 100) {
+    return null;
+  }
+
+  // Try to extract a JSON config from the first line/section
+  let tailwindConfig = null;
+  let brief = text;
+  const jsonMatch = text.match(/^\s*(\{[\s\S]*?"theme"[\s\S]*?\})\s*\n/m);
+  if (jsonMatch) {
+    try {
+      tailwindConfig = JSON.parse(jsonMatch[1]);
+      brief = text.slice(jsonMatch[0].length).trim();
+    } catch {
+      // Could not parse JSON — use whole text as brief
+    }
+  }
+
+  return { tailwindConfig, brief };
+}
+
+/**
+ * Multi synth (queen-10 pipeline): one LLM call → N independent styles.
+ * Each version gets its own { tailwindConfig, prompt }. No variation strategies needed.
+ */
+export async function resolveThemeSynthMulti(userPrompt, queryLLM, count = 1) {
   const synthPrompt = `You are a world-class web design director. Given a website description, create ${count} design ${count > 1 ? 'styles' : 'style'} for it.
 
 WEBSITE DESCRIPTION:
