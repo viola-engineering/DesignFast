@@ -3,7 +3,7 @@ import { query, db } from '../db.js';
 import { authMiddleware } from '../auth.js';
 import { checkUsageLimits, hasApiKeys, CREDIT_COSTS, WEBAPP_CREDIT_MULTIPLIER } from '../plans.js';
 import { MODEL_MAP, PROVIDER_TO_APIKEY_PROVIDER } from '../models.js';
-import { STYLES, resolveThemeAuto, resolveThemeSynthClassic, resolveThemeSynthMulti, generateVariationStrategies, pickBestVariation, SYNTH_MODE } from '../prompt-builder.js';
+import { STYLES, resolveThemeAuto, resolveThemeSynthClassic, resolveThemeSynthMulti, generateDesignSeeds, generateVariationStrategies, pickBestVariation, SYNTH_MODE } from '../prompt-builder.js';
 import { createAgentLoopQueryLLM } from '../llm-agentloop.js';
 import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
@@ -59,8 +59,8 @@ export default async function (app) {
     if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
       return reply.code(400).send({ error: 'Prompt is required' });
     }
-    if (prompt.trim().length > 2000) {
-      return reply.code(400).send({ error: 'Prompt must be 2000 characters or fewer' });
+    if (prompt.trim().length > 10000) {
+      return reply.code(400).send({ error: 'Prompt must be 10000 characters or fewer' });
     }
     if (!VALID_MODES.includes(mode)) {
       return reply.code(400).send({ error: `Mode must be one of: ${VALID_MODES.join(', ')}` });
@@ -149,10 +149,15 @@ export default async function (app) {
 
       try {
         if (SYNTH_MODE === 'bestof') {
-          // Bestof: N independent designs (separate calls) → variations per design → pick best
+          // Bestof: seeds → N independent designs → variations per design → pick best
+          let seeds = [];
+          try {
+            seeds = await generateDesignSeeds(prompt.trim(), versions, queryLLM);
+          } catch { seeds = Array(versions).fill(''); }
+
           const designResults = await Promise.all(
-            Array.from({ length: versions }, () =>
-              resolveThemeSynthMulti(prompt, queryLLM, 1).then(arr => arr[0] || null).catch(() => null)
+            Array.from({ length: versions }, (_, i) =>
+              resolveThemeSynthMulti(prompt, queryLLM, 1, seeds[i] || '').then(arr => arr[0] || null).catch(() => null)
             )
           );
           const synthStyles = designResults.filter(s => s !== null);

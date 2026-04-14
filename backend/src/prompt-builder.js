@@ -2000,26 +2000,22 @@ export const STYLES = {
  */
 export async function generateVariationStrategies({ userPrompt, stylePrompt, count, queryLLM, refinementMode = false }) {
   const strategyPrompt = refinementMode
-    ? `You are a world-class web design director. Given a design system and website brief, propose ${count} refinement strategies that enhance and polish the design while keeping its core identity intact.
+    ? `You are a world-class web design director. Given a design system and website brief, propose ${count} creative directions that a designer could take when building this interface. Each direction should produce a visibly distinct result while using the same colors, fonts, and layout structure.
 
 WEBSITE BRIEF:
 ${userPrompt}
 ${stylePrompt ? `\nDESIGN STYLE:\n${stylePrompt}` : ''}
 
-Each strategy should refine HOW the design is executed — not change WHAT it is. Think:
-- Density and spacing adjustments (compact data-dense vs airy editorial)
-- Visual weight distribution (heavy headers vs lightweight labels, bold metrics vs subtle)
-- Component styling choices (sharp vs rounded, bordered vs shadow, flat vs layered)
-- Interaction and motion personality (snappy vs smooth, subtle vs expressive)
-- Content hierarchy emphasis (which data gets the most visual prominence)
+A good direction tells the designer what to PRIORITIZE and what to DOWNPLAY — it changes the character of the page without changing its ingredients. Write each direction as an instruction that would produce a noticeably different result if two designers followed different ones.
 
 RULES:
-- Produce exactly ${count} strategies, one per line
-- Each strategy should be 1-2 sentences, written as a direct instruction to a designer
-- Do NOT change the layout structure (sidebar/topbar/grid), color palette, or typography choices
-- Do NOT suggest gimmicks, themes, or metaphors (no "terminal style", no "retro", no "space cockpit")
-- Keep the same design system — refine the execution, not the identity
-- Do NOT include numbering, bullets, or prefixes — just the strategy text, one per line`
+- Produce exactly ${count} directions, one per line
+- Each direction should be 1-2 sentences, written as an instruction to a designer
+- The resulting designs must look different from each other at a glance — not just in details
+- Do NOT change the layout structure, color palette, or font families
+- Do NOT reference specific CSS values, pixel sizes, or timing curves
+- Do NOT suggest themes or metaphors
+- Do NOT include numbering, bullets, or prefixes — just the direction text, one per line`
     : `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
 
 Each strategy must push the design in a GENUINELY DIFFERENT direction — different layout approach, different visual emphasis, different mood, or different interpretation of the brief. They must be specific to THIS project, not generic advice.
@@ -2451,15 +2447,66 @@ Output ONLY the number (1-${strategies.length}) of the best strategy. Nothing el
 }
 
 /**
- * Multi synth (queen-10 pipeline): one LLM call → N independent styles.
- * Each version gets its own { tailwindConfig, prompt }. No variation strategies needed.
+ * Generate N short design seeds — one line each specifying surface tone,
+ * primary color direction, and typography direction. Used in bestof mode
+ * to give each independent design call a unique starting constraint.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {number} count - Number of seeds to generate
+ * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
+ * @returns {Promise<string[]>} Array of seed strings
  */
-export async function resolveThemeSynthMulti(userPrompt, queryLLM, count = 1) {
-  const synthPrompt = `You are a world-class web design director. Given a website description, create ${count} design ${count > 1 ? 'styles' : 'style'} for it.
+export async function generateDesignSeeds(userPrompt, count, queryLLM) {
+  const seedPrompt = `You are a world-class web design director. Given a website description, generate ${count} design seeds. Each seed will guide an independent designer to create a complete design — the seeds must ensure the resulting designs look genuinely different from each other.
 
 WEBSITE DESCRIPTION:
 ${userPrompt}
 
+Each seed is ONE line with three properties:
+- Surface tone
+- Primary color direction
+- Typography direction
+
+RULES:
+- Each seed must differ from the others on at least 2 of 3 properties
+- Be specific — name the color character and the typographic personality
+- No themes, no metaphors, no archetypes — only material design properties
+- All seeds must be appropriate for the described product and its users
+- One line per seed, no numbering, no bullets, no preamble`;
+
+  const result = await queryLLM(seedPrompt);
+  const seeds = result
+    .trim()
+    .split('\n')
+    .map(s => s.trim())
+    .filter(s => s.length > 0)
+    .slice(0, count);
+
+  // Pad if fewer seeds returned
+  while (seeds.length < count) {
+    seeds.push('');
+  }
+
+  return seeds;
+}
+
+/**
+ * Multi synth (queen-10 pipeline): one LLM call → N independent styles.
+ * Each version gets its own { tailwindConfig, prompt }. No variation strategies needed.
+ *
+ * @param {string} userPrompt - The user's website description
+ * @param {(prompt: string) => Promise<string>} queryLLM - LLM query function
+ * @param {number} [count=1] - Number of styles to generate in one call
+ * @param {string} [designSeed] - Optional design seed to constrain the direction
+ */
+export async function resolveThemeSynthMulti(userPrompt, queryLLM, count = 1, designSeed = '') {
+  const seedBlock = designSeed ? `\nDESIGN DIRECTION: ${designSeed}\nFollow this direction — it defines the surface tone, color, and typography for this design.\n` : '';
+
+  const synthPrompt = `You are a world-class web design director. Given a website description, create ${count} design ${count > 1 ? 'styles' : 'style'} for it.
+
+WEBSITE DESCRIPTION:
+${userPrompt}
+${seedBlock}
 ${count > 1 ? `Generate ${count} GENUINELY DIFFERENT styles — different color palettes, different typography, different mood. They should look like they were designed by different designers.\n` : ''}OUTPUT FORMAT — for each style, output exactly:
 ---STYLE---
 CONFIG: {a JSON object on ONE line, no markdown fencing, with this structure: {"theme":{"extend":{"colors":{...},"fontFamily":{...},"borderRadius":{...},"boxShadow":{...}}}}}

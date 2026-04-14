@@ -38,8 +38,8 @@ export default async function (app) {
     if (message !== undefined && (typeof message !== 'string' || message.trim().length === 0)) {
       return reply.code(400).send({ error: 'Message must be a non-empty string when provided' });
     }
-    if (message && message.trim().length > 2000) {
-      return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
+    if (message && message.trim().length > 10000) {
+      return reply.code(400).send({ error: 'Message must be 10000 characters or fewer' });
     }
     if (!Array.isArray(uploadIds)) {
       return reply.code(400).send({ error: 'uploadIds must be an array' });
@@ -167,8 +167,8 @@ export default async function (app) {
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return reply.code(400).send({ error: 'Message is required' });
     }
-    if (message.trim().length > 2000) {
-      return reply.code(400).send({ error: 'Message must be 2000 characters or fewer' });
+    if (message.trim().length > 10000) {
+      return reply.code(400).send({ error: 'Message must be 10000 characters or fewer' });
     }
     if (!Array.isArray(uploadIds)) {
       return reply.code(400).send({ error: 'uploadIds must be an array' });

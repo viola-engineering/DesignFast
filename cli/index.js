@@ -23,6 +23,7 @@ import {
   resolveThemeAuto,
   resolveThemeSynthClassic,
   resolveThemeSynthMulti,
+  generateDesignSeeds,
   generateVariationStrategies,
   pickBestVariation,
   SYNTH_MODE,
@@ -242,12 +243,24 @@ async function main() {
 
   if (styleKey === 'synth') {
     if (SYNTH_MODE === 'bestof') {
-      // Bestof: N independent designs (separate calls) → N×N variation strategies → pick best per design
+      // Bestof: seeds → N independent designs → N×N variation strategies → pick best per design
+      log(`Generating ${versions} design seeds...`);
+      let seeds = [];
+      try {
+        seeds = await generateDesignSeeds(prompt, versions, queryLLM);
+        for (let i = 0; i < seeds.length; i++) {
+          logDim(`  seed ${i + 1}: ${seeds[i]}`);
+        }
+      } catch (err) {
+        log(`Seed generation failed: ${err.message}, proceeding without seeds`);
+        seeds = Array(versions).fill('');
+      }
+
       log(`Generating ${versions} independent designs (${versions} separate calls)...`);
       try {
         const designResults = await Promise.all(
           Array.from({ length: versions }, (_, i) =>
-            resolveThemeSynthMulti(prompt, queryLLM, 1).then(arr => {
+            resolveThemeSynthMulti(prompt, queryLLM, 1, seeds[i] || '').then(arr => {
               const s = arr[0] || null;
               if (s) {
                 const colors = s.tailwindConfig?.theme?.extend?.colors;

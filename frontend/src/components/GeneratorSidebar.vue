@@ -94,7 +94,7 @@ function onTooltipImageError() {
   hoveredStyle.value = null
 }
 
-const maxChars = 2000
+const maxChars = 10000
 const charCount = computed(() => prompt.value.length)
 
 // ── Uploads state ────────────────────────────────────────────────────
