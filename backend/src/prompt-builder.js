@@ -2000,22 +2000,26 @@ export const STYLES = {
  */
 export async function generateVariationStrategies({ userPrompt, stylePrompt, count, queryLLM, refinementMode = false }) {
   const strategyPrompt = refinementMode
-    ? `You are a world-class web design director. Given a design system and website brief, propose ${count} creative directions that a designer could take when building this interface. Each direction should produce a visibly distinct result while using the same colors, fonts, and layout structure.
+    ? `You are a world-class web design director. Given a design system and website brief, propose ${count} refinement strategies that enhance and polish the design while keeping its core identity intact.
 
 WEBSITE BRIEF:
 ${userPrompt}
 ${stylePrompt ? `\nDESIGN STYLE:\n${stylePrompt}` : ''}
 
-A good direction tells the designer what to PRIORITIZE and what to DOWNPLAY — it changes the character of the page without changing its ingredients. Write each direction as an instruction that would produce a noticeably different result if two designers followed different ones.
+Each strategy should refine HOW the design is executed — not change WHAT it is. Think:
+- Density and spacing adjustments (compact data-dense vs airy editorial)
+- Visual weight distribution (heavy headers vs lightweight labels, bold metrics vs subtle)
+- Component styling choices (sharp vs rounded, bordered vs shadow, flat vs layered)
+- Interaction and motion personality (snappy vs smooth, subtle vs expressive)
+- Content hierarchy emphasis (which data gets the most visual prominence)
 
 RULES:
-- Produce exactly ${count} directions, one per line
-- Each direction should be 1-2 sentences, written as an instruction to a designer
-- The resulting designs must look different from each other at a glance — not just in details
-- Do NOT change the layout structure, color palette, or font families
-- Do NOT reference specific CSS values, pixel sizes, or timing curves
-- Do NOT suggest themes or metaphors
-- Do NOT include numbering, bullets, or prefixes — just the direction text, one per line`
+- Produce exactly ${count} strategies, one per line
+- Each strategy should be 1-2 sentences, written as a direct instruction to a designer
+- Do NOT change the layout structure (sidebar/topbar/grid), color palette, or typography choices
+- Do NOT suggest gimmicks, themes, or metaphors (no "terminal style", no "retro", no "space cockpit")
+- Keep the same design system — refine the execution, not the identity
+- Do NOT include numbering, bullets, or prefixes — just the strategy text, one per line`
     : `You are a world-class web design director. You are about to generate ${count + 1} versions of a website. Version 1 will be a straight interpretation of the brief and style. You must produce creative direction strategies for versions 2 through ${count + 1}.
 
 Each strategy must push the design in a GENUINELY DIFFERENT direction — different layout approach, different visual emphasis, different mood, or different interpretation of the brief. They must be specific to THIS project, not generic advice.
