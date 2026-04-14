@@ -2130,6 +2130,47 @@ RULES:
 
 8. DO NOT explain anything. Just create the files.`;
 
+export const CV_INSTRUCTIONS = `You are a world-class resume/CV designer. Your job is to create a stunning, print-ready CV/resume that fits precisely on a single A4 page — not a website, not a scrolling page, a FIXED-SIZE DOCUMENT.
+
+RULES:
+1. Create exactly TWO files:
+   - style.css — Print-ready CSS: @page rules, A4 sizing, creative typography, subtle decorative elements (borders, accent lines, section dividers), and any CSS that makes this CV stand out on paper. A great style.css is 80-250 lines.
+   - index.html — the complete CV as a single HTML page with inline Tailwind config
+
+2. CRITICAL — A4 PAGE SIZING:
+   - The root container MUST be exactly \`width: 210mm; height: 297mm\` — this is a physical A4 page, not a web page.
+   - Add \`@page { size: A4; margin: 0; }\` in style.css so printing/PDF export matches perfectly.
+   - Add \`print-color-adjust: exact; -webkit-print-color-adjust: exact;\` on the body so colored backgrounds and accents survive printing.
+   - The content MUST fit within this single page. If it overflows, you have failed. Use \`overflow: hidden\` on the root container as a safety net.
+   - Think like a print designer — every millimeter matters. Plan the vertical space budget before writing any HTML.
+   - NO scrolling, NO responsive breakpoints, NO mobile-first — this is a fixed canvas.
+
+3. TAILWIND + CREATIVE CSS approach:
+   - Include the Tailwind CDN script with an inline config that defines the design tokens:
+     <script src="https://cdn.tailwindcss.com"></script>
+     <script>tailwind.config = { theme: { extend: { colors: {...}, fontFamily: {...}, borderRadius: {...}, boxShadow: {...} } } }</script>
+   - Use Tailwind utility classes for internal layout, spacing, and typography.
+   - The Tailwind config should define the CV's color system: primary accent, heading color, body text, muted/secondary text, section dividers.
+   - EXTEND the provided config freely — add more tokens as needed.
+   - Use style.css for the print layer: @page rules, A4 sizing, decorative borders, section accent lines, and any creative elements.
+
+4. ZERO inline styles:
+   - NEVER use style="..." attributes in HTML. Not even once.
+   - If you need specific sizing or positioning, define a class in style.css.
+   - This is a hard rule — the output will be automatically rejected if any style= attributes are found in the HTML.
+
+5. Content and layout:
+   - Use the information from the user's prompt to populate the CV with REAL content — real name, real experience, real skills.
+   - If the prompt provides a URL (LinkedIn, personal site, GitHub), use your WebFetch tool to visit it FIRST and extract real information.
+   - The layout should use columns effectively — a sidebar + main content, or a well-structured single-column, or a creative asymmetric layout.
+   - Section hierarchy must be immediately clear: name/title prominent at top, then sections (experience, education, skills, etc.) with clear visual separation.
+   - Typography hierarchy is everything in a CV — make heading sizes, weights, and spacing do the heavy lifting.
+   - Content density should feel professional — not cramped, not wasteful. Every line earns its place on the page.
+
+6. Write style.css FIRST, then index.html. The CSS establishes the A4 canvas and design system; the HTML fills it.
+
+7. DO NOT explain anything. Just create the files.`;
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 /**
@@ -2156,6 +2197,7 @@ function buildStyleCatalog() {
 export function buildPrompt(job, outputDir) {
   const hasRefImage = !!job.hasReferenceImages;
   const isWebapp = job.mode === 'webapp';
+  const isCv = job.mode === 'cv';
 
   let prompt = '';
 
@@ -2181,7 +2223,19 @@ Recreate everything from scratch using code.
 `;
 
     // Technical rules only (no design guidance)
-    if (isWebapp) {
+    if (isCv) {
+      prompt += `TECHNICAL RULES:
+1. Create exactly TWO files: style.css (A4 page sizing, @page rules, print styles, decorative elements) and index.html (the complete CV).
+2. CRITICAL — A4 SIZING: The root container MUST be exactly width: 210mm; height: 297mm. Add @page { size: A4; margin: 0; } and print-color-adjust: exact in style.css. Content MUST fit on one page — use overflow: hidden as a safety net.
+3. TAILWIND-FIRST: In index.html, include:
+   <script src="https://cdn.tailwindcss.com"></script>
+   <script>tailwind.config = { theme: { extend: { colors: { /* extract from reference image */ }, fontFamily: { /* match reference fonts */ }, borderRadius: {...}, boxShadow: {...} } } }</script>
+   Extract the design tokens from the reference image and put them in the Tailwind config.
+4. NEVER use style="..." attributes — use Tailwind classes or define a class in style.css.
+5. Include Google Fonts via <link> if the reference uses web fonts.
+6. NO scrolling, NO responsive breakpoints — this is a fixed A4 canvas.
+7. Write style.css FIRST, then index.html.\n\n`;
+    } else if (isWebapp) {
       prompt += `TECHNICAL RULES:
 1. Create these files: style.css (only for animations/keyframes/pseudo-elements/backdrop-filter), app.js (shared JS), index.html (main page), and additional .html pages as needed.
 2. TAILWIND-FIRST: In every .html page, include:
@@ -2211,7 +2265,7 @@ Combined with the reference image, produce a faithful recreation.\n\n`;
 
   } else {
     // ── Standard flow: no reference image ──────────────────────────────────
-    const baseInstructions = isWebapp ? WEBAPP_INSTRUCTIONS : LANDING_INSTRUCTIONS;
+    const baseInstructions = isCv ? CV_INSTRUCTIONS : isWebapp ? WEBAPP_INSTRUCTIONS : LANDING_INSTRUCTIONS;
     prompt += baseInstructions + '\n\n';
 
     // Tailwind config from the style preset (injected as starting point)

@@ -9,7 +9,7 @@ import queen from '../queen-client.js';
 import { decrypt } from '../encryption.js';
 import { requireUUID } from '../validation.js';
 
-const VALID_MODES = ['landing', 'webapp'];
+const VALID_MODES = ['landing', 'webapp', 'cv'];
 const VALID_THEME_MODES = ['explicit', 'auto', 'synth', 'freestyle'];
 const VALID_MODEL_KEYS = Object.keys(MODEL_MAP);
 

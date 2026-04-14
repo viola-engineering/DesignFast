@@ -7,7 +7,7 @@ import { uploadFile, deleteUpload, listUploads, getThumbnailUrl, updateUploadPur
 import type { Upload } from '@/api/uploads'
 
 type Model = 'claude' | 'gemini'
-type Mode = 'landing' | 'webapp'
+type Mode = 'landing' | 'webapp' | 'cv'
 
 interface StyleOption {
   key: string
@@ -26,7 +26,7 @@ const emit = defineEmits<{
     models: Model[]
     mode: Mode
     versions: number
-    themeMode: 'auto' | 'explicit'
+    themeMode: 'auto' | 'explicit' | 'synth'
     styles?: string[]
     uploadIds?: string[]
   }]
@@ -42,6 +42,7 @@ const selectedModel = ref<Model>('gemini')
 const selectedMode = ref<Mode>('landing')
 const selectedVersions = ref(1)
 const aiPick = ref(false)
+const synthMode = ref(false)
 const selectedStyles = ref<Set<string>>(new Set(props.preselectedStyle ? [props.preselectedStyle] : []))
 const showAllStyles = ref(false)
 
@@ -237,7 +238,7 @@ watch(() => props.preselectedStyle, (newStyle) => {
 }, { immediate: true })
 
 const isValid = computed(() => {
-  return prompt.value.trim().length > 0 && (aiPick.value || selectedStyles.value.size > 0)
+  return prompt.value.trim().length > 0 && (aiPick.value || synthMode.value || selectedStyles.value.size > 0)
 })
 
 const user = computed(() => authStore.user)
@@ -259,7 +260,7 @@ const generationsRemaining = computed(() => {
 })
 
 const estimatedCreditCost = computed(() => {
-  const stylesCount = aiPick.value ? 1 : Math.max(selectedStyles.value.size, 1)
+  const stylesCount = (aiPick.value || synthMode.value) ? 1 : Math.max(selectedStyles.value.size, 1)
   const modeMultiplier = selectedMode.value === 'webapp' ? WEBAPP_CREDIT_MULTIPLIER : 1
   return CREDIT_COSTS[selectedModel.value] * modeMultiplier * stylesCount * selectedVersions.value
 })
@@ -291,13 +292,23 @@ function selectVersions(count: number) {
 
 function toggleAiPick() {
   aiPick.value = !aiPick.value
+  synthMode.value = false
   if (aiPick.value) {
+    selectedStyles.value.clear()
+  }
+}
+
+function toggleSynthMode() {
+  synthMode.value = !synthMode.value
+  aiPick.value = false
+  if (synthMode.value) {
     selectedStyles.value.clear()
   }
 }
 
 function toggleStyle(key: string) {
   aiPick.value = false
+  synthMode.value = false
   const s = new Set(selectedStyles.value)
   if (s.has(key)) {
     s.delete(key)
@@ -316,8 +327,8 @@ function handleSubmit() {
     models: [selectedModel.value],
     mode: selectedMode.value,
     versions: selectedVersions.value,
-    themeMode: aiPick.value ? 'auto' : 'explicit',
-    styles: aiPick.value ? undefined : [...selectedStyles.value],
+    themeMode: synthMode.value ? 'synth' : aiPick.value ? 'auto' : 'explicit',
+    styles: (aiPick.value || synthMode.value) ? undefined : [...selectedStyles.value],
     uploadIds: allUploadIds.value.length > 0 ? allUploadIds.value : undefined,
   })
 }
@@ -475,6 +486,17 @@ defineExpose({ setExamplePrompt })
             <p class="mode-desc">Full app with nav, dashboard, and linked pages.</p>
           </div>
         </div>
+        <div
+          class="mode-option"
+          :class="{ selected: selectedMode === 'cv' }"
+          @click="selectMode('cv')"
+        >
+          <div class="mode-radio"></div>
+          <div>
+            <span class="mode-label">CV / Resume</span>
+            <p class="mode-desc">Print-ready A4 document, single page.</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -503,14 +525,24 @@ defineExpose({ setExamplePrompt })
       <p class="gen-section-label">
         <span class="num">05</span> Design style
       </p>
-      <button
-        class="gen-ai-pick-btn"
-        :class="{ active: aiPick }"
-        :disabled="disabled"
-        @click="toggleAiPick"
-      >
-        <span class="ai-icon">&#10022;</span> Let AI pick based on my prompt
-      </button>
+      <div class="gen-theme-btns">
+        <button
+          class="gen-ai-pick-btn"
+          :class="{ active: aiPick }"
+          :disabled="disabled"
+          @click="toggleAiPick"
+        >
+          <span class="ai-icon">&#10022;</span> Let AI pick
+        </button>
+        <button
+          class="gen-ai-pick-btn gen-synth-btn"
+          :class="{ active: synthMode }"
+          :disabled="disabled"
+          @click="toggleSynthMode"
+        >
+          <span class="ai-icon">&#9672;</span> Generate unique style
+        </button>
+      </div>
       <p v-if="selectedStyles.size > 0" class="gen-hint" style="margin-top: 0; margin-bottom: 0.75rem;">
         {{ selectedStyles.size }} / {{ maxStyles }} styles selected
       </p>
@@ -810,22 +842,28 @@ defineExpose({ setExamplePrompt })
 }
 
 /* Style Selection */
+.gen-theme-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .gen-ai-pick-btn {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.875rem 1rem;
+  padding: 0.875rem 0.75rem;
   font-family: var(--ff-body);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink);
   background-color: transparent;
   border: 1.5px dashed var(--rule);
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 1rem;
 }
 
 .gen-ai-pick-btn:hover {

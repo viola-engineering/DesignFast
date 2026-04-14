@@ -1,6 +1,6 @@
 import { get, post, del } from './client'
 
-export type GenerationMode = 'landing' | 'webapp'
+export type GenerationMode = 'landing' | 'webapp' | 'cv'
 export type ThemeMode = 'explicit' | 'auto' | 'synth' | 'freestyle'
 export type GenerationStatus = 'running' | 'done' | 'failed'
 export type JobStatus = 'queued' | 'running' | 'done' | 'failed'

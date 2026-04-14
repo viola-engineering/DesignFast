@@ -188,8 +188,8 @@ async function main() {
   }
 
   const mode = flags.mode;
-  if (!['landing', 'webapp'].includes(mode)) {
-    console.error(`Error: Invalid mode "${mode}". Use "landing" or "webapp".`);
+  if (!['landing', 'webapp', 'cv'].includes(mode)) {
+    console.error(`Error: Invalid mode "${mode}". Use "landing", "webapp", or "cv".`);
     process.exit(1);
   }
 

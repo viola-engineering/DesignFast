@@ -42,7 +42,7 @@ function formatDuration(ms: number): string {
 }
 
 function getModeLabel(mode: string): string {
-  return mode === 'landing' ? 'Single page' : 'Multi-page'
+  return mode === 'cv' ? 'CV / Resume' : mode === 'landing' ? 'Single page' : 'Multi-page'
 }
 
 function getThemeModeLabel(themeMode: string): string {

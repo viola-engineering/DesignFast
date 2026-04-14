@@ -13,13 +13,13 @@ import { PROVIDER_TO_APIKEY_PROVIDER, MODEL_MAP } from './models.js';
 import { buildPrompt, STYLES } from './prompt-builder.js';
 import queen from './queen-client.js';
 
-const MAX_TURNS = { landing: 50, webapp: 100 };
+const MAX_TURNS = { landing: 50, webapp: 100, cv: 50 };
 
 /**
  * Maximum USD cost per job before the agent is aborted.
  * Prevents runaway token consumption from a single generation.
  */
-const MAX_COST_USD = { landing: 1.0, webapp: 4.0 };
+const MAX_COST_USD = { landing: 1.0, webapp: 4.0, cv: 1.0 };
 
 /**
  * Error types that are fatal and should not be retried.
